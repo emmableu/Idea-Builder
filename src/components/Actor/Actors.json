@@ -1,0 +1,26 @@
+[
+  {
+    "name": "helicopter",
+    "imgSrc": "green-your-city/actors/helicopter.png"
+  },
+  {
+    "name": "waterDrops",
+    "imgSrc": "green-your-city/actors/water drops.svg"
+  },
+  {
+    "name": "redFlower",
+    "imgSrc": "green-your-city/actors/red flower.png"
+  },
+  {
+    "name": "blueFlower",
+    "imgSrc": "green-your-city/actors/blue flower.png"
+  },
+  {
+    "name": "greenFlower",
+    "imgSrc": "green-your-city/actors/green flower.png"
+  },
+  {
+    "name": "pinkFlower",
+    "imgSrc": "green-your-city/actors/pink flower.png"
+  }
+]

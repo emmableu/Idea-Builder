@@ -1,0 +1,146 @@
+import React from 'react';
+import axios from '../../axiosConfig'
+import Actor from "../Actor/Actor.jsx";
+import {Image, Layer} from 'react-konva';
+import useImage from "use-image";
+import backdropImg from "../Stage/Stage";
+import {useDispatch, useSelector} from 'react-redux';
+import { increment } from '../../redux/features/counterSlice';
+
+
+const ActorsLayer = (props) => {
+    const {stageRef, layerHeight, copiedActorData} = props;
+    const [backdropImage] = useImage('images/'+backdropImg.imgSrc);
+    const [selectedId, selectImg] = React.useState(null);
+    const [actorData, setActorData] = React.useState([]);
+    const [dataReceived, setDataReceived] = React.useState(false);
+    const dispatch = useDispatch();
+    const selectedStage = useSelector((state) => state.selectedStage.value);
+
+
+    React.useEffect(() => {
+        setActorData(concatCopied(actorData, copiedActorData));
+    }, [copiedActorData]);
+
+    React.useEffect(() => {
+        axios({
+            method: 'get',
+            url: `/stages/${selectedStage}/get`,
+        }).then(response =>
+            {
+                const responseActorData = response.data.stages[selectedStage.toString()].actors;
+                const newActorData = responseActorData.map((d) => ({
+                    key:d.key,
+                    name: d.name,
+                    id:d.id,
+                    "x": d.x,
+                    "y": d.y,
+                    'width':d.width,
+                    'height':d.height,
+                }));
+                setActorData(newActorData);
+                setDataReceived(true);
+            }
+        );
+    }, [selectedStage]);
+
+    React.useEffect(() => {
+        if (actorData.length === 0 || dataReceived === false) {
+            return;
+        }
+        axios(
+            {
+                method: 'post',
+                url: `/stages/${selectedStage}/actors/update`,
+                data: {
+                    boardData: actorData
+                }
+            }
+        );
+
+        if (stageRef!==undefined) {
+            axios(
+                {
+                    method: 'post',
+                    url: `/stages/${selectedStage}/base64/update`,
+                    data: {
+                        base64: stageRef.current.toDataURL({ pixelRatio: 0.5})
+                    }
+                }
+            ).then(
+                setTimeout(
+                    () => {dispatch(increment());},
+                    50)
+            )
+        }
+
+    }, [actorData]);
+
+    const concatCopied = (actorData, copiedActorData) => {
+        // console.log('copiedActorData: ', copiedActorData);
+        const actorDataKeys = actorData.map((a) => a.key);
+        // console.log('actorDataKeys: ', actorDataKeys);
+        const newArray = [...actorData]
+        copiedActorData.forEach(
+            (d) => {
+                if (!actorDataKeys.includes(d.key)){
+                    // console.log(newArray);
+                    newArray.push(d);
+                }
+            }
+        )
+        return newArray;
+    };
+
+
+
+    const checkDeselect = (e) => {
+        // deselect when clicked on empty area
+        // console.log('e.target: ', e.target.id());
+        // console.log('e.target.id: ', !actorData.map(a => a.id).includes(e.target.id()));
+        const clickedOnEmpty = e.target.id()==="backdrop";
+        if (clickedOnEmpty) {
+            selectImg(null);
+        }
+    };
+
+    return (
+        <>
+        <Layer
+            width={layerHeight*4/3}
+            height={layerHeight}
+            onMouseDown={checkDeselect}
+            onTouchStart={checkDeselect}
+        />
+        <Layer
+            x={layerHeight*4/3*0.1}
+            y={layerHeight*0.1}
+            width={layerHeight*4/3*0.8}
+            height={layerHeight*0.8}
+            onMouseDown={checkDeselect}
+            onTouchStart={checkDeselect}
+        >
+            <Image image={backdropImage} id="backdrop" width={layerHeight*4/3*0.8} height={layerHeight*0.8}/>
+            {actorData.map((img, i) => {
+                return (
+                    <Actor
+                        shapeProps={img}
+                        isSelected={img.id === selectedId}
+                        onSelect={() => {
+                            selectImg(img.id);
+                        }}
+                        onChange={(newAttrs) => {
+                            const rects = actorData.slice();
+                            rects[i] = newAttrs;
+                            setActorData(rects);
+                        }}
+                    />
+                );
+            })}
+        </Layer>
+            </>
+    );
+};
+
+
+export default ActorsLayer;
