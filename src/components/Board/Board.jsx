@@ -31,14 +31,14 @@ import globalConfig from "../../globalConfig";
 
 
 
-const boardContentPadding = globalConfig.boardContentPadding;
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         backgroundColor: "white",
         display: "flex",
-        height: `calc(100vh - ${globalConfig.toolBarHeight}px - ${boardContentPadding*2}px)`,
+        height: `calc(100vh - ${globalConfig.toolBarHeight}px )`,
+        padding: "8px 0px",
     },
     tabs: {
         borderRight: `1px solid ${theme.palette.divider}`,

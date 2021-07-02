@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Card } from 'antd';
+import { Card, Input } from 'antd';
 import globalConfig from "../../globalConfig";
 import { geekblue, magenta } from '@ant-design/colors';
 import grey from '@material-ui/core/colors/grey';
 import { Upload, Button, Tooltip } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
 import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import Box from "@material-ui/core/Box";
-import {PlusOutlined} from "@ant-design/icons";
+import {PlusOutlined, SearchOutlined, UploadOutlined, DragOutlined, DeleteTwoTone} from "@ant-design/icons";
+
 import CostumeList from "./CostumeList";
+import {CloudUpload} from "@material-ui/icons";
+import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress";
 
 const toolBarHeight = globalConfig.toolBarHeight;
-const boardContentPadding = globalConfig.boardContentPadding;
 const addNewSpriteBoxHeight = globalConfig.addNewSpriteBoxHeight;
 
 
@@ -54,7 +55,7 @@ const getListStyle = isDraggingOver => ({
     padding: grid,
     width: "100%",
     overflowY: "scroll",
-    height: `calc(100vh - ${toolBarHeight}px - ${boardContentPadding*2}px - ${addNewSpriteBoxHeight}px)`,
+    height: `calc(100vh - ${toolBarHeight}px - ${addNewSpriteBoxHeight}px)`,
     position: 'relative',
 });
 
@@ -66,6 +67,65 @@ const getBoxStyle = () => ({
     backgroundColor: grey[50]
     // border: 3px solid green;
 });
+
+const CardTitle = () => {
+    return (
+        <>
+            <Input
+                placeholder="Enter sprite name"
+                bordered={false}
+            />
+        </>
+    )
+}
+
+const ButtonGroup = (props) => {
+    return (
+        <>
+            <input
+                accept="image/*"
+                id="contained-button-file"
+                style={{display: "none"}}
+                type="file"
+            />
+            <label htmlFor="contained-button-file">
+                <Tooltip title="Upload costume">
+                    <Button
+                        type="link"
+                        shape="circle"
+                        icon={<UploadOutlined />}
+                    >
+                    </Button>
+                </Tooltip>
+            </label>
+            <Tooltip title="Search for costume">
+                <Button
+                    type="link"
+                    shape="circle"
+                    icon={<SearchOutlined />} />
+            </Tooltip>
+            <Button
+                {...props}
+                type="link"
+                shape="circle"
+                icon={<DragOutlined
+                        />} />
+
+            <Tooltip title="Delete sprite">
+                <Button
+                    type="link"
+                    shape="circle"
+                    icon={<DeleteTwoTone
+                        twoToneColor="#eb2f96"
+                    />}
+                >
+                </Button>
+            </Tooltip>
+
+        </>
+    )
+}
+
 
 class ImagePanel extends Component {
     constructor(props) {
@@ -118,21 +178,24 @@ class ImagePanel extends Component {
                                         <div
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
                                             style={getItemStyle(
                                                 snapshot.isDragging,
                                                 provided.draggableProps.style
                                             )}
                                         >
+                                            <Card
+                                                hoverable
+                                                size="small"
+                                                title={<CardTitle/>}
+                                                style={{ width: "100%" }}
+                                                extra={<ButtonGroup
+                                                    {...provided.dragHandleProps}/>}>
+                                                card content
+                                            </Card>
                                         </div>
                                     )}
                                 </Draggable>
-                                    <Card
-                                        hoverable
-                                        size="small"
-                                        title="another card"
-                                        style={{ width: "100%" }}>
-                                    </Card>
+
                                 </>
                             ))}
                             {provided.placeholder}
