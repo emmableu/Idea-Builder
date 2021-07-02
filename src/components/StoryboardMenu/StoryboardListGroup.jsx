@@ -3,13 +3,22 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import * as uuid from "uuid";
 import globalConfig from "../../globalConfig";
 import {Paper} from "@material-ui/core"
+import { makeStyles } from '@material-ui/core/styles';
 
+
+const useStyles = makeStyles((theme) => ({
+    itemPaper: {
+        "&:hover": {
+            backgroundColor: globalConfig.storyboardMenuColor.darkHover,
+        }
+    }
+}));
 const itemsFromBackend = [
-    { id: uuid.v4(), content: "First task" },
-    { id: uuid.v4(), content: "Second task" },
-    { id: uuid.v4(), content: "Third task" },
-    { id: uuid.v4(), content: "Fourth task" },
-    { id: uuid.v4(), content: "Fifth task" }
+    { id: uuid.v4(), content: "Grow flowers" },
+    { id: uuid.v4(), content: "Many people running" },
+    { id: uuid.v4(), content: "Home office" },
+    { id: uuid.v4(), content: "Helicopter flies" },
+    { id: uuid.v4(), content: "Helicopter drop waters" }
 ];
 
 const columnsFromBackend = {
@@ -62,6 +71,8 @@ const onDragEnd = (result, columns, setColumns) => {
 
 function StoryboardListGroup() {
     const [columns, setColumns] = useState(columnsFromBackend);
+    const [clickedID, setClickedID] = useState(null);
+
     return (
         <div style={{ display: "block", justifyContent: "center", height: "100%" }}>
             <DragDropContext
@@ -83,6 +94,7 @@ function StoryboardListGroup() {
                                 width: "100%",
                                 padding: "15px 15px"}}>
                                 <body style={{backgroundColor: "inherit",
+                                    fontWeight: 500,
                                     color: globalConfig.storyboardMenuColor.whiteText,
                                 }}>{column.name}</body>
                             </Paper>
@@ -113,7 +125,9 @@ function StoryboardListGroup() {
                                                                 return (
                                                                     < MenuItemPaper provided={provided}
                                                                                     snapshot={snapshot}
-                                                                                    item={item}/>
+                                                                                    item={item}
+                                                                                    clickedID={clickedID}
+                                                                                    setClickedID={setClickedID}/>
                                                                 );
                                                             }}
                                                         </Draggable>
@@ -135,28 +149,30 @@ function StoryboardListGroup() {
 
 
 const MenuItemPaper = (props) => {
-    const {provided, snapshot, item} = props;
-    const [clicked, setClicked] = useState(false);
+    const classes = useStyles();
+    const {provided, snapshot, item, clickedID, setClickedID} = props;
+    // TODO: somehow this hover does not work.
     return (
        < Paper
-    elevation={3}
-    ref={provided.innerRef}
-    {...provided.draggableProps}
-    {...provided.dragHandleProps}
-    onClick={() => setClicked(true)}
-    style={{
-        width: "100%",
-            userSelect: "none",
-            padding: 10,
-            margin: "0 0 8px 0",
-            minHeight: "30px",
-            backgroundColor: snapshot.isDragging || clicked
-            ? globalConfig.storyboardMenuColor.darkMenuOnClick
-            : globalConfig.storyboardMenuColor.darkMenuItem,
-            color: snapshot.isDragging || clicked
-            ? "black"
-            : "white",
-    ...provided.draggableProps.style
+           hover
+           className={classes.itemPaper}
+           elevation={3}
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            onClick={() => setClickedID(item.id)}
+            style={{
+                width: "100%",
+                userSelect: "none",
+                padding: 10,
+                margin: "0 0 8px 0",
+                minHeight: "30px",
+                backgroundColor: clickedID===item.id
+                ? globalConfig.storyboardMenuColor.darkMenuOnClick
+                : globalConfig.storyboardMenuColor.darkMenuItem,
+                color: "white",
+                border: snapshot.isDragging ? `2px solid ${globalConfig.storyboardMenuColor.darkPrimary}` : null,
+                ...provided.draggableProps.style
     }}
 >
     {item.content}

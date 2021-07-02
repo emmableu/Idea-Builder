@@ -5,15 +5,16 @@ const globalConfig = {
      addNewSpriteBoxHeight: 50,
 
      storyboardMenuColor: {
-          darkBase: "#121212",
-          darkSurface: "#363636",
-          darkPrimary: "#BB86FC",
-          darkSecondary: "#03DAC6",
+          darkBase: "#141414",
+          darkSurface: "#111d2c",
+          darkPrimary: "#177ddc",
+          darkHover: "#1765ad",
+          darkClick: "#3993dc",
           darkMenuHeader: "#222222",
           darkMenuItem: "#252525",
           darkMenuBackground: "#121212",
-          darkMenuOnClick: "#BB86FC",
-          darkMenuBackgroundOnDrag: "#222222",
+          darkMenuOnClick: "#3993dc",
+          darkMenuBackgroundOnDrag: "#e6f7ff",
 
           dp01: "#1e1e1e",
           dp02: "#222222",
