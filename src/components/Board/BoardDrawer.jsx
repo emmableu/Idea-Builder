@@ -62,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
         },
         backgroundColor: globalConfig.storyboardMenuColor.surface,
         color: globalConfig.storyboardMenuColor.whiteText,
-        top: "48px"
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -88,7 +87,6 @@ const useStyles = makeStyles((theme) => ({
         width: globalConfig.storyboardDrawerWidth,
         backgroundColor: globalConfig.storyboardMenuColor.surface,
         position: "fixed",
-        top: "48px"
     },
     content: {
         flexGrow: 1,
@@ -128,39 +126,6 @@ const BoardDrawer = () => {
 
     return (
             <div className={classes.root}>
-                <AppBar position="fixed" className={classes.baseAppBar} >
-                    <Toolbar variant="dense">
-
-
-                        {/*<div style={{*/}
-                        {/*    display:"flex",*/}
-                        {/*    justifyContent: "center",*/}
-                        {/*    alignItems: "center",*/}
-                        {/*    width: "30%",*/}
-                        {/*}} >*/}
-                            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                                <HomeIcon />
-                            </IconButton>
-                        {/*</div>*/}
-
-                        <div style={{
-                            display:"flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            width: "90%",
-                        }} >
-                            <span>
-                                    <Typography style={{
-                                        fontWeight: 550,
-                                    }}>Build a city</Typography>
-                            </span>
-                        </div>
-                        <IconButton edge="end" className={classes.iconButton} color="inherit" aria-label="menu">
-                            <AccountCircle />
-                        </IconButton>
-
-                    </Toolbar>
-                </AppBar>
                     <AppBar position="fixed" className={classes.appBar}>
                     <Toolbar variant="dense">
                         <IconButton

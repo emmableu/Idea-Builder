@@ -28,6 +28,7 @@ import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import globalConfig from "../../globalConfig";
+import StoryboardTitleBar from "../StoryboardTitleBar/StoryboardTitleBar";
 
 
 
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "white",
         display: "flex",
         height: `calc(100vh - ${globalConfig.toolBarHeight}px )`,
-        padding: "8px 0px",
+        margin: "8px 0px",
     },
     tabs: {
         borderRight: `1px solid ${theme.palette.divider}`,
@@ -236,20 +237,23 @@ const Board = () => {
 
 
     return (
-        <ThemeProvider theme={lightTheme}>
-            <VerticalTabs/>
+        <>
+            <ThemeProvider theme={lightTheme}>
+                <StoryboardTitleBar />
+                <VerticalTabs/>
 
-        {/*    <Box className={classes.box}>*/}
-        {/*    <StageSnapshots*/}
-        {/*    />*/}
-        {/*    <StageCard*/}
-        {/*        images={images}*/}
-        {/*        setImages={setImages}*/}
-        {/*        stageRef={stageRef}*/}
-        {/*        dragUrl={dragUrl}*/}
-        {/*    />*/}
-        {/*</Box>*/}
-        </ThemeProvider>
+                {/*    <Box className={classes.box}>*/}
+                {/*    <StageSnapshots*/}
+                {/*    />*/}
+                {/*    <StageCard*/}
+                {/*        images={images}*/}
+                {/*        setImages={setImages}*/}
+                {/*        stageRef={stageRef}*/}
+                {/*        dragUrl={dragUrl}*/}
+                {/*    />*/}
+                {/*</Box>*/}
+            </ThemeProvider>
+        </>
     )
 };
 
