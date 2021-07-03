@@ -80,19 +80,19 @@ function StoryboardMenuListGroup() {
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: "start",
-                                backgroundColor: globalConfig.storyboardMenuColor.darkSurface,
+                                backgroundColor: globalConfig.storyboardMenuColor.surface,
                                 width: "100%",
                             }}
                             key={columnId}
                         >
-                            <Paper style={{backgroundColor: globalConfig.storyboardMenuColor.darkMenuHeader,
+                            <Paper style={{backgroundColor: globalConfig.storyboardMenuColor.menuHeader,
                                 width: "100%",
                                 padding: "15px 15px",
-                                border: `0px solid ${globalConfig.storyboardMenuColor.darkBaseAppBar}`
+                                border: `0px solid ${globalConfig.storyboardMenuColor.titleBar}`
                                 }}>
                                 <span style={{backgroundColor: "inherit",
                                     fontWeight: 500,
-                                    color: globalConfig.storyboardMenuColor.whiteText,
+                                    color: "white",
                                 }}>{column.name}</span>
                                 <Button type="link"
                                         shape="circle"
@@ -110,8 +110,8 @@ function StoryboardMenuListGroup() {
                                                 ref={provided.innerRef}
                                                 style={{
                                                     background: snapshot.isDraggingOver
-                                                        ? globalConfig.storyboardMenuColor.darkMenuBackgroundOnDrag
-                                                        : globalConfig.storyboardMenuColor.darkMenuBackground,
+                                                        ? globalConfig.storyboardMenuColor.menuBackgroundOnDrag
+                                                        : globalConfig.storyboardMenuColor.menuBackground,
                                                     width: globalConfig.storyboardDrawerWidth,
                                                     padding: 15,
                                                     minHeight: 30,

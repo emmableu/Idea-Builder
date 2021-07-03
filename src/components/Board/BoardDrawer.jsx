@@ -46,10 +46,10 @@ const useStyles = makeStyles((theme) => ({
             width: globalConfig.storyboardDrawerWidth,
             flexShrink: 0,
         },
-        backgroundColor: globalConfig.storyboardMenuColor.darkSurface,
+        backgroundColor: globalConfig.storyboardMenuColor.surface,
     },
     baseAppBar: {
-        backgroundColor: globalConfig.storyboardMenuColor.darkBaseAppBar,
+        backgroundColor: globalConfig.storyboardMenuColor.titleBar,
         color: globalConfig.storyboardMenuColor.whiteText,
     },
     iconButton: {
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
             width: `calc(100% - ${globalConfig.storyboardDrawerWidth}px)`,
             marginLeft: globalConfig.storyboardDrawerWidth,
         },
-        backgroundColor: globalConfig.storyboardMenuColor.darkSurface,
+        backgroundColor: globalConfig.storyboardMenuColor.surface,
         color: globalConfig.storyboardMenuColor.whiteText,
         top: "48px"
     },
@@ -80,13 +80,13 @@ const useStyles = makeStyles((theme) => ({
     },
 
     insideBoardToolbar: {
-        backgroundColor: globalConfig.storyboardMenuColor.darkSurface,
+        backgroundColor: globalConfig.storyboardMenuColor.surface,
         height: globalConfig.toolBarHeight,
     },
 
     drawerPaper: {
         width: globalConfig.storyboardDrawerWidth,
-        backgroundColor: globalConfig.storyboardMenuColor.darkSurface,
+        backgroundColor: globalConfig.storyboardMenuColor.surface,
         position: "fixed",
         top: "48px"
     },

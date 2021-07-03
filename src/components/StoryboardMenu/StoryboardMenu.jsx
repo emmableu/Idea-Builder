@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },    // necessary for content to be below app bar
     baseToolbar: {
         height: globalConfig.toolBarHeight,
-        backgroundColor: globalConfig.storyboardMenuColor.darkBaseAppBar,
+        backgroundColor: globalConfig.storyboardMenuColor.titleBar,
         color: "white",
         border: "0px"
     },

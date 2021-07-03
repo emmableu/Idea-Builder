@@ -19,9 +19,11 @@ const StoryboardMenuItem = (props) => {
                 margin: "0 0 8px 0",
                 minHeight: "30px",
                 backgroundColor: clickedID===item.id
-                    ? globalConfig.storyboardMenuColor.darkMenuOnClick
-                    : globalConfig.storyboardMenuColor.darkMenuItem,
-                color: "white",
+                    ? globalConfig.storyboardMenuColor.menuItemOnClick.background
+                    : globalConfig.storyboardMenuColor.menuItem,
+                color: clickedID===item.id
+                    ? globalConfig.storyboardMenuColor.menuItemOnClick.text
+                    : "white",
                 border: snapshot.isDragging ? `2px solid ${globalConfig.storyboardMenuColor.darkPrimary}` : null,
                 ...provided.draggableProps.style
             }}>
