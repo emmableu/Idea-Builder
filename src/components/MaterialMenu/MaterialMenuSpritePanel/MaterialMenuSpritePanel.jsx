@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Card, Input } from 'antd';
-import globalConfig from "../../globalConfig";
+import globalConfig from "../../../globalConfig";
 import { geekblue, magenta } from '@ant-design/colors';
 import grey from '@material-ui/core/colors/grey';
 import { Upload, Button, Tooltip } from 'antd';
@@ -10,14 +10,26 @@ import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import Box from "@material-ui/core/Box";
 import {PlusOutlined, SearchOutlined, UploadOutlined, DragOutlined, DeleteTwoTone} from "@ant-design/icons";
-
+import MaterialMenuSpritePanelItemButtonGroup from "./MaterialMenuSpritePanelItemButtonGroup";
+import MaterialMenuSpritePanelItemContent from "./MaterialMenuSpritePanelItemContent";
+import MaterialMenuSpritePanelItemTitle from "./MaterialMenuSpritePanelItemTitle";
 import CostumeList from "./CostumeList";
 import {CloudUpload} from "@material-ui/icons";
 import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress";
-
+import * as uuid from "uuid"
 const toolBarHeight = globalConfig.toolBarHeight;
 const addNewSpriteBoxHeight = globalConfig.addNewSpriteBoxHeight;
 
+/*
+    MaterialMenuSpritePanel data format:
+        when pressing new button, create a new sprite, named:
+        {}.
+        When populating to it, it looks like this:
+        {
+            spriteName(str): {
+                costumeName(str): {imgUUID: str(UUID), imgSrc: str(URL)}
+        }
+*/
 
 // fake data generator
 const getItems = count =>
@@ -68,98 +80,41 @@ const getBoxStyle = () => ({
     // border: 3px solid green;
 });
 
-const CardTitle = () => {
-    return (
-        <>
-            <Input
-                placeholder="Enter sprite name"
-                bordered={false}
-            />
-        </>
-    )
-}
-
-const ButtonGroup = (props) => {
-    return (
-        <>
-            <input
-                accept="image/*"
-                id="contained-button-file"
-                style={{display: "none"}}
-                type="file"
-            />
-            <label htmlFor="contained-button-file">
-                <Tooltip title="Upload costume">
-                    <Button
-                        type="link"
-                        shape="circle"
-                        icon={<UploadOutlined />}
-                    >
-                    </Button>
-                </Tooltip>
-            </label>
-            <Tooltip title="Search for costume">
-                <Button
-                    type="link"
-                    shape="circle"
-                    icon={<SearchOutlined />} />
-            </Tooltip>
-            <Button
-                {...props}
-                type="link"
-                shape="circle"
-                icon={<DragOutlined
-                        />} />
-
-            <Tooltip title="Delete sprite">
-                <Button
-                    type="link"
-                    shape="circle"
-                    icon={<DeleteTwoTone
-                        twoToneColor="#eb2f96"
-                    />}
-                >
-                </Button>
-            </Tooltip>
-
-        </>
-    )
-}
 
 
-class ImagePanel extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            items: getItems(1)
-        };
-        this.onDragEnd = this.onDragEnd.bind(this);
-    }
-
-    onDragEnd(result) {
+const  MaterialMenuSpritePanel = (props) => {
+    const [items, setItems] = React.useState([]);
+    const onDragEnd = (result, items) => {
         // dropped outside the list
         if (!result.destination) {
             return;
         }
 
-        const items = reorder(
-            this.state.items,
+        const newItems = reorder(
+            items,
             result.source.index,
             result.destination.index
         );
+        setItems(newItems);
+    }
+    const handleAddNewSpriteButtonClick = (e) => {
+        console.log("items: ", items);
+        setItems( [...items, {
+                    id: uuid.v4()
+                    }]);
 
-        this.setState({
-            items
-        });
     }
 
     // Normally you would want to split things out into separate components.
     // But in this example everything is just done in one place for simplicity
-    render() {
         return (
-            <DragDropContext onDragEnd={this.onDragEnd}>
+            <DragDropContext onDragEnd={onDragEnd(items)}>
                 <Box style={getBoxStyle()}>
-                    <Button type="dashed" icon={<PlusOutlined />}>
+                    <Button
+                        type="dashed"
+                        icon={<PlusOutlined />}
+                        onClick={handleAddNewSpriteButtonClick}
+                        >
                         Add new sprite
                     </Button>
                 </Box>
@@ -171,7 +126,7 @@ class ImagePanel extends Component {
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}
                         >
-                            {this.state.items.map((item, index) => (
+                            {items.map((item, index) => (
                                 <>
                                 <Draggable key={item.id} draggableId={item.id} index={index}>
                                     {(provided, snapshot) => (
@@ -186,11 +141,11 @@ class ImagePanel extends Component {
                                             <Card
                                                 hoverable
                                                 size="small"
-                                                title={<CardTitle/>}
+                                                title={<MaterialMenuSpritePanelItemTitle/>}
                                                 style={{ width: "100%" }}
-                                                extra={<ButtonGroup
+                                                extra={<MaterialMenuSpritePanelItemButtonGroup
                                                     {...provided.dragHandleProps}/>}>
-                                                card content
+                                                    <MaterialMenuSpritePanelItemContent/>
                                             </Card>
                                         </div>
                                     )}
@@ -204,8 +159,7 @@ class ImagePanel extends Component {
                 </Droppable>
             </DragDropContext>
         );
-    }
 }
 
 // Put the thing into the DOM!
-export default ImagePanel;
+export default MaterialMenuSpritePanel;

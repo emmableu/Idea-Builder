@@ -1,14 +1,15 @@
+
 import React from "react";
-import StageCard from "../Stage/StageCard";
+import StageCard from "../../Stage/StageCard";
 import Box from '@material-ui/core/Box';
 import {createMuiTheme, makeStyles, ThemeProvider, withStyles} from '@material-ui/core/styles';
-import MaterialMenuSpritePanel from "../MaterialMenu/MaterialMenuSpritePanel/MaterialMenuSpritePanel";
+import MaterialMenuSpritePanel from "./MaterialMenuSpritePanel";
 
 import StageSnapshots from "./StageSnapshots";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import ListSubheader from "@material-ui/core/ListSubheader";
-import actorImg from "../Actor/Actors";
+import actorImg from "../../Actor/Actors";
 import PropTypes from "prop-types";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -20,14 +21,14 @@ import {Panorama, Widgets, Theaters, CloudUpload} from "@material-ui/icons";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from '@material-ui/icons/Add';
 import Grid from "@material-ui/core/Grid";
-import {UploadButton} from "../Upload/UploadButton"
+import {UploadButton} from "../../Upload/UploadButton"
 import {useDispatch, useSelector} from "react-redux";
 
 import { connect } from 'react-redux'
 import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import globalConfig from "../../globalConfig";
+import globalConfig from "../../../globalConfig";
 
 
 
@@ -103,9 +104,9 @@ function TabPanel(props) {
             aria-labelledby={`vertical-tab-${index}`}
             {...other}
         >
-                <Box>
-                    {index === 0 && <MaterialMenuSpritePanel/>}
-                </Box>
+            <Box>
+                {index === 0 && <MaterialMenuSpritePanel/>}
+            </Box>
         </div>
     );
 }
@@ -122,37 +123,37 @@ const CostumeGridsFromCostumeObj = (props) => {
     const classes = useStyles();
 
     return (
-    <Grid container>
-        <Card className={classes.spriteCard}
-            elevation={3}>
-            <CardContent>
-                <Typography variant="subtitle1">{spriteName}</Typography>
-                {Object.entries(costumeObj).map(([costumeName, imgObj]) => (
+        <Grid container>
+            <Card className={classes.spriteCard}
+                  elevation={3}>
+                <CardContent>
+                    <Typography variant="subtitle1">{spriteName}</Typography>
+                    {Object.entries(costumeObj).map(([costumeName, imgObj]) => (
                         <>
-                        <Grid item xs={6}  key={imgObj.imgID}>
-                                    <Box  className={classes.costumePaper}>
-                                        <img
-                                            className={classes.costumeImg}
-                                            src={imgObj.imgSrc}
-                                            key={imgObj.imgID}
-                                            alt={imgObj.imgID}
-                                            size="small"
-                                            // onDragStart={(e) => {
-                                            //     dragUrl.current = e.target.alt;
-                                            // }}
-                                        />
-                                    </Box>
+                            <Grid item xs={6}  key={imgObj.imgID}>
+                                <Box  className={classes.costumePaper}>
+                                    <img
+                                        className={classes.costumeImg}
+                                        src={imgObj.imgSrc}
+                                        key={imgObj.imgID}
+                                        alt={imgObj.imgID}
+                                        size="small"
+                                        // onDragStart={(e) => {
+                                        //     dragUrl.current = e.target.alt;
+                                        // }}
+                                    />
+                                </Box>
                             </Grid>
                             <Typography variant="body2" noWrap={true}>
                                 {costumeName}
                             </Typography>
                         </>
-            ))}
-            </CardContent>
-        </Card>
+                    ))}
+                </CardContent>
+            </Card>
 
-    </Grid>
-)};
+        </Grid>
+    )};
 
 
 const ImageGrids = (props) => {
@@ -163,20 +164,20 @@ const ImageGrids = (props) => {
 
 
     return (<>
-                <GridList cellHeight={100} className={classes.gridList}>
-                    {
-                       Object.entries(spriteCostumeMap).map(([spriteName, costumeObj]) => {
-                           return (
-                               <>
-                               <CostumeGridsFromCostumeObj
+            <GridList cellHeight={100} className={classes.gridList}>
+                {
+                    Object.entries(spriteCostumeMap).map(([spriteName, costumeObj]) => {
+                        return (
+                            <>
+                                <CostumeGridsFromCostumeObj
                                     spriteName={spriteName}
-                                   costumeObj={costumeObj}/>
-                               </>
-                           )
-                       })
-                    }
-                </GridList>
-            </>
+                                    costumeObj={costumeObj}/>
+                            </>
+                        )
+                    })
+                }
+            </GridList>
+        </>
     )
 
 };
@@ -227,7 +228,6 @@ const VerticalTabs = () => {
 
 
 const Board = () => {
-    // const classes = useStyles();
     const lightTheme = createMuiTheme({
         palette: {
             type: 'light',
@@ -239,16 +239,16 @@ const Board = () => {
         <ThemeProvider theme={lightTheme}>
             <VerticalTabs/>
 
-        {/*    <Box className={classes.box}>*/}
-        {/*    <StageSnapshots*/}
-        {/*    />*/}
-        {/*    <StageCard*/}
-        {/*        images={images}*/}
-        {/*        setImages={setImages}*/}
-        {/*        stageRef={stageRef}*/}
-        {/*        dragUrl={dragUrl}*/}
-        {/*    />*/}
-        {/*</Box>*/}
+            {/*<Box className={classes.box}>*/}
+            {/*<StageSnapshots*/}
+            {/*/>*/}
+            {/*<StageCard*/}
+            {/*    images={images}*/}
+            {/*    setImages={setImages}*/}
+            {/*    stageRef={stageRef}*/}
+            {/*    dragUrl={dragUrl}*/}
+            {/*/>*/}
+            {/*</Box>*/}
         </ThemeProvider>
     )
 };

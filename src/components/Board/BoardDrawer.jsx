@@ -14,6 +14,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import InputBase from '@material-ui/core/InputBase';
 import FormControl from '@material-ui/core/FormControl';
 import StoryboardMenu from '../StoryboardMenu/StoryboardMenu'
+import MoreIcon from '@material-ui/icons/MoreVert';
 import {
     fade,
     ThemeProvider,
@@ -29,6 +30,12 @@ import InfoIcon from '@material-ui/icons/Info';
 import styled from 'styled-components';
 import StageSnapshots from "./StageSnapshots";
 import globalConfig from "../../globalConfig";
+import StoryboardToolbarTitle from "../StoryboardToolbar/StoryboardToolbarTitle";
+import StoryboardActionDropdown from "../StoryboardToolbar/StoryboardActionDropdown";
+import {Grid, Typography} from "@material-ui/core";
+import ArtTrack from "@material-ui/core/SvgIcon/SvgIcon";
+import HomeIcon from '@material-ui/icons/Home';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,6 +48,13 @@ const useStyles = makeStyles((theme) => ({
         },
         backgroundColor: globalConfig.storyboardMenuColor.darkSurface,
     },
+    baseAppBar: {
+        backgroundColor: globalConfig.storyboardMenuColor.darkBaseAppBar,
+        color: globalConfig.storyboardMenuColor.whiteText,
+    },
+    iconButton: {
+        marginRight: theme.spacing(2)
+    },
     appBar: {
         [theme.breakpoints.up('sm')]: {
             width: `calc(100% - ${globalConfig.storyboardDrawerWidth}px)`,
@@ -48,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
         },
         backgroundColor: globalConfig.storyboardMenuColor.darkSurface,
         color: globalConfig.storyboardMenuColor.whiteText,
+        top: "48px"
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -72,6 +87,8 @@ const useStyles = makeStyles((theme) => ({
     drawerPaper: {
         width: globalConfig.storyboardDrawerWidth,
         backgroundColor: globalConfig.storyboardMenuColor.darkSurface,
+        position: "fixed",
+        top: "48px"
     },
     content: {
         flexGrow: 1,
@@ -91,13 +108,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const TitleInput = () => {
-    const classes = useStyles();
-    return <InputBase placeholder="Enter storyboard title..."
-                      className={classes.storyboardTitleInput}
-                      id="bootstrap-input"
-                      autoComplete="off" />
-}
+// const TitleInput = () => {
+//     const classes = useStyles();
+//     return <InputBase placeholder="Enter storyboard title..."
+//                       className={classes.storyboardTitleInput}
+//                       id="bootstrap-input"
+//                       autoComplete="off" />
+// }
 
 
 const BoardDrawer = () => {
@@ -111,7 +128,40 @@ const BoardDrawer = () => {
 
     return (
             <div className={classes.root}>
-                <AppBar position="fixed" className={classes.appBar}>
+                <AppBar position="fixed" className={classes.baseAppBar} >
+                    <Toolbar variant="dense">
+
+
+                        {/*<div style={{*/}
+                        {/*    display:"flex",*/}
+                        {/*    justifyContent: "center",*/}
+                        {/*    alignItems: "center",*/}
+                        {/*    width: "30%",*/}
+                        {/*}} >*/}
+                            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                                <HomeIcon />
+                            </IconButton>
+                        {/*</div>*/}
+
+                        <div style={{
+                            display:"flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "90%",
+                        }} >
+                            <span>
+                                    <Typography style={{
+                                        fontWeight: 550,
+                                    }}>Build a city</Typography>
+                            </span>
+                        </div>
+                        <IconButton edge="end" className={classes.iconButton} color="inherit" aria-label="menu">
+                            <AccountCircle />
+                        </IconButton>
+
+                    </Toolbar>
+                </AppBar>
+                    <AppBar position="fixed" className={classes.appBar}>
                     <Toolbar variant="dense">
                         <IconButton
                             color="inherit"
@@ -120,12 +170,10 @@ const BoardDrawer = () => {
                             onClick={handleDrawerToggle}
                             className={classes.menuButton}
                         >
-                            <MenuIcon />
+                            <MenuIcon style={{color: "white"}} />
                         </IconButton>
-                        <FormControl fullWidth={true} >
-                            <TitleInput
-                            />
-                        </FormControl>
+                            <StoryboardToolbarTitle />
+                            <StoryboardActionDropdown/>
                     </Toolbar>
                 </AppBar>
                 <nav className={classes.drawer} aria-label="mailbox folders">

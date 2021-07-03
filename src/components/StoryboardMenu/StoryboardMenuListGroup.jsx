@@ -3,20 +3,15 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import * as uuid from "uuid";
 import globalConfig from "../../globalConfig";
 import {Paper} from "@material-ui/core"
+import StoryboardMenuItem from "./StoryboardMenuItem";
+import Icon, {PlusCircleTwoTone, PlusOutlined} from '@ant-design/icons'
 import { makeStyles } from '@material-ui/core/styles';
+import {Button, Tooltip} from 'antd'
 
 
-const useStyles = makeStyles((theme) => ({
-    itemPaper: {
-        "&:hover": {
-            backgroundColor: globalConfig.storyboardMenuColor.darkHover,
-        }
-    }
-}));
 const itemsFromBackend = [
     { id: uuid.v4(), content: "Grow flowers" },
     { id: uuid.v4(), content: "Many people running" },
-    { id: uuid.v4(), content: "Home office" },
     { id: uuid.v4(), content: "Helicopter flies" },
     { id: uuid.v4(), content: "Helicopter drop waters" }
 ];
@@ -27,7 +22,7 @@ const columnsFromBackend = {
         items: itemsFromBackend
     },
     [uuid.v4()]: {
-        name: "Archived storyboards",
+        name: "Drafts",
         items: []
     },
 };
@@ -69,12 +64,12 @@ const onDragEnd = (result, columns, setColumns) => {
     }
 };
 
-function StoryboardListGroup() {
+function StoryboardMenuListGroup() {
     const [columns, setColumns] = useState(columnsFromBackend);
     const [clickedID, setClickedID] = useState(null);
 
     return (
-        <div style={{ display: "block", justifyContent: "center", height: "100%" }}>
+        <div style={{ display: "block", justifyContent: "center", height: "100%"}}>
             <DragDropContext
                 onDragEnd={result => onDragEnd(result, columns, setColumns)}
             >
@@ -92,11 +87,19 @@ function StoryboardListGroup() {
                         >
                             <Paper style={{backgroundColor: globalConfig.storyboardMenuColor.darkMenuHeader,
                                 width: "100%",
-                                padding: "15px 15px"}}>
-                                <body style={{backgroundColor: "inherit",
+                                padding: "15px 15px",
+                                border: `0px solid ${globalConfig.storyboardMenuColor.darkBaseAppBar}`
+                                }}>
+                                <span style={{backgroundColor: "inherit",
                                     fontWeight: 500,
                                     color: globalConfig.storyboardMenuColor.whiteText,
-                                }}>{column.name}</body>
+                                }}>{column.name}</span>
+                                <Button type="link"
+                                        shape="circle"
+                                        style={{"float": "right"}}
+                                        icon={<PlusOutlined
+                                                style={{fontSize: "100%", color: "white"}}
+                                                />} />
                             </Paper>
                             <div>
                                 <Droppable droppableId={columnId} key={columnId}>
@@ -123,7 +126,7 @@ function StoryboardListGroup() {
                                                         >
                                                             {(provided, snapshot) => {
                                                                 return (
-                                                                    < MenuItemPaper provided={provided}
+                                                                    < StoryboardMenuItem provided={provided}
                                                                                     snapshot={snapshot}
                                                                                     item={item}
                                                                                     clickedID={clickedID}
@@ -148,36 +151,5 @@ function StoryboardListGroup() {
 }
 
 
-const MenuItemPaper = (props) => {
-    const classes = useStyles();
-    const {provided, snapshot, item, clickedID, setClickedID} = props;
-    // TODO: somehow this hover does not work.
-    return (
-       < Paper
-           hover
-           className={classes.itemPaper}
-           elevation={3}
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            onClick={() => setClickedID(item.id)}
-            style={{
-                width: "100%",
-                userSelect: "none",
-                padding: 10,
-                margin: "0 0 8px 0",
-                minHeight: "30px",
-                backgroundColor: clickedID===item.id
-                ? globalConfig.storyboardMenuColor.darkMenuOnClick
-                : globalConfig.storyboardMenuColor.darkMenuItem,
-                color: "white",
-                border: snapshot.isDragging ? `2px solid ${globalConfig.storyboardMenuColor.darkPrimary}` : null,
-                ...provided.draggableProps.style
-    }}
->
-    {item.content}
-</Paper>
-    )
-}
 
-export default StoryboardListGroup;
+export default StoryboardMenuListGroup;

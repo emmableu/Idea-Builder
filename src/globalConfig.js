@@ -1,18 +1,25 @@
 const globalConfig = {
      spriteDrawerWidth: 270,
-     storyboardDrawerWidth: 210,
+     storyboardDrawerWidth: 240,
      toolBarHeight: 48,
      addNewSpriteBoxHeight: 50,
 
      storyboardMenuColor: {
           darkBase: "#141414",
-          darkSurface: "#111d2c",
+          darkBaseAppBar: "#F291B5",
+          antdDarkBase: "#111D2C",
+          darkBaseAppBarPale: "#111d2c",
+          darkSurface: "#20252e",
+          darkSurface2: "#223040",
+          darkSurface3: "#1e2b3b",
           darkPrimary: "#177ddc",
+          darkSecondary: "#F291B5",
           darkHover: "#1765ad",
           darkClick: "#3993dc",
-          darkMenuHeader: "#222222",
-          darkMenuItem: "#252525",
-          darkMenuBackground: "#121212",
+          darkMenuHeader: "#2a2e33",
+          darkMenuItem: "#353a40",
+          darkMenuBackground2: "#323d4a",
+          darkMenuBackground: "#2a323b",
           darkMenuOnClick: "#3993dc",
           darkMenuBackgroundOnDrag: "#e6f7ff",
 
@@ -27,9 +34,10 @@ const globalConfig = {
           dp24: "#383838",
           dp48: "#505050",
           whiteText: "white",
-     }
+     },
 }
 
 Object.freeze(globalConfig);
 
-export default globalConfig;
+export  default globalConfig;
+
