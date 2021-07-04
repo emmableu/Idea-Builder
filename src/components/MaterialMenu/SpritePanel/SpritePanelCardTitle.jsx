@@ -1,7 +1,7 @@
 import {Input} from "antd";
 import React from "react";
 
-const MaterialMenuSpritePanelItemTitle = () => {
+const SpritePanelCardTitle = () => {
     return (
         <>
             <Input
@@ -12,4 +12,4 @@ const MaterialMenuSpritePanelItemTitle = () => {
     )
 }
 
-export default MaterialMenuSpritePanelItemTitle;
+export default SpritePanelCardTitle;

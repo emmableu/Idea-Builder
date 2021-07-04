@@ -2,7 +2,7 @@ import React from "react";
 import StageCard from "../Stage/StageCard";
 import Box from '@material-ui/core/Box';
 import {createMuiTheme, makeStyles, ThemeProvider, withStyles} from '@material-ui/core/styles';
-import MaterialMenuSpritePanel from "../MaterialMenu/MaterialMenuSpritePanel/MaterialMenuSpritePanel";
+import SpritePanel from "../MaterialMenu/SpritePanel/SpritePanel";
 
 import StageSnapshots from "./StageSnapshots";
 import GridList from "@material-ui/core/GridList";
@@ -105,7 +105,7 @@ function TabPanel(props) {
             {...other}
         >
                 <Box>
-                    {index === 0 && <MaterialMenuSpritePanel/>}
+                    {index === 0 && <SpritePanel/>}
                 </Box>
         </div>
     );

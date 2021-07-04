@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component, useEffect} from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Card, Input } from 'antd';
@@ -10,18 +10,18 @@ import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import Box from "@material-ui/core/Box";
 import {PlusOutlined, SearchOutlined, UploadOutlined, DragOutlined, DeleteTwoTone} from "@ant-design/icons";
-import MaterialMenuSpritePanelItemButtonGroup from "./MaterialMenuSpritePanelItemButtonGroup";
-import MaterialMenuSpritePanelItemContent from "./MaterialMenuSpritePanelItemContent";
-import MaterialMenuSpritePanelItemTitle from "./MaterialMenuSpritePanelItemTitle";
-import CostumeList from "./CostumeList";
+import SpritePanelCardButtonGroup from "./SpritePanelCardButtonGroup";
+import SpritePanelCardContent from "./SpritePanelCardContent";
+import SpritePanelCardTitle from "./SpritePanelCardTitle";
 import {CloudUpload} from "@material-ui/icons";
 import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress";
 import * as uuid from "uuid"
+import SpritePanelCard from "./SpritePanelCard";
 const toolBarHeight = globalConfig.toolBarHeight;
 const addNewSpriteBoxHeight = globalConfig.addNewSpriteBoxHeight;
 
 /*
-    MaterialMenuSpritePanel data format:
+    SpritePanel data format:
         when pressing new button, create a new sprite, named:
         {}.
         When populating to it, it looks like this:
@@ -31,12 +31,6 @@ const addNewSpriteBoxHeight = globalConfig.addNewSpriteBoxHeight;
         }
 */
 
-// fake data generator
-const getItems = count =>
-    Array.from({ length: count }, (v, k) => k).map(k => ({
-        id: `item-${k}`,
-        content: `item ${k}`
-    }));
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -49,18 +43,6 @@ const reorder = (list, startIndex, endIndex) => {
 
 const grid = 6;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
-    // some basic styles to make the items look a bit nicer
-    userSelect: "none",
-    padding: grid,
-    margin: `0 0 ${grid}px 0`,
-
-    // change background colour if dragging
-    background: isDragging ? magenta[0] : grey[50],
-
-    // styles we need to apply on draggables
-    ...draggableStyle
-});
 
 const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? geekblue[0] : grey[50],
@@ -81,15 +63,34 @@ const getBoxStyle = () => ({
 });
 
 
+const SpritePanelCardList = (props) => {
+    const {items} = props;
+    console.log("items: ", items);
+    return (
+        <>
+            {
+                items.map((item, index) => (
+                    <SpritePanelCard
+                        item={item}
+                        index={index}/>)
+                )
+            }
+        </>
+    )
+};
 
-const  MaterialMenuSpritePanel = (props) => {
+
+
+const SpritePanel = (props) => {
     const [items, setItems] = React.useState([]);
-    const onDragEnd = (result, items) => {
+    const onDragEnd = (result) => {
         // dropped outside the list
         if (!result.destination) {
             return;
         }
-
+        if (result.destination.index === result.source.index) {
+            return;
+        }
         const newItems = reorder(
             items,
             result.source.index,
@@ -105,10 +106,14 @@ const  MaterialMenuSpritePanel = (props) => {
 
     }
 
+    useEffect(() => {
+       console.log(items);
+    }, [items]);
+
     // Normally you would want to split things out into separate components.
     // But in this example everything is just done in one place for simplicity
         return (
-            <DragDropContext onDragEnd={onDragEnd(items)}>
+            <DragDropContext onDragEnd={onDragEnd}>
                 <Box style={getBoxStyle()}>
                     <Button
                         type="dashed"
@@ -119,40 +124,14 @@ const  MaterialMenuSpritePanel = (props) => {
                     </Button>
                 </Box>
 
-                <Droppable droppableId="droppable">
+                <Droppable droppableId="droppableList">
                     {(provided, snapshot) => (
                         <div
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}
                         >
-                            {items.map((item, index) => (
-                                <>
-                                <Draggable key={item.id} draggableId={item.id} index={index}>
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style
-                                            )}
-                                        >
-                                            <Card
-                                                hoverable
-                                                size="small"
-                                                title={<MaterialMenuSpritePanelItemTitle/>}
-                                                style={{ width: "100%" }}
-                                                extra={<MaterialMenuSpritePanelItemButtonGroup
-                                                    {...provided.dragHandleProps}/>}>
-                                                    <MaterialMenuSpritePanelItemContent/>
-                                            </Card>
-                                        </div>
-                                    )}
-                                </Draggable>
-
-                                </>
-                            ))}
+                            <SpritePanelCardList items={items}/>
                             {provided.placeholder}
                         </div>
                     )}
@@ -162,4 +141,4 @@ const  MaterialMenuSpritePanel = (props) => {
 }
 
 // Put the thing into the DOM!
-export default MaterialMenuSpritePanel;
+export default SpritePanel;

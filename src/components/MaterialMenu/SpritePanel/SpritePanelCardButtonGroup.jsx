@@ -3,7 +3,7 @@ import {DeleteTwoTone, DragOutlined, SearchOutlined, UploadOutlined} from "@ant-
 import React from "react";
 import DragHandleIcon from "../../primitives/DragHandleIcon";
 
-const MaterialMenuSpritePanelItemButtonGroup = (props) => {
+const SpritePanelCardButtonGroup = (props) => {
     return (
         <>
             <input
@@ -50,4 +50,4 @@ const MaterialMenuSpritePanelItemButtonGroup = (props) => {
     )
 }
 
-export default MaterialMenuSpritePanelItemButtonGroup;
+export default SpritePanelCardButtonGroup;
