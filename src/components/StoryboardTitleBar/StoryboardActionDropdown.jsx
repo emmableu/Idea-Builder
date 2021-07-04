@@ -27,7 +27,7 @@ const showDeleteConfirm = () => {
 
 const actionMenu =
      (
-        <Menu theme="dark"
+        <Menu
         >
             <Menu.Item
                 key="1"
@@ -45,8 +45,9 @@ const actionMenu =
 const StoryboardActionDropdown  = () => {
     return (
     <Dropdown overlay={actionMenu}>
-        <IconButton aria-label="display more actions" edge="end" color="inherit">
-            <MoreIcon />
+        <IconButton aria-label="display more actions" color="inherit" size="small">
+            <MoreIcon
+            />
         </IconButton>
     </Dropdown>
     )

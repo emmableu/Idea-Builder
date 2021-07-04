@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core/styles';
 import globalConfig from "../../globalConfig";
 import FormControl from "@material-ui/core/FormControl";
+import ProjectTitleEdiText from "./ProjectTitleEdiText";
 
 const useStyles = makeStyles((theme) => ({
     storyboardTitleInput: {
@@ -14,11 +15,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const StoryboardToolbarTitle = () => {
+const ProjectTitleBar = () => {
     const classes = useStyles();
     return (
         <Typography className={classes.storyboardTitleInput}>
-            Green your city
+            <ProjectTitleEdiText />
         </Typography>
     )
     // return (<FormControl fullWidth={true} >
@@ -30,4 +31,4 @@ const StoryboardToolbarTitle = () => {
 }
 
 
-export default StoryboardToolbarTitle;
+export default ProjectTitleBar;

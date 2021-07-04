@@ -91,7 +91,6 @@ function StoryboardMenuListGroup() {
                                 border: `0px solid ${globalConfig.storyboardMenuColor.titleBar}`
                                 }}>
                                 <span style={{backgroundColor: "inherit",
-                                    fontWeight: 500,
                                     color: "white",
                                 }}>{column.name}</span>
                                 <Button type="link"

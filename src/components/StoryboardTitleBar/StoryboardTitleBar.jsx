@@ -1,35 +1,53 @@
 import React from "react";
 import globalConfig from "../../globalConfig";
 import {Paper, Typography, Grid} from "@material-ui/core";
-import StoryboardActionDropdown from "../StoryboardToolbar/StoryboardActionDropdown";
+import StoryboardActionDropdown from "./StoryboardActionDropdown";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import StoryboardTitleEdiText from "./StoryboardTitleEdiText";
 
-
-
+const useStyles = makeStyles((theme) => ({
+    titlePaper: {
+        height: "40px",
+        width: "100%",
+        backgroundColor: globalConfig.storyboardMenuColor.titleBar.background,
+        color: globalConfig.storyboardMenuColor.titleBar.text,
+        padding: "0px 24px"
+    },
+    middleTitleGrid:
+        {
+            padding: "5px 0px",
+            textAlign: "center",
+            width: "fit-content",
+        },
+    endActionGrid:
+        {
+            padding: "5px 0px 5px 0px",
+        }
+}));
 const StoryboardTitleBar = () => {
+    const classes = useStyles();
     return (
         <Paper
             variant="elevation"
             elevation={3}
             square={true}
-            style={{height: "40px",
-                    width: "100%",
-                    backgroundColor: globalConfig.storyboardMenuColor.titleBar.background,
-                    color: globalConfig.storyboardMenuColor.titleBar.text,
-                }}
+            className={classes.titlePaper}
             >
             <Grid container>
-                <Grid item xs/>
-                <Grid item xs={6} align="center">
-                    <span
-                        style={{
-                            textAlign: "center",
-                        }}
+                <Grid item xs={1}/>
+                <Grid item xs={10} align="center">
+                    <div
+                        className={classes.middleTitleGrid}
                     >
-                    paper
-                    </span>
+                        <StoryboardTitleEdiText />
+                    </div>
                 </Grid>
-                <Grid item xs align="right">
+                <Grid item xs={1} align="right">
+                    <div
+                        className={classes.endActionGrid}
+                    >
                     <StoryboardActionDropdown/>
+                    </div>
                 </Grid>
             </Grid>
 

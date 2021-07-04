@@ -30,12 +30,13 @@ import InfoIcon from '@material-ui/icons/Info';
 import styled from 'styled-components';
 import StageSnapshots from "./StageSnapshots";
 import globalConfig from "../../globalConfig";
-import StoryboardToolbarTitle from "../StoryboardToolbar/StoryboardToolbarTitle";
-import StoryboardActionDropdown from "../StoryboardToolbar/StoryboardActionDropdown";
+import ProjectTitleBar from "../ProjectTitleBar/ProjectTitleBar";
+import StoryboardActionDropdown from "../StoryboardTitleBar/StoryboardActionDropdown";
 import {Grid, Typography} from "@material-ui/core";
 import ArtTrack from "@material-ui/core/SvgIcon/SvgIcon";
 import HomeIcon from '@material-ui/icons/Home';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import ProjectTitleBarActionGroup from "../ProjectTitleBar/ProjectTitleBarActionGroup";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -137,8 +138,8 @@ const BoardDrawer = () => {
                         >
                             <MenuIcon style={{color: "white"}} />
                         </IconButton>
-                            <StoryboardToolbarTitle />
-                            <StoryboardActionDropdown/>
+                            <ProjectTitleBar />
+                            <ProjectTitleBarActionGroup />
                     </Toolbar>
                 </AppBar>
                 <nav className={classes.drawer} aria-label="mailbox folders">
