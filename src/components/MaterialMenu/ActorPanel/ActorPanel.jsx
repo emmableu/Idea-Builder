@@ -10,15 +10,15 @@ import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import Box from "@material-ui/core/Box";
 import {PlusOutlined, SearchOutlined, UploadOutlined, DragOutlined, DeleteTwoTone} from "@ant-design/icons";
-import SpritePanelCardButtonGroup from "./SpritePanelCardButtonGroup";
-import SpritePanelCardContent from "./SpritePanelCardContent";
-import SpritePanelCardTitle from "./SpritePanelCardTitle";
+import ActorPanelCardButtonGroup from "./ActorPanelCard/ActorPanelCardButtonGroup";
+import ActorPanelCardContent from "./ActorPanelCard/ActorPanelCardContent/ActorPanelCardContent";
+import ActorPanelCardTitle from "./ActorPanelCard/ActorPanelCardTitle";
 import {CloudUpload} from "@material-ui/icons";
 import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress";
 import * as uuid from "uuid"
-import SpritePanelCard from "./SpritePanelCard";
+import ActorPanelCard from "./ActorPanelCard/ActorPanelCard";
 const toolBarHeight = globalConfig.toolBarHeight;
-const addNewSpriteBoxHeight = globalConfig.addNewSpriteBoxHeight;
+const addNewActorBoxHeight = globalConfig.addNewActorBoxHeight;
 const getItems = count =>
     Array.from({ length: count }, (v, k) => k).map(k => ({
         id: `item-${k}`,
@@ -55,7 +55,7 @@ const getListStyle = isDraggingOver => ({
     padding: grid,
     width: "100%",
     overflowY: "scroll",
-    height: `calc(100vh - ${toolBarHeight}px - ${addNewSpriteBoxHeight}px)`,
+    height: `calc(100vh - ${toolBarHeight}px - ${addNewActorBoxHeight}px)`,
     position: 'relative',
 });
 
@@ -63,22 +63,22 @@ const getBoxStyle = () => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: addNewSpriteBoxHeight,
+    height: addNewActorBoxHeight,
     backgroundColor: grey[50]
     // border: 3px solid green;
 });
 
 
 
-const SpritePanel = (props) => {
+const ActorPanel = (props) => {
     const [items, setItems] = React.useState([]);
-    const handleAddNewSpriteButtonClick = (e) => {
+    const handleAddNewActorButtonClick = (e) => {
         console.log("items: ", items);
         setItems( [...items, {
             id: uuid.v4()
         }]);
+    };
 
-    }
     const onDragEnd = (result) => {
         // dropped outside the list
         if (!result.destination) {
@@ -90,9 +90,8 @@ const SpritePanel = (props) => {
             result.source.index,
             result.destination.index
         );
-
         setItems(newItems);
-    }
+    };
 
     // Normally you would want to split things out into separate components.
     // But in this example everything is just done in one place for simplicity
@@ -102,9 +101,9 @@ const SpritePanel = (props) => {
                     <Button
                         type="dashed"
                         icon={<PlusOutlined />}
-                        onClick={handleAddNewSpriteButtonClick}
+                        onClick={handleAddNewActorButtonClick}
                     >
-                        Add new sprite
+                        Add a new actor
                     </Button>
                 </Box>
                 <Droppable droppableId="droppable">
@@ -125,7 +124,7 @@ const SpritePanel = (props) => {
                                                 provided.draggableProps.style
                                             )}
                                         >
-                                            <SpritePanelCard {...provided.dragHandleProps}/>
+                                            <ActorPanelCard {...provided.dragHandleProps}/>
 
                                         </div>
                                     )}
@@ -140,4 +139,4 @@ const SpritePanel = (props) => {
 
 }
 
-export default SpritePanel;
+export default ActorPanel;

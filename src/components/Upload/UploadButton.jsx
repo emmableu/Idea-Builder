@@ -49,7 +49,7 @@ const UploadButton = () => {
 
         axios({
             method: "post",
-            url: "/costumes/new",
+            url: "/states/new",
             data: formData,
             headers: {
                 "Content-Type": "multipart/form-data",

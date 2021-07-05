@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const updateSpriteCostumeMapSlice = createSlice({
-    name: 'updateSpriteCostumeMap',
+export const updateActorStateMapSlice = createSlice({
+    name: 'updateActorStateMap',
     initialState: {
         value: {},
     },
     reducers: {
-        addCostume: {
+        addState: {
             reducer: (state, action) => {
-                if (!state.value.hasOwnProperty(action.payload.spriteName)){
-                    state.value[action.payload.spriteName] = {};
+                if (!state.value.hasOwnProperty(action.payload.actorName)){
+                    state.value[action.payload.actorName] = {};
                 }
-                state.value[action.payload.spriteName][action.payload.costumeName] =
+                state.value[action.payload.actorName][action.payload.stateName] =
                     {
                         imgID: action.payload.imgID,
                         imgSrc: action.payload.imgSrc,
@@ -21,8 +21,8 @@ export const updateSpriteCostumeMapSlice = createSlice({
                 const obj = JSON.parse(text);
                 return { payload: {
                             "imgID": obj.imgID,
-                            "spriteName": obj.spriteName,
-                            "costumeName": obj.costumeName,
+                            "actorName": obj.actorName,
+                            "stateName": obj.stateName,
                             "imgSrc": obj.imgSrc,
                         }
                 }
@@ -32,6 +32,6 @@ export const updateSpriteCostumeMapSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { addCostume } = updateSpriteCostumeMapSlice.actions;
+export const { addState } = updateActorStateMapSlice.actions;
 
-export default updateSpriteCostumeMapSlice.reducer;
+export default updateActorStateMapSlice.reducer;

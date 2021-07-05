@@ -16,7 +16,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import axios from '../../axiosConfig'
 import {useDispatch} from "react-redux";
-import { addCostume } from '../../redux/features/updateSpriteCostumeMapSlice';
+import { addState } from '../../redux/features/updateActorStateMapSlice';
 
 const useStyles = makeStyles({
     img: {
@@ -30,8 +30,8 @@ const useStyles = makeStyles({
 const UploadDialog = (props) => {
     const {dialogOpening, setDialogOpening, imgSrc} = props;
     const classes = useStyles();
-    const [spriteName, setSpriteName] = React.useState();
-    const [costumeName, setCostumeName] = React.useState();
+    const [actorName, setActorName] = React.useState();
+    const [stateName, setStateName] = React.useState();
     const dispatch = useDispatch();
 
 
@@ -43,21 +43,21 @@ const UploadDialog = (props) => {
         setDialogOpening(false);
         const imgArray = imgSrc.split("/");
         const imgID = imgArray[imgArray.length-1].split('.')[0];
-        const newCostumeEntry = {
+        const newStateEntry = {
             imgID,
-            spriteName,
-            costumeName,
+            actorName,
+            stateName,
             imgSrc
         };
-        console.log("newCostumeEntry: ", newCostumeEntry);
-        dispatch(addCostume(JSON.stringify(newCostumeEntry)));
+        console.log("newStateEntry: ", newStateEntry);
+        dispatch(addState(JSON.stringify(newStateEntry)));
         // axios(
         //     {
         //         method: 'post',
-        //         url: `/costumes/${imgID}/update`,
+        //         url: `/states/${imgID}/update`,
         //         data: {
-        //             "sprite_name": spriteName,
-        //             "costume_name": costumeName
+        //             "actor_name": actorName,
+        //             "state_name": stateName
         //         }
         //     }
         // ).then(response => {
@@ -76,22 +76,22 @@ const UploadDialog = (props) => {
                                className={classes.img}/>
                     </Paper>
                     <TextField
-                        value={spriteName}
-                        onChange={e => setSpriteName(e.target.value)}
+                        value={actorName}
+                        onChange={e => setActorName(e.target.value)}
                         autoFocus
                         margin="dense"
-                        id="spriteName"
-                        label="Add sprite name"
+                        id="actorName"
+                        label="Add actor name"
                     />
                     <br/>
                     <br/>
                     <TextField
-                        value={costumeName}
-                        onChange={e => setCostumeName(e.target.value)}
+                        value={stateName}
+                        onChange={e => setStateName(e.target.value)}
                         autoFocus
                         margin="dense"
-                        id="costumeName"
-                        label="Add costume name"
+                        id="stateName"
+                        label="Add state name"
                     />
                 </DialogContent>
                 <DialogActions>
@@ -99,7 +99,7 @@ const UploadDialog = (props) => {
                         Cancel
                     </Button>
                     <Button onClick={handleSubmit} color="primary"
-                            disabled={!(spriteName && costumeName)}
+                            disabled={!(actorName && stateName)}
                     >
                         Add
                     </Button>

@@ -2,7 +2,7 @@ import React from "react";
 import StageCard from "../Stage/StageCard";
 import Box from '@material-ui/core/Box';
 import {createMuiTheme, makeStyles, ThemeProvider, withStyles} from '@material-ui/core/styles';
-import SpritePanel from "../MaterialMenu/SpritePanel/SpritePanel";
+import ActorPanel from "../MaterialMenu/ActorPanel/ActorPanel";
 
 import StageSnapshots from "./StageSnapshots";
 import GridList from "@material-ui/core/GridList";
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 
     },
     tabPanel: {
-        width: `${globalConfig.spriteDrawerWidth}px`,
+        width: `${globalConfig.actorDrawerWidth}px`,
         borderRight: `1px solid #e0e0e0`,
         color: "black",
     },
@@ -72,12 +72,12 @@ const useStyles = makeStyles((theme) => ({
             top: '50%',
         },
     },
-    costumeImg: {
+    stateImg: {
         objectFit: "contain",
         width: "100%",
         maxHeight: "100%",
     },
-    costumePaper: {
+    statePaper: {
         height: "50px",
     },
     spritCard: {
@@ -105,7 +105,7 @@ function TabPanel(props) {
             {...other}
         >
                 <Box>
-                    {index === 0 && <SpritePanel/>}
+                    {index === 0 && <ActorPanel/>}
                 </Box>
         </div>
     );
@@ -118,22 +118,22 @@ function a11yProps(index) {
     };
 }
 
-const CostumeGridsFromCostumeObj = (props) => {
-    const {spriteName, costumeObj} = props;
+const StateGridsFromStateObj = (props) => {
+    const {actorName, stateObj} = props;
     const classes = useStyles();
 
     return (
     <Grid container>
-        <Card className={classes.spriteCard}
+        <Card className={classes.actorCard}
             elevation={3}>
             <CardContent>
-                <Typography variant="subtitle1">{spriteName}</Typography>
-                {Object.entries(costumeObj).map(([costumeName, imgObj]) => (
+                <Typography variant="subtitle1">{actorName}</Typography>
+                {Object.entries(stateObj).map(([stateName, imgObj]) => (
                         <>
                         <Grid item xs={6}  key={imgObj.imgID}>
-                                    <Box  className={classes.costumePaper}>
+                                    <Box  className={classes.statePaper}>
                                         <img
-                                            className={classes.costumeImg}
+                                            className={classes.stateImg}
                                             src={imgObj.imgSrc}
                                             key={imgObj.imgID}
                                             alt={imgObj.imgID}
@@ -145,7 +145,7 @@ const CostumeGridsFromCostumeObj = (props) => {
                                     </Box>
                             </Grid>
                             <Typography variant="body2" noWrap={true}>
-                                {costumeName}
+                                {stateName}
                             </Typography>
                         </>
             ))}
@@ -157,21 +157,21 @@ const CostumeGridsFromCostumeObj = (props) => {
 
 
 const ImageGrids = (props) => {
-    const {spriteCostumeMap} = props;
+    const {actorStateMap} = props;
     const dragUrl = React.useRef();
     const classes = useStyles();
-    // const spriteCostumeMap = useSelector(state => state.spriteCostumeMap.value);
+    // const actorStateMap = useSelector(state => state.actorStateMap.value);
 
 
     return (<>
                 <GridList cellHeight={100} className={classes.gridList}>
                     {
-                       Object.entries(spriteCostumeMap).map(([spriteName, costumeObj]) => {
+                       Object.entries(actorStateMap).map(([actorName, stateObj]) => {
                            return (
                                <>
-                               <CostumeGridsFromCostumeObj
-                                    spriteName={spriteName}
-                                   costumeObj={costumeObj}/>
+                               <StateGridsFromStateObj
+                                    actorName={actorName}
+                                   stateObj={stateObj}/>
                                </>
                            )
                        })
@@ -185,11 +185,11 @@ const ImageGrids = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        spriteCostumeMap: state.spriteCostumeMap.value
+        actorStateMap: state.actorStateMap.value
     }
 };
 
-const SpritePanelContent = connect(mapStateToProps)(ImageGrids);
+const ActorPanelContent = connect(mapStateToProps)(ImageGrids);
 
 const VerticalTabs = () => {
     const classes = useStyles();
@@ -209,7 +209,7 @@ const VerticalTabs = () => {
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
             >
-                <Tab icon={<Widgets />} label="Sprites" {...a11yProps(0)} />
+                <Tab icon={<Widgets />} label="Actors" {...a11yProps(0)} />
                 <Tab icon={<Panorama/>} label="Backdrops" {...a11yProps(1)} />
                 <Tab icon={<Theaters/>} label="Templates" {...a11yProps(2)} />
 

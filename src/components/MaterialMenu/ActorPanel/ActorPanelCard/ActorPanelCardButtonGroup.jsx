@@ -1,9 +1,9 @@
 import {Button, Tooltip} from "antd";
 import {DeleteTwoTone, DragOutlined, SearchOutlined, UploadOutlined} from "@ant-design/icons";
 import React from "react";
-import DragHandleIcon from "../../primitives/DragHandleIcon";
+import DragHandleIcon from "../../../primitives/DragHandleIcon";
 
-const SpritePanelCardButtonGroup = (props) => {
+const ActorPanelCardButtonGroup = (props) => {
     return (
         <>
             <input
@@ -13,7 +13,7 @@ const SpritePanelCardButtonGroup = (props) => {
                 type="file"
             />
             <label htmlFor="contained-button-file">
-                <Tooltip title="Upload costume">
+                <Tooltip title="Upload state">
                     <Button
                         type="link"
                         shape="circle"
@@ -22,7 +22,7 @@ const SpritePanelCardButtonGroup = (props) => {
                     </Button>
                 </Tooltip>
             </label>
-            <Tooltip title="Search for costume">
+            <Tooltip title="Search for state">
                 <Button
                     type="link"
                     shape="circle"
@@ -35,7 +35,7 @@ const SpritePanelCardButtonGroup = (props) => {
                 icon={<DragHandleIcon
                 />} />
 
-            <Tooltip title="Delete sprite">
+            <Tooltip title="Delete actor">
                 <Button
                     type="link"
                     shape="circle"
@@ -50,4 +50,4 @@ const SpritePanelCardButtonGroup = (props) => {
     )
 }
 
-export default SpritePanelCardButtonGroup;
+export default ActorPanelCardButtonGroup;

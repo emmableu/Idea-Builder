@@ -35,10 +35,10 @@ const draftTheme = {
 }
 
 const globalConfig = {
-     spriteDrawerWidth: 270,
+     actorDrawerWidth: 270,
      storyboardDrawerWidth: 240,
      toolBarHeight: 48,
-     addNewSpriteBoxHeight: 50,
+     addNewActorBoxHeight: 50,
 
      storyboardMenuColor: {
           titleBar: {
