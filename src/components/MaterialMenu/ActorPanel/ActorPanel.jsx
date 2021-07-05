@@ -10,7 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import Box from "@material-ui/core/Box";
 import {PlusOutlined, SearchOutlined, UploadOutlined, DragOutlined, DeleteTwoTone} from "@ant-design/icons";
-import ActorPanelCardButtonGroup from "./ActorPanelCard/ActorPanelCardButtonGroup";
+import ActorPanelCardButtonGroup from "./ActorPanelCard/ActorPanelCardButtonGroup/ActorPanelCardButtonGroup";
 import ActorPanelCardContent from "./ActorPanelCard/ActorPanelCardContent/ActorPanelCardContent";
 import ActorPanelCardTitle from "./ActorPanelCard/ActorPanelCardTitle";
 import {CloudUpload} from "@material-ui/icons";
