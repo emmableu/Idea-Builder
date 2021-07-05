@@ -28,6 +28,9 @@ const StyledEdiText = styled(EdiText)`
   div[editext="view-container"]{
     padding: 5px 0px 0px;
    }
+  div[editext="edit-container"] {
+    text-align: center;
+  }
 `
 
 const EditButton = () => (

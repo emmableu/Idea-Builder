@@ -25,6 +25,12 @@ const StyledEdiText = styled(EdiText)`
     border-radius: 20px;
     width: 100%;
   }
+  div[editext="view-container"] {
+    padding: 0px 5px 0px 10px;
+  }
+  div[editext="edit-container"] {
+    padding: 0px 2px 0px 7px;
+  }
   div[editext="view"]{
     padding: 0px 0px 0px;
     width: 100%;
@@ -36,9 +42,7 @@ const StyledEdiText = styled(EdiText)`
 
 const EditButton = () => (
     <Tooltip title="rename">
-        <IconButton aria-label="display more actions" color="inherit" size="small">
             <Create/>
-        </IconButton>
     </Tooltip>
 )
 
