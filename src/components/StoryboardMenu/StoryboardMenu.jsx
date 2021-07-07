@@ -33,10 +33,11 @@ const StoryboardMenu = () => {
 
     const projectData = new ProjectData();
     projectData.addNewActor();
+    console.log("original project: ", projectData);
     const projectJSON = projectData.toString();
     console.log("projectJSON: ", projectJSON);
     const parser = new ProjectDataParser();
-    console.log(parser.parse(JSON.parse(projectJSON)));
+    console.log("parsed project: ", parser.parse(JSON.parse(projectJSON)));
 
 
     return (
