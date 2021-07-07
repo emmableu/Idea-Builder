@@ -3,6 +3,7 @@ import React from 'react';
 import { hot } from 'react-hot-loader';
 import BoardDrawer from "./components/Board/BoardDrawer.jsx";
 import {createMuiTheme, ThemeProvider} from "@material-ui/core";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 const theme = createMuiTheme({
   typography: {
@@ -25,7 +26,8 @@ const theme = createMuiTheme({
 const App = () => {
   return (
   <ThemeProvider theme={theme}>
-  <div><BoardDrawer/></div>;
+  {/*<div><BoardDrawer/></div>;*/}
+  <Dashboard/>
   </ThemeProvider>)
 };
 

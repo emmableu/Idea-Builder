@@ -1,33 +1,26 @@
-import React from "react";
-import {Button, Tooltip} from 'antd';
-import {PoweroffOutlined, UploadOutlined} from '@ant-design/icons';
+import React from 'react';
+import { Upload, message, Button, Tooltip } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+const props = {
+    name: 'file',
+    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    headers: {
+        authorization: 'authorization-text'
+    },
+    showUploadList: false,
+    accept:"image/*"
+};
 
 const ActorPanelUploadButton = () => {
-    const [loading, setLoading] = React.useState(false);
-
-
     return (
         <>
-            <input
-                accept="image/*"
-                id="contained-button-file"
-                style={{display: "none"}}
-                type="file"
-            />
-            <label htmlFor="contained-button-file">
-                <Tooltip title="Upload state">
-                    <Button
-                        type="link"
-                        shape="circle"
-                        icon={<UploadOutlined />}
-                        loading={loading}
-                    >
-                    </Button>
+            <Upload {...props}>
+                <Tooltip title="Upload">
+                    <Button type="link" shape="circle" icon={<UploadOutlined />} />
                 </Tooltip>
-            </label>
-
+            </Upload>
         </>
     );
-}
+};
 
 export default ActorPanelUploadButton;

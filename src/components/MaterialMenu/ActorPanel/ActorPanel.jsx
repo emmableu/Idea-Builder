@@ -77,6 +77,7 @@ const ActorPanel = (props) => {
         setItems( [...items, {
             id: uuid.v4()
         }]);
+
     };
 
     const onDragEnd = (result) => {

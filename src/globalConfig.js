@@ -39,6 +39,7 @@ const globalConfig = {
      storyboardDrawerWidth: 240,
      toolBarHeight: 48,
      addNewActorBoxHeight: 50,
+     projectDrawerWidth: 270,
 
      storyboardMenuColor: {
           titleBar: {

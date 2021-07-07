@@ -6,7 +6,7 @@ export const updateActorStateMapSlice = createSlice({
         value: {},
     },
     reducers: {
-        addState: {
+      addState: {
             reducer: (state, action) => {
                 if (!state.value.hasOwnProperty(action.payload.actorName)){
                     state.value[action.payload.actorName] = {};
