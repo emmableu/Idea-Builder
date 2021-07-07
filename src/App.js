@@ -26,8 +26,8 @@ const theme = createMuiTheme({
 const App = () => {
   return (
   <ThemeProvider theme={theme}>
-  {/*<div><BoardDrawer/></div>;*/}
-  <Dashboard/>
+  <div><BoardDrawer/></div>;
+  {/*<Dashboard/>*/}
   </ThemeProvider>)
 };
 

@@ -8,6 +8,9 @@ import {makeStyles,} from '@material-ui/core/styles';
 import globalConfig from "../../globalConfig";
 import StoryboardMenuListGroup from "./StoryboardMenuListGroup";
 import ArtTrack from "@material-ui/icons/ArtTrack";
+import {ActorData} from "../../data/ActorData";
+import {ProjectData} from "../../data/ProjectData";
+import {ProjectDataParser} from "../../parser/ProjectDataParser";
 
 const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
@@ -25,9 +28,16 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-
 const StoryboardMenu = () => {
     const classes = useStyles();
+
+    const projectData = new ProjectData();
+    projectData.addNewActor();
+    const projectJSON = projectData.toString();
+    console.log("projectJSON: ", projectJSON);
+    const parser = new ProjectDataParser();
+    console.log(parser.parse(JSON.parse(projectJSON)));
+
 
     return (
         <div>
