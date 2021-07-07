@@ -12,7 +12,6 @@ class ActorData {
     uuid: string;
     name: string;
     stateList: Array<StateData> = [];
-    projectDataUUID: string;
 
     constructor(uuid?: string, name?:string, stateList?: Array<StateData>) {
         this.uuid = uuid? uuid:UUID.v4();
@@ -40,4 +39,4 @@ class ActorData {
         );
     }
 }
-export {ActorDataJSON, ActorData};
+export {ActorData};

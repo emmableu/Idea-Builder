@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Drawer,Box, Button, CssBaseline} from '@material-ui/core';
+import {Drawer, Box, Button, CssBaseline, Grid} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
@@ -15,7 +15,7 @@ import DashboardTitleBar from "./DashboardTitleBar";
 import ProjectMenu from "./ProjectMenu";
 import {Add} from "@material-ui/icons";
 import globalConfig from "../../globalConfig";
-import ProjectCardList from "./ProjectCardList";
+import ProjectTable from "./ProjectTable";
 
 const drawerWidth = globalConfig.projectDrawerWidth;
 
@@ -55,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
+    },
+    projectTableGrid: {
+        padding: "30px 0 0 0"
     }
 }));
 const ProjectDrawer = () => {
@@ -86,7 +89,12 @@ const ProjectDrawer = () => {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <ProjectCardList/>
+                <Box style={{height: "5vh"}}/>
+                <Grid container justifyContent="center" alignItems="center" spacing={3}>
+                <Grid item xs={10}>
+                <ProjectTable/>
+                </Grid>
+                </Grid>
             </main>
         </div>
     );
