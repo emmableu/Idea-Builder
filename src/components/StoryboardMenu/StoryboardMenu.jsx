@@ -10,7 +10,7 @@ import StoryboardMenuListGroup from "./StoryboardMenuListGroup";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 import {ActorData} from "../../data/ActorData";
 import {ProjectData} from "../../data/ProjectData";
-import {ProjectDataParser} from "../../parser/ProjectDataParser";
+import {ProjectDataParser} from "../../data/Parser";
 
 const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar

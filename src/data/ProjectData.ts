@@ -10,7 +10,7 @@ interface IProjectDataItem {
     };
 }
 
-interface IProjectData {
+export interface IProjectData {
     [key:string]: IProjectDataItem;
 }
 

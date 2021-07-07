@@ -10,6 +10,11 @@ export class ActorData implements IActorData {
     name: string = "Untitled";
     stateList: Array<StateData> = [];
 
+    constructor(name?:string, stateList?:Array<StateData>) {
+        this.name = name? name:"Untitled";
+        this.stateList = stateList? stateList:[]
+    }
+
     addNewState() {
         this.stateList.push(new StateData())
     }
