@@ -4,12 +4,13 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import DashboardTitleBar from "./DashboardTitleBar";
 import ProjectDrawer from "./ProjectDrawer";
+import {useParams} from "react-router-dom";
 
 const Dashboard = () => {
+    let {userID} = useParams();
     return (
         <React.Fragment>
-            <CssBaseline />
-                <ProjectDrawer/>
+                <ProjectDrawer userID={userID}/>
         </React.Fragment>
     );
 }

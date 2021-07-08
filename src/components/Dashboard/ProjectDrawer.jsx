@@ -60,13 +60,14 @@ const useStyles = makeStyles((theme) => ({
         padding: "30px 0 0 0"
     }
 }));
-const ProjectDrawer = () => {
+const ProjectDrawer = (props) => {
+    const {userID} = props;
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <DashboardTitleBar/>
+            <DashboardTitleBar userID={userID}/>
             <Drawer
                 className={classes.drawer}
                 variant="permanent"

@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const DashboardTitleBar = () => {
+export const DashboardTitleBar = (props) => {
+    const {userID} = props;
     const classes = useStyles();
 
     return (
@@ -37,7 +38,7 @@ export const DashboardTitleBar = () => {
 
                 <Typography variant="h6" className={classes.title}>
                 </Typography>
-                    <Button color="inherit"  startIcon={<UserOutlined />}>wwang33</Button>
+                    <Button color="inherit"  startIcon={<UserOutlined />}>{userID}</Button>
                 </Toolbar>
             </AppBar>
     );
