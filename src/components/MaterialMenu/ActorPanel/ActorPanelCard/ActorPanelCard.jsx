@@ -19,7 +19,7 @@ const ActorPanelCard = React.memo((props) => {
                 style={{ width: "100%" }}
                 extra={<ActorPanelCardButtonGroup
                     {...props}/>}>
-                <ActorPanelCardContent/>
+                <ActorPanelCardContent uuid={uuid}/>
             </Card>
 
 

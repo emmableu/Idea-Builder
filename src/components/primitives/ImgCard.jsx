@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 });
 
 const ImgCard = (props) =>  {
-    const { contentNode, cardActionButtonGroup } = props;
+    const { imgSrc, contentNode, cardActionButtonGroup } = props;
     const classes = useStyles(props);
 
     return (
@@ -44,7 +44,7 @@ const ImgCard = (props) =>  {
                         <img
                             draggable
                             className={classes.imgStyle}
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Aspect_ratio_-_4x3.svg/1280px-Aspect_ratio_-_4x3.svg.png"
+                            src={imgSrc}
                             alt="img"
                         />
                     </div>

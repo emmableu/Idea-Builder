@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import {Button, CardActions} from '@material-ui/core';
 import ImgCard from "../../../../../primitives/ImgCard";
 import ImgTitleEdiText from "./ImgTitleEdiText";
+import axios from "../../../../../../axiosConfig";
 
 const ContentNode = () => (
     <ImgTitleEdiText/>
@@ -21,9 +22,17 @@ const CardActionButtonGroup = () => (
     </>
 );
 const ActorPanelCardContentImgTile = (props) => {
+    const {stateUUID} = props;
+    React.useEffect(() => {
+        console.log("stateUUID: ", stateUUID);
+        console.log(axios.defaults.baseURL + "/static/" + stateUUID);
+        }
+    )
+
     return (
         <>
             <ImgCard
+                imgSrc={axios.defaults.baseURL + "/static/" + stateUUID}
                 heightToWidthRatio={'75%'}
                 contentNode={<ContentNode />}
             />

@@ -50,6 +50,22 @@ export const projectSlice = createSlice({
             },
         },
 
+        addStateToActorStateList: {
+            reducer: (state, action) => {
+                state.value.actorDataMap[action.payload.actorUUID].addNewState(
+                    action.payload.stateUUID
+                )
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return { payload: {
+                        "actorUUID": obj.actorUUID,
+                        "stateUUID": obj.stateUUID,
+                    }
+                }
+            },
+        },
+
         updateActorOrder: {
             reducer: (state, action) => {
                 state.value.updateActorOrder(action.payload.beginOrder, action.payload.endOrder);
@@ -68,6 +84,6 @@ export const projectSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { addNewActor, importProject, updateActorName, updateActorOrder,
-    deleteActor} = projectSlice.actions;
+    deleteActor, addStateToActorStateList} = projectSlice.actions;
 
 export default projectSlice.reducer;

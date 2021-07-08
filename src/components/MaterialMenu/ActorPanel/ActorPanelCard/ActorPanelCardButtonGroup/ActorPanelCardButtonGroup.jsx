@@ -17,7 +17,7 @@ const ActorPanelCardButtonGroup = props => {
 
     return (
         <>
-            <ActorPanelUploadButton />
+            <ActorPanelUploadButton uuid={uuid}/>
             <Tooltip title="Search for state">
                 <Button type="link" shape="circle" icon={<SearchOutlined />} />
             </Tooltip>
