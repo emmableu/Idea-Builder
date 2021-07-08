@@ -23,6 +23,19 @@ export const projectSlice = createSlice({
             }
         },
 
+        deleteActor: {
+            reducer: (state, action) => {
+                delete state.value.actorDataMap[action.payload.uuid];
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return { payload: {
+                        "uuid": obj.uuid,
+                    }
+                }
+            },
+        },
+
         updateActorName: {
             reducer: (state, action) => {
                 state.value.actorDataMap[action.payload.uuid].name = action.payload.name;
@@ -50,33 +63,11 @@ export const projectSlice = createSlice({
                 }
             },
         },
-
-      // addState: {
-      //       reducer: (state, action) => {
-      //           if (!state.value.hasOwnProperty(action.payload.actorName)){
-      //               state.value[action.payload.actorName] = {};
-      //           }
-      //           state.value[action.payload.actorName][action.payload.stateName] =
-      //               {
-      //                   imgID: action.payload.imgID,
-      //                   imgSrc: action.payload.imgSrc,
-      //               };
-      //       },
-      //       prepare: (text) => {
-      //           const obj = JSON.parse(text);
-      //           return { payload: {
-      //                       "imgID": obj.imgID,
-      //                       "actorName": obj.actorName,
-      //                       "stateName": obj.stateName,
-      //                       "imgSrc": obj.imgSrc,
-      //                   }
-      //           }
-      //       },
-      //   },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { addNewActor, importProject, updateActorName, updateActorOrder } = projectSlice.actions;
+export const { addNewActor, importProject, updateActorName, updateActorOrder,
+    deleteActor} = projectSlice.actions;
 
 export default projectSlice.reducer;

@@ -8,8 +8,13 @@ import {
 import React from 'react';
 import DragHandleIcon from '../../../../primitives/DragHandleIcon';
 import ActorPanelUploadButton from './ActorPanelCardUploadButton/ActorPanelUploadButton';
+import {useDispatch} from "react-redux";
+import {deleteActor} from "../../../../../redux/features/projectSlice";
 
 const ActorPanelCardButtonGroup = props => {
+    const {uuid} = props;
+    const dispatch = useDispatch();
+
     return (
         <>
             <ActorPanelUploadButton />
@@ -22,6 +27,9 @@ const ActorPanelCardButtonGroup = props => {
                 <Button
                     type="link"
                     shape="circle"
+                    onClick={(e) => {dispatch(deleteActor(JSON.stringify({
+                        uuid
+                    })))}}
                     icon={<DeleteTwoTone twoToneColor="#eb2f96" />}
                 />
             </Tooltip>
