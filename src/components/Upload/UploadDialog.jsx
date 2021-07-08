@@ -16,7 +16,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import axios from '../../axiosConfig'
 import {useDispatch} from "react-redux";
-import { addState } from '../../redux/features/updateActorStateMapSlice';
+// import { addState } from '../../redux/features/projectSlice';
 
 const useStyles = makeStyles({
     img: {
@@ -50,7 +50,7 @@ const UploadDialog = (props) => {
             imgSrc
         };
         console.log("newStateEntry: ", newStateEntry);
-        dispatch(addState(JSON.stringify(newStateEntry)));
+        // dispatch(addState(JSON.stringify(newStateEntry)));
         // axios(
         //     {
         //         method: 'post',

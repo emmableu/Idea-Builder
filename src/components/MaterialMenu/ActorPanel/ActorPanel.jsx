@@ -17,6 +17,12 @@ import {CloudUpload} from "@material-ui/icons";
 import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress";
 import * as uuid from "uuid"
 import ActorPanelCard from "./ActorPanelCard/ActorPanelCard";
+import {useDispatch, useSelector} from 'react-redux';
+import {addNewActor} from "../../../redux/features/projectSlice";
+
+
+
+
 const toolBarHeight = globalConfig.toolBarHeight;
 const addNewActorBoxHeight = globalConfig.addNewActorBoxHeight;
 const getItems = count =>
@@ -71,13 +77,13 @@ const getBoxStyle = () => ({
 
 
 const ActorPanel = (props) => {
-    const [items, setItems] = React.useState([]);
-    const handleAddNewActorButtonClick = (e) => {
-        console.log("items: ", items);
-        setItems( [...items, {
-            id: uuid.v4()
-        }]);
+    const dispatch = useDispatch();
+    const actorDataList = useSelector(state =>
+        state.project.value===null? []:state.project.value.actorDataList
+    );
 
+    const handleAddNewActorButtonClick = (e) => {
+        dispatch(addNewActor());
     };
 
     const onDragEnd = (result) => {
@@ -86,12 +92,12 @@ const ActorPanel = (props) => {
             return;
         }
 
-        const newItems = reorder(
-            items,
-            result.source.index,
-            result.destination.index
-        );
-        setItems(newItems);
+        // const newItems = reorder(
+        //     items,
+        //     result.source.index,
+        //     result.destination.index
+        // );
+        // setItems(newItems);
     };
 
     // Normally you would want to split things out into separate components.
@@ -114,7 +120,7 @@ const ActorPanel = (props) => {
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}
                         >
-                            {items.map((item, index) => (
+                            {actorDataList.map((item, index) => (
                                 <Draggable key={item.id} draggableId={item.id} index={index}>
                                     {(provided, snapshot) => (
                                         <div
@@ -126,7 +132,6 @@ const ActorPanel = (props) => {
                                             )}
                                         >
                                             <ActorPanelCard {...provided.dragHandleProps}/>
-
                                         </div>
                                     )}
                                 </Draggable>

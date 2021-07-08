@@ -8,10 +8,12 @@ export interface IActorData {
 
 export class ActorData implements IActorData {
     name: string = "Untitled";
+    order:number = 0;
     stateList: Array<StateData> = [];
 
-    constructor(name?:string, stateList?:Array<StateData>) {
+    constructor(name?:string, order?:number, stateList?:Array<StateData>) {
         this.name = name? name:"Untitled";
+        this.order = order? order:0;
         this.stateList = stateList? stateList:[]
     }
 

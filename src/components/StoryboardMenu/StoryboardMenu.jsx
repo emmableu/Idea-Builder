@@ -30,16 +30,6 @@ const useStyles = makeStyles((theme) => ({
 
 const StoryboardMenu = () => {
     const classes = useStyles();
-
-    const projectData = new ProjectData();
-    projectData.addNewActor();
-    console.log("original project: ", projectData);
-    const projectJSON = projectData.toString();
-    console.log("projectJSON: ", projectJSON);
-    const parser = new ProjectDataParser();
-    console.log("parsed project: ", parser.parse(JSON.parse(projectJSON)));
-
-
     return (
         <div>
             <div className={classes.toolbar} />

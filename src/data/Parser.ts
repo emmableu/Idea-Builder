@@ -14,7 +14,7 @@ export class ProjectDataParser implements Parser {
         Object.keys(projectJSON.actorDataMap).forEach(a => {
             projectData.actorDataMap[a] =
                 new ActorDataParser().parse(projectJSON.actorDataMap[a])
-        })
+        });
         return projectData;
     }
 }

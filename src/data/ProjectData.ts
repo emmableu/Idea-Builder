@@ -42,9 +42,29 @@ export class ProjectData {
         return JSON.stringify(this.toJSON());
     }
 
+    get actorDataKeys () {
+        return Object.keys(this.actorDataMap);
+    }
+
+
     addNewActor() {
         const uuid = UUID.v4();
         this.actorDataMap[uuid] = new ActorData();
+        this.actorDataKeys.forEach(key => {
+            this.actorDataMap[key].order += 1;
+        })
+    }
+
+    get actorDataList () {
+        const actorDataList: {  id: string; name: string; order: number; stateList: StateData[];}[] = [];
+        this.actorDataKeys.forEach((key) => {
+            actorDataList.push({
+                id: key,
+                ...this.actorDataMap[key],
+            })
+        })
+        console.log("actorDataList: ", actorDataList);
+        return actorDataList;
     }
 
 }

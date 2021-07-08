@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from './features/counterSlice'
 import selectedStageReducer from './features/selectedStageSlice'
-import updateActorStateMapReducer from './features/updateActorStateMapSlice'
+import projectReducer from './features/projectSlice'
 
 export default configureStore({
     reducer: {
         counter: counterReducer,
         selectedStage: selectedStageReducer,
-        actorStateMap: updateActorStateMapReducer
+        project: projectReducer
     },
 })
