@@ -3,6 +3,8 @@ import {IconButton, Tooltip} from "@material-ui/core";
 import {Home, SaveAlt, InsertDriveFile} from "@material-ui/icons";
 import React from "react";
 import {CopyOutlined, DeleteOutlined, DownloadOutlined, ImportOutlined} from "@ant-design/icons";
+import {useDispatch} from "react-redux";
+import {download} from "../../redux/features/projectSlice"
 // import InsertDriveFile from "@material-ui/core/Icon";
 
 // const actionMenu =
@@ -21,10 +23,18 @@ import {CopyOutlined, DeleteOutlined, DownloadOutlined, ImportOutlined} from "@a
 
 
 const ProjectTitleBarActionGroup  = () => {
+    const dispatch = useDispatch();
+    const handleClick = () => {
+        dispatch(download());
+    }
     return (
         <>
             <Tooltip title="Save to computer">
-                <IconButton aria-label="files" size="medium">
+                <IconButton
+                    aria-label="files"
+                    size="medium"
+                    onClick={handleClick}
+                    >
                     <SaveAlt style={{color: "white"}}/>
                 </IconButton>
             </Tooltip>

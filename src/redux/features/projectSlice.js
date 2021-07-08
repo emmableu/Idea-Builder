@@ -92,12 +92,18 @@ export const projectSlice = createSlice({
                     }
                 }
             },
+        },
+
+        download: {
+            reducer: (state) => {
+                state.value.download();
+            }
         }
     },
 })
 
 // Action creators are generated for each case reducer function
 export const { addNewActor, importProject, updateActorName, updateActorOrder,
-    deleteActor, addStateToActorStateList, deleteActorState} = projectSlice.actions;
+    deleteActor, addStateToActorStateList, deleteActorState, download} = projectSlice.actions;
 
 export default projectSlice.reducer;

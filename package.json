@@ -21,6 +21,8 @@
     "axios": "^0.21.1",
     "craco-less": "^1.17.0",
     "eslint-plugin-react": "^7.24.0",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.6.0",
     "konva": "^8.1.0",
     "material-table": "^1.69.3",
     "react": "^16.13.1",
@@ -57,5 +59,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.2"
   }
 }
