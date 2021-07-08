@@ -79,11 +79,25 @@ export const projectSlice = createSlice({
                 }
             },
         },
+
+        deleteActorState: {
+            reducer: (state, action) => {
+                state.value.deleteActorState(action.payload.actorUUID, action.payload.stateUUID);
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return { payload: {
+                        "actorUUID": obj.actorUUID,
+                        "stateUUID": obj.stateUUID,
+                    }
+                }
+            },
+        }
     },
 })
 
 // Action creators are generated for each case reducer function
 export const { addNewActor, importProject, updateActorName, updateActorOrder,
-    deleteActor, addStateToActorStateList} = projectSlice.actions;
+    deleteActor, addStateToActorStateList, deleteActorState} = projectSlice.actions;
 
 export default projectSlice.reducer;

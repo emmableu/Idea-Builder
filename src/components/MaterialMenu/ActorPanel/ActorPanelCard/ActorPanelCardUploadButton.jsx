@@ -21,19 +21,11 @@ const ActorPanelCardUploadButton = (props) => {
     const dispatch = useDispatch();
 
     const uploadImage = async options => {
-        const { onSuccess, onError, file, onProgress } = options;
+        const { file } = options;
 
         const fmData = new FormData();
         const config = {
             headers: { 'content-type': 'multipart/form-data' },
-            onUploadProgress: event => {
-                const percent = Math.floor((event.loaded / event.total) * 100);
-                setProgress(percent);
-                if (percent === 100) {
-                    setTimeout(() => setProgress(0), 1000);
-                }
-                onProgress({ percent: (event.loaded / event.total) * 100 });
-            }
         };
         fmData.append('file', file);
         axios({

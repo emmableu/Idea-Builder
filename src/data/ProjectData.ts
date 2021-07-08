@@ -84,4 +84,10 @@ export class ProjectData {
         ))
     }
 
+    deleteActorState (actorUUID:string, stateUUID: string) {
+        const stateList = this.actorDataMap[actorUUID].stateList;
+        const stateIndex = stateList.findIndex(stateData => stateData.uuid === stateUUID);
+        this.actorDataMap[actorUUID].stateList.splice(stateIndex, 1);
+    }
+
 }

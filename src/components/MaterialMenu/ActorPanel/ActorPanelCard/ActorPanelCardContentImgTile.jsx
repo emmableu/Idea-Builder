@@ -22,7 +22,7 @@ const CardActionButtonGroup = () => (
     </>
 );
 const ActorPanelCardContentImgTile = (props) => {
-    const {stateUUID} = props;
+    const {actorUUID, stateUUID} = props;
     React.useEffect(() => {
         console.log("stateUUID: ", stateUUID);
         console.log(axios.defaults.baseURL + "/static/" + stateUUID);
@@ -32,6 +32,8 @@ const ActorPanelCardContentImgTile = (props) => {
     return (
         <>
             <ImgCard
+                actorUUID={actorUUID}
+                stateUUID={stateUUID}
                 imgSrc={axios.defaults.baseURL + "/static/" + stateUUID}
                 heightToWidthRatio={'75%'}
                 contentNode={<ContentNode />}

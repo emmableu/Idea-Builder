@@ -11,23 +11,19 @@ import { useDispatch, useSelector } from 'react-redux';
 const ActorPanelCardContent = props => {
     const { uuid } = props;
     const stateList = useSelector(state => {
-        console.log("---------------------state list");
-        console.log(state.project.value.stateListJSON(uuid));
         return state.project.value === null
             ? []
             :  state.project.value.stateListJSON(uuid);
     });
-
-    React.useEffect(() => {
-        console.log("stateList in useeffect: -------------", stateList);
-    }, [stateList])
 
     return (
         <Grid container spacing={1}>
             {stateList.map(stateData => (
                 <>
                 <Grid item xs={6}>
-                    <ActorPanelCardContentImgTile stateUUID={stateData.uuid} />
+                    <ActorPanelCardContentImgTile
+                        actorUUID={uuid}
+                        stateUUID={stateData.uuid} />
                 </Grid>
                 </>
             ))}

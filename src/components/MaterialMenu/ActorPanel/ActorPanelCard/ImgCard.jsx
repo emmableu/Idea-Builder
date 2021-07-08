@@ -6,6 +6,8 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import {useDispatch} from "react-redux";
+import {deleteActorState} from "../../../../redux/features/projectSlice";
 
 const useStyles = makeStyles({
     root: {
@@ -32,22 +34,37 @@ const useStyles = makeStyles({
     }
 });
 
-const menu = (
-    <Menu>
-        <Menu.Item key="1">delete state</Menu.Item>
-    </Menu>
-);
-
 
 const ImgCard = (props) =>  {
-    const { imgSrc, contentNode } = props;
+    const {actorUUID, stateUUID, imgSrc, contentNode } = props;
     const classes = useStyles(props);
+    const dispatch  = useDispatch();
+
+
+    const handleClick = () => {
+        console.log("stateUUID: ", stateUUID)
+        dispatch(deleteActorState(
+            JSON.stringify(
+            {actorUUID,
+            stateUUID})));
+    }
+
+
+    const menu = () => {
+        return (<Menu>
+            <Menu.Item
+                key="1"
+                onClick={handleClick}
+            >delete state</Menu.Item>
+        </Menu>)
+    };
+
 
     return (
         <Card
             variant="outlined"
             className={classes.root}>
-            <Dropdown overlay={menu} trigger={['contextMenu']}>
+            <Dropdown overlay={menu(stateUUID)} trigger={['contextMenu']}>
             <CardMedia className={classes.media}>
                     <div className={classes.elementToStretch}>
                         <img
