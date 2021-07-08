@@ -14,6 +14,7 @@ import {
   Link,
   useParams
 } from 'react-router-dom';
+import LoginPage from './components/LoginPage/LoginPage'
 
 const theme = createMuiTheme({
   typography: {
@@ -51,9 +52,9 @@ const App = () => {
   return (
       <Router>
         <ThemeProvider theme={theme}>
-          <Route path="/:userID" children={<Dashboard />} />
+          <Route path="/login" children={<LoginPage />} />
+          <Route path="/user/:userID" children={<Dashboard />} />
         </ThemeProvider>
-        )
       </Router>
   );
 };

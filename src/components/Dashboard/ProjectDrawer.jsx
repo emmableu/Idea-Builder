@@ -93,7 +93,7 @@ const ProjectDrawer = (props) => {
                 <Box style={{height: "5vh"}}/>
                 <Grid container justifyContent="center" alignItems="center" spacing={3}>
                 <Grid item xs={10}>
-                <ProjectTable/>
+                <ProjectTable userID={userID}/>
                 </Grid>
                 </Grid>
             </main>
