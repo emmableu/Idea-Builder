@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import IdeaBuilderIcon from "../primitives/IdeaBuilderIcon";
 import {UserOutlined} from "@ant-design/icons";
 import globalConfig from "../../globalConfig";
+import UserButton from "./UserButton";
 
 const drawerWidth = globalConfig.projectDrawerWidth;
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +39,7 @@ export const DashboardTitleBar = (props) => {
 
                 <Typography variant="h6" className={classes.title}>
                 </Typography>
-                    <Button color="inherit"  startIcon={<UserOutlined />}>{userID}</Button>
+                    <UserButton userID={userID}/>
                 </Toolbar>
             </AppBar>
     );

@@ -50,7 +50,7 @@ const LoginPage = () => {
             <Paper
                 elevation={8}
                 className={classes.paper}>
-                <Typography component="h1" variant="h6">
+                <Typography component="h1" variant="h6" style={{color: "#616161"}}>
                     <IdeaBuilderIcon className={classes.ideaBuilderIcon}/>
                     {'\u00A0'} Idea Builder
                 </Typography>

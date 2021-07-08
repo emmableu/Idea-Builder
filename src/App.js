@@ -11,6 +11,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  PrivateRoute,
   Link,
   useParams
 } from 'react-router-dom';
@@ -53,11 +54,28 @@ const App = () => {
       <Router>
         <ThemeProvider theme={theme}>
           <Route path="/login" children={<LoginPage />} />
-          <Route path="/user/:userID" children={<Dashboard />} />
+          <Route path="/" children={<Dashboard />} />
+          {/*<Route path="/user/:userID" children={<Dashboard />} />*/}
         </ThemeProvider>
       </Router>
   );
 };
+
+
+const fakeAuth = {
+  isAuthenticated: false,
+  signin(cb) {
+    fakeAuth.isAuthenticated = true;
+    setTimeout(cb, 100); // fake async
+  },
+  signout(cb) {
+    fakeAuth.isAuthenticated = false;
+    setTimeout(cb, 100);
+  }
+};
+
+// const authContext = createContext();
+
 
 // {/*<BoardDrawer/>;*/}
 // {/*<Dashboard/>*/}

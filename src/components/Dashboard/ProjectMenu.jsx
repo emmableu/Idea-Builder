@@ -17,7 +17,7 @@ const ProjectMenu = () => {
     return (
         <Menu
             onClick={handleClick}
-            style={{ width: 'inherit' }}
+            style={{ width: 'inherit' , zIndex: "-1"}}
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"

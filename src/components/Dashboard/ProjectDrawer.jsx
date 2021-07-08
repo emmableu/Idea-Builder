@@ -16,6 +16,7 @@ import ProjectMenu from "./ProjectMenu";
 import {Add} from "@material-ui/icons";
 import globalConfig from "../../globalConfig";
 import ProjectTable from "./ProjectTable";
+import NewProjectButton from "./NewProjectButton";
 
 const drawerWidth = globalConfig.projectDrawerWidth;
 
@@ -40,11 +41,6 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing(3),
-    },
-    addButton: {
-        "& span": {
-            textTransform: "none",
-        },
     },
     addButtonContainer: {
         "& span": {
@@ -79,12 +75,7 @@ const ProjectDrawer = (props) => {
                 <div className={classes.toolbar} />
                 <Divider />
                 <div className={classes.addButtonContainer}>
-                <Button
-                    startIcon={<Add/>}
-                    className={classes.addButton}
-                    color="secondary"
-                    variant="contained"
-                > New project </Button>
+                 <NewProjectButton />
                 </div>
                 <ProjectMenu/>
             </Drawer>
