@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
+import { Menu, Dropdown } from 'antd';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -31,15 +32,23 @@ const useStyles = makeStyles({
     }
 });
 
+const menu = (
+    <Menu>
+        <Menu.Item key="1">delete state</Menu.Item>
+    </Menu>
+);
+
+
 const ImgCard = (props) =>  {
-    const { imgSrc, contentNode, cardActionButtonGroup } = props;
+    const { imgSrc, contentNode } = props;
     const classes = useStyles(props);
 
     return (
         <Card
             variant="outlined"
             className={classes.root}>
-                <CardMedia className={classes.media}>
+            <Dropdown overlay={menu} trigger={['contextMenu']}>
+            <CardMedia className={classes.media}>
                     <div className={classes.elementToStretch}>
                         <img
                             draggable
@@ -49,8 +58,8 @@ const ImgCard = (props) =>  {
                         />
                     </div>
                 </CardMedia>
+            </Dropdown>
             {contentNode}
-                {cardActionButtonGroup}
         </Card>
     );
 }

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Upload, message, Button, Tooltip } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import axios from "../../../../../../axiosConfig";
+import axios from "../../../../axiosConfig";
 import {useDispatch} from "react-redux";
-import {addStateToActorStateList} from "../../../../../../redux/features/projectSlice";
+import {addStateToActorStateList} from "../../../../redux/features/projectSlice";
 
-const props = {
+const uploadButtonProps = {
     name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
     headers: {
         authorization: 'authorization-text'
     },
@@ -15,7 +15,7 @@ const props = {
     accept:"image/*",
 };
 
-const ActorPanelUploadButton = (props) => {
+const ActorPanelCardUploadButton = (props) => {
     const {uuid} = props;
     const [progress, setProgress] = React.useState(0);
     const dispatch = useDispatch();
@@ -70,7 +70,7 @@ const ActorPanelUploadButton = (props) => {
         <>
             <Upload
                 customRequest={uploadImage}
-                {...props}>
+                {...uploadButtonProps}>
                 <Tooltip title="Upload">
                     <Button type="link" shape="circle" icon={<UploadOutlined />} />
                 </Tooltip>
@@ -79,4 +79,4 @@ const ActorPanelUploadButton = (props) => {
     );
 };
 
-export default ActorPanelUploadButton;
+export default ActorPanelCardUploadButton;

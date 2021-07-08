@@ -6,10 +6,10 @@ import {
     UploadOutlined
 } from '@ant-design/icons';
 import React from 'react';
-import DragHandleIcon from '../../../../primitives/DragHandleIcon';
-import ActorPanelUploadButton from './ActorPanelCardUploadButton/ActorPanelUploadButton';
+import DragHandleIcon from '../../../primitives/DragHandleIcon';
+import ActorPanelCardUploadButton from './ActorPanelCardUploadButton';
 import {useDispatch} from "react-redux";
-import {deleteActor} from "../../../../../redux/features/projectSlice";
+import {deleteActor} from "../../../../redux/features/projectSlice";
 
 const ActorPanelCardButtonGroup = props => {
     const {uuid} = props;
@@ -17,7 +17,7 @@ const ActorPanelCardButtonGroup = props => {
 
     return (
         <>
-            <ActorPanelUploadButton uuid={uuid}/>
+            <ActorPanelCardUploadButton uuid={uuid}/>
             <Tooltip title="Search for state">
                 <Button type="link" shape="circle" icon={<SearchOutlined />} />
             </Tooltip>

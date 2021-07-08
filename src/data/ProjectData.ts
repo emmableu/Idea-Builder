@@ -77,4 +77,11 @@ export class ProjectData {
         })
     }
 
+    stateListJSON (actorUUID:string) {
+        const stateList = this.actorDataMap[actorUUID].stateList;
+        return stateList.map(s => (
+            s.toJSON()
+        ))
+    }
+
 }

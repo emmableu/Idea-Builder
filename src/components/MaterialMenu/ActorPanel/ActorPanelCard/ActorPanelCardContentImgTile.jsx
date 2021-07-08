@@ -1,9 +1,9 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import {Button, CardActions} from '@material-ui/core';
-import ImgCard from "../../../../../primitives/ImgCard";
+import ImgCard from "./ImgCard";
 import ImgTitleEdiText from "./ImgTitleEdiText";
-import axios from "../../../../../../axiosConfig";
+import axios from "../../../../axiosConfig";
 
 const ContentNode = () => (
     <ImgTitleEdiText/>
@@ -26,8 +26,8 @@ const ActorPanelCardContentImgTile = (props) => {
     React.useEffect(() => {
         console.log("stateUUID: ", stateUUID);
         console.log(axios.defaults.baseURL + "/static/" + stateUUID);
-        }
-    )
+        },[stateUUID]
+    );
 
     return (
         <>
@@ -39,5 +39,7 @@ const ActorPanelCardContentImgTile = (props) => {
         </>
     )
 }
+
+
 
 export default ActorPanelCardContentImgTile;
