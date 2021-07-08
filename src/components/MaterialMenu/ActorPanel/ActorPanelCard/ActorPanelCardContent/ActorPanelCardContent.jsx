@@ -6,7 +6,7 @@ import ImgTitleEdiText from "./ActorPanelCardContentImgTile/ImgTitleEdiText";
 import ActorPanelCardContentImgTile from "./ActorPanelCardContentImgTile/ActorPanelCardContentImgTile";
 import CardContent from "@material-ui/core/CardContent";
 
-const stateArray = [...Array(5).keys()];
+const stateArray = [...Array(0).keys()];
 const ActorPanelCardContent = (props) => {
     return (
             <Grid container spacing={1}>

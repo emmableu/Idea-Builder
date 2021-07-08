@@ -10,11 +10,12 @@ import grey from "@material-ui/core/colors/grey";
 
 
 const ActorPanelCard = React.memo((props) => {
+    const {uuid} = props;
     return (
             <Card
                 hoverable
                 size="small"
-                title={<ActorPanelCardTitle/>}
+                title={<ActorPanelCardTitle uuid={uuid}/>}
                 style={{ width: "100%" }}
                 extra={<ActorPanelCardButtonGroup
                     {...props}/>}>

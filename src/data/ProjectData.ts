@@ -56,15 +56,25 @@ export class ProjectData {
     }
 
     get actorDataList () {
-        const actorDataList: {  id: string; name: string; order: number; stateList: StateData[];}[] = [];
+        const actorDataList: {  uuid: string; name: string; order: number; stateList: StateData[];}[] = [];
         this.actorDataKeys.forEach((key) => {
             actorDataList.push({
-                id: key,
+                uuid: key,
                 ...this.actorDataMap[key],
             })
         })
+        actorDataList.sort((a, b) => a.order - b.order);
         console.log("actorDataList: ", actorDataList);
         return actorDataList;
+    }
+
+    updateActorOrder(beginOrder:number, endOrder:number) {
+        const actorDataList = this.actorDataList;
+        const [removed] = actorDataList.splice(beginOrder, 1);
+        actorDataList.splice(endOrder, 0, removed);
+        actorDataList.forEach((a, index) => {
+            this.actorDataMap[a.uuid].order = index;
+        })
     }
 
 }
