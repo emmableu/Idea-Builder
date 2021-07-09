@@ -1,5 +1,5 @@
 import './App.less';
-import React, { useEffect } from 'react';
+import React, { useContext, createContext, useState, useEffect } from "react";
 import { hot } from 'react-hot-loader';
 import BoardDrawer from './components/Board/BoardDrawer.jsx';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
@@ -11,11 +11,14 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  PrivateRoute,
   Link,
-  useParams
-} from 'react-router-dom';
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
 import LoginPage from './components/LoginPage/LoginPage'
+import {authContext, useAuth} from "./hooks/useAuth";
+
 
 const theme = createMuiTheme({
   typography: {
@@ -51,13 +54,18 @@ const App = () => {
   });
 
   return (
+      <ProvideAuth>
       <Router>
         <ThemeProvider theme={theme}>
-          <Route path="/login" children={<LoginPage />} />
-          <Route path="/" children={<Dashboard />} />
+          <Route path="/">
+             <Redirect to="/project" />
+          </Route>
+          <Route path="/login" children={<LoginPage/>} />
+          <PrivateRoute path="/project" children={<Dashboard />} />
           {/*<Route path="/user/:userID" children={<Dashboard />} />*/}
         </ThemeProvider>
       </Router>
+      </ProvideAuth>
   );
 };
 
@@ -73,6 +81,90 @@ const fakeAuth = {
     setTimeout(cb, 100);
   }
 };
+
+/** For more details on
+ * `authContext`, `ProvideAuth`, `useAuth` and `useProvideAuth`
+ * refer to: https://usehooks.com/useAuth/
+ */
+
+function ProvideAuth({ children }) {
+  const auth = useProvideAuth();
+  return (
+      <authContext.Provider value={auth}>
+        {children}
+      </authContext.Provider>
+  );
+}
+
+
+
+function useProvideAuth() {
+  const [user, setUser] = useState(null);
+
+  const signin = cb => {
+    return fakeAuth.signin(() => {
+      setUser("user");
+      cb();
+    });
+  };
+
+  const signout = cb => {
+    return fakeAuth.signout(() => {
+      setUser(null);
+      cb();
+    });
+  };
+
+  return {
+    user,
+    signin,
+    signout
+  };
+}
+//
+// function AuthButton() {
+//   let history = useHistory();
+//   let auth = useAuth();
+//
+//   return auth.user ? (
+//       <p>
+//         Welcome!{" "}
+//         <button
+//             onClick={() => {
+//               auth.signout(() => history.push("/"));
+//             }}
+//         >
+//           Sign out
+//         </button>
+//       </p>
+//   ) : (
+//       <p>You are not logged in.</p>
+//   );
+// }
+//
+
+
+function PrivateRoute({ children, ...rest }) {
+  let auth = useAuth();
+  return (
+      <Route
+          {...rest}
+          render={({ location }) =>
+              auth.user ? (
+                  children
+              ) : (
+                  <Redirect
+                      to={{
+                        pathname: "/login",
+                        state: { from: location }
+                      }}
+                  />
+              )
+          }
+      />
+  );
+}
+
 
 // const authContext = createContext();
 
