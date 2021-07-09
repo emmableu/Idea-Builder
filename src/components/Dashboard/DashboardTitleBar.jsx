@@ -29,7 +29,7 @@ export const DashboardTitleBar = () => {
     const classes = useStyles();
     // console.log("Cookies.get(userid", Cookies.get("userID"));
     const userID = useSelector(state =>
-        state.dashboard.value===null? null:state.dashboard.value._id);
+        state.dashboard.value===null? null:state.dashboard.value.userID);
 
     React.useEffect(() => {
         console.log("state.dashboard.value: ", userID);

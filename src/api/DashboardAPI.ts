@@ -7,7 +7,7 @@ class DashboardAPI {
         const response = await axios({
             method: 'post',
             url: `/add_dashboard`,
-            data: dashboardData.toJSON()
+            data: dashboardData.toString()
         })
         return response;
     }

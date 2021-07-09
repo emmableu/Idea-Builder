@@ -9,9 +9,18 @@ const fetchDashboardByUserID = createAsyncThunk(
     'dashboard/fetchById',
     async (userID, thunkAPI) => {
         const response = await DashboardAPI.fetchDashboard(userID);
-        return response
+        let dashboardData;
+        if (response.status === 204) {
+            dashboardData = new DashboardData(userID);
+            await DashboardAPI.insertDashboard(dashboardData);
+            return dashboardData.toJSON();
+        }
+        else if (response.status === 200) {
+            return response.data;
+        }
     }
 )
+
 
 
 export const dashboardSlice = createSlice({
@@ -23,28 +32,14 @@ export const dashboardSlice = createSlice({
 
     },
     extraReducers:  {
-        [fetchDashboardByUserID.fulfilled]: (state, action) => {
-                if (action.payload.status === 204) {
-                    console.log("fetchDashboardByUserID fulfiled")
-                    console.log("state: ", state);
-                    console.log("action: ", action);
-                    state.value = new DashboardData(action.meta.arg).toJSON();
-                }
-            }
+        [fetchDashboardByUserID.fulfilled]:
+            (state, action) => {
+                console.log("state, action: ", state, action);
+                const obj = DashboardData.parse(action.payload);
+                state.value = obj;
+        },
     }
 })
-
-
-// export const fetchUserById = () => async (dispatch) => {
-//     const userID = Cookies.get("userID");
-//     const response = await axios({
-//         method: 'get',
-//         url: `/dashboard/${userID}`,
-//     })
-//     if (response.status === 204) {
-//         dispatch(loadDashboardFromCookieUserID(userID));
-//     }
-// }
 
 
 // Action creators are generated for each case reducer function

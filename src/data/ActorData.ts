@@ -27,6 +27,17 @@ export class ActorData implements IActorData {
             stateList: this.stateList.map(s => s.toJSON()),
         }
     }
+
+    static  parse(actorJSON: any): ActorData {
+        const actorData = new ActorData(actorJSON.name);
+        actorJSON.stateList.forEach(
+            (s: { uuid: string | undefined; name: string | undefined; }) => {
+                actorData.stateList.push(new StateData(
+                    s.uuid, s.name
+                ));
+            })
+        return actorData;
+    }
 }
 
 

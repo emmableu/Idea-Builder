@@ -44,6 +44,15 @@ export class ProjectData {
         return JSON.stringify(this.toJSON());
     }
 
+    static parse(projectJSON: any): ProjectData {
+        const projectData = new ProjectData(projectJSON.uuid, projectJSON.name);
+        Object.keys(projectJSON.actorDataMap).forEach(a => {
+            projectData.actorDataMap[a] =
+                 ActorData.parse(projectJSON.actorDataMap[a])
+        });
+        return projectData;
+    }
+
     get actorDataKeys () {
         return Object.keys(this.actorDataMap);
     }

@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {ProjectData} from "../../data/ProjectData";
-import {ProjectDataParser} from "../../data/Parser";
 
 export const projectSlice = createSlice({
     name: 'project',
@@ -11,8 +10,7 @@ export const projectSlice = createSlice({
         importProject: {
             reducer: (state, action) => {
                 const projectJSON = JSON.parse(action.payload)
-                const parser = new ProjectDataParser();
-                state.value = parser.parse(projectJSON);
+                state.value = ProjectData.parse(projectJSON);
                 console.log("parsed project: ", state.value);
             }
         },
