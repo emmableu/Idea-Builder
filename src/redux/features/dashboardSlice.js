@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {DashboardData} from "../../data/DashboardData";
+import Cookies from "js-cookie"
 
 export const dashboardSlice = createSlice({
     name: 'dashboard',
@@ -7,7 +8,7 @@ export const dashboardSlice = createSlice({
         value: null,
     },
     reducers: {
-        createDashboard: {
+        loadDashboardFromLoginUserID: {
             reducer: (state, action) => {
                 state.value = new DashboardData(action.payload.userID);
             },
@@ -20,10 +21,22 @@ export const dashboardSlice = createSlice({
             },
         },
 
+        loadDashboardFromCookieUserID: {
+            reducer: (state) => {
+                const userID = Cookies.get("userID");
+                if (userID === undefined){
+                    return
+                }
+                state.value = new DashboardData(userID);
+            },
+        }
+
+
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { createDashboard} = dashboardSlice.actions;
+export const { loadDashboardFromLoginUserID,
+    loadDashboardFromCookieUserID} = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

@@ -5,12 +5,25 @@ import Container from '@material-ui/core/Container';
 import DashboardTitleBar from "./DashboardTitleBar";
 import ProjectDrawer from "./ProjectDrawer";
 import {useParams} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {loadDashboardFromCookieUserID} from "../../redux/features/dashboardSlice";
+import Cookies from "js-cookie"
 
 const Dashboard = () => {
+    const dispatch = useDispatch();
+
+    React.useEffect(() =>
+    {
+        if (Cookies.get('userID') !== undefined) {
+            dispatch(loadDashboardFromCookieUserID());
+        }
+    }, [])
+
+
     return (
-        <React.Fragment>
-                <ProjectDrawer />
-        </React.Fragment>
+        <>
+            <ProjectDrawer />
+        </>
     );
 }
 

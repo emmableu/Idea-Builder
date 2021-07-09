@@ -18,7 +18,7 @@ import {
 } from "react-router-dom";
 import LoginPage from './components/LoginPage/LoginPage'
 import {authContext, useAuth} from "./hooks/useAuth";
-
+import Cookies from "js-cookie"
 
 const theme = createMuiTheme({
   typography: {
@@ -150,7 +150,7 @@ function PrivateRoute({ children, ...rest }) {
       <Route
           {...rest}
           render={({ location }) =>
-              auth.user ? (
+              (auth.user || Cookies.get('userID')) ? (
                   children
               ) : (
                   <Redirect

@@ -11,6 +11,7 @@ import {UserOutlined} from "@ant-design/icons";
 import globalConfig from "../../globalConfig";
 import UserButton from "./UserButton";
 import {useSelector} from "react-redux";
+import Cookies from "js-cookie"
 
 const drawerWidth = globalConfig.projectDrawerWidth;
 const useStyles = makeStyles((theme) => ({
@@ -26,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
 
 export const DashboardTitleBar = () => {
     const classes = useStyles();
-    const userID = useSelector(state => state.dashboard.value === null? null:state.dashboard.value.userID);
+    // console.log("Cookies.get(userid", Cookies.get("userID"));
+    const userID = useSelector(state => state.dashboard.value === null? "not sign in":state.dashboard.value.userID);
 
     return (
             <AppBar className={classes.appBar}

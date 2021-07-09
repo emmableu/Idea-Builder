@@ -24,7 +24,8 @@ import {
 } from "react-router-dom";
 import {authContext, useAuth} from "../../hooks/useAuth"
 import {useDispatch} from "react-redux";
-import {createDashboard} from "../../redux/features/dashboardSlice";
+import {loadDashboardFromLoginUserID} from "../../redux/features/dashboardSlice";
+import Cookies from "js-cookie"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -66,8 +67,9 @@ const LoginPage = () => {
         }
         let { from } = location.state || { from: { pathname: `/project` } };
         auth.signin(() => {
+            Cookies.set("userID", userID);
             history.replace(from);
-            dispatch(createDashboard(
+            dispatch(loadDashboardFromLoginUserID(
                 JSON.stringify({
                     "userID": userID
                 })
