@@ -8,19 +8,6 @@ export const dashboardSlice = createSlice({
         value: null,
     },
     reducers: {
-        loadDashboardFromLoginUserID: {
-            reducer: (state, action) => {
-                state.value = new DashboardData(action.payload.userID);
-            },
-            prepare: (text) => {
-                const obj = JSON.parse(text);
-                return { payload: {
-                        "userID": obj.userID,
-                    }
-                }
-            },
-        },
-
         loadDashboardFromCookieUserID: {
             reducer: (state) => {
                 const userID = Cookies.get("userID");
@@ -30,13 +17,10 @@ export const dashboardSlice = createSlice({
                 state.value = new DashboardData(userID);
             },
         }
-
-
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { loadDashboardFromLoginUserID,
-    loadDashboardFromCookieUserID} = dashboardSlice.actions;
+export const { loadDashboardFromCookieUserID} = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

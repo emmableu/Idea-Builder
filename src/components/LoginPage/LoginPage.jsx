@@ -69,11 +69,6 @@ const LoginPage = () => {
         auth.signin(() => {
             Cookies.set("userID", userID);
             history.replace(from);
-            dispatch(loadDashboardFromLoginUserID(
-                JSON.stringify({
-                    "userID": userID
-                })
-            ))
         });
     };
 
@@ -89,7 +84,7 @@ const LoginPage = () => {
                 </Typography>
                 <br />
                 <Typography component="h1" variant="subtitle2" className={classes.instruction}>
-                        Sign in using your city name (e.g., raleigh)
+                        Sign in using your assigned city name
                 </Typography>
                 <form className={classes.form} noValidate>
                     <TextField
@@ -102,7 +97,7 @@ const LoginPage = () => {
                         name="userID"
                         autoComplete="userID"
                         autoFocus
-                        onInput={ e => setUserID(e.target.value)}
+                        onInput={ e => setUserID(e.target.value.toLowerCase())}
                     />
                     <Button
                         fullWidth

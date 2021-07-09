@@ -17,7 +17,7 @@ import {
   useLocation
 } from "react-router-dom";
 import LoginPage from './components/LoginPage/LoginPage'
-import {authContext, useAuth} from "./hooks/useAuth";
+import  {authContext, useAuth, ProvideAuth, useProvideAuth, PrivateRoute} from "./hooks/useAuth";
 import Cookies from "js-cookie"
 
 const theme = createMuiTheme({
@@ -70,100 +70,6 @@ const App = () => {
 };
 
 
-const fakeAuth = {
-  isAuthenticated: false,
-  signin(cb) {
-    fakeAuth.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
-  },
-  signout(cb) {
-    fakeAuth.isAuthenticated = false;
-    setTimeout(cb, 100);
-  }
-};
-
-/** For more details on
- * `authContext`, `ProvideAuth`, `useAuth` and `useProvideAuth`
- * refer to: https://usehooks.com/useAuth/
- */
-
-function ProvideAuth({ children }) {
-  const auth = useProvideAuth();
-  return (
-      <authContext.Provider value={auth}>
-        {children}
-      </authContext.Provider>
-  );
-}
-
-
-
-function useProvideAuth() {
-  const [user, setUser] = useState(null);
-
-  const signin = cb => {
-    return fakeAuth.signin(() => {
-      setUser("user");
-      cb();
-    });
-  };
-
-  const signout = cb => {
-    return fakeAuth.signout(() => {
-      setUser(null);
-      cb();
-    });
-  };
-
-  return {
-    user,
-    signin,
-    signout
-  };
-}
-//
-// function AuthButton() {
-//   let history = useHistory();
-//   let auth = useAuth();
-//
-//   return auth.user ? (
-//       <p>
-//         Welcome!{" "}
-//         <button
-//             onClick={() => {
-//               auth.signout(() => history.push("/"));
-//             }}
-//         >
-//           Sign out
-//         </button>
-//       </p>
-//   ) : (
-//       <p>You are not logged in.</p>
-//   );
-// }
-//
-
-
-function PrivateRoute({ children, ...rest }) {
-  let auth = useAuth();
-  return (
-      <Route
-          {...rest}
-          render={({ location }) =>
-              (auth.user || Cookies.get('userID')) ? (
-                  children
-              ) : (
-                  <Redirect
-                      to={{
-                        pathname: "/login",
-                        state: { from: location }
-                      }}
-                  />
-              )
-          }
-      />
-  );
-}
 
 
 // const authContext = createContext();

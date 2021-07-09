@@ -8,6 +8,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
 import {UserOutlined} from "@ant-design/icons";
+import {useAuth} from "../../hooks/useAuth";
+import {useHistory} from "react-router-dom";
+import Cookies from "js-cookie";
 
 
 const useStyles = makeStyles(theme => ({
@@ -24,18 +27,26 @@ const UserButton = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
+    // function AuthButton() {
+      let history = useHistory();
+      let auth = useAuth();
 
     const handleToggle = () => {
         setOpen(prevOpen => !prevOpen);
+    };
+
+    const handleClick = event => {
+        auth.signout(() => history.push("/login"));
+        Cookies.remove("userID");
+        handleClose(event);
     };
 
     const handleClose = event => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
-
         setOpen(false);
-    };
+    }
 
     function handleListKeyDown(event) {
         if (event.key === 'Tab') {
@@ -88,7 +99,7 @@ const UserButton = (props) => {
                                         id="menu-list-grow"
                                         onKeyDown={handleListKeyDown}
                                     >
-                                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                        <MenuItem onClick={handleClick}>Logout</MenuItem>
                                     </MenuList>
                                 </ClickAwayListener>
                             </Paper>
