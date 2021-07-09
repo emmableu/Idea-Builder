@@ -23,6 +23,8 @@ import {
     useLocation
 } from "react-router-dom";
 import {authContext, useAuth} from "../../hooks/useAuth"
+import {useDispatch} from "react-redux";
+import {createDashboard} from "../../redux/features/dashboardSlice";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +57,8 @@ const LoginPage = () => {
     let history = useHistory();
     let location = useLocation();
     let auth = useAuth();
-    const [userID, setUserID] = React.useState(null)
+    const [userID, setUserID] = React.useState(null);
+    const dispatch = useDispatch();
 
     const login = (e) => {
         if (userID === null) {
@@ -64,7 +67,11 @@ const LoginPage = () => {
         let { from } = location.state || { from: { pathname: `/project` } };
         auth.signin(() => {
             history.replace(from);
-        //TODO: dispatch a loadDashboard action here.
+            dispatch(createDashboard(
+                JSON.stringify({
+                    "userID": userID
+                })
+            ))
         });
     };
 

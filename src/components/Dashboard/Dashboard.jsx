@@ -7,10 +7,9 @@ import ProjectDrawer from "./ProjectDrawer";
 import {useParams} from "react-router-dom";
 
 const Dashboard = () => {
-    let {userID} = useParams();
     return (
         <React.Fragment>
-                <ProjectDrawer userID={userID}/>
+                <ProjectDrawer />
         </React.Fragment>
     );
 }

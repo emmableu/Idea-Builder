@@ -10,6 +10,7 @@ import IdeaBuilderIcon from "../primitives/IdeaBuilderIcon";
 import {UserOutlined} from "@ant-design/icons";
 import globalConfig from "../../globalConfig";
 import UserButton from "./UserButton";
+import {useSelector} from "react-redux";
 
 const drawerWidth = globalConfig.projectDrawerWidth;
 const useStyles = makeStyles((theme) => ({
@@ -23,9 +24,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const DashboardTitleBar = (props) => {
-    const {userID} = props;
+export const DashboardTitleBar = () => {
     const classes = useStyles();
+    const userID = useSelector(state => state.dashboard.value === null? null:state.dashboard.value.userID);
 
     return (
             <AppBar className={classes.appBar}

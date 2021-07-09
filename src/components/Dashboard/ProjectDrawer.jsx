@@ -56,14 +56,13 @@ const useStyles = makeStyles((theme) => ({
         padding: "30px 0 0 0"
     }
 }));
-const ProjectDrawer = (props) => {
-    const {userID} = props;
+const ProjectDrawer = () => {
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <DashboardTitleBar userID={userID}/>
+            <DashboardTitleBar />
             <Drawer
                 className={classes.drawer}
                 variant="permanent"
@@ -84,7 +83,7 @@ const ProjectDrawer = (props) => {
                 <Box style={{height: "5vh"}}/>
                 <Grid container justifyContent="center" alignItems="center" spacing={3}>
                 <Grid item xs={10}>
-                <ProjectTable userID={userID}/>
+                <ProjectTable />
                 </Grid>
                 </Grid>
             </main>
