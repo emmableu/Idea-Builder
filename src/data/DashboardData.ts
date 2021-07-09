@@ -1,22 +1,22 @@
 export class DashboardData {
-    userID: string;
+    _id: string;
     projectMap: {
         [key:string]: {
             name: string
         }
     };
 
-    constructor (userID:string, projectMap?:{
+    constructor (_id:string, projectMap?:{
                     [key:string]: {
                         name: string } })
     {
-        this.userID = userID;
+        this._id = _id;
         this.projectMap = projectMap? projectMap:{};
     }
 
     toJSON () {
         return {
-            userID: this.userID,
+            _id: this._id,
             projectMap: this.projectMap,
         }
     }

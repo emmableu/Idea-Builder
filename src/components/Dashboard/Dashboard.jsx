@@ -6,7 +6,7 @@ import DashboardTitleBar from "./DashboardTitleBar";
 import ProjectDrawer from "./ProjectDrawer";
 import {useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {loadDashboardFromCookieUserID} from "../../redux/features/dashboardSlice";
+import {fetchDashboardByUserID} from "../../redux/features/dashboardSlice";
 import Cookies from "js-cookie"
 
 const Dashboard = () => {
@@ -15,7 +15,7 @@ const Dashboard = () => {
     React.useEffect(() =>
     {
         if (Cookies.get('userID') !== undefined) {
-            dispatch(loadDashboardFromCookieUserID());
+            dispatch(fetchDashboardByUserID(Cookies.get('userID')));
         }
     }, [])
 

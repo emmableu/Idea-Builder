@@ -56,10 +56,10 @@ const globalConfig = {
           },
           menuBackgroundOnDrag: "#e6f7ff",
           whiteText: "white",
-     },
+     }
 }
 
 Object.freeze(globalConfig);
 
-export  default globalConfig;
+export default globalConfig;
 
