@@ -1,30 +1,20 @@
-import {ActorData, IActorData, ActorDataMap} from "./ActorData";
+import {ActorData, IActorData, ActorDataMap} from "../ActorData";
 import * as UUID from "uuid";
-import {StateData} from "./StateData";
+import {StateData} from "../StateData";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-// import stream = require("node:stream");
-
-interface IProjectDataItem {
-    name: string;
-    actorDataMap: {
-        [key: string]: IActorData
-    };
-}
-
-export interface IProjectData {
-    [key:string]: IProjectDataItem;
-}
 
 
-export class ProjectData {
+export class ProjectViewData {
     uuid: string;
     name: string;
+    deleted: boolean;
     actorDataMap: ActorDataMap;
 
-    constructor(uuid?: string, name?:string, actorDataMap?:  ActorDataMap) {
+    constructor(uuid?: string, name?:string, deleted?: boolean, actorDataMap?:  ActorDataMap) {
         this.uuid = uuid? uuid:UUID.v4();
         this.name = name? name:"Untitled";
+        this.deleted = deleted? deleted:false;
         this.actorDataMap = actorDataMap? actorDataMap:{};
     }
 
@@ -36,6 +26,7 @@ export class ProjectData {
         return {
             uuid: this.uuid,
             name: this.name,
+            deleted: this.deleted,
             actorDataMap
         }
     }
@@ -44,8 +35,8 @@ export class ProjectData {
         return JSON.stringify(this.toJSON());
     }
 
-    static parse(projectJSON: any): ProjectData {
-        const projectData = new ProjectData(projectJSON.uuid, projectJSON.name);
+    static parse(projectJSON: any): ProjectViewData {
+        const projectData = new ProjectViewData(projectJSON.uuid, projectJSON.name, projectJSON.deleted);
         Object.keys(projectJSON.actorDataMap).forEach(a => {
             projectData.actorDataMap[a] =
                  ActorData.parse(projectJSON.actorDataMap[a])

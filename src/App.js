@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader';
 import BoardDrawer from './components/Board/BoardDrawer.jsx';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import Dashboard from './components/Dashboard/Dashboard';
-import { ProjectData } from './data/ProjectData';
+import { ProjectViewData } from './data/ProjectData/ProjectViewData';
 import { useDispatch } from 'react-redux';
 import { importProject } from './redux/features/projectSlice';
 import {
@@ -40,7 +40,7 @@ const theme = createMuiTheme({
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    const projectData = new ProjectData();
+    const projectData = new ProjectViewData();
     projectData.addNewActor();
     projectData.addNewActor();
     projectData.addNewActor();

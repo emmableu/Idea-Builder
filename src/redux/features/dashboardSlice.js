@@ -1,8 +1,9 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {DashboardData} from "../../data/DashboardData";
+import {DashboardViewData} from "../../data/DashboardData/DashboardViewData";
 import Cookies from "js-cookie"
 import axios from "../../axiosConfig";
 import {DashboardAPI} from "../../api/DashboardAPI";
+import {DashboardAPIData} from "../../data/DashboardData/DashboardAPIData";
 
 
 const fetchDashboardByUserID = createAsyncThunk(
@@ -11,7 +12,7 @@ const fetchDashboardByUserID = createAsyncThunk(
         const response = await DashboardAPI.fetchDashboard(userID);
         let dashboardData;
         if (response.status === 204) {
-            dashboardData = new DashboardData(userID);
+            dashboardData = new DashboardViewData(userID);
             await DashboardAPI.insertDashboard(dashboardData);
             return dashboardData.toJSON();
         }
@@ -35,7 +36,7 @@ export const dashboardSlice = createSlice({
         [fetchDashboardByUserID.fulfilled]:
             (state, action) => {
                 console.log("state, action: ", state, action);
-                const obj = DashboardData.parse(action.payload);
+                const obj = DashboardViewData.parse(action.payload);
                 state.value = obj;
         },
     }

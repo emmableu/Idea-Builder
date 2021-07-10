@@ -2,8 +2,12 @@ import React from "react";
 import MaterialTable from "material-table";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
+import {useSelector} from "react-redux";
 
-const ProjectTable = () => {
+const ProjectTable = (props) => {
+    const {projectList} = props;
+
+
     return (
         <MaterialTable
             components={{
@@ -14,22 +18,17 @@ const ProjectTable = () => {
             columns={[
                 { title: 'Name', field: 'name' }
             ]}
-            data={[
-                {   id: "abc",
-                    name: 'build city'},
-                {   id: "efg",
-                    name: 'create your own world',  },
-            ]}
+            data={projectList}
             actions={[
                 {
                     icon: 'edit',
                     tooltip: 'Edit project',
-                    onClick: (event, rowData) => alert("edit " + rowData.id)
+                    onClick: (event, rowData) => alert("edit " + rowData.uuid)
                 },
                 {
                     icon: 'library_add',
                     tooltip: 'Duplicate project',
-                    onClick: (event, rowData) => alert("You copied " + rowData.id)
+                    onClick: (event, rowData) => alert("You copied " + rowData.uuid)
                 },
                 {
                     icon: 'delete',

@@ -31,9 +31,12 @@ const NewProjectButton = () => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
-
         setOpen(false);
     };
+
+    const addProject = event => {
+        handleClose(event)
+    }
 
     function handleListKeyDown(event) {
         if (event.key === 'Tab') {
@@ -88,7 +91,7 @@ const NewProjectButton = () => {
                                         id="menu-list-grow"
                                         onKeyDown={handleListKeyDown}
                                     >
-                                        <MenuItem onClick={handleClose}>Blank Project</MenuItem>
+                                        <MenuItem onClick={addProject}>Blank Project</MenuItem>
                                         <MenuItem onClick={handleClose}>Upload Project</MenuItem>
                                     </MenuList>
                                 </ClickAwayListener>

@@ -25,15 +25,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const DashboardTitleBar = () => {
+export const DashboardTitleBar = (props) => {
+    const {userID} = props;
     const classes = useStyles();
     // console.log("Cookies.get(userid", Cookies.get("userID"));
-    const userID = useSelector(state =>
-        state.dashboard.value===null? null:state.dashboard.value.userID);
-
-    React.useEffect(() => {
-        console.log("state.dashboard.value: ", userID);
-    }, [userID])
+    // const userID = useSelector(state =>
+    //     state.dashboard.value===null? null:state.dashboard.value.userID);
+    //
+    // React.useEffect(() => {
+    //     console.log("state.dashboard.value: ", userID);
+    // }, [userID])
 
     return (
             <AppBar className={classes.appBar}
