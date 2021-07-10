@@ -16,7 +16,7 @@ import ProjectMenu from "./ProjectMenu";
 import {Add} from "@material-ui/icons";
 import globalConfig from "../../globalConfig";
 import ProjectTable from "./ProjectTable";
-import NewProjectButton from "./NewProjectButton";
+import NewProjectButton from "./DashboardAddNewProject/NewProjectButton";
 import {useDispatch, useSelector} from "react-redux";
 import Cookies from "js-cookie";
 import {fetchDashboardByUserID} from "../../redux/features/dashboardSlice";
@@ -36,6 +36,8 @@ const useStyles = makeStyles((theme) => ({
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
+        height: "100vh",
+        borderRight: "1px solid #f0f0f0"
     },
     drawerPaper: {
         width: drawerWidth,
@@ -81,13 +83,8 @@ const DashboardPage = () => {
         <div className={classes.root}>
             <CssBaseline />
             <DashboardTitleBar userID={userID}/>
-            <Drawer
+            <div
                 className={classes.drawer}
-                variant="permanent"
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-                anchor="left"
             >
                 <div className={classes.toolbar} />
                 <Divider />
@@ -95,7 +92,7 @@ const DashboardPage = () => {
                  <NewProjectButton />
                 </div>
                 <ProjectMenu/>
-            </Drawer>
+            </div>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <Box style={{height: "5vh"}}/>

@@ -17,13 +17,18 @@ const ProjectMenu = () => {
     return (
         <Menu
             onClick={handleClick}
-            style={{ width: 'inherit' , zIndex: "-1"}}
+            style={{ width: 'inherit' , zIndex: "-1", backgroundColor: "inherit"}}
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"
         >
-            <Menu.Item key="1">My projects</Menu.Item>
-            <Menu.Item key="2">Example projects</Menu.Item>
+            <Menu.Item
+                key="1"
+                style={{zIndex: "-1"}}
+            >My projects</Menu.Item>
+            <Menu.Item
+                style={{zIndex: "-1"}}
+                key="2">Example projects</Menu.Item>
         </Menu>
     );
 };

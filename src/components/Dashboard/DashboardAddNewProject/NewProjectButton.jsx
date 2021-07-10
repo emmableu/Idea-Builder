@@ -8,14 +8,15 @@ import Paper from "@material-ui/core/Paper/Paper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener/ClickAwayListener";
 import MenuList from "@material-ui/core/MenuList/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
-import globalConfig from "../../globalConfig";
+import globalConfig from "../../../globalConfig";
+import BlankProjectMenuItem from "./BlankProjectMenuItem";
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex'
     },
     paper: {
-        marginRight: theme.spacing(2)
+        marginRight: theme.spacing(2),
     },
     addButton: {
     }
@@ -78,6 +79,8 @@ const NewProjectButton = () => {
                     role={undefined}
                     transition
                     disablePortal
+                    disableAutoFocus={true}
+                    disableEnforceFocus={true}
                 >
                     {({ TransitionProps, placement }) => (
                         <Grow
@@ -94,7 +97,9 @@ const NewProjectButton = () => {
                                         id="menu-list-grow"
                                         onKeyDown={handleListKeyDown}
                                     >
-                                        <MenuItem onClick={addProject}>Blank Project</MenuItem>
+
+                                        {/*<MenuItem onClick={addProject}>Blank Project</MenuItem>*/}
+                                        <BlankProjectMenuItem setMenuOpen={setOpen} />
                                         <MenuItem onClick={handleClose}>Upload Project</MenuItem>
                                     </MenuList>
                                 </ClickAwayListener>

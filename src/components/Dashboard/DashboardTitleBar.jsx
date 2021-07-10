@@ -40,6 +40,7 @@ export const DashboardTitleBar = (props) => {
             <AppBar className={classes.appBar}
                     position="fixed"
                     color="inherit"
+                    elevation={3}
                     >
                 <Toolbar>
                         <Button color="inherit" startIcon={<IdeaBuilderIcon />}>
