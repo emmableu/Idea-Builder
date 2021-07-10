@@ -4,21 +4,18 @@ import {useDispatch, useSelector} from "react-redux";
 import {updateActorName} from "../../../../redux/features/projectSlice";
 
 const ActorPanelCardTitle = (props) => {
-    const {uuid} = props;
+    const {_id, name} = props;
     const dispatch = useDispatch();
-    const actorName = useSelector(state =>
-        state.project.value===null? "":state.project.value.actorDataMap[uuid].name
-    );
     return (
         <>
             <Input
                 onChange={e => dispatch(
                     updateActorName(JSON.stringify({
-                        uuid: uuid,
+                        _id: _id,
                         name: e.target.value
                     }))
                 )}
-                value={actorName}
+                value={name}
                 placeholder="Enter actor name"
                 bordered={false}
             />

@@ -36,17 +36,17 @@ const useStyles = makeStyles({
 
 
 const ImgCard = (props) =>  {
-    const {actorUUID, stateUUID, imgSrc, contentNode } = props;
+    const {actorId, stateId, imgSrc, contentNode } = props;
     const classes = useStyles(props);
     const dispatch  = useDispatch();
 
 
     const handleClick = () => {
-        console.log("stateUUID: ", stateUUID)
+        console.log("stateId: ", stateId)
         dispatch(deleteActorState(
             JSON.stringify(
-            {actorUUID,
-            stateUUID})));
+            {actorId,
+            stateId})));
     }
 
 
@@ -64,7 +64,7 @@ const ImgCard = (props) =>  {
         <Card
             variant="outlined"
             className={classes.root}>
-            <Dropdown overlay={menu(stateUUID)} trigger={['contextMenu']}>
+            <Dropdown overlay={menu(stateId)} trigger={['contextMenu']}>
             <CardMedia className={classes.media}>
                     <div className={classes.elementToStretch}>
                         <img

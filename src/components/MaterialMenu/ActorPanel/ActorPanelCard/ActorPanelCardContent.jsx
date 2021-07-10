@@ -9,21 +9,15 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // const stateArray = [...Array(0).keys()];
 const ActorPanelCardContent = props => {
-    const { uuid } = props;
-    const stateList = useSelector(state => {
-        return state.project.value === null
-            ? []
-            :  state.project.value.stateListJSON(uuid);
-    });
-
+    const { _id, stateList } = props;
     return (
         <Grid container spacing={1}>
             {stateList.map(stateData => (
                 <>
                 <Grid item xs={6}>
                     <ActorPanelCardContentImgTile
-                        actorUUID={uuid}
-                        stateUUID={stateData.uuid} />
+                        actorId={_id}
+                        stateId={stateData.uuid} />
                 </Grid>
                 </>
             ))}

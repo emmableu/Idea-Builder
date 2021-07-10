@@ -12,12 +12,12 @@ import {useDispatch} from "react-redux";
 import {deleteActor} from "../../../../redux/features/projectSlice";
 
 const ActorPanelCardButtonGroup = props => {
-    const {uuid} = props;
+    const {_id} = props;
     const dispatch = useDispatch();
 
     return (
         <>
-            <ActorPanelCardUploadButton uuid={uuid}/>
+            <ActorPanelCardUploadButton _id={_id}/>
             <Tooltip title="Search for state">
                 <Button type="link" shape="circle" icon={<SearchOutlined />} />
             </Tooltip>
@@ -28,7 +28,7 @@ const ActorPanelCardButtonGroup = props => {
                     type="link"
                     shape="circle"
                     onClick={(e) => {dispatch(deleteActor(JSON.stringify({
-                        uuid
+                        _id
                     })))}}
                     icon={<DeleteTwoTone twoToneColor="#eb2f96" />}
                 />

@@ -22,19 +22,19 @@ const CardActionButtonGroup = () => (
     </>
 );
 const ActorPanelCardContentImgTile = (props) => {
-    const {actorUUID, stateUUID} = props;
+    const {actorId, stateId} = props;
     React.useEffect(() => {
-        console.log("stateUUID: ", stateUUID);
-        console.log(axios.defaults.baseURL + "/static/" + stateUUID);
-        },[stateUUID]
+        console.log("stateId: ", stateId);
+        console.log(axios.defaults.baseURL + "/static/" + stateId);
+        },[stateId]
     );
 
     return (
         <>
             <ImgCard
-                actorUUID={actorUUID}
-                stateUUID={stateUUID}
-                imgSrc={axios.defaults.baseURL + "/static/" + stateUUID}
+                actorId={actorId}
+                stateId={stateId}
+                imgSrc={axios.defaults.baseURL + "/static/" + stateId}
                 heightToWidthRatio={'75%'}
                 contentNode={<ContentNode />}
             />

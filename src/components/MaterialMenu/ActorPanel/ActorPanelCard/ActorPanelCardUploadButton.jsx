@@ -16,7 +16,7 @@ const uploadButtonProps = {
 };
 
 const ActorPanelCardUploadButton = (props) => {
-    const {uuid} = props;
+    const {_id} = props;
     const [progress, setProgress] = React.useState(0);
     const dispatch = useDispatch();
 
@@ -36,8 +36,8 @@ const ActorPanelCardUploadButton = (props) => {
         }).then(response => {
             dispatch(addStateToActorStateList(JSON.stringify(
          {
-             actorUUID: uuid,
-             stateUUID: response.data.uuid,
+             actorId: _id,
+             stateId: response.data.uuid,
                 }
             )))
         })

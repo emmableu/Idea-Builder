@@ -45,8 +45,8 @@ const App = () => {
   //   projectData.addNewActor();
   //   projectData.addNewActor();
   //   projectData.addNewActor();
-  //   const actorUUID = Object.keys(projectData.actorDataMap)[0];
-  //   projectData.actorDataMap[actorUUID].addNewState();
+  //   const actorId = Object.keys(projectData.actorDataMap)[0];
+  //   projectData.actorDataMap[actorId].addNewState();
   //   console.log('original project: ', projectData);
   //   const projectJSON = projectData.toString();
   //   console.log('projectJSON: ', projectJSON);

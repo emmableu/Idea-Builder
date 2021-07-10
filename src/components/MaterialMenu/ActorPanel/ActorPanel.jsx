@@ -18,8 +18,9 @@ import CircularProgress from "@material-ui/core/CircularProgress/CircularProgres
 import * as uuid from "uuid"
 import ActorPanelCard from "./ActorPanelCard/ActorPanelCard";
 import {useDispatch, useSelector} from 'react-redux';
-import {addNewActor, updateActorOrder} from "../../../redux/features/projectSlice";
-
+import {addNewActor, addNewActorToDatabase, updateActorOrder} from "../../../redux/features/projectSlice";
+import {ActorData} from "../../../data/ActorData";
+import * as UUID from "uuid"
 
 
 
@@ -65,12 +66,23 @@ const getBoxStyle = () => ({
 
 const ActorPanel = (props) => {
     const dispatch = useDispatch();
-    const actorDataList = useSelector(state =>
-        state.project.value===null? []:state.project.value.actorDataList
+    const actorList = useSelector(state =>
+        state.project.value===null? []:state.project.value.toJSON().actorList
+    );
+    const projectId = useSelector(state =>
+        state.project.value===null? null:state.project.value._id
     );
 
     const handleAddNewActorButtonClick = (e) => {
-        dispatch(addNewActor());
+        const actorId = UUID.v4();
+        console.log("actorId: ", actorId);
+        const actorDataJSON = new ActorData(actorId).toJSON();
+        const payload =  JSON.stringify({
+            projectId,
+            actorDataJSON
+        });
+        dispatch(addNewActor(payload));
+        dispatch(addNewActorToDatabase(payload));
     };
 
     const onDragEnd = (result) => {
@@ -111,8 +123,9 @@ const ActorPanel = (props) => {
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}
                         >
-                            {actorDataList.map((item, index) => (
-                                <Draggable key={item.uuid} draggableId={item.uuid} index={index}>
+                            {actorList.map((item, index) => (
+                                <>
+                                <Draggable key={item._id} draggableId={item._id} index={index}>
                                     {(provided, snapshot) => (
                                         <div
                                             ref={provided.innerRef}
@@ -123,11 +136,12 @@ const ActorPanel = (props) => {
                                             )}
                                         >
                                             <ActorPanelCard
-                                                uuid={item.uuid}
+                                                {...item}
                                                 {...provided.dragHandleProps}/>
                                         </div>
                                     )}
                                 </Draggable>
+                                </>
                             ))}
                             {provided.placeholder}
                         </div>

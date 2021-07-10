@@ -8,12 +8,23 @@ import Cookies from "js-cookie";
 const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
     async (text, thunkAPI) => {
-        const {newProjectUUID, newProjectName} = JSON.parse(text);
-        const projectData = new ProjectData(newProjectUUID, newProjectName);
+        const {newProjectId, newProjectName} = JSON.parse(text);
+        const projectData = new ProjectData(newProjectId, newProjectName);
+        console.log('projectData: ', projectData);
         const response = await ProjectAPI.insertProject(Cookies.get("userID"), projectData);
         return response.status;
     }
 )
+
+
+const addNewActorToDatabase = createAsyncThunk(
+    'project/addNewActorToDatabase',
+    async (text, thunkAPI) => {
+        const response = await ProjectAPI.addNewActorToDatabase(text);
+        return response.status;
+    }
+)
+
 
 const loadProjectFromDatabase = createAsyncThunk(
     'project/loadProjectFromDatabase',
@@ -33,8 +44,9 @@ export const projectSlice = createSlice({
 
 
         addNewActor: {
-            reducer: (state) => {
-                state.value.addNewActor();
+            reducer: (state, action) => {
+                const {actorDataJSON} = JSON.parse(action.payload)
+                state.value.addNewActor(actorDataJSON);
             }
         },
 
@@ -53,12 +65,14 @@ export const projectSlice = createSlice({
 
         updateActorName: {
             reducer: (state, action) => {
-                state.value.actorDataMap[action.payload.uuid].name = action.payload.name;
+                state.value.actorList.find(
+                    a => a._id===action.payload._id
+                ).name = action.payload.name;
             },
             prepare: (text) => {
               const obj = JSON.parse(text);
               return { payload: {
-                          "uuid": obj.uuid,
+                          "_id": obj._id,
                           "name": obj.name,
                       }
               }
@@ -67,15 +81,15 @@ export const projectSlice = createSlice({
 
         addStateToActorStateList: {
             reducer: (state, action) => {
-                state.value.actorDataMap[action.payload.actorUUID].addNewState(
-                    action.payload.stateUUID
+                state.value.actorDataMap[action.payload.actorId].addNewState(
+                    action.payload.stateId
                 )
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
                 return { payload: {
-                        "actorUUID": obj.actorUUID,
-                        "stateUUID": obj.stateUUID,
+                        "actorId": obj.actorId,
+                        "stateId": obj.stateId,
                     }
                 }
             },
@@ -97,13 +111,13 @@ export const projectSlice = createSlice({
 
         deleteActorState: {
             reducer: (state, action) => {
-                state.value.deleteActorState(action.payload.actorUUID, action.payload.stateUUID);
+                state.value.deleteActorState(action.payload.actorId, action.payload.stateId);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
                 return { payload: {
-                        "actorUUID": obj.actorUUID,
-                        "stateUUID": obj.stateUUID,
+                        "actorId": obj.actorId,
+                        "stateId": obj.stateId,
                     }
                 }
             },
@@ -127,5 +141,5 @@ export const projectSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { addNewActor, importProject, updateActorName, updateActorOrder,
     deleteActor, addStateToActorStateList, deleteActorState, download} = projectSlice.actions;
-export {insertEmptyProjectToDatabase, loadProjectFromDatabase};
+export {insertEmptyProjectToDatabase, loadProjectFromDatabase, addNewActorToDatabase};
 export default projectSlice.reducer;

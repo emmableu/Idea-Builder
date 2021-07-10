@@ -24,6 +24,15 @@ class ProjectAPI {
         return response;
     }
 
+    static async addNewActorToDatabase(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/actor/add`,
+            data: text,
+        });
+        return response;
+
+    }
 }
 
 export {ProjectAPI}
