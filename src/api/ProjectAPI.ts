@@ -11,7 +11,7 @@ class ProjectAPI {
             url: `/project/add`,
             data: {
                 userID: userID,
-                projectData: projectData.toString()
+                projectData: projectData.toJSON()
             }
         })
         return response;

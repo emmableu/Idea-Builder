@@ -1,5 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {ProjectViewData} from "../../data/ProjectData/ProjectViewData";
+import {DashboardAPI} from "../../api/DashboardAPI";
+import {DashboardAPIData} from "../../data/DashboardData/DashboardAPIData";
+import {ProjectAPIData} from "../../data/ProjectData/ProjectAPIData";
+import {ProjectAPI} from "../../api/ProjectAPI";
+import Cookies from "js-cookie";
+
+const insertEmptyProjectToDatabase = createAsyncThunk(
+    'project/insertNewProjectToDatabase',
+    async (text, thunkAPI) => {
+        const {newProjectUUID, newProjectName} = JSON.parse(text);
+        const projectAPIData = new ProjectAPIData(newProjectUUID, newProjectName);
+        const response = await ProjectAPI.insertProject(Cookies.get("userID"), projectAPIData);
+        return response.status;
+    }
+)
+
 
 export const projectSlice = createSlice({
     name: 'project',
@@ -103,5 +119,5 @@ export const projectSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { addNewActor, importProject, updateActorName, updateActorOrder,
     deleteActor, addStateToActorStateList, deleteActorState, download} = projectSlice.actions;
-
+export {insertEmptyProjectToDatabase};
 export default projectSlice.reducer;

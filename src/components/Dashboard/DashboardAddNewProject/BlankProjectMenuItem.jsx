@@ -5,28 +5,38 @@ import React from "react";
 import { Input } from 'antd';
 import MenuItem from "@material-ui/core/MenuItem";
 import * as UUID from "uuid";
-
+import {
+    useRouteMatch,
+    useHistory
+} from "react-router-dom";
+import {insertEmptyProjectToDatabase} from "../../../redux/features/projectSlice"
+import {useDispatch} from "react-redux";
 
 const BlankProjectMenuItem = (props) => {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const [confirmLoading, setConfirmLoading] = React.useState(false);
     const [newProjectName, setNewProjectName] = React.useState(null);
+    const match = useRouteMatch();
+    const history = useHistory();
+    const dispatch = useDispatch();
 
     const showModal = (e) => {
         setIsModalVisible(true);
+
 
         setTimeout(()=> {
         }, 500)
     };
 
-    const handleOk = () => {
+    const handleOk = async () => {
         setConfirmLoading(true);
         const newProjectUUID = UUID.v4();
-        await dispatch(insertNewProjectToDatabase(
+        await dispatch(insertEmptyProjectToDatabase(
             JSON.stringify({newProjectUUID,
                 newProjectName})));
         setIsModalVisible(false);
         setConfirmLoading(false);
+        history.push(`${match.url}/${newProjectUUID}`);
     };
 
     const handleCancel = () => {
