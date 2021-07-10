@@ -11,6 +11,7 @@ import {UserOutlined} from "@ant-design/icons";
 import {useAuth} from "../../hooks/useAuth";
 import {useHistory} from "react-router-dom";
 import Cookies from "js-cookie";
+import globalConfig from "../../globalConfig";
 
 
 const useStyles = makeStyles(theme => ({
@@ -31,12 +32,13 @@ const UserButton = (props) => {
       let history = useHistory();
       let auth = useAuth();
 
+
     const handleToggle = () => {
         setOpen(prevOpen => !prevOpen);
     };
 
     const handleClick = event => {
-        auth.signout(() => history.push("/login"));
+        auth.signout(() => history.push(globalConfig.routes.login));
         Cookies.remove("userID");
         handleClose(event);
     };

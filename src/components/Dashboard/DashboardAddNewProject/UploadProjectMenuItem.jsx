@@ -4,15 +4,11 @@ import MenuList from "@material-ui/core/MenuList/MenuList";
 import React from "react";
 import { Input } from 'antd';
 import MenuItem from "@material-ui/core/MenuItem";
+import UploadModalContent from "./UploadModalContent";
 
 
-const ProjectNameInput = () => {
-    return  (
-        <Input placeholder="Project Name"/>
-    )
-}
 
-const BlankProjectMenuItem = (props) => {
+const UploadProjectMenuItem = (props) => {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
 
     const showModal = (e) => {
@@ -32,20 +28,20 @@ const BlankProjectMenuItem = (props) => {
 
     return (
         <>
-            <MenuItem onClick={e => showModal(e)}>Blank Project</MenuItem>
+            <MenuItem onClick={e => showModal(e)}>Upload Project</MenuItem>
             <Modal
-                title="New Project"
+                title="Upload Zipped Project"
                 visible={isModalVisible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                okText="Create"
-                cancelText="Cancel"
+                footer={[
+                    <Button key="Cancel" onClick={handleCancel}>
+                        Cancel
+                    </Button>]}
             >
-                < ProjectNameInput />
+                < UploadModalContent />
             </Modal>
         </>
     );
 };
 
 
-export default BlankProjectMenuItem;
+export default UploadProjectMenuItem;
