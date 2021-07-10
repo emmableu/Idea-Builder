@@ -7,7 +7,7 @@ import {
     useRouteMatch,
     useParams
 } from "react-router-dom";
-import BoardDrawer from "../Board/BoardDrawer";
+import ProjectDrawer from "../Project/ProjectDrawer";
 import DashboardPage from "./DashboardPage";
 
 const Dashboard = () => {
@@ -21,7 +21,7 @@ const Dashboard = () => {
           the page that is shown when no topic is selected */}
             <Switch>
                 <Route path={`${match.path}/:projectUUID`}>
-                    <BoardDrawer />
+                    <ProjectDrawer />
                     `${match.path}`
                 </Route>
                 <Route path={match.path}>

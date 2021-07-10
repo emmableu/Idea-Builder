@@ -1,10 +1,11 @@
 import axios from "../axiosConfig";
 import {DashboardViewData} from "../data/DashboardData/DashboardViewData";
 import {ProjectViewData} from "../data/ProjectData/ProjectViewData";
+import {ProjectAPIData} from "../data/ProjectData/ProjectAPIData";
 
 class ProjectAPI {
 
-    static async insertProject (userID:string, projectData:ProjectViewData) {
+    static async insertProject (userID:string, projectData:ProjectAPIData) {
         const response = await axios({
             method: 'post',
             url: `/project/add`,

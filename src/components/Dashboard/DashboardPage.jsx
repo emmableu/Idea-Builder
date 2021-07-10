@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles, ThemeProvider} from '@material-ui/core/styles';
 import {Drawer, Box, Button, CssBaseline, Grid} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -77,6 +77,7 @@ const DashboardPage = () => {
 
 
     return (
+        <ThemeProvider theme={globalConfig.dashboardTheme()}>
         <div className={classes.root}>
             <CssBaseline />
             <DashboardTitleBar userID={userID}/>
@@ -106,6 +107,7 @@ const DashboardPage = () => {
                 </Grid>
             </main>
         </div>
+        </ThemeProvider>
     );
 }
 

@@ -1,7 +1,7 @@
 import './App.less';
 import React, { useContext, createContext, useState, useEffect } from "react";
 import { hot } from 'react-hot-loader';
-import BoardDrawer from './components/Board/BoardDrawer.jsx';
+import ProjectDrawer from './components/Project/ProjectDrawer.jsx';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import Dashboard from './components/Dashboard/Dashboard';
 import { ProjectViewData } from './data/ProjectData/ProjectViewData';
@@ -19,6 +19,7 @@ import {
 import LoginPage from './components/LoginPage/LoginPage'
 import  {authContext, useAuth, ProvideAuth, useProvideAuth, PrivateRoute} from "./hooks/useAuth";
 import Cookies from "js-cookie"
+import globalConfig from "./globalConfig";
 
 const theme = createMuiTheme({
   typography: {
@@ -57,10 +58,10 @@ const App = () => {
       <ProvideAuth>
       <Router>
         <ThemeProvider theme={theme}>
-          <Route path="/login" children={<LoginPage/>} />
-          <PrivateRoute path="/project" children={<Dashboard />} />
+          <Route path={globalConfig.routes.login} children={<LoginPage/>} />
+          <PrivateRoute path={globalConfig.routes.dashboard} children={<Dashboard />} />
           <Route exact path="/">
-            <Redirect to="/project" />
+            <Redirect to={globalConfig.routes.dashboard} />
           </Route>
         </ThemeProvider>
       </Router>
@@ -74,7 +75,7 @@ const App = () => {
 // const authContext = createContext();
 
 
-// {/*<BoardDrawer/>;*/}
+// {/*<ProjectDrawer/>;*/}
 // {/*<DashboardPage/>*/}
 
 export default hot(module)(App);

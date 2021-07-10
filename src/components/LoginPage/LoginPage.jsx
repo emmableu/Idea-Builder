@@ -26,6 +26,8 @@ import {authContext, useAuth} from "../../hooks/useAuth"
 import {useDispatch} from "react-redux";
 import {loadDashboardFromLoginUserID} from "../../redux/features/dashboardSlice";
 import Cookies from "js-cookie"
+import {createMuiTheme, ThemeProvider} from "@material-ui/core";
+import globalConfig from "../../globalConfig";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -53,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
 const LoginPage = () => {
     const classes = useStyles();
     let history = useHistory();
@@ -62,7 +65,7 @@ const LoginPage = () => {
 
     React.useEffect(()=>{
         if (Cookies.get("userID") !== undefined) {
-            history.replace("/project");
+            history.replace(globalConfig.routes.dashboard);
         }
     }, [])
 
@@ -78,6 +81,7 @@ const LoginPage = () => {
     };
 
     return (
+        <ThemeProvider theme={globalConfig.dashboardTheme()}>
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Paper
@@ -116,6 +120,7 @@ const LoginPage = () => {
                 </form>
             </Paper>
         </Container>
+        </ThemeProvider>
     );
 }
 

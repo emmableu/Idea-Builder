@@ -1,3 +1,5 @@
+import {createMuiTheme} from "@material-ui/core";
+
 const materialDarkTheme = {
      darkText: "#131A20",
      primary: "#90CAF9",
@@ -56,6 +58,17 @@ const globalConfig = {
           },
           menuBackgroundOnDrag: "#e6f7ff",
           whiteText: "white",
+     },
+     dashboardTheme: ()=> createMuiTheme({
+          palette: {
+               secondary: {
+                    main: "#1890ff",
+               },
+          },
+     }),
+     routes: {
+          dashboard: "/project",
+          login: "/login"
      }
 }
 

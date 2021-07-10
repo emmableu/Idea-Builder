@@ -5,6 +5,8 @@ import React from "react";
 import {CopyOutlined, DeleteOutlined, DownloadOutlined, ImportOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
 import {download} from "../../redux/features/projectSlice"
+import { useRouteMatch, useHistory } from "react-router-dom"
+import globalConfig from "../../globalConfig";
 // import InsertDriveFile from "@material-ui/core/Icon";
 
 // const actionMenu =
@@ -24,6 +26,11 @@ import {download} from "../../redux/features/projectSlice"
 
 const ProjectTitleBarActionGroup  = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
+
+    const backToHome = () => {
+        history.push(globalConfig.routes.dashboard);
+    }
     const handleClick = () => {
         dispatch(download());
     }
@@ -40,7 +47,11 @@ const ProjectTitleBarActionGroup  = () => {
             </Tooltip>
 
             <Tooltip title="Back to home">
-                <IconButton aria-label="display more actions" color="inherit" size="medium">
+                <IconButton
+                    aria-label="display more actions"
+                    color="inherit"
+                    size="medium"
+                    onClick={backToHome}>
                     <Home/>
                 </IconButton>
             </Tooltip>

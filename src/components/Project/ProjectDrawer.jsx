@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
 // }
 
 
-const BoardDrawer = () => {
+const ProjectDrawer = () => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -180,7 +180,7 @@ const BoardDrawer = () => {
     );
 };
 
-export default BoardDrawer;
+export default ProjectDrawer;
 
 
 

@@ -8,6 +8,7 @@ import Paper from "@material-ui/core/Paper/Paper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener/ClickAwayListener";
 import MenuList from "@material-ui/core/MenuList/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
+import globalConfig from "../../globalConfig";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,6 +16,8 @@ const useStyles = makeStyles(theme => ({
     },
     paper: {
         marginRight: theme.spacing(2)
+    },
+    addButton: {
     }
 }));
 
@@ -67,7 +70,7 @@ const NewProjectButton = () => {
                     className={classes.addButton}
                     color="secondary"
                     variant="contained"
-                > New project
+                > New Project
                 </Button>
                 <Popper
                     open={open}
