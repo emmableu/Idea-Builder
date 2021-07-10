@@ -57,12 +57,11 @@ const App = () => {
       <ProvideAuth>
       <Router>
         <ThemeProvider theme={theme}>
-          <Route path="/">
-             <Redirect to="/project" />
-          </Route>
           <Route path="/login" children={<LoginPage/>} />
           <PrivateRoute path="/project" children={<Dashboard />} />
-          {/*<Route path="/user/:userID" children={<Dashboard />} />*/}
+          <Route exact path="/">
+            <Redirect to="/project" />
+          </Route>
         </ThemeProvider>
       </Router>
       </ProvideAuth>
@@ -76,6 +75,6 @@ const App = () => {
 
 
 // {/*<BoardDrawer/>;*/}
-// {/*<Dashboard/>*/}
+// {/*<DashboardPage/>*/}
 
 export default hot(module)(App);

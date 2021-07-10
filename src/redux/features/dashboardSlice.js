@@ -12,7 +12,7 @@ const fetchDashboardByUserID = createAsyncThunk(
         const response = await DashboardAPI.fetchDashboard(userID);
         let dashboardData;
         if (response.status === 204) {
-            dashboardData = new DashboardViewData(userID);
+            dashboardData = new DashboardAPIData(userID);
             await DashboardAPI.insertDashboard(dashboardData);
             return dashboardData.toJSON();
         }

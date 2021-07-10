@@ -59,7 +59,12 @@ const LoginPage = () => {
     let location = useLocation();
     let auth = useAuth();
     const [userID, setUserID] = React.useState(null);
-    const dispatch = useDispatch();
+
+    React.useEffect(()=>{
+        if (Cookies.get("userID") !== undefined) {
+            history.replace("/project");
+        }
+    }, [])
 
     const login = (e) => {
         if (userID === null) {

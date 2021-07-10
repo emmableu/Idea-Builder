@@ -1,9 +1,10 @@
 import axios from "../axiosConfig";
 import {DashboardViewData} from "../data/DashboardData/DashboardViewData";
+import {DashboardAPIData} from "../data/DashboardData/DashboardAPIData";
 
 class DashboardAPI {
 
-    static async insertDashboard (dashboardData:DashboardViewData) {
+    static async insertDashboard (dashboardData:DashboardAPIData) {
         const response = await axios({
             method: 'post',
             url: `/dashboard/add`,
