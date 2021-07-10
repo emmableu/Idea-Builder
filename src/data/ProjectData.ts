@@ -11,8 +11,8 @@ export class ProjectData {
     deleted: boolean;
     actorList: Array<ActorData>;
 
-    constructor(uuid?: string, name?:string, deleted?: boolean, actorList?:Array<ActorData>) {
-        this._id = uuid? uuid:UUID.v4();
+    constructor(_id?: string, name?:string, deleted?: boolean, actorList?:Array<ActorData>) {
+        this._id = _id? _id:UUID.v4();
         this.name = name? name:"Untitled";
         this.deleted = deleted? deleted:false;
         this.actorList = actorList? actorList:[];
@@ -45,7 +45,7 @@ export class ProjectData {
     }
 
 
-    addNewActor(actorDataJSON:IActorData) {
+    addActor(actorDataJSON:IActorData) {
         this.actorList.unshift(
             ActorData.parse(actorDataJSON)
         )
@@ -69,7 +69,7 @@ export class ProjectData {
     deleteActorState (actorId:string, stateId: string) {
         const actorData = this.actorList.find(e => e._id===actorId);
         const stateList = actorData === undefined? []:actorData.stateList;
-        const stateIndex = stateList.findIndex(stateData => stateData.uuid === stateId);
+        const stateIndex = stateList.findIndex(stateData => stateData._id === stateId);
         stateList.splice(stateIndex, 1);
     }
 

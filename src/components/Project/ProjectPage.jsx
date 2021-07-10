@@ -8,14 +8,14 @@ import Spinner from "../Spinner";
 
 
 const ProjectPage = () => {
-    const {uuid} = useParams();
+    const {_id} = useParams();
     const dispatch = useDispatch();
     const projectData = useSelector(
         state => state.project.value
     );
 
     React.useEffect(() => {
-            dispatch(loadProjectFromDatabase(uuid))
+            dispatch(loadProjectFromDatabase(_id))
         }, [])
 
     return (

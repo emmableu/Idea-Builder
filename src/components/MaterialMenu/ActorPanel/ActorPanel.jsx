@@ -18,7 +18,7 @@ import CircularProgress from "@material-ui/core/CircularProgress/CircularProgres
 import * as uuid from "uuid"
 import ActorPanelCard from "./ActorPanelCard/ActorPanelCard";
 import {useDispatch, useSelector} from 'react-redux';
-import {addNewActor, addNewActorToDatabase, updateActorOrder} from "../../../redux/features/projectSlice";
+import {addActor, addNewActor, addNewActorToDatabase, updateActorOrder} from "../../../redux/features/projectSlice";
 import {ActorData} from "../../../data/ActorData";
 import * as UUID from "uuid"
 
@@ -69,20 +69,9 @@ const ActorPanel = (props) => {
     const actorList = useSelector(state =>
         state.project.value===null? []:state.project.value.toJSON().actorList
     );
-    const projectId = useSelector(state =>
-        state.project.value===null? null:state.project.value._id
-    );
 
     const handleAddNewActorButtonClick = (e) => {
-        const actorId = UUID.v4();
-        console.log("actorId: ", actorId);
-        const actorDataJSON = new ActorData(actorId).toJSON();
-        const payload =  JSON.stringify({
-            projectId,
-            actorDataJSON
-        });
-        dispatch(addNewActor(payload));
-        dispatch(addNewActorToDatabase(payload));
+        dispatch(addActor());
     };
 
     const onDragEnd = (result) => {

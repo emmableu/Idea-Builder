@@ -26,15 +26,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const DashboardTitleBar = (props) => {
-    const {userID} = props;
+    const {userId} = props;
     const classes = useStyles();
-    // console.log("Cookies.get(userid", Cookies.get("userID"));
-    // const userID = useSelector(state =>
-    //     state.dashboard.value===null? null:state.dashboard.value.userID);
+    // console.log("Cookies.get(userid", Cookies.get("userId"));
+    // const userId = useSelector(state =>
+    //     state.dashboard.value===null? null:state.dashboard.value.userId);
     //
     // React.useEffect(() => {
-    //     console.log("state.dashboard.value: ", userID);
-    // }, [userID])
+    //     console.log("state.dashboard.value: ", userId);
+    // }, [userId])
 
     return (
             <AppBar className={classes.appBar}
@@ -49,7 +49,7 @@ export const DashboardTitleBar = (props) => {
 
                 <Typography variant="h6" className={classes.title}>
                 </Typography>
-                    <UserButton userID={userID}/>
+                    <UserButton userId={userId}/>
                 </Toolbar>
             </AppBar>
     );

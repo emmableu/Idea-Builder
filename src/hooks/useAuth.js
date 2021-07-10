@@ -74,7 +74,7 @@ function PrivateRoute({ children, ...rest }) {
         <Route
             {...rest}
             render={({ location }) =>
-                (auth.user || Cookies.get('userID')) ? (
+                (auth.user || Cookies.get('userId')) ? (
                     children
                 ) : (
                     <Redirect

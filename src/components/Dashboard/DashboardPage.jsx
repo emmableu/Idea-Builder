@@ -66,14 +66,14 @@ const useStyles = makeStyles((theme) => ({
 const DashboardPage = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const userID = Cookies.get('userID');
+    const userId = Cookies.get('userId');
     const projectList = useSelector(state =>
         state.dashboard.value===null? null: state.dashboard.value.projectListJSON());
 
     React.useEffect(() =>
     {
-        if (userID !== undefined) {
-            dispatch(fetchDashboardByUserID(userID));
+        if (userId !== undefined) {
+            dispatch(fetchDashboardByUserID(userId));
         }
     }, []);
 
@@ -82,7 +82,7 @@ const DashboardPage = () => {
         <ThemeProvider theme={globalConfig.dashboardTheme()}>
         <div className={classes.root}>
             <CssBaseline />
-            <DashboardTitleBar userID={userID}/>
+            <DashboardTitleBar userId={userId}/>
             <div
                 className={classes.drawer}
             >

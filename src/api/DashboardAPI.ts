@@ -13,14 +13,22 @@ class DashboardAPI {
         return response;
     }
 
-    static async fetchDashboard (userID:string) {
+    static async fetchDashboard (userId:string) {
         const response = await axios({
                                         method: 'get',
-                                        url: `/dashboard/${userID}`,
+                                        url: `/dashboard/${userId}`,
                                         });
         return response;
     }
 
+    static async replaceProjectIdListInDatabase(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/project_list/replace`,
+            data: text,
+        });
+        return response;
+    }
 }
 
 export {DashboardAPI}

@@ -4,34 +4,42 @@ import {ProjectData} from "../data/ProjectData";
 
 class ProjectAPI {
 
-    static async insertProject (userID:string, projectData:ProjectData) {
+    static async insertProject (userId:string, projectData:ProjectData) {
         const response = await axios({
             method: 'post',
             url: `/project/add`,
             data: {
-                userID: userID,
+                userId: userId,
                 projectData: projectData.toJSON()
             }
         })
         return response;
     }
 
-    static async loadProject (uuid:string) {
+    static async loadProject (_id:string) {
         const response = await axios({
             method: 'get',
-            url: `/project/${uuid}`,
+            url: `/project/${_id}`,
         });
         return response;
     }
 
-    static async addNewActorToDatabase(text:any) {
+    static async replaceActorIdListInDatabase(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/actor_list/replace`,
+            data: text,
+        });
+        return response;
+    }
+
+    static async addActor(text:any) {
         const response = await axios({
             method: 'post',
             url: `/actor/add`,
             data: text,
         });
         return response;
-
     }
 }
 

@@ -1,21 +1,21 @@
 export class DashboardViewData {
-    userID: string;
-    projectList: Array<{ uuid: string; name: string }>;
+    userId: string;
+    projectList: Array<{ _id: string; name: string }>;
 
     constructor(
-        userID: string,
-        projectList?: Array<{ uuid: string; name: string }>
+        userId: string,
+        projectList?: Array<{ _id: string; name: string }>
     ) {
-        this.userID = userID;
+        this.userId = userId;
         this.projectList = projectList ? projectList : [];
     }
 
     toJSON() {
         return {
-            userID: this.userID,
+            userId: this.userId,
             projectList: this.projectList.map(s => (
                 {
-                    "uuid": s.uuid,
+                    "_id": s._id,
                     "name": s.name,
                 }))
         }
@@ -28,18 +28,18 @@ export class DashboardViewData {
     projectListJSON () {
         return this.projectList.map(s => (
             {
-                "uuid": s.uuid,
+                "_id": s._id,
                 "name": s.name,
             }
         ))
     }
 
     static parse(dashboardJSON: {
-        userID: string;
-        projectList?: Array<{ uuid: string; name: string }>;
+        userId: string;
+        projectList?: Array<{ _id: string; name: string }>;
     }): DashboardViewData {
         return new DashboardViewData(
-            dashboardJSON.userID,
+            dashboardJSON.userId,
             dashboardJSON.projectList
         );
     }

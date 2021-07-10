@@ -17,7 +17,7 @@ const ProjectTable = (props) => {
 
 
     const redirectToProjectPage = (rowData) => {
-        history.push(`${match.url}/${rowData.uuid}`)
+        history.push(`${match.url}/${rowData._id}`)
     }
 
     const deleteProject = (rowData) => {
@@ -29,7 +29,7 @@ const ProjectTable = (props) => {
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                dispatch(deleteProjectOnDashboard(rowData.uuid));
+                dispatch(deleteProjectOnDashboard(rowData._id));
             },
             onCancel() {
                 console.log('Cancel');
@@ -55,11 +55,11 @@ const ProjectTable = (props) => {
                     tooltip: 'Edit project',
                     onClick: (event, rowData) => redirectToProjectPage(rowData),
                 },
-                {
-                    icon: 'library_add',
-                    tooltip: 'Duplicate project',
-                    onClick: (event, rowData) => alert("You copied " + rowData.uuid)
-                },
+                // {
+                //     icon: 'library_add',
+                //     tooltip: 'Duplicate project',
+                //     onClick: (event, rowData) => alert("You copied " + rowData._id)
+                // },
                 {
                     icon: 'delete',
                     tooltip: 'Delete project',

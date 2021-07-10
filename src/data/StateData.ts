@@ -1,23 +1,23 @@
 import * as UUID from "uuid";
 
 export interface IStateData {
-    uuid: string;
+    _id: string;
     name: string;
 }
 
 
 export class StateData implements IStateData{
-    uuid: string;
+    _id: string;
     name: string;
 
-    constructor(uuid?: string, name?:string) {
-        this.uuid = uuid? uuid:UUID.v4();
+    constructor(_id?: string, name?:string) {
+        this._id = _id? _id:UUID.v4();
         this.name = name? name:"state";
     }
 
     toJSON (): IStateData {
         return {
-            uuid: this.uuid,
+            _id: this._id,
             name: this.name
         }
     }

@@ -21,7 +21,7 @@ const Dashboard = () => {
           2nd <Route> here as an "index" page for all topics, or
           the page that is shown when no topic is selected */}
             <Switch>
-                <Route path={`${match.path}/:uuid`}>
+                <Route path={`${match.path}/:_id`}>
                     <ProjectPage />
                 </Route>
                 <Route path={match.path}>

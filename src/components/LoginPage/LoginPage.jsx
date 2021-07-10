@@ -61,21 +61,21 @@ const LoginPage = () => {
     let history = useHistory();
     let location = useLocation();
     let auth = useAuth();
-    const [userID, setUserID] = React.useState(null);
+    const [userId, setUserID] = React.useState(null);
 
     React.useEffect(()=>{
-        if (Cookies.get("userID") !== undefined) {
+        if (Cookies.get("userId") !== undefined) {
             history.replace(globalConfig.routes.dashboard);
         }
     }, [])
 
     const login = (e) => {
-        if (userID === null) {
+        if (userId === null) {
             return;
         }
         let { from } = location.state || { from: { pathname: `/project` } };
         auth.signin(() => {
-            Cookies.set("userID", userID);
+            Cookies.set("userId", userId);
             history.replace(from);
         });
     };
@@ -101,10 +101,10 @@ const LoginPage = () => {
                         margin="normal"
                         required
                         fullWidth
-                        id="userID"
+                        id="userId"
                         label="City Name"
-                        name="userID"
-                        autoComplete="userID"
+                        name="userId"
+                        autoComplete="userId"
                         autoFocus
                         onInput={ e => setUserID(e.target.value.toLowerCase())}
                     />

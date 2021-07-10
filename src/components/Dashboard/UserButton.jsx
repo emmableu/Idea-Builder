@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UserButton = (props) => {
-    const {userID} = props;
+    const {userId} = props;
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
@@ -39,7 +39,7 @@ const UserButton = (props) => {
 
     const handleClick = event => {
         auth.signout(() => history.push(globalConfig.routes.login));
-        Cookies.remove("userID");
+        Cookies.remove("userId");
         handleClose(event);
     };
 
@@ -77,7 +77,7 @@ const UserButton = (props) => {
                     aria-haspopup="true"
                     onClick={handleToggle}
                     startIcon={<UserOutlined />}>
-                    {userID}
+                    {userId}
                 </Button>
                 <Popper
                     open={open}

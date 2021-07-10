@@ -37,7 +37,7 @@ const ActorPanelCardUploadButton = (props) => {
             dispatch(addStateToActorStateList(JSON.stringify(
          {
              actorId: _id,
-             stateId: response.data.uuid,
+             stateId: response.data._id,
                 }
             )))
         })

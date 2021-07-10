@@ -50,7 +50,7 @@ const App = () => {
   //   console.log('original project: ', projectData);
   //   const projectJSON = projectData.toString();
   //   console.log('projectJSON: ', projectJSON);
-  //   // const projectStr = `{"uuid":"692e2ef2-b373-40cc-9b23-5257045e3f82","name":"Untitled","actorDataMap":{"7a157d32-dd8f-4457-badb-413f218e8c67":{"name":"Untitled","stateList":[{"uuid":"e6260162-cc33-4815-9150-c5055c91646f","name":"state"}]},"d76e0fe4-ec15-49bf-9a34-4d41a3f16a1d":{"name":"Untitled","stateList":[]},"e61b8429-3acf-4a1b-b451-18e3b972f862":{"name":"Untitled","stateList":[]}}}`;
+  //   // const projectStr = `{"_id":"692e2ef2-b373-40cc-9b23-5257045e3f82","name":"Untitled","actorDataMap":{"7a157d32-dd8f-4457-badb-413f218e8c67":{"name":"Untitled","stateList":[{"_id":"e6260162-cc33-4815-9150-c5055c91646f","name":"state"}]},"d76e0fe4-ec15-49bf-9a34-4d41a3f16a1d":{"name":"Untitled","stateList":[]},"e61b8429-3acf-4a1b-b451-18e3b972f862":{"name":"Untitled","stateList":[]}}}`;
   //   dispatch(importProject(projectJSON));
   // });
 

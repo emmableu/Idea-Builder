@@ -17,7 +17,7 @@ const ActorPanelCardContent = props => {
                 <Grid item xs={6}>
                     <ActorPanelCardContentImgTile
                         actorId={_id}
-                        stateId={stateData.uuid} />
+                        stateId={stateData._id} />
                 </Grid>
                 </>
             ))}

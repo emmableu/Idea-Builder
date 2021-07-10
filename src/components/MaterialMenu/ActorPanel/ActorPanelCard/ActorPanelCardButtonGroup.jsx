@@ -15,6 +15,11 @@ const ActorPanelCardButtonGroup = props => {
     const {_id} = props;
     const dispatch = useDispatch();
 
+
+    const handleDeleteActor = (e) => {
+        dispatch(deleteActor(_id));
+
+    }
     return (
         <>
             <ActorPanelCardUploadButton _id={_id}/>
@@ -27,9 +32,7 @@ const ActorPanelCardButtonGroup = props => {
                 <Button
                     type="link"
                     shape="circle"
-                    onClick={(e) => {dispatch(deleteActor(JSON.stringify({
-                        _id
-                    })))}}
+                    onClick={handleDeleteActor}
                     icon={<DeleteTwoTone twoToneColor="#eb2f96" />}
                 />
             </Tooltip>

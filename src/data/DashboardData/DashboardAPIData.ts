@@ -1,18 +1,18 @@
 import {DashboardViewData} from "./DashboardViewData";
 
 export class DashboardAPIData {
-    userID: string;
+    userId: string;
     projectIdList: Array<string>;
 
-    constructor (userID:string, projectIdList?:Array<string>)
+    constructor (userId:string, projectIdList?:Array<string>)
     {
-        this.userID = userID;
+        this.userId = userId;
         this.projectIdList = projectIdList? projectIdList:[];
     }
 
     toJSON () {
         return {
-            userID: this.userID,
+            userId: this.userId,
             projectIdList: this.projectIdList,
         }
     }
@@ -23,14 +23,14 @@ export class DashboardAPIData {
 
     toEmptyDashboardViewData () {
         return new DashboardViewData(
-            this.userID
+            this.userId
         )
     }
 
-    static parse (dashboardJSON: {userID:string, projectIdList?:Array<string>}):
+    static parse (dashboardJSON: {userId:string, projectIdList?:Array<string>}):
         DashboardAPIData {
         return new DashboardAPIData(
-            dashboardJSON.userID,
+            dashboardJSON.userId,
             dashboardJSON.projectIdList
         )
     }
