@@ -6,12 +6,19 @@ import {useDispatch, useSelector} from "react-redux";
 import {Modal} from "antd";
 import {ExclamationCircleOutlined} from "@ant-design/icons";
 import {deleteProjectOnDashboard} from "../../redux/features/dashboardSlice";
+import {useRouteMatch, useHistory} from "react-router-dom"
 const { confirm } = Modal;
 
 const ProjectTable = (props) => {
     const {projectList} = props;
     const dispatch = useDispatch();
+    let history = useHistory();
+    let match = useRouteMatch();
 
+
+    const redirectToProjectPage = (rowData) => {
+        history.push(`${match.url}/${rowData.uuid}`)
+    }
 
     const deleteProject = (rowData) => {
         confirm({
@@ -46,7 +53,7 @@ const ProjectTable = (props) => {
                 {
                     icon: 'edit',
                     tooltip: 'Edit project',
-                    onClick: (event, rowData) => alert("edit " + rowData.uuid)
+                    onClick: (event, rowData) => redirectToProjectPage(rowData),
                 },
                 {
                     icon: 'library_add',
