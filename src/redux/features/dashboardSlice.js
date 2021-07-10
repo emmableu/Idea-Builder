@@ -30,12 +30,16 @@ export const dashboardSlice = createSlice({
         value: null,
     },
     reducers: {
-
+        deleteProjectOnDashboard:
+            (state, action) => {
+            console.log("state.value.projectList, action: ", state.value.projectList, action);
+                const toRemoveIndex = state.value.projectList.findIndex(p => p.uuid === action.payload);
+                state.value.projectList.splice(toRemoveIndex, 1);
+            }
     },
     extraReducers:  {
         [fetchDashboardByUserID.fulfilled]:
             (state, action) => {
-                console.log("state, action: ", state, action);
                 const obj = DashboardViewData.parse(action.payload);
                 state.value = obj;
         },
@@ -44,6 +48,6 @@ export const dashboardSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { } = dashboardSlice.actions;
+export const { deleteProjectOnDashboard } = dashboardSlice.actions;
 export {fetchDashboardByUserID};
 export default dashboardSlice.reducer;

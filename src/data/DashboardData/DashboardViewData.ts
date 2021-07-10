@@ -13,12 +13,25 @@ export class DashboardViewData {
     toJSON() {
         return {
             userID: this.userID,
-            projectList: this.projectList
-        };
+            projectList: this.projectList.map(s => (
+                {
+                    "uuid": s.uuid,
+                    "name": s.name,
+                }))
+        }
     }
 
     toString() {
         return JSON.stringify(this.toJSON());
+    }
+
+    projectListJSON () {
+        return this.projectList.map(s => (
+            {
+                "uuid": s.uuid,
+                "name": s.name,
+            }
+        ))
     }
 
     static parse(dashboardJSON: {

@@ -2,10 +2,33 @@ import React from "react";
 import MaterialTable from "material-table";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {Modal} from "antd";
+import {ExclamationCircleOutlined} from "@ant-design/icons";
+import {deleteProjectOnDashboard} from "../../redux/features/dashboardSlice";
+const { confirm } = Modal;
 
 const ProjectTable = (props) => {
     const {projectList} = props;
+    const dispatch = useDispatch();
+
+
+    const deleteProject = (rowData) => {
+        confirm({
+            title: 'Are you sure you want to delete this project?',
+            icon: <ExclamationCircleOutlined />,
+            content: 'This action is irreversible.',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                dispatch(deleteProjectOnDashboard(rowData.uuid));
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    }
 
 
     return (
@@ -33,7 +56,7 @@ const ProjectTable = (props) => {
                 {
                     icon: 'delete',
                     tooltip: 'Delete project',
-                    onClick: (event, rowData) => alert("You want to delete " + rowData.name),
+                    onClick: (event, rowData) => deleteProject(rowData) ,
                 },
             ]}
             options={{

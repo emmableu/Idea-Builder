@@ -65,9 +65,8 @@ const Dashboard = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const userID = Cookies.get('userID');
-    const [projectList, setProjectList] = React.useState([]);
-    const [loading, setLoading] = React.useState(true);
-    const dashboardData = useSelector(state => state.dashboard.value);
+    const projectList = useSelector(state =>
+        state.dashboard.value===null? null: state.dashboard.value.projectListJSON());
 
     React.useEffect(() =>
     {
@@ -76,12 +75,6 @@ const Dashboard = () => {
         }
     }, []);
 
-    React.useEffect(() => {
-        if (dashboardData !== null){
-            setProjectList(dashboardData.projectList);
-            setLoading(false);
-        }
-    }, [dashboardData])
 
     return (
         <div className={classes.root}>
@@ -107,8 +100,8 @@ const Dashboard = () => {
                 <Box style={{height: "5vh"}}/>
                 <Grid container justifyContent="center" alignItems="center" spacing={3}>
                 <Grid item xs={10}>
-                    {loading && <LoadingSkeleton/>}
-                    {!loading && <ProjectTable projectList={projectList}/>}
+                    {(projectList === null) && <LoadingSkeleton/>}
+                    {(projectList !== null) && <ProjectTable projectList={projectList}/>}
                 </Grid>
                 </Grid>
             </main>
