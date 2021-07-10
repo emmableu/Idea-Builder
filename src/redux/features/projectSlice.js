@@ -1,8 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {ProjectViewData} from "../../data/ProjectData/ProjectViewData";
+import {ProjectData} from "../../data/ProjectData";
 import {DashboardAPI} from "../../api/DashboardAPI";
 import {DashboardAPIData} from "../../data/DashboardData/DashboardAPIData";
-import {ProjectAPIData} from "../../data/ProjectData/ProjectAPIData";
 import {ProjectAPI} from "../../api/ProjectAPI";
 import Cookies from "js-cookie";
 
@@ -10,9 +9,17 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
     async (text, thunkAPI) => {
         const {newProjectUUID, newProjectName} = JSON.parse(text);
-        const projectAPIData = new ProjectAPIData(newProjectUUID, newProjectName);
-        const response = await ProjectAPI.insertProject(Cookies.get("userID"), projectAPIData);
+        const projectData = new ProjectData(newProjectUUID, newProjectName);
+        const response = await ProjectAPI.insertProject(Cookies.get("userID"), projectData);
         return response.status;
+    }
+)
+
+const loadProjectFromDatabase = createAsyncThunk(
+    'project/loadProjectFromDatabase',
+    async (uuid, thunkAPI) => {
+        const response = await ProjectAPI.loadProject(uuid);
+        return response.data;
     }
 )
 
@@ -23,13 +30,7 @@ export const projectSlice = createSlice({
         value: null,
     },
     reducers: {
-        importProject: {
-            reducer: (state, action) => {
-                const projectJSON = JSON.parse(action.payload)
-                state.value = ProjectViewData.parse(projectJSON);
-                console.log("parsed project: ", state.value);
-            }
-        },
+
 
         addNewActor: {
             reducer: (state) => {
@@ -114,10 +115,17 @@ export const projectSlice = createSlice({
             }
         }
     },
+    extraReducers: {
+        [loadProjectFromDatabase.fulfilled]: (state, action) => {
+            state.value = ProjectData.parse(action.payload);
+            console.log("parsed project: ", state.value);
+        }
+
+    }
 })
 
 // Action creators are generated for each case reducer function
 export const { addNewActor, importProject, updateActorName, updateActorOrder,
     deleteActor, addStateToActorStateList, deleteActorState, download} = projectSlice.actions;
-export {insertEmptyProjectToDatabase};
+export {insertEmptyProjectToDatabase, loadProjectFromDatabase};
 export default projectSlice.reducer;

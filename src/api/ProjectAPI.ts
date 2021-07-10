@@ -1,11 +1,10 @@
 import axios from "../axiosConfig";
 import {DashboardViewData} from "../data/DashboardData/DashboardViewData";
-import {ProjectViewData} from "../data/ProjectData/ProjectViewData";
-import {ProjectAPIData} from "../data/ProjectData/ProjectAPIData";
+import {ProjectData} from "../data/ProjectData";
 
 class ProjectAPI {
 
-    static async insertProject (userID:string, projectData:ProjectAPIData) {
+    static async insertProject (userID:string, projectData:ProjectData) {
         const response = await axios({
             method: 'post',
             url: `/project/add`,
@@ -17,7 +16,7 @@ class ProjectAPI {
         return response;
     }
 
-    static async fetchProject (uuid:string) {
+    static async loadProject (uuid:string) {
         const response = await axios({
             method: 'get',
             url: `/project/${uuid}`,

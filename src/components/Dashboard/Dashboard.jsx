@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import ProjectDrawer from "../Project/ProjectDrawer";
 import DashboardPage from "./DashboardPage";
+import ProjectPage from "../Project/ProjectPage";
 
 const Dashboard = () => {
     let match = useRouteMatch();
@@ -20,9 +21,8 @@ const Dashboard = () => {
           2nd <Route> here as an "index" page for all topics, or
           the page that is shown when no topic is selected */}
             <Switch>
-                <Route path={`${match.path}/:projectUUID`}>
-                    <ProjectDrawer />
-                    `${match.path}`
+                <Route path={`${match.path}/:uuid`}>
+                    <ProjectPage />
                 </Route>
                 <Route path={match.path}>
                     <DashboardPage />

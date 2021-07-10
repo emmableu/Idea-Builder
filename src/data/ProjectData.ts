@@ -1,11 +1,11 @@
-import {ActorData, IActorData, ActorDataMap} from "../ActorData";
+import {ActorData, IActorData, ActorDataMap} from "./ActorData";
 import * as UUID from "uuid";
-import {StateData} from "../StateData";
+import {StateData} from "./StateData";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
 
-export class ProjectViewData {
+export class ProjectData {
     uuid: string;
     name: string;
     deleted: boolean;
@@ -35,8 +35,8 @@ export class ProjectViewData {
         return JSON.stringify(this.toJSON());
     }
 
-    static parse(projectJSON: any): ProjectViewData {
-        const projectData = new ProjectViewData(projectJSON.uuid, projectJSON.name, projectJSON.deleted);
+    static parse(projectJSON: any): ProjectData {
+        const projectData = new ProjectData(projectJSON.uuid, projectJSON.name, projectJSON.deleted);
         Object.keys(projectJSON.actorDataMap).forEach(a => {
             projectData.actorDataMap[a] =
                  ActorData.parse(projectJSON.actorDataMap[a])

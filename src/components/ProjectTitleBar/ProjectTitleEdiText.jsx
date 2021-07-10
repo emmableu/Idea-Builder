@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {IconButton, Tooltip} from "@material-ui/core";
 import {Create} from "@material-ui/icons";
 import globalConfig from "../../globalConfig";
+import {useSelector} from "react-redux";
 
 
 const StyledEdiText = styled(EdiText)`
@@ -40,6 +41,14 @@ const EditButton = () => (
 const ProjectTitleEdiText = () => {
     const [editing, setEditing] = useState(false);
     const [value, setValue] = useState("Green your city");
+
+    const titleName = useSelector(state =>
+        state.project.value===null? null: state.project.value.name
+    )
+
+    React.useEffect(()=> {
+        setValue(titleName);
+    }, [titleName]);
 
     const handleSave = (value) => {
         console.log(value);
