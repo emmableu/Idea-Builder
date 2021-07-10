@@ -24,10 +24,10 @@ const ProjectMenu = () => {
         >
             <Menu.Item
                 key="1"
-                style={{zIndex: "-1"}}
+                style={{zIndex: "0"}}
             >My projects</Menu.Item>
             <Menu.Item
-                style={{zIndex: "-1"}}
+                style={{zIndex: "0"}}
                 key="2">Example projects</Menu.Item>
         </Menu>
     );

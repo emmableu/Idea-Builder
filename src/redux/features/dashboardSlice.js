@@ -12,8 +12,9 @@ const fetchDashboardByUserID = createAsyncThunk(
         const response = await DashboardAPI.fetchDashboard(userID);
         let dashboardData;
         if (response.status === 204) {
-            dashboardData = new DashboardAPIData(userID);
-            await DashboardAPI.insertDashboard(dashboardData);
+            const dashboardAPIData = new DashboardAPIData(userID);
+            await DashboardAPI.insertDashboard(dashboardAPIData);
+            dashboardData = dashboardAPIData.toEmptyDashboardViewData();
             return dashboardData.toJSON();
         }
         else if (response.status === 200) {

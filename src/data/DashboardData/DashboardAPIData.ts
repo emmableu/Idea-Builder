@@ -1,3 +1,5 @@
+import {DashboardViewData} from "./DashboardViewData";
+
 export class DashboardAPIData {
     userID: string;
     projectUUIDList: Array<string>;
@@ -17,6 +19,12 @@ export class DashboardAPIData {
 
     toString () {
         return JSON.stringify(this.toJSON())
+    }
+
+    toEmptyDashboardViewData () {
+        return new DashboardViewData(
+            this.userID
+        )
     }
 
     static parse (dashboardJSON: {userID:string, projectUUIDList?:Array<string>}):

@@ -25,7 +25,7 @@ const NewProjectButton = () => {
 
     return (<Dropdown overlay={menu}
                       placement="bottomCenter"
-                      overlayStyle={{zIndex:0}}
+                      overlayStyle={{zIndex:1}}
         >
         <Button
                 onClick={e => e.preventDefault()}
