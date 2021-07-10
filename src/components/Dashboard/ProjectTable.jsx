@@ -15,12 +15,26 @@ const ProjectTable = (props) => {
     let history = useHistory();
     let match = useRouteMatch();
 
+    const [tableData, setTableData] = React.useState([]);
+
+    React.useEffect(() => {
+        console.log("projectList: ", projectList);
+        setTableData(projectList);
+    }, [projectList])
 
     const redirectToProjectPage = (rowData) => {
+        console.log("rowData: ", rowData);
+        console.log("projectList: ", projectList);
+        // const projectId = projectList[rowData.tableData.id]._id;
+        // console.log("projectId: ", projectId);
+
         history.push(`${match.url}/${rowData._id}`)
     }
 
     const deleteProject = (rowData) => {
+        // console.log("rowData: ", rowData);
+        // const projectId = projectList[rowData.tableData.id]._id;
+        const projectId = rowData._id;
         confirm({
             title: 'Are you sure you want to delete this project?',
             icon: <ExclamationCircleOutlined />,
@@ -29,7 +43,7 @@ const ProjectTable = (props) => {
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                dispatch(deleteProjectOnDashboard(rowData._id));
+                dispatch(deleteProjectOnDashboard(projectId));
             },
             onCancel() {
                 console.log('Cancel');
@@ -48,7 +62,7 @@ const ProjectTable = (props) => {
             columns={[
                 { title: 'Name', field: 'name' }
             ]}
-            data={projectList}
+            data={tableData}
             actions={[
                 {
                     icon: 'edit',

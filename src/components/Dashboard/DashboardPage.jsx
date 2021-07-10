@@ -68,7 +68,10 @@ const DashboardPage = () => {
     const dispatch = useDispatch();
     const userId = Cookies.get('userId');
     const projectList = useSelector(state =>
-        state.dashboard.value===null? null: state.dashboard.value.projectListJSON());
+    {
+        console.log("state.dashboard.value: ", state.dashboard.value);
+        return (state.dashboard.value===null? null: state.dashboard.value.projectListJSON())
+    });
 
     React.useEffect(() =>
     {
