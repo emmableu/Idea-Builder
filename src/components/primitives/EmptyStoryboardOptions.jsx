@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         width: "500px",
         padding: theme.spacing(4),
+        backgroundColor: "inherit",
     },
 
     instruction: {
@@ -49,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const EmptyStoryboardOptions = (props) => {
-    const text = {props};
+    const {text} = props;
     const classes = useStyles();
 
 
@@ -57,11 +58,9 @@ const EmptyStoryboardOptions = (props) => {
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
-                    elevation={8}
                     className={classes.paper}>
-
-                    <Typography component="h1" variant="subtitle2" className={classes.instruction}>
-                        Your project is currently empty. Please create a new file.
+                    <Typography component="h1" variant="subtitle1" className={classes.instruction}>
+                        {text}
                     </Typography>
 
                 </Box>

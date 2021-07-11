@@ -3,6 +3,8 @@ import EdiText from "react-editext";
 import styled from 'styled-components';
 import {IconButton, Tooltip} from "@material-ui/core";
 import {Create} from "@material-ui/icons";
+import {useDispatch, useSelector} from "react-redux";
+import {updateName, updateStoryboardName} from "../../redux/features/projectSlice";
 
 
 const StyledEdiText = styled(EdiText)`
@@ -43,11 +45,35 @@ const EditButton = () => (
 
 const StoryboardTitleEdiText = () => {
     const [editing, setEditing] = useState(false);
-    const [value, setValue] = useState("Grow flowers");
+    const [value, setValue] = useState("Untitled");
+    const [localSelectedStoryboard, setLocalSelectedStoryboard]  = useState(null);
+    const dispatch = useDispatch()
+
+    const selectedStoryboard = useSelector(state => state.selectedStoryboard.value)
+
+    const titleName = useSelector(state =>
+        {   if (localSelectedStoryboard === null) return "Untitled";
+            if (state.project.value===null) return "Untitled";
+            return state.project.value.getStoryboard(localSelectedStoryboard).name;
+        }
+    )
+
+    React.useEffect(() => {
+        setLocalSelectedStoryboard(selectedStoryboard)
+    }, [selectedStoryboard])
+
+    React.useEffect(() => {
+        setValue(titleName)
+    }, [titleName])
 
     const handleSave = (value) => {
         console.log(value);
         setValue(value);
+        dispatch(
+            updateStoryboardName({
+                "_id": localSelectedStoryboard,
+                "name": value
+            }));
     };
     return (
                 <StyledEdiText

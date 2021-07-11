@@ -53,10 +53,10 @@ class ProjectAPI {
         return response;
     }
 
-    static async replaceStoryboardIdListInDatabase(text:any) {
+    static async replaceStoryboardIdMenuInDatabase(text:any) {
         const response = await axios({
             method: 'post',
-            url: `/storyboard_list/replace`,
+            url: `/storyboard_id_menu/replace`,
             data: text,
         });
         return response;

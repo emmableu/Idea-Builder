@@ -72,9 +72,9 @@ const deleteStoryboard = createAsyncThunk(
         dispatch(deleteStoryboardInMemory(storyboardId));
         const state = getState();
         const projectId = state.project.value._id;
-        const storyboardIdList = state.project.value.storyboardList.map(a=>a._id);
-        const response = await ProjectAPI.replaceStoryboardIdListInDatabase({
-            projectId, storyboardIdList
+        const storyboardMenu = state.project.value.storyboardMenu;
+        const response = await ProjectAPI.replaceStoryboardIdMenuInDatabase({
+            projectId, storyboardMenu
         });
         return response.status;
     }
@@ -84,12 +84,13 @@ const updateStoryboardOrder = createAsyncThunk(
     'project/updateStoryboardOrder',
     async (text, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
+        console.log("----------------------text: ", text);
         dispatch(updateStoryboardOrderInMemory(text));
         const state = getState();
         const projectId = state.project.value._id;
-        const storyboardIdList = state.project.value.storyboardList.map(a=>a._id);
-        const response = await ProjectAPI.replaceStoryboardIdListInDatabase({
-            projectId, storyboardIdList
+        const storyboardMenu = state.project.value.storyboardMenu;
+        const response = await ProjectAPI.replaceStoryboardIdMenuInDatabase({
+            projectId, storyboardMenu
         });
         return response.status;
     }
@@ -275,7 +276,18 @@ export const projectSlice = createSlice({
         },
 
         deleteStoryboardInMemory: {
-            reducer: (state, action) => {
+            reducer: (state, action) =>
+            {
+                let menuIndex = -1;
+                for (const type of ["final", "draft"]) {
+                    menuIndex = state.value.storyboardMenu[type].items.findIndex(
+                        a => a._id === action.payload
+                    )
+                    if (menuIndex !== -1) {
+                        state.value.storyboardMenu[type].items.splice(menuIndex, 1);
+                        break;
+                    }
+                }
                 const storyboardIndex = state.value.storyboardList.findIndex(
                     a => a._id === action.payload
                 )
@@ -285,24 +297,14 @@ export const projectSlice = createSlice({
 
         updateStoryboardOrderInMemory: {
             reducer: (state, action) => {
-                state.value.updateStoryboardOrder(action.payload.beginOrder, action.payload.endOrder);
-            },
-            prepare: (text) => {
-                const obj = JSON.parse(text);
-                return {
-                    payload: {
-                        "beginOrder": obj.beginOrder,
-                        "endOrder": obj.endOrder,
-                    }
-                }
+                state.value.updateStoryboardOrder(action.payload)
             },
         },
 
         updateStoryboardNameInMemory: {
             reducer: (state, action) => {
-                state.value.storyboardList.find(
-                    a => a._id === action.payload._id
-                ).name = action.payload.name;
+                const {_id, name} = action.payload;
+                state.value.updateStoryboardName(_id, name);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);

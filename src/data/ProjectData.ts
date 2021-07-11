@@ -99,6 +99,68 @@ export class ProjectData {
         console.log("storyboardList: ====================: ", this.storyboardList);
     }
 
+    getStoryboard (storyboardId:string) {
+        return this.storyboardList.find(s => s._id === storyboardId);
+    }
+
+    updateStoryboardName (storyboardId:string, name:string) {
+        const storyboard = this.getStoryboard(storyboardId);
+        if (storyboard===undefined) return;
+        storyboard.name = name;
+        let candidateStoryboard;
+        for (const type of ["final", "draft"]) {
+            // @ts-ignore
+            candidateStoryboard = this.storyboardMenu[type].items.find((el:any) => el._id === storyboardId)
+            if (candidateStoryboard !== undefined) {
+                candidateStoryboard.name = name;
+                return;
+            }
+        }
+    }
+
+
+    updateStoryboardOrder(text:string) {
+        const result = JSON.parse(text);
+        console.log("result: ", result);
+        if (!result.destination) return;
+        const { source, destination } = result;
+
+        if (source.droppableId !== destination.droppableId) {
+            //@ts-ignore
+            const sourceColumn = this.storyboardMenu[source.droppableId];
+            //@ts-ignore
+            const destColumn = this.storyboardMenu[destination.droppableId];
+            const sourceItems = [...sourceColumn.items];
+            const destItems = [...destColumn.items];
+            const [removed] = sourceItems.splice(source.index, 1);
+            destItems.splice(destination.index, 0, removed);
+            this.storyboardMenu = ({
+                ...this.storyboardMenu,
+                [source.droppableId]: {
+                    ...sourceColumn,
+                    items: sourceItems
+                },
+                [destination.droppableId]: {
+                    ...destColumn,
+                    items: destItems
+                }
+            });
+        } else {
+            //@ts-ignore
+            const column = this.storyboardMenu[source.droppableId];
+            const copiedItems = [...column.items];
+            const [removed] = copiedItems.splice(source.index, 1);
+            copiedItems.splice(destination.index, 0, removed);
+            this.storyboardMenu = ({
+                ...this.storyboardMenu,
+                [source.droppableId]: {
+                    ...column,
+                    items: copiedItems
+                }
+            });
+        }
+    }
+
     addActor(actorDataJSON:IActorData) {
         this.actorList.unshift(
             ActorData.parse(actorDataJSON)

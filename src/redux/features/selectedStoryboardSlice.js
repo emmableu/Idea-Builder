@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const selectedStoryboardSlice = createSlice({
     name: 'selectedStoryboard',
     initialState: {
-        value: 0,
+        value: null,
     },
     reducers: {
         setSelectedStoryboard: (state, action) => {

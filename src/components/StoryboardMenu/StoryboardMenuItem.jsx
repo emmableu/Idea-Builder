@@ -31,7 +31,8 @@ const StoryboardMenuItem = (props) => {
                     ? globalConfig.storyboardMenuColor.menuItemOnClick.text
                     : "white",
                 border: snapshot.isDragging ? `2px solid ${globalConfig.storyboardMenuColor.darkPrimary}` : null,
-                ...provided.draggableProps.style
+                ...provided.draggableProps.style,
+                overflow: "hidden",
             }}>
             <Button
                 type="link"
@@ -45,7 +46,7 @@ const StoryboardMenuItem = (props) => {
             <div
                 style={{"float": "right"}}
             >
-                <StoryboardActionDropdown/>
+                <StoryboardActionDropdown storyboardId={item._id}/>
             </div>
         </Paper>
     )

@@ -37,6 +37,7 @@ import ArtTrack from "@material-ui/core/SvgIcon/SvgIcon";
 import HomeIcon from '@material-ui/icons/Home';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ProjectTitleBarActionGroup from "../ProjectTitleBar/ProjectTitleBarActionGroup";
+import StoryboardPageContainer from "./StoryboarPageContainer";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -175,7 +176,7 @@ const ProjectDrawer = () => {
 
                 <main className={classes.content}>
                     <Toolbar variant="dense" className={`${classes.toolbar} ${classes.insideBoardToolbar}`} />
-                        <StoryboardPage/>
+                        <StoryboardPageContainer/>
                 </main>
             </div>
     );
