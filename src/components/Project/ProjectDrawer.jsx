@@ -1,5 +1,5 @@
 import React from "react";
-import Board from "./Board"
+import StoryboardPage from "./StoryboardPage"
 import AddIcon from '@material-ui/icons/Add';
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
@@ -31,7 +31,7 @@ import styled from 'styled-components';
 import StageSnapshots from "./StageSnapshots";
 import globalConfig from "../../globalConfig";
 import ProjectTitleBar from "../ProjectTitleBar/ProjectTitleBar";
-import StoryboardActionDropdown from "../StoryboardTitleBar/StoryboardActionDropdown";
+import StoryboardActionDropdown from "../StoryboardMenu/StoryboardActionDropdown";
 import {Grid, Typography} from "@material-ui/core";
 import ArtTrack from "@material-ui/core/SvgIcon/SvgIcon";
 import HomeIcon from '@material-ui/icons/Home';
@@ -88,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
         width: globalConfig.storyboardDrawerWidth,
         backgroundColor: globalConfig.storyboardMenuColor.surface,
         position: "fixed",
+        zIndex: 0,
     },
     content: {
         flexGrow: 1,
@@ -174,7 +175,7 @@ const ProjectDrawer = () => {
 
                 <main className={classes.content}>
                     <Toolbar variant="dense" className={`${classes.toolbar} ${classes.insideBoardToolbar}`} />
-                        <Board/>
+                        <StoryboardPage/>
                 </main>
             </div>
     );

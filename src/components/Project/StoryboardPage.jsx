@@ -227,7 +227,7 @@ const VerticalTabs = () => {
 }
 
 
-const Board = () => {
+const StoryboardPage = () => {
     // const classes = useStyles();
     const lightTheme = createMuiTheme({
         palette: {
@@ -257,7 +257,7 @@ const Board = () => {
     )
 };
 
-export default Board;
+export default StoryboardPage;
 
 
 

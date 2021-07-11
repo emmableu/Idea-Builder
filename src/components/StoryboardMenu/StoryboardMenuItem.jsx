@@ -1,27 +1,33 @@
-import {Paper} from "@material-ui/core";
+import {Grid, Paper} from "@material-ui/core";
 import globalConfig from "../../globalConfig";
 import {Button} from "antd";
 import React from "react";
 import DragHandleIcon from "../primitives/DragHandleIcon";
+import StoryboardActionDropdown from "./StoryboardActionDropdown";
+import {setSelectedStoryboard} from "../../redux/features/selectedStoryboardSlice";
+import {useDispatch, useSelector} from "react-redux";
 
 const StoryboardMenuItem = (props) => {
-    const {provided, snapshot, item, clickedID, setClickedID} = props;
+    const {provided, snapshot, item} = props;
+    const dispatch = useDispatch();
+    const selectedStoryboard = useSelector(state => state.selectedStoryboard.value);
+
     return (
-        < Paper
+        <Paper
             elevation={3}
             ref={provided.innerRef}
             {...provided.draggableProps}
-            onClick={() => setClickedID(item._id)}
+            onClick={(e) => {dispatch(setSelectedStoryboard(item._id))}}
             style={{
                 width: "100%",
                 userSelect: "none",
-                padding: 10,
+                padding: 8,
                 margin: "0 0 8px 0",
-                minHeight: "30px",
-                backgroundColor: clickedID===item._id
+                minHeight: "26px",
+                backgroundColor: selectedStoryboard===item._id
                     ? globalConfig.storyboardMenuColor.menuItemOnClick.background
                     : globalConfig.storyboardMenuColor.menuItem,
-                color: clickedID===item._id
+                color: selectedStoryboard===item._id
                     ? globalConfig.storyboardMenuColor.menuItemOnClick.text
                     : "white",
                 border: snapshot.isDragging ? `2px solid ${globalConfig.storyboardMenuColor.darkPrimary}` : null,
@@ -33,7 +39,14 @@ const StoryboardMenuItem = (props) => {
                 icon={<DragHandleIcon  {...provided.dragHandleProps}
                                        style={{ color: 'white'}}
                 />} />
-            {'\u00A0'}   {item.name}
+            <span style={{
+                flexGrow: 1,
+            }}>{'\u00A0'} {item.name}</span>
+            <div
+                style={{"float": "right"}}
+            >
+                <StoryboardActionDropdown/>
+            </div>
         </Paper>
     )
 }

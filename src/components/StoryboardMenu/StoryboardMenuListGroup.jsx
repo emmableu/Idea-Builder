@@ -51,7 +51,6 @@ const onDragEnd = (result, columns, setColumns) => {
 };
 
 function StoryboardMenuListGroup() {
-    const [clickedID, setClickedID] = useState(null);
 
     const initialColumns = {
         "final": {
@@ -90,8 +89,7 @@ function StoryboardMenuListGroup() {
                         <StoryboardSubMenu
                             columnId={columnId}
                             column={column}
-                            clickedID={clickedID}
-                            setClickedID={setClickedID}
+
                         />
                     );
                 })}

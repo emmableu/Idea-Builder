@@ -1,7 +1,7 @@
 import React from "react";
 import globalConfig from "../../globalConfig";
 import {Paper, Typography, Grid} from "@material-ui/core";
-import StoryboardActionDropdown from "./StoryboardActionDropdown";
+import StoryboardActionDropdown from "../StoryboardMenu/StoryboardActionDropdown";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import StoryboardTitleEdiText from "./StoryboardTitleEdiText";
 
@@ -43,11 +43,7 @@ const StoryboardTitleBar = () => {
                     </div>
                 </Grid>
                 <Grid item xs={1} align="right">
-                    <div
-                        className={classes.endActionGrid}
-                    >
-                    <StoryboardActionDropdown/>
-                    </div>
+
                 </Grid>
             </Grid>
 

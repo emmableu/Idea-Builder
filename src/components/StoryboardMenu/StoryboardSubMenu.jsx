@@ -9,7 +9,7 @@ import {addStoryboard} from "../../redux/features/projectSlice";
 import {useDispatch} from "react-redux";
 
 export const StoryboardSubMenu = (props) => {
-    const {columnId, column, clickedID, setClickedID} = props;
+    const {columnId, column} = props;
     const dispatch = useDispatch();
 
     const handleAddStoryboard = () => {
@@ -75,8 +75,7 @@ export const StoryboardSubMenu = (props) => {
                                                     < StoryboardMenuItem provided={provided}
                                                                          snapshot={snapshot}
                                                                          item={item}
-                                                                         clickedID={clickedID}
-                                                                         setClickedID={setClickedID}/>
+                                                                         />
                                                 );
                                             }}
                                         </Draggable>

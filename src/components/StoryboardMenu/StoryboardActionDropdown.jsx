@@ -44,7 +44,7 @@ const actionMenu =
 
 const StoryboardActionDropdown  = () => {
     return (
-    <Dropdown overlay={actionMenu}>
+    <Dropdown overlay={actionMenu} placement="bottomLeft">
         <IconButton aria-label="display more actions" color="inherit" size="small">
             <MoreIcon
             />
