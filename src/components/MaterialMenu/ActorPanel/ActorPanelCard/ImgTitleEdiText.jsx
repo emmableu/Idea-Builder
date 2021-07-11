@@ -3,6 +3,8 @@ import EdiText from "react-editext";
 import styled from 'styled-components';
 import {IconButton, Tooltip} from "@material-ui/core";
 import {Create} from "@material-ui/icons";
+import {updateActorName, updateStateName} from "../../../../redux/features/projectSlice";
+import {useDispatch} from "react-redux";
 
 
 const StyledEdiText = styled(EdiText)`
@@ -46,13 +48,21 @@ const EditButton = () => (
     </Tooltip>
 )
 
-const ImgTitleEdiText = () => {
+const ImgTitleEdiText = (props) => {
+    const {actorId, stateId} = props;
+    const dispatch = useDispatch();
     const [editing, setEditing] = useState(false);
     const [value, setValue] = useState("state");
 
     const handleSave = (value) => {
         console.log(value);
         setValue(value);
+        dispatch(
+            updateStateName({
+                "actorId": actorId,
+                "stateId": stateId,
+                "stateName": value
+            }));
     };
     return (
         <StyledEdiText

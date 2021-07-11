@@ -67,10 +67,10 @@ export class ProjectData {
         ))
     }
 
-    deleteActorState (actorId:string, stateId: string) {
+    deleteState (actorId:string, stateId: string) {
         const actorData = this.actorList.find(e => e._id===actorId);
         const stateList = actorData === undefined? []:actorData.stateList;
-        const stateIndex = stateList.findIndex(stateData => stateData._id === stateId);
+        const stateIndex = stateList.findIndex(s => s._id === stateId);
         stateList.splice(stateIndex, 1);
     }
 

@@ -7,7 +7,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import {useDispatch} from "react-redux";
-import {deleteActorState} from "../../../../redux/features/projectSlice";
+import {deleteState} from "../../../../redux/features/projectSlice";
 
 const useStyles = makeStyles({
     root: {
@@ -43,7 +43,7 @@ const ImgCard = (props) =>  {
 
     const handleClick = () => {
         console.log("stateId: ", stateId)
-        dispatch(deleteActorState(
+        dispatch(deleteState(
             {actorId,
             stateId}
         ));

@@ -51,6 +51,7 @@ const loadProjectFromDatabase = createAsyncThunk(
 const deleteActor = createAsyncThunk(
     'project/deleteActor',
     async (actorId, thunkAPI) => {
+        console.log("actorID: ", actorId);
         const {dispatch, getState} = thunkAPI;
         dispatch(deleteActorInMemory(actorId));
         const state = getState();
@@ -130,12 +131,12 @@ const updateStateName = createAsyncThunk(
     }
 );
 
-const deleteActorState = createAsyncThunk(
-    'project/deleteActorState',
+const deleteState = createAsyncThunk(
+    'project/deleteState',
     async (payload, thunkAPI) => {
         const {actorId} = payload
         const {dispatch, getState} = thunkAPI;
-        dispatch(deleteActorStateInMemory(JSON.stringify(payload)));
+        dispatch(deleteStateInMemory(JSON.stringify(payload)));
         const stateList = getState().project.value.stateListJSON(actorId);
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
@@ -161,7 +162,10 @@ export const projectSlice = createSlice({
 
         deleteActorInMemory: {
             reducer: (state, action) => {
-                state.value.actorList.splice(action.payload, 1)
+                const actorIndex = state.value.actorList.findIndex(
+                    a => a._id === action.payload
+                )
+                state.value.actorList.splice(actorIndex, 1)
             }
         },
 
@@ -193,8 +197,8 @@ export const projectSlice = createSlice({
                 const actor = state.value.actorList.find(
                     a => a._id === action.payload.actorId
                 )
-                const actorState = actor.stateList.find(s => s._id === action.payload.stateId)
-                actorState.name = action.payload.stateName;
+                const stateIndex = actor.stateList.findIndex(s => s._id === action.payload.stateId);
+                actor.stateList[stateIndex].name = action.payload.stateName;
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
@@ -241,9 +245,9 @@ export const projectSlice = createSlice({
             },
         },
 
-        deleteActorStateInMemory: {
+        deleteStateInMemory: {
             reducer: (state, action) => {
-                state.value.deleteActorState(action.payload.actorId, action.payload.stateId);
+                state.value.deleteState(action.payload.actorId, action.payload.stateId);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
@@ -272,8 +276,8 @@ export const projectSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { addActorInMemory, importProject, updateNameInMemory, updateActorNameInMemory, updateActorOrderInMemory,deleteActorInMemory,
-      deleteActorStateInMemory, addStateInMemory, updateStateNameInMemory, download} = projectSlice.actions;
+      deleteStateInMemory, addStateInMemory, updateStateNameInMemory, download} = projectSlice.actions;
 export {insertEmptyProjectToDatabase, loadProjectFromDatabase, addActor, updateActorName, updateName, deleteActor,
-        deleteActorState, updateStateName, addState, updateActorOrder,
+        deleteState, updateStateName, addState, updateActorOrder,
             };
 export default projectSlice.reducer;

@@ -5,22 +5,11 @@ import ImgCard from "./ImgCard";
 import ImgTitleEdiText from "./ImgTitleEdiText";
 import axios from "../../../../axiosConfig";
 
-const ContentNode = () => (
-    <ImgTitleEdiText/>
+const ContentNode = (props) => (
+    <ImgTitleEdiText {...props}/>
 );
 
-const CardActionButtonGroup = () => (
-    <>
-        <CardActions>
-            <Button size="small" color="primary">
-                Share
-            </Button>
-            <Button size="small" color="primary">
-                Learn More
-            </Button>
-        </CardActions>
-    </>
-);
+
 const ActorPanelCardContentImgTile = (props) => {
     const {actorId, stateId} = props;
     React.useEffect(() => {
@@ -36,7 +25,7 @@ const ActorPanelCardContentImgTile = (props) => {
                 stateId={stateId}
                 imgSrc={axios.defaults.baseURL + "/static/" + stateId}
                 heightToWidthRatio={'75%'}
-                contentNode={<ContentNode />}
+                contentNode={<ContentNode {...props}/>}
             />
         </>
     )
