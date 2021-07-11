@@ -41,7 +41,7 @@ const EditButton = () => (
 
 const ProjectTitleEdiText = () => {
     const [editing, setEditing] = useState(false);
-    const [value, setValue] = useState("Green your city");
+    const [value, setValue] = useState("Untitled");
     const dispatch = useDispatch();
 
     const titleName = useSelector(state =>

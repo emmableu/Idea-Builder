@@ -18,6 +18,125 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
     }
 )
 
+const loadProjectFromDatabase = createAsyncThunk(
+    'project/loadProjectFromDatabase',
+    async (_id, thunkAPI) => {
+        const response = await ProjectAPI.loadProject(_id);
+        return response.data;
+    }
+)
+
+const updateName = createAsyncThunk(
+    'project/updateName',
+    async (name, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        dispatch(updateNameInMemory(name));
+        const projectId = getState().project.value._id;
+        const response = await ProjectAPI.updateName({
+            projectId, name
+        });
+        return response.status;
+    }
+);
+
+/* The next section are about storyboards:
+ */
+
+const addStoryboard = createAsyncThunk(
+    'project/addStoryboard',
+    async (text, thunkAPI) => {
+        const {dispatch, getFrame}  = thunkAPI;
+        const storyboardId = UUID.v4();
+        console.log("storyboardId: ", storyboardId);
+        const storyboardDataJSON = new StoryboardData(storyboardId).toJSON();
+        const frame = getFrame();
+        const projectId = frame.project.value._id;
+        const payload =  JSON.stringify({
+            projectId,
+            storyboardDataJSON
+        });
+        dispatch(addStoryboardInMemory(payload));
+        const response = await ProjectAPI.addStoryboard(payload);
+        return response.status;
+    }
+)
+
+const deleteStoryboard = createAsyncThunk(
+    'project/deleteStoryboard',
+    async (storyboardId, thunkAPI) => {
+        console.log("storyboardID: ", storyboardId);
+        const {dispatch, getFrame} = thunkAPI;
+        dispatch(deleteStoryboardInMemory(storyboardId));
+        const frame = getFrame();
+        const projectId = frame.project.value._id;
+        const storyboardIdList = frame.project.value.storyboardList.map(a=>a._id);
+        const response = await ProjectAPI.replaceStoryboardIdListInDatabase({
+            projectId, storyboardIdList
+        });
+        return response.status;
+    }
+);
+
+const updateStoryboardOrder = createAsyncThunk(
+    'project/updateStoryboardOrder',
+    async (text, thunkAPI) => {
+        const {dispatch, getFrame} = thunkAPI;
+        dispatch(updateStoryboardOrderInMemory(text));
+        const frame = getFrame();
+        const projectId = frame.project.value._id;
+        const storyboardIdList = frame.project.value.storyboardList.map(a=>a._id);
+        const response = await ProjectAPI.replaceStoryboardIdListInDatabase({
+            projectId, storyboardIdList
+        });
+        return response.status;
+    }
+);
+
+const updateStoryboardName = createAsyncThunk(
+    'project/updateStoryboardName',
+    async (payload, thunkAPI) => {
+        const {dispatch, getFrame} = thunkAPI;
+        dispatch(updateStoryboardNameInMemory(JSON.stringify(payload)));
+        const response = await ProjectAPI.updateStoryboardName(payload);
+        return response.status;
+    }
+);
+
+/* The next section are about frames:
+ */
+
+const addFrame = createAsyncThunk(
+    'project/addFrame',
+    async (payload, thunkAPI) => {
+        const {storyboardId} = payload
+        const {dispatch, getFrame} = thunkAPI;
+        dispatch(addFrameInMemory(JSON.stringify(payload)));
+        const frameList = getFrame().project.value.frameListJSON(storyboardId);
+        const response = await ProjectAPI.replaceFrameListInDatabase({
+            storyboardId,
+            frameList
+        });
+        return response.status;
+    }
+);
+
+const deleteFrame = createAsyncThunk(
+    'project/deleteFrame',
+    async (payload, thunkAPI) => {
+        const {storyboardId} = payload
+        const {dispatch, getFrame} = thunkAPI;
+        dispatch(deleteFrameInMemory(JSON.stringify(payload)));
+        const frameList = getFrame().project.value.frameListJSON(storyboardId);
+        const response = await ProjectAPI.replaceFrameListInDatabase({
+            storyboardId,
+            frameList
+        });
+        return response.status;
+    }
+);
+
+/* The next section are about actors:
+ */
 
 const addActor = createAsyncThunk(
     'project/addActor',
@@ -38,16 +157,6 @@ const addActor = createAsyncThunk(
     }
 )
 
-
-const loadProjectFromDatabase = createAsyncThunk(
-    'project/loadProjectFromDatabase',
-    async (_id, thunkAPI) => {
-        const response = await ProjectAPI.loadProject(_id);
-        return response.data;
-    }
-)
-
-//
 const deleteActor = createAsyncThunk(
     'project/deleteActor',
     async (actorId, thunkAPI) => {
@@ -79,19 +188,6 @@ const updateActorOrder = createAsyncThunk(
     }
 );
 
-const updateName = createAsyncThunk(
-    'project/updateName',
-    async (name, thunkAPI) => {
-        const {dispatch, getState} = thunkAPI;
-        dispatch(updateNameInMemory(name));
-        const projectId = getState().project.value._id;
-        const response = await ProjectAPI.updateName({
-            projectId, name
-        });
-        return response.status;
-    }
-);
-
 const updateActorName = createAsyncThunk(
     'project/updateActorName',
     async (payload, thunkAPI) => {
@@ -101,27 +197,16 @@ const updateActorName = createAsyncThunk(
         return response.status;
     }
 );
+
+/* The next section are about states:
+ */
+
 const addState = createAsyncThunk(
     'project/addState',
     async (payload, thunkAPI) => {
         const {actorId} = payload
         const {dispatch, getState} = thunkAPI;
         dispatch(addStateInMemory(JSON.stringify(payload)));
-        const stateList = getState().project.value.stateListJSON(actorId);
-        const response = await ProjectAPI.replaceStateListInDatabase({
-            actorId,
-            stateList
-        });
-        return response.status;
-    }
-);
-
-const updateStateName = createAsyncThunk(
-    'project/updateStateName',
-    async (payload, thunkAPI) => {
-        const {actorId} = payload
-        const {dispatch, getState} = thunkAPI;
-        dispatch(updateStateNameInMemory(JSON.stringify(payload)));
         const stateList = getState().project.value.stateListJSON(actorId);
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
@@ -146,6 +231,22 @@ const deleteState = createAsyncThunk(
     }
 );
 
+const updateStateName = createAsyncThunk(
+    'project/updateStateName',
+    async (payload, thunkAPI) => {
+        const {actorId} = payload
+        const {dispatch, getState} = thunkAPI;
+        dispatch(updateStateNameInMemory(JSON.stringify(payload)));
+        const stateList = getState().project.value.stateListJSON(actorId);
+        const response = await ProjectAPI.replaceStateListInDatabase({
+            actorId,
+            stateList
+        });
+        return response.status;
+    }
+);
+
+
 
 export const projectSlice = createSlice({
     name: 'project',
@@ -153,6 +254,103 @@ export const projectSlice = createSlice({
         value: null,
     },
     reducers: {
+
+        updateNameInMemory: {
+            reducer: (state, action) => {
+                state.value.name = action.payload;
+            }
+        },
+
+        /* The next section are about storyboards:
+        */
+
+        addStoryboardInMemory: {
+            reducer: (frame, action) => {
+                const {storyboardDataJSON} = JSON.parse(action.payload);
+                frame.value.addStoryboard(storyboardDataJSON);
+            }
+        },
+
+        deleteStoryboardInMemory: {
+            reducer: (frame, action) => {
+                const storyboardIndex = frame.value.storyboardList.findIndex(
+                    a => a._id === action.payload
+                )
+                frame.value.storyboardList.splice(storyboardIndex, 1)
+            }
+        },
+
+        updateStoryboardOrderInMemory: {
+            reducer: (frame, action) => {
+                frame.value.updateStoryboardOrder(action.payload.beginOrder, action.payload.endOrder);
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "beginOrder": obj.beginOrder,
+                        "endOrder": obj.endOrder,
+                    }
+                }
+            },
+        },
+
+        updateStoryboardNameInMemory: {
+            reducer: (frame, action) => {
+                frame.value.storyboardList.find(
+                    a => a._id === action.payload._id
+                ).name = action.payload.name;
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "_id": obj._id,
+                        "name": obj.name,
+                    }
+                }
+            },
+        },
+
+        /* The next section are about frames:
+        */
+
+        addFrameInMemory: {
+            reducer: (frame, action) => {
+                const storyboard = frame.value.storyboardList.find(a => a._id === action.payload.storyboardId);
+                storyboard.addFrame(
+                    action.payload.frameId
+                )
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "storyboardId": obj.storyboardId,
+                        "frameId": obj.frameId,
+                    }
+                }
+            },
+        },
+
+        deleteFrameInMemory: {
+            reducer: (frame, action) => {
+                frame.value.deleteFrame(action.payload.storyboardId, action.payload.frameId);
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "storyboardId": obj.storyboardId,
+                        "frameId": obj.frameId,
+                    }
+                }
+            },
+        },
+
+        /* The next section are about actors:
+        */
+
         addActorInMemory: {
             reducer: (state, action) => {
                 const {actorDataJSON} = JSON.parse(action.payload);
@@ -169,10 +367,19 @@ export const projectSlice = createSlice({
             }
         },
 
-        updateNameInMemory: {
+        updateActorOrderInMemory: {
             reducer: (state, action) => {
-                state.value.name = action.payload;
-            }
+                state.value.updateActorOrder(action.payload.beginOrder, action.payload.endOrder);
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "beginOrder": obj.beginOrder,
+                        "endOrder": obj.endOrder,
+                    }
+                }
+            },
         },
 
         updateActorNameInMemory: {
@@ -187,6 +394,42 @@ export const projectSlice = createSlice({
                     payload: {
                         "_id": obj._id,
                         "name": obj.name,
+                    }
+                }
+            },
+        },
+
+        /* The next section are about states:
+        */
+
+        addStateInMemory: {
+            reducer: (state, action) => {
+                const actor = state.value.actorList.find(a => a._id === action.payload.actorId);
+                actor.addState(
+                    action.payload.stateId
+                )
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "actorId": obj.actorId,
+                        "stateId": obj.stateId,
+                    }
+                }
+            },
+        },
+
+        deleteStateInMemory: {
+            reducer: (state, action) => {
+                state.value.deleteState(action.payload.actorId, action.payload.stateId);
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "actorId": obj.actorId,
+                        "stateId": obj.stateId,
                     }
                 }
             },
@@ -212,53 +455,7 @@ export const projectSlice = createSlice({
             },
         },
 
-        addStateInMemory: {
-            reducer: (state, action) => {
-                const actor = state.value.actorList.find(a => a._id === action.payload.actorId);
-                actor.addState(
-                    action.payload.stateId
-                )
-            },
-            prepare: (text) => {
-                const obj = JSON.parse(text);
-                return {
-                    payload: {
-                        "actorId": obj.actorId,
-                        "stateId": obj.stateId,
-                    }
-                }
-            },
-        },
 
-        updateActorOrderInMemory: {
-            reducer: (state, action) => {
-                state.value.updateActorOrder(action.payload.beginOrder, action.payload.endOrder);
-            },
-            prepare: (text) => {
-                const obj = JSON.parse(text);
-                return {
-                    payload: {
-                        "beginOrder": obj.beginOrder,
-                        "endOrder": obj.endOrder,
-                    }
-                }
-            },
-        },
-
-        deleteStateInMemory: {
-            reducer: (state, action) => {
-                state.value.deleteState(action.payload.actorId, action.payload.stateId);
-            },
-            prepare: (text) => {
-                const obj = JSON.parse(text);
-                return {
-                    payload: {
-                        "actorId": obj.actorId,
-                        "stateId": obj.stateId,
-                    }
-                }
-            },
-        },
 
         download: {
             reducer: (state) => {
@@ -275,9 +472,19 @@ export const projectSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addActorInMemory, importProject, updateNameInMemory, updateActorNameInMemory, updateActorOrderInMemory,deleteActorInMemory,
-      deleteStateInMemory, addStateInMemory, updateStateNameInMemory, download} = projectSlice.actions;
-export {insertEmptyProjectToDatabase, loadProjectFromDatabase, addActor, updateActorName, updateName, deleteActor,
-        deleteState, updateStateName, addState, updateActorOrder,
-            };
+export const {
+    updateNameInMemory, //project
+    addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
+    addFrameInMemory, deleteFrameInMemory, //frame
+    addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, //actor
+    addStateInMemory, deleteStateInMemory, updateStateNameInMemory, //state
+    download,
+} = projectSlice.actions;
+export {
+    insertEmptyProjectToDatabase, loadProjectFromDatabase, updateName, //project
+    addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
+    addFrame, deleteFrame, //frame
+    addActor, deleteActor, updateActorOrder, updateActorName, //actor
+    addState, deleteState, updateStateName //state
+};
 export default projectSlice.reducer;
