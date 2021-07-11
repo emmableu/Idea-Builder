@@ -79,7 +79,7 @@ const ImgTitleEdiText = (props) => {
             submitOnUnfocus
             submitOnEnter
             cancelOnEscape
-            value={sliceStateName}
+            value={value}
             type="text"
             onSave={handleSave}
             editButtonContent={<EditButton/>}
