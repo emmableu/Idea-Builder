@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {IconButton, Tooltip} from "@material-ui/core";
 import {Create} from "@material-ui/icons";
 import {updateActorName, updateStateName} from "../../../../redux/features/projectSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 
 const StyledEdiText = styled(EdiText)`
@@ -54,6 +54,16 @@ const ImgTitleEdiText = (props) => {
     const [editing, setEditing] = useState(false);
     const [value, setValue] = useState("state");
 
+    const sliceStateName = useSelector(
+        state => {
+            return state.project.value.stateListJSON(actorId).find(s => s._id === stateId).name
+        }
+    )
+
+    React.useEffect(() => {
+        setValue(sliceStateName);
+    }, [sliceStateName]);
+
     const handleSave = (value) => {
         console.log(value);
         setValue(value);
@@ -69,7 +79,7 @@ const ImgTitleEdiText = (props) => {
             submitOnUnfocus
             submitOnEnter
             cancelOnEscape
-            value={value}
+            value={sliceStateName}
             type="text"
             onSave={handleSave}
             editButtonContent={<EditButton/>}
