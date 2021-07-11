@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const selectedStageSlice = createSlice({
-    name: 'selectedStage',
+export const selectedFrameSlice = createSlice({
+    name: 'selectedFrame',
     initialState: {
         value: 0,
     },
     reducers: {
-        selectStage: (state, action) => {
+        selectFrame: (state, action) => {
             // Redux Toolkit allows us to write "mutating" logic in reducers. It
             // doesn't actually mutate the state because it uses the Immer library,
             // which detects changes to a "draft state" and produces a brand new
@@ -17,6 +17,6 @@ export const selectedStageSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { selectStage } = selectedStageSlice.actions;
+export const { selectFrame } = selectedFrameSlice.actions;
 
-export default selectedStageSlice.reducer;
+export default selectedFrameSlice.reducer;

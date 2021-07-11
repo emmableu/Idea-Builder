@@ -1,14 +1,14 @@
 import React from "react";
-import StageCard from "../Stage/StageCard";
+import FrameCard from "../Frame/FrameCard";
 import Box from '@material-ui/core/Box';
 import {createMuiTheme, makeStyles, ThemeProvider, withStyles} from '@material-ui/core/styles';
 import ActorPanel from "../MaterialMenu/ActorPanel/ActorPanel";
 
-import StageSnapshots from "./StageSnapshots";
+import FrameList from "../Project/FrameList";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import ListSubheader from "@material-ui/core/ListSubheader";
-import actorImg from "../Actor/Actors";
+import actorImg from "../Star/Stars";
 import PropTypes from "prop-types";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -35,11 +35,11 @@ import StoryboardTitleBar from "../StoryboardTitleBar/StoryboardTitleBar";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
         backgroundColor: "white",
         display: "flex",
-        height: `calc(100vh - ${globalConfig.toolBarHeight}px )`,
-        margin: "8px 0px",
+        height: `calc(100vh - ${globalConfig.toolBarHeight}px - ${globalConfig.storyboardToolBarHeight}px - ${globalConfig.storyboardPageMargin*2}px)`,
+        margin: `${globalConfig.storyboardPageMargin}px 0px`,
+        float: "left"
     },
     tabs: {
         borderRight: `1px solid ${theme.palette.divider}`,
@@ -50,38 +50,18 @@ const useStyles = makeStyles((theme) => ({
         },
         "& button": {
             minWidth: `1vw`,
-        }
-
+        },
+        width: globalConfig.panelTabsWidth,
     },
     tabPanel: {
         width: `${globalConfig.actorDrawerWidth}px`,
+        height: `calc(100vh - ${globalConfig.toolBarHeight}px - ${globalConfig.storyboardToolBarHeight}px - ${globalConfig.storyboardPageMargin*2}px)`,
         borderRight: `1px solid #e0e0e0`,
         color: "black",
     },
-    gridListTile: {
-        imgFullHeight: {
-            height: '1%',
-            transform: 'translateX(-50%)',
-            position: 'relative',
-            left: '50%',
-        },
-        imgFullWidth: {
-            width: '1%',
-            position: 'relative',
-            transform: 'translateY(-50%)',
-            top: '50%',
-        },
-    },
-    stateImg: {
-        objectFit: "contain",
-        width: "100%",
-        maxHeight: "100%",
-    },
-    statePaper: {
-        height: "50px",
-    },
-    spritCard: {
-        width: "100%",
+    box: {
+        flexGrow: 1,
+        overflow: "hidden"
     }
 }));
 
@@ -117,79 +97,6 @@ function a11yProps(index) {
         "aria-controls": `vertical-tabpanel-${index}`
     };
 }
-
-const StateGridsFromStateObj = (props) => {
-    const {actorName, stateObj} = props;
-    const classes = useStyles();
-
-    return (
-    <Grid container>
-        <Card className={classes.actorCard}
-            elevation={3}>
-            <CardContent>
-                <Typography variant="subtitle1">{actorName}</Typography>
-                {Object.entries(stateObj).map(([stateName, imgObj]) => (
-                        <>
-                        <Grid item xs={6}  key={imgObj.imgID}>
-                                    <Box  className={classes.statePaper}>
-                                        <img
-                                            className={classes.stateImg}
-                                            src={imgObj.imgSrc}
-                                            key={imgObj.imgID}
-                                            alt={imgObj.imgID}
-                                            size="small"
-                                            // onDragStart={(e) => {
-                                            //     dragUrl.current = e.target.alt;
-                                            // }}
-                                        />
-                                    </Box>
-                            </Grid>
-                            <Typography variant="body2" noWrap={true}>
-                                {stateName}
-                            </Typography>
-                        </>
-            ))}
-            </CardContent>
-        </Card>
-
-    </Grid>
-)};
-
-
-const ImageGrids = (props) => {
-    const {actorStateMap} = props;
-    const dragUrl = React.useRef();
-    const classes = useStyles();
-    // const actorStateMap = useSelector(state => state.actorStateMap.value);
-
-
-    return (<>
-                <GridList cellHeight={100} className={classes.gridList}>
-                    {
-                       Object.entries(actorStateMap).map(([actorName, stateObj]) => {
-                           return (
-                               <>
-                               <StateGridsFromStateObj
-                                    actorName={actorName}
-                                   stateObj={stateObj}/>
-                               </>
-                           )
-                       })
-                    }
-                </GridList>
-            </>
-    )
-
-};
-
-
-const mapStateToProps = (state) => {
-    return {
-        actorStateMap: state.actorStateMap.value
-    }
-};
-
-const ActorPanelContent = connect(mapStateToProps)(ImageGrids);
 
 const VerticalTabs = () => {
     const classes = useStyles();
@@ -228,7 +135,7 @@ const VerticalTabs = () => {
 
 
 const StoryboardPage = () => {
-    // const classes = useStyles();
+    const classes = useStyles();
     const lightTheme = createMuiTheme({
         palette: {
             type: 'light',
@@ -242,16 +149,12 @@ const StoryboardPage = () => {
                 <StoryboardTitleBar />
                 <VerticalTabs/>
 
-                {/*    <Box className={classes.box}>*/}
-                {/*    <StageSnapshots*/}
-                {/*    />*/}
-                {/*    <StageCard*/}
-                {/*        images={images}*/}
-                {/*        setImages={setImages}*/}
-                {/*        stageRef={stageRef}*/}
-                {/*        dragUrl={dragUrl}*/}
-                {/*    />*/}
-                {/*</Box>*/}
+                <Box className={classes.box}>
+                <FrameList
+                />
+                <FrameCard
+                />
+                </Box>
             </ThemeProvider>
         </>
     )

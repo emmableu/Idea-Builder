@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
-import StageCard from "../Stage/StageCard";
+import FrameCard from "../Frame/FrameCard";
 import React from "react";
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -10,7 +10,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import {useDispatch} from 'react-redux';
-import {selectStage} from '../../redux/features/selectedStageSlice';
+import {selectFrame} from '../../redux/features/selectedFrameSlice';
 import Box from '@material-ui/core/Box';
 
 
@@ -31,11 +31,11 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const StageSnapshots = () => {
+const FrameList = () => {
     const classes = useStyles();
     const [snapshot, setSnapshot] = React.useState([]);
     const count = useSelector((state) => state.counter.value);
-    const selectedStage = useSelector((state) => state.selectedStage.value);
+    const selectedFrame = useSelector((state) => state.selectedFrame.value);
     const dispatch = useDispatch();
 
     React.useEffect(() => {
@@ -50,13 +50,13 @@ const StageSnapshots = () => {
         );
     }, [count]);
 
-    const addNewStage = () => {
+    const addNewFrame = () => {
         axios({
             method: 'post',
-            url: '/stages/add',
+            url: '/frames/add',
         }).then(response =>
             {
-                const responseSnapshotData = Object.values(response.data.stages).map((v) => v.base64);
+                const responseSnapshotData = Object.values(response.data.frames).map((v) => v.base64);
                 setSnapshot(responseSnapshotData);
             }
         );
@@ -67,8 +67,8 @@ const StageSnapshots = () => {
                         {snapshot.map((s, i) => (
                             <Grid className={classes.grid} item key={i}>
                                 <Card variant="outlined"
-                                      className={`paper ${i===selectedStage ? classes.highlighted : null}`}>
-                                    <CardActionArea onClick={() => { dispatch(selectStage(i)); }}>
+                                      className={`paper ${i===selectedFrame ? classes.highlighted : null}`}>
+                                    <CardActionArea onClick={() => { dispatch(selectFrame(i)); }}>
                                         <CardMedia
                                         component='img' src={s}
                                         />
@@ -77,7 +77,7 @@ const StageSnapshots = () => {
                             </Grid>
                         ))}
                         <Grid item xs={1} align="middle">
-                            <Fab color="default" aria-label="add" onClick={addNewStage}
+                            <Fab color="default" aria-label="add" onClick={addNewFrame}
                             >
                                 <AddIcon />
                             </Fab>
@@ -88,4 +88,4 @@ const StageSnapshots = () => {
             </>);
 };
 
-export default StageSnapshots
+export default FrameList

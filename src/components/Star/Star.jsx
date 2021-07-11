@@ -1,9 +1,9 @@
 import React from 'react';
-import actorImg from './Actors.json';
+import actorImg from './Stars.json';
 import {Transformer, Image} from 'react-konva';
 import useImage from 'use-image';
 
-const Actor = (props) => {
+const Star = (props) => {
     const {shapeProps, isSelected, onSelect, onChange} = props;
     // console.log('shapeProps: ', shapeProps);
     const [image] = useImage('images/' + actorImg.filter((e) => e.name===shapeProps.name)[0].imgSrc);
@@ -74,4 +74,4 @@ const Actor = (props) => {
 };
 
 
-export default Actor;
+export default Star;

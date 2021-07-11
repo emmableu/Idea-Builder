@@ -1,12 +1,12 @@
 import {Stage} from "react-konva";
-import ActorsLayer from "./ActorsLayer";
+import StarLayer from "./StarLayer";
 import React, {useEffect} from "react";
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
-import { ReactReduxContext, Provider } from "react-redux";
+import {ReactReduxContext, Provider, useSelector} from "react-redux";
 import {makeStyles} from "@material-ui/core";
 
 
@@ -23,21 +23,24 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const StageCard = (props) => {
-    const {images, setImages, stageRef, dragUrl} = props;
+const FrameCard = (props) => {
+    // const {images, setImages, frameRef, dragUrl} = props;
+    const frameRef = React.useRef();
+    const [images, setImages] = React.useState([]);
+    const dragUrl = useSelector(state => state.dragUrl.value);
     const cardContainerRef = React.useRef(null);
     const classes = useStyles();
-    const initialStageHeight = window.innerHeight*0.65;
-    const [stageHeight, setStageHeight] = React.useState(initialStageHeight);
-    const fitStageIntoParentContainer = () => {
+    const initialFrameHeight = window.innerHeight*0.65;
+    const [frameHeight, setFrameHeight] = React.useState(initialFrameHeight);
+    const fitFrameIntoParentContainer = () => {
         var containerHeight = cardContainerRef.current.clientHeight;
-        var scale = containerHeight / stageHeight;
-        setStageHeight(stageHeight*scale);
+        var scale = containerHeight / frameHeight;
+        setFrameHeight(frameHeight*scale);
     };
     useEffect(() => {
-        // adapt the stage on any window resize
-        window.addEventListener('resize', fitStageIntoParentContainer);
-        fitStageIntoParentContainer();
+        // adapt the frame on any window resize
+        window.addEventListener('resize', fitFrameIntoParentContainer);
+        fitFrameIntoParentContainer();
     }, []);
 
 
@@ -52,18 +55,18 @@ const StageCard = (props) => {
                             e.stopPropagation();
                             e.preventDefault();
                             // register event position
-                            stageRef.current.setPointersPositions(e);
+                            frameRef.current.setPointersPositions(e);
                             // add image
                             setImages(
                                 images.concat([
                                     {
-                                        ...stageRef.current.getPointerPosition(),
+                                        ...frameRef.current.getPointerPosition(),
                                         name: dragUrl.current,
                                         count: images.length + 1
                                     }
                                 ])
                             );
-                            console.log('stageRef.current.getPointerPosition(): ', stageRef.current.getPointerPosition());
+                            console.log('frameRef.current.getPointerPosition(): ', frameRef.current.getPointerPosition());
                         }}
                         onDragOver={(e) => {
                             e.preventDefault()}}
@@ -71,14 +74,14 @@ const StageCard = (props) => {
                         <ReactReduxContext.Consumer>
                             {({ store }) => (
                         <Stage
-                            width={initialStageHeight*4/3}
-                            height={initialStageHeight}
-                            ref={stageRef}
+                            width={initialFrameHeight*4/3}
+                            height={initialFrameHeight}
+                            ref={frameRef}
                         >
                             <Provider store={store}>
-                            <ActorsLayer
-                                stageRef={stageRef}
-                                layerHeight={stageHeight}
+                            <StarLayer
+                                frameRef={frameRef}
+                                layerHeight={frameHeight}
                                 copiedActorData = {images.map(d => ({
                                 key:d.name + d.count.toString(),
                                 name: d.name,
@@ -97,7 +100,7 @@ const StageCard = (props) => {
     );
 };
 
-export default  StageCard;
+export default  FrameCard;
 
 
 
