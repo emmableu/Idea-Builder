@@ -10,13 +10,13 @@ const ActorPanelCardTitle = (props) => {
         <>
             <Input
                 onChange={e => dispatch(
-                    updateActorName(JSON.stringify({
+                    updateActorName({
                         _id: _id,
                         name: e.target.value
-                    }))
+                    })
                 )}
                 value={name}
-                placeholder="Enter actor name"
+                placeholder="Actor name"
                 bordered={false}
             />
         </>

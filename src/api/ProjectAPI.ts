@@ -33,10 +33,40 @@ class ProjectAPI {
         return response;
     }
 
+
+    static async replaceStateListInDatabase(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/state_list/replace`,
+            data: text,
+        });
+        return response;
+    }
+
+
+
+    static async updateName(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/project_name/replace`,
+            data: text,
+        });
+        return response;
+    }
+
     static async addActor(text:any) {
         const response = await axios({
             method: 'post',
             url: `/actor/add`,
+            data: text,
+        });
+        return response;
+    }
+
+    static async updateActorName(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/actor_name/replace`,
             data: text,
         });
         return response;

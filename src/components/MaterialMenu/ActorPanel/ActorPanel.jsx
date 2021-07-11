@@ -70,6 +70,10 @@ const ActorPanel = (props) => {
         state.project.value===null? []:state.project.value.toJSON().actorList
     );
 
+    React.useEffect(() => {
+        console.log("actorList: ", actorList);
+    }, [actorList]);
+
     const handleAddNewActorButtonClick = (e) => {
         dispatch(addActor());
     };

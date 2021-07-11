@@ -4,6 +4,7 @@ import {StateData} from "./StateData";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
+//Note: delete is a not used attribute, should remove.
 
 export class ProjectData {
     _id: string;
@@ -34,7 +35,7 @@ export class ProjectData {
     static parse(projectJSON: any): ProjectData {
         const projectData = new ProjectData(projectJSON._id, projectJSON.name, projectJSON.deleted);
         projectJSON.actorList.forEach((a:any) => {
-            projectData.actorList.unshift(
+            projectData.actorList.push(
                  ActorData.parse(a))
         });
         return projectData;

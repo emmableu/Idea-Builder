@@ -44,9 +44,9 @@ const ImgCard = (props) =>  {
     const handleClick = () => {
         console.log("stateId: ", stateId)
         dispatch(deleteActorState(
-            JSON.stringify(
             {actorId,
-            stateId})));
+            stateId}
+        ));
     }
 
 

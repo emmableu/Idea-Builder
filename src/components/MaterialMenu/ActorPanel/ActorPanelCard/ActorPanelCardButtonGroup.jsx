@@ -24,14 +24,15 @@ const ActorPanelCardButtonGroup = props => {
         <>
             <ActorPanelCardUploadButton _id={_id}/>
             <Tooltip title="Search for state">
-                <Button type="link" shape="circle" icon={<SearchOutlined />} />
+                <Button type="link" shape="circle" size="small" icon={<SearchOutlined />} />
             </Tooltip>
-            <Button {...props} type="link" shape="circle" icon={<DragHandleIcon />} />
+            <Button {...props} type="link" shape="circle"  size="small" icon={<DragHandleIcon />} />
 
             <Tooltip title="Delete actor">
                 <Button
                     type="link"
                     shape="circle"
+                    size="small"
                     onClick={handleDeleteActor}
                     icon={<DeleteTwoTone twoToneColor="#eb2f96" />}
                 />

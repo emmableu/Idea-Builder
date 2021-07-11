@@ -87,12 +87,15 @@ function StoryboardMenuListGroup() {
                         >
                             <Paper style={{backgroundColor: globalConfig.storyboardMenuColor.menuHeader,
                                 width: "100%",
-                                padding: "15px 15px",
+                                padding: "10px 10px",
+                                display: "flex",
+                                alignItems: "center",
                                 border: `0px solid ${globalConfig.storyboardMenuColor.titleBar}`
                                 }}>
                                 <span style={{backgroundColor: "inherit",
                                     color: "white",
-                                }}>{column.name}</span>
+                                    flexGrow: 1,
+                                }}>{'\u00A0'} {column.name}</span>
                                 <Button type="link"
                                         shape="circle"
                                         style={{"float": "right"}}
@@ -112,7 +115,7 @@ function StoryboardMenuListGroup() {
                                                         ? globalConfig.storyboardMenuColor.menuBackgroundOnDrag
                                                         : globalConfig.storyboardMenuColor.menuBackground,
                                                     width: globalConfig.storyboardDrawerWidth,
-                                                    padding: 15,
+                                                    padding: 10,
                                                     minHeight: 30,
                                                 }}
                                             >

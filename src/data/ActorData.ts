@@ -18,7 +18,7 @@ export class ActorData implements IActorData {
         this.stateList = stateList? stateList:[]
     }
 
-    addNewState(stateId:string) {
+    addState(stateId:string) {
         this.stateList.push(new StateData(stateId))
     }
 

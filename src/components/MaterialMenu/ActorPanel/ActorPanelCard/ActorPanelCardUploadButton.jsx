@@ -3,7 +3,7 @@ import { Upload, message, Button, Tooltip } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import axios from "../../../../axiosConfig";
 import {useDispatch} from "react-redux";
-import {addStateToActorStateList} from "../../../../redux/features/projectSlice";
+import {addState} from "../../../../redux/features/projectSlice";
 
 const uploadButtonProps = {
     name: 'file',
@@ -34,12 +34,12 @@ const ActorPanelCardUploadButton = (props) => {
             data: fmData,
             config
         }).then(response => {
-            dispatch(addStateToActorStateList(JSON.stringify(
+            dispatch(addState(
          {
              actorId: _id,
              stateId: response.data._id,
                 }
-            )))
+            ))
         })
 
         // try {
@@ -64,7 +64,7 @@ const ActorPanelCardUploadButton = (props) => {
                 customRequest={uploadImage}
                 {...uploadButtonProps}>
                 <Tooltip title="Upload">
-                    <Button type="link" shape="circle" icon={<UploadOutlined />} />
+                    <Button type="link" shape="circle"  size="small" icon={<UploadOutlined />} />
                 </Tooltip>
             </Upload>
         </>
