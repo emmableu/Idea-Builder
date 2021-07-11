@@ -14,7 +14,7 @@ export class StoryboardData implements IStoryboardData {
 
     constructor(storyboardId?: string, name?:string, order?:number, frameList?:Array<FrameData>) {
         this._id = storyboardId? storyboardId:UUID.v4();
-        this.name = name? name:"";
+        this.name = name? name:"Untitled";
         this.frameList = frameList? frameList:[]
     }
 
@@ -31,14 +31,9 @@ export class StoryboardData implements IStoryboardData {
     }
 
     static  parse(storyboardJSON: any): StoryboardData {
-        console.log("storyboardData: ", storyboardJSON);
+        console.log("storyboardJSON: ", storyboardJSON);
         const storyboardData = new StoryboardData(storyboardJSON._id, storyboardJSON.name);
-        storyboardJSON.frameList.forEach(
-            (s: { _id: string | undefined; name: string | undefined; }) => {
-                storyboardData.frameList.push(new FrameData(
-                    s._id, s.name
-                ));
-            })
+        storyboardData.frameList = storyboardJSON.frameList.map((ele:any) => FrameData.parse(ele));
         return storyboardData;
     }
 }

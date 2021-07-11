@@ -11,17 +11,17 @@ const StoryboardMenuItem = (props) => {
             elevation={3}
             ref={provided.innerRef}
             {...provided.draggableProps}
-            onClick={() => setClickedID(item.id)}
+            onClick={() => setClickedID(item._id)}
             style={{
                 width: "100%",
                 userSelect: "none",
                 padding: 10,
                 margin: "0 0 8px 0",
                 minHeight: "30px",
-                backgroundColor: clickedID===item.id
+                backgroundColor: clickedID===item._id
                     ? globalConfig.storyboardMenuColor.menuItemOnClick.background
                     : globalConfig.storyboardMenuColor.menuItem,
-                color: clickedID===item.id
+                color: clickedID===item._id
                     ? globalConfig.storyboardMenuColor.menuItemOnClick.text
                     : "white",
                 border: snapshot.isDragging ? `2px solid ${globalConfig.storyboardMenuColor.darkPrimary}` : null,
@@ -33,7 +33,7 @@ const StoryboardMenuItem = (props) => {
                 icon={<DragHandleIcon  {...provided.dragHandleProps}
                                        style={{ color: 'white'}}
                 />} />
-            {'\u00A0'}   {item.content}
+            {'\u00A0'}   {item.name}
         </Paper>
     )
 }

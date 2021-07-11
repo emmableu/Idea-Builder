@@ -4,6 +4,7 @@ import {Button, CardActions} from '@material-ui/core';
 import ImgCard from "./ImgCard";
 import ImgTitleEdiText from "./ImgTitleEdiText";
 import axios from "../../../../axiosConfig";
+import globalConfig from "../../../../globalConfig";
 
 const ContentNode = (props) => (
     <ImgTitleEdiText {...props}/>
@@ -14,7 +15,7 @@ const ActorPanelCardContentImgTile = (props) => {
     const {actorId, stateId} = props;
     React.useEffect(() => {
         console.log("stateId: ", stateId);
-        console.log(axios.defaults.baseURL + "/static/" + stateId);
+        // console.log(axios.defaults.baseURL + "/static/" + stateId);
         },[stateId]
     );
 
@@ -23,7 +24,7 @@ const ActorPanelCardContentImgTile = (props) => {
             <ImgCard
                 actorId={actorId}
                 stateId={stateId}
-                imgSrc={axios.defaults.baseURL + "/static/" + stateId}
+                imgSrc={axios.defaults.baseURL + globalConfig.imageServer.state + stateId}
                 heightToWidthRatio={'75%'}
                 contentNode={<ContentNode {...props}/>}
             />

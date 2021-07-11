@@ -30,7 +30,7 @@ const ActorPanelCardUploadButton = (props) => {
         fmData.append('file', file);
         axios({
             method: "post",
-            url: "/states/new",
+            url: "/state/upload",
             data: fmData,
             config
         }).then(response => {

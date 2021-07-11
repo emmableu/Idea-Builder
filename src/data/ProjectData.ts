@@ -3,28 +3,69 @@ import * as UUID from "uuid";
 import {StateData} from "./StateData";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import {StoryboardData} from "./StoryboardData";
+import {BackdropData} from "./BackdropData";
 
-//Note: delete is a not used attribute, should remove.
 
 export class ProjectData {
     _id: string;
     name: string;
-    deleted: boolean;
+    storyboardMenu: {
+        "final": {
+            "name": string,
+            "items": Array<{ "_id": string, "name": string}>
+        }
+        "draft":  {
+            "name": string,
+            "items": Array<{ "_id": string, "name": string}>
+        }
+    };
+    storyboardList: Array<StoryboardData>;
     actorList: Array<ActorData>;
+    backdropList: Array<BackdropData>;
 
-    constructor(_id?: string, name?:string, deleted?: boolean, actorList?:Array<ActorData>) {
+    constructor(
+        _id?: string,
+        name?:string,
+        storyboardMenu?:{
+            "final": {
+                "name": string,
+                "items": Array<{ "_id": string, "name": string}>
+            }
+            "draft":  {
+                "name": string,
+                "items": Array<{ "_id": string, "name": string}>
+            }
+        },
+        storyboardList?:Array<StoryboardData>,
+        actorList?:Array<ActorData>,
+        backdropList?:Array<BackdropData>,
+    ) {
         this._id = _id? _id:UUID.v4();
         this.name = name? name:"Untitled";
-        this.deleted = deleted? deleted:false;
+        this.storyboardMenu = storyboardMenu? storyboardMenu: {
+            "final": {
+                "name": "My storyboards",
+                "items": []
+            },
+            "draft":  {
+                "name": "Drafts",
+                "items": []
+            }
+        };
+        this.storyboardList = storyboardList? storyboardList:[];
         this.actorList = actorList? actorList:[];
+        this.backdropList = backdropList? backdropList:[];
     }
 
     toJSON() {
         return {
             _id: this._id,
             name: this.name,
-            deleted: this.deleted,
-            actorList: this.actorList.map(a => a.toJSON())
+            storyboardMenu: this.storyboardMenu,
+            storyboardList: this.storyboardList.map(a => a.toJSON()),
+            actorList: this.actorList.map(a => a.toJSON()),
+            backdropList: this.backdropList.map(a => a.toJSON()),
         }
     }
 
@@ -33,11 +74,13 @@ export class ProjectData {
     }
 
     static parse(projectJSON: any): ProjectData {
-        const projectData = new ProjectData(projectJSON._id, projectJSON.name, projectJSON.deleted);
-        projectJSON.actorList.forEach((a:any) => {
-            projectData.actorList.push(
-                 ActorData.parse(a))
-        });
+
+        const projectData = new ProjectData(projectJSON._id, projectJSON.name, projectJSON.storyboardMenu);
+
+        projectData.storyboardList = projectJSON.storyboardList.map((ele:any) => StoryboardData.parse(ele));
+        projectData.actorList = projectJSON.actorList.map((ele:any) => ActorData.parse(ele));
+        projectData.backdropList = projectJSON.backdropList.map((ele:any) => BackdropData.parse(ele));
+
         return projectData;
     }
 
@@ -45,6 +88,16 @@ export class ProjectData {
         return this.actorList.map(a => a._id);
     }
 
+    addStoryboard (type:"draft"|"final", storyboardDataJSON:any) {
+       this.storyboardMenu[type].items.unshift(
+           {"_id": storyboardDataJSON._id, "name": storyboardDataJSON.name}
+       );
+        this.storyboardList.unshift(
+            StoryboardData.parse(storyboardDataJSON)
+        )
+        console.log("storyboardMenu: ====================: ", this.storyboardMenu);
+        console.log("storyboardList: ====================: ", this.storyboardList);
+    }
 
     addActor(actorDataJSON:IActorData) {
         this.actorList.unshift(

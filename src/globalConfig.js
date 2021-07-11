@@ -68,7 +68,16 @@ const globalConfig = {
      }),
      routes: {
           dashboard: "/project",
-          login: "/login"
+          login: "/login",
+     },
+     types: {
+          DRAFT: false,
+          FINAL: true,
+     },
+     imageServer: {
+          state: "/static/state/",
+          backdrop: "/static/backdrop/",
+          frame: "/static/frame/",
      }
 }
 

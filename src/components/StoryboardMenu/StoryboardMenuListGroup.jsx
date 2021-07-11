@@ -7,25 +7,11 @@ import StoryboardMenuItem from "./StoryboardMenuItem";
 import Icon, {PlusCircleTwoTone, PlusOutlined} from '@ant-design/icons'
 import { makeStyles } from '@material-ui/core/styles';
 import {Button, Tooltip} from 'antd'
+import {useSelector} from "react-redux";
+import StoryboardTitleEdiText from "../StoryboardTitleBar/StoryboardTitleEdiText";
+import {StoryboardSubMenu} from "./StoryboardSubMenu";
 
 
-const itemsFromBackend = [
-    { id: uuid.v4(), content: "Grow flowers" },
-    { id: uuid.v4(), content: "Many people running" },
-    { id: uuid.v4(), content: "Helicopter flies" },
-    { id: uuid.v4(), content: "Helicopter drop waters" }
-];
-
-const columnsFromBackend = {
-    [uuid.v4()]: {
-        name: "My storyboards",
-        items: itemsFromBackend
-    },
-    [uuid.v4()]: {
-        name: "Drafts",
-        items: []
-    },
-};
 
 const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
@@ -65,86 +51,48 @@ const onDragEnd = (result, columns, setColumns) => {
 };
 
 function StoryboardMenuListGroup() {
-    const [columns, setColumns] = useState(columnsFromBackend);
     const [clickedID, setClickedID] = useState(null);
+
+    const initialColumns = {
+        "final": {
+            name: "My storyboards",
+            items: []
+        },
+        "draft": {
+            name: "Drafts",
+            items: []
+        },
+    };
+    const [columns, setColumns] = useState(initialColumns);
+
+    const storyboardMenu = useSelector(state => {
+        if (state.project.value === null) return;
+        return JSON.stringify(state.project.value.storyboardMenu);
+    })
+
+    React.useEffect(()=> {
+
+        console.log("USEEFFECT!!!!!!!!!!!!!!!!!!!! COLUMNS: ", columns);
+        console.log("USEEFFECT!!!!!!!!!!!!!!!!!!!! storyboardListMenu: ", storyboardMenu);
+
+        setColumns(JSON.parse(storyboardMenu));
+
+    }, [storyboardMenu]);
+
 
     return (
         <div style={{ display: "block", justifyContent: "center", height: "100%"}}>
             <DragDropContext
                 onDragEnd={result => onDragEnd(result, columns, setColumns)}
             >
-                {Object.entries(columns).map(([columnId, column], index) => {
+                {Object.entries(columns).map(([columnId, column]) => {
                     return (
-                        <div
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "start",
-                                backgroundColor: globalConfig.storyboardMenuColor.surface,
-                                width: "100%",
-                            }}
-                            key={columnId}
-                        >
-                            <Paper style={{backgroundColor: globalConfig.storyboardMenuColor.menuHeader,
-                                width: "100%",
-                                padding: "10px 10px",
-                                display: "flex",
-                                alignItems: "center",
-                                border: `0px solid ${globalConfig.storyboardMenuColor.titleBar}`
-                                }}>
-                                <span style={{backgroundColor: "inherit",
-                                    color: "white",
-                                    flexGrow: 1,
-                                }}>{'\u00A0'} {column.name}</span>
-                                <Button type="link"
-                                        shape="circle"
-                                        style={{"float": "right"}}
-                                        icon={<PlusOutlined
-                                                style={{fontSize: "100%", color: "white"}}
-                                                />} />
-                            </Paper>
-                            <div>
-                                <Droppable droppableId={columnId} key={columnId}>
-                                    {(provided, snapshot) => {
-                                        return (
-                                            <div
-                                                {...provided.droppableProps}
-                                                ref={provided.innerRef}
-                                                style={{
-                                                    background: snapshot.isDraggingOver
-                                                        ? globalConfig.storyboardMenuColor.menuBackgroundOnDrag
-                                                        : globalConfig.storyboardMenuColor.menuBackground,
-                                                    width: globalConfig.storyboardDrawerWidth,
-                                                    padding: 10,
-                                                    minHeight: 30,
-                                                }}
-                                            >
-                                                {column.items.map((item, index) => {
-                                                    return (
-                                                        <Draggable
-                                                            key={item.id}
-                                                            draggableId={item.id}
-                                                            index={index}
-                                                        >
-                                                            {(provided, snapshot) => {
-                                                                return (
-                                                                    < StoryboardMenuItem provided={provided}
-                                                                                    snapshot={snapshot}
-                                                                                    item={item}
-                                                                                    clickedID={clickedID}
-                                                                                    setClickedID={setClickedID}/>
-                                                                );
-                                                            }}
-                                                        </Draggable>
-                                                    );
-                                                })}
-                                                {provided.placeholder}
-                                            </div>
-                                        );
-                                    }}
-                                </Droppable>
-                            </div>
-                        </div>
+                        <StoryboardSubMenu
+                            columnId={columnId}
+                            column={column}
+                            clickedID={clickedID}
+                            setClickedID={setClickedID}
+                        />
                     );
                 })}
             </DragDropContext>

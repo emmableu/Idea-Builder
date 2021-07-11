@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {ProjectData} from "../../data/ProjectData";
+import {StoryboardData} from "../../data/StoryboardData";
 import {DashboardAPI} from "../../api/DashboardAPI";
 import {DashboardAPIData} from "../../data/DashboardData/DashboardAPIData";
 import {ProjectAPI} from "../../api/ProjectAPI";
@@ -44,18 +45,20 @@ const updateName = createAsyncThunk(
 
 const addStoryboard = createAsyncThunk(
     'project/addStoryboard',
-    async (text, thunkAPI) => {
-        const {dispatch, getFrame}  = thunkAPI;
+    async (type, thunkAPI) => {
+        const {dispatch, getState}  = thunkAPI;
         const storyboardId = UUID.v4();
         console.log("storyboardId: ", storyboardId);
         const storyboardDataJSON = new StoryboardData(storyboardId).toJSON();
-        const frame = getFrame();
-        const projectId = frame.project.value._id;
-        const payload =  JSON.stringify({
+        console.log("storyboardDataJSON: ", storyboardDataJSON);
+        const state = getState();
+        const projectId = state.project.value._id;
+        const payload =  {
             projectId,
+            type,
             storyboardDataJSON
-        });
-        dispatch(addStoryboardInMemory(payload));
+        };
+        dispatch(addStoryboardInMemory(JSON.stringify(payload)));
         const response = await ProjectAPI.addStoryboard(payload);
         return response.status;
     }
@@ -65,11 +68,11 @@ const deleteStoryboard = createAsyncThunk(
     'project/deleteStoryboard',
     async (storyboardId, thunkAPI) => {
         console.log("storyboardID: ", storyboardId);
-        const {dispatch, getFrame} = thunkAPI;
+        const {dispatch, getState} = thunkAPI;
         dispatch(deleteStoryboardInMemory(storyboardId));
-        const frame = getFrame();
-        const projectId = frame.project.value._id;
-        const storyboardIdList = frame.project.value.storyboardList.map(a=>a._id);
+        const state = getState();
+        const projectId = state.project.value._id;
+        const storyboardIdList = state.project.value.storyboardList.map(a=>a._id);
         const response = await ProjectAPI.replaceStoryboardIdListInDatabase({
             projectId, storyboardIdList
         });
@@ -80,11 +83,11 @@ const deleteStoryboard = createAsyncThunk(
 const updateStoryboardOrder = createAsyncThunk(
     'project/updateStoryboardOrder',
     async (text, thunkAPI) => {
-        const {dispatch, getFrame} = thunkAPI;
+        const {dispatch, getState} = thunkAPI;
         dispatch(updateStoryboardOrderInMemory(text));
-        const frame = getFrame();
-        const projectId = frame.project.value._id;
-        const storyboardIdList = frame.project.value.storyboardList.map(a=>a._id);
+        const state = getState();
+        const projectId = state.project.value._id;
+        const storyboardIdList = state.project.value.storyboardList.map(a=>a._id);
         const response = await ProjectAPI.replaceStoryboardIdListInDatabase({
             projectId, storyboardIdList
         });
@@ -95,7 +98,7 @@ const updateStoryboardOrder = createAsyncThunk(
 const updateStoryboardName = createAsyncThunk(
     'project/updateStoryboardName',
     async (payload, thunkAPI) => {
-        const {dispatch, getFrame} = thunkAPI;
+        const {dispatch, getState} = thunkAPI;
         dispatch(updateStoryboardNameInMemory(JSON.stringify(payload)));
         const response = await ProjectAPI.updateStoryboardName(payload);
         return response.status;
@@ -109,9 +112,9 @@ const addFrame = createAsyncThunk(
     'project/addFrame',
     async (payload, thunkAPI) => {
         const {storyboardId} = payload
-        const {dispatch, getFrame} = thunkAPI;
+        const {dispatch, getState} = thunkAPI;
         dispatch(addFrameInMemory(JSON.stringify(payload)));
-        const frameList = getFrame().project.value.frameListJSON(storyboardId);
+        const frameList = getState().project.value.frameListJSON(storyboardId);
         const response = await ProjectAPI.replaceFrameListInDatabase({
             storyboardId,
             frameList
@@ -124,9 +127,9 @@ const deleteFrame = createAsyncThunk(
     'project/deleteFrame',
     async (payload, thunkAPI) => {
         const {storyboardId} = payload
-        const {dispatch, getFrame} = thunkAPI;
+        const {dispatch, getState} = thunkAPI;
         dispatch(deleteFrameInMemory(JSON.stringify(payload)));
-        const frameList = getFrame().project.value.frameListJSON(storyboardId);
+        const frameList = getState().project.value.frameListJSON(storyboardId);
         const response = await ProjectAPI.replaceFrameListInDatabase({
             storyboardId,
             frameList
@@ -265,24 +268,24 @@ export const projectSlice = createSlice({
         */
 
         addStoryboardInMemory: {
-            reducer: (frame, action) => {
-                const {storyboardDataJSON} = JSON.parse(action.payload);
-                frame.value.addStoryboard(storyboardDataJSON);
+            reducer: (state, action) => {
+                const {type, storyboardDataJSON} = JSON.parse(action.payload);
+                state.value.addStoryboard(type, storyboardDataJSON);
             }
         },
 
         deleteStoryboardInMemory: {
-            reducer: (frame, action) => {
-                const storyboardIndex = frame.value.storyboardList.findIndex(
+            reducer: (state, action) => {
+                const storyboardIndex = state.value.storyboardList.findIndex(
                     a => a._id === action.payload
                 )
-                frame.value.storyboardList.splice(storyboardIndex, 1)
+                state.value.storyboardList.splice(storyboardIndex, 1)
             }
         },
 
         updateStoryboardOrderInMemory: {
-            reducer: (frame, action) => {
-                frame.value.updateStoryboardOrder(action.payload.beginOrder, action.payload.endOrder);
+            reducer: (state, action) => {
+                state.value.updateStoryboardOrder(action.payload.beginOrder, action.payload.endOrder);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
@@ -296,8 +299,8 @@ export const projectSlice = createSlice({
         },
 
         updateStoryboardNameInMemory: {
-            reducer: (frame, action) => {
-                frame.value.storyboardList.find(
+            reducer: (state, action) => {
+                state.value.storyboardList.find(
                     a => a._id === action.payload._id
                 ).name = action.payload.name;
             },
@@ -316,8 +319,8 @@ export const projectSlice = createSlice({
         */
 
         addFrameInMemory: {
-            reducer: (frame, action) => {
-                const storyboard = frame.value.storyboardList.find(a => a._id === action.payload.storyboardId);
+            reducer: (state, action) => {
+                const storyboard = state.value.storyboardList.find(a => a._id === action.payload.storyboardId);
                 storyboard.addFrame(
                     action.payload.frameId
                 )
@@ -334,8 +337,8 @@ export const projectSlice = createSlice({
         },
 
         deleteFrameInMemory: {
-            reducer: (frame, action) => {
-                frame.value.deleteFrame(action.payload.storyboardId, action.payload.frameId);
+            reducer: (state, action) => {
+                state.value.deleteFrame(action.payload.storyboardId, action.payload.frameId);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
