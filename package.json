@@ -2,7 +2,6 @@
   "name": "create-react-app-antd",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://isnap.csc.ncsu.edu/idea-builder",
   "dependencies": {
     "@ant-design/colors": "latest",
     "@ant-design/icons": "latest",
