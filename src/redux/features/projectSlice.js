@@ -338,7 +338,7 @@ export const projectSlice = createSlice({
                 storyboard.addFrame(
                     action.payload.frameId
                 )
-                console.log("storyboard: ", storyboard);
+                console.log("storyboard!!!!!!!!!!!!!!!!!!!!!!: ", storyboard);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);

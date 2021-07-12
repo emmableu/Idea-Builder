@@ -14,27 +14,51 @@ import Box from '@material-ui/core/Box';
 import * as UUID from "uuid"
 import {addFrame} from "../../redux/features/projectSlice";
 import {setSelectedFrameId} from "../../redux/features/selectedFrameSlice";
+import globalConfig from "../../globalConfig";
 
 
 const snapshotHeight = 0.15*window.innerHeight;
 
 const useStyles = makeStyles((theme) => ({
-    highlighted: {
-        backgroundColor: "pink"
-    },
-    grid: {
-        minWidth: "15vh",
-        maxWidth: "20vh",
-        height: "200px",
-    },
+    // highlighted: {
+    //     backgroundColor: "pink"
+    // },
+    // grid: {
+    //     minWidth: "15vh",
+    //     maxWidth: "20vh",
+    // },
     box: {
         overflow: "auto",
+    },
+    paper: {
+      height: globalConfig.frameListHeight*0.75,
+        backgroundColor: "white",
+        width: globalConfig.frameListHeight*0.75*4/3
+    },
+    highlighted: {
+        border: "1px solid pink"
     }
 }));
 
 const FrameList = () => {
     const classes = useStyles();
-    const selectedFrame = useSelector((state) => state.selectedFrame.value._id);
+    const {_id, imgLoaded} = useSelector((state) => state.selectedFrame.value);
+
+    const [storyboardId, setStoryboardId] = React.useState(null);
+    const selectedStoryboard = useSelector(state => state.selectedStoryboard.value);
+    React.useEffect(
+        () => setStoryboardId(selectedStoryboard), [selectedStoryboard]
+    )
+
+    const [frameList, setFrameList] = React.useState([]);
+    const frameListString = useSelector(state => JSON.stringify(state.project.value.frameListJSON(storyboardId)));
+
+    React.useEffect(
+        () => {
+            console.log("--------------usEffECT")
+            setFrameList(JSON.parse(frameListString))}
+    , [frameListString])
+
     const dispatch = useDispatch();
 
     const handleAddFrame = (e) => {
@@ -65,12 +89,13 @@ const FrameList = () => {
     //     );
     // };
     return (<>
-                <Box margin={3} className={classes.box}>
+                <Box padding={2} className={classes.box}>
                     <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3}>
-                        {[1].map((s, i) => (
+                        {frameList.map((s, i) => (
                             <Grid className={classes.grid} item key={i}>
                                 <Card variant="outlined"
-                                      className={`paper ${i===selectedFrame ? classes.highlighted : null}`}>
+                                      className={classes.paper}>
+                                      {/*className={classes[]`paper ${i===selectedFrame ? classes.highlighted : null}`}>*/}
                                     <CardActionArea onClick={() => { dispatch(setSelectedFrameId(i)); }}>
                                         {/*<CardMedia*/}
                                         {/*component='img' src={s}*/}
