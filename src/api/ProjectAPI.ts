@@ -145,6 +145,17 @@ class ProjectAPI {
     }
 
 
+    /* this section is on note */
+
+    static async saveNote(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/save_note`,
+            data: text,
+        });
+        return response;
+    }
+
 
 
 

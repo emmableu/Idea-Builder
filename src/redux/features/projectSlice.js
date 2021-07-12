@@ -313,6 +313,20 @@ const updateStateName = createAsyncThunk(
     }
 );
 
+const saveNote = createAsyncThunk(
+    'project/saveNote',
+    async (text, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        dispatch(saveNoteInMemory(text));
+        const projectId = getState().project.value._id;
+        const response = await ProjectAPI.saveNote({
+            projectId,
+           text
+        });
+
+        return response.status;
+    }
+);
 
 
 export const projectSlice = createSlice({
@@ -566,6 +580,13 @@ export const projectSlice = createSlice({
         },
 
 
+        saveNoteInMemory: {
+          reducer: (state, action) => {
+              state.value.note = action.payload
+          }
+        },
+
+
 
         download: {
             reducer: (state) => {
@@ -589,6 +610,7 @@ export const {
     addFrameInMemory, deleteFrameInMemory, //frame
     addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, //actor
     addStateInMemory, deleteStateInMemory, updateStateNameInMemory, //state
+    saveNoteInMemory, //note
     download,
 } = projectSlice.actions;
 export {
@@ -597,6 +619,7 @@ export {
     addFrame, deleteFrame, //frame
     addStar, updateStarList, //star
     addActor, deleteActor, updateActorOrder, updateActorName, //actor
-    addState, deleteState, updateStateName //state
+    addState, deleteState, updateStateName, //state
+    saveNote, //note
 };
 export default projectSlice.reducer;

@@ -1,4 +1,4 @@
-import {Stage} from "react-konva";
+import {Layer, Stage} from "react-konva";
 import React from "react";
 import {Provider, ReactReduxContext, useDispatch, useSelector} from "react-redux";
 import Paper from "@material-ui/core/Paper/Paper";
@@ -13,6 +13,8 @@ const Frame = (props) => {
     const {width} = props;
     const frameRef = React.useRef();
     const dispatch = useDispatch();
+    const [selectedId, setSelectedId] = React.useState(null);
+
 
     const storyboardId = useSelector(state => state.selectedStoryboard.value);
     const frameActionUpdate = useSelector((state) => state.frameAction.value.toString());
@@ -46,6 +48,16 @@ const Frame = (props) => {
     )
 
 
+
+    const checkDeselect = (e) => {
+        // deselect when clicked on empty area
+        const clickedOnEmpty = e.target === e.target.getStage();
+        if (clickedOnEmpty) {
+            setSelectedId(null);
+        }
+    };
+
+
     return (
 
         <ReactReduxContext.Consumer>
@@ -54,11 +66,17 @@ const Frame = (props) => {
             ref={frameRef}
             width={width}
             height={(width * 3) / 4}
-            backgroundColor={globalConfig.color.veryLightGrey}>
+            backgroundColor={globalConfig.color.veryLightGrey}
+            onMouseDown={checkDeselect}
+            onTouchStart={checkDeselect} >
+
             <Provider store={store}>
                 <StarLayer
                     storyboardId={storyboardId}
                     frameId={frameId}
+                    width={width}
+                    selectedId={selectedId}
+                    setSelectedId={setSelectedId}
                 />
             </Provider>
         </Stage>)}

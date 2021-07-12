@@ -4,6 +4,10 @@ import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import {useEffect} from "react";
 import globalConfig, {calcFrameWidth} from "../../globalConfig";
+import AwesomeDebouncePromise from "awesome-debounce-promise";
+import {ProjectAPI} from "../../api/ProjectAPI";
+import {useDispatch, useSelector} from "react-redux";
+import {saveNote} from "../../redux/features/projectSlice";
 
 const converter = new Showdown.Converter({
     tables: true,
@@ -12,16 +16,39 @@ const converter = new Showdown.Converter({
     tasklists: true
 });
 
-const calcBoxHeight = (windowInnerHeight) => {
-    return windowInnerHeight
-        - globalConfig.toolBarHeight
-        - globalConfig.storyboardToolBarHeight
-        - globalConfig.storyboardPageMargin*2
-}
+// const calcBoxHeight = (windowInnerHeight) => {
+//     return windowInnerHeight
+//         - globalConfig.toolBarHeight
+//         - globalConfig.storyboardToolBarHeight
+//         - globalConfig.storyboardPageMargin*2
+// }
+
+
+
+
+
+
 
 export default function NoteBox() {
     const [value, setValue] = React.useState("**Enter your notes here:**");
     const [selectedTab, setSelectedTab] = React.useState("write");
+    const dispatch = useDispatch();
+
+    const loadedNote = useSelector(state =>
+        state.project.value===null?null:state.project.value.note);
+
+    React.useEffect(
+        () => {setValue(loadedNote)},
+        [loadedNote])
+
+    const saveNoteDebounce = AwesomeDebouncePromise(
+        text => dispatch(saveNote(text)),
+        500);
+
+    const onFieldTextChange = async (text) => {
+        setValue(text);
+        await saveNoteDebounce(text);
+    };
 
     return (
         <div style={{  width: "100%",
@@ -33,7 +60,7 @@ export default function NoteBox() {
         }}>
             <ReactMde
                 value={value}
-                onChange={setValue}
+                onChange={text => onFieldTextChange(text)}
                 selectedTab={selectedTab}
                 onTabChange={setSelectedTab}
                 generateMarkdownPreview={(markdown) =>

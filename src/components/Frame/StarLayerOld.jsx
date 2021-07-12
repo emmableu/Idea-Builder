@@ -11,7 +11,7 @@ import { updateFrameAction } from '../../redux/features/frameActionSlice';
 const StarLayerOld = (props) => {
     const {frameRef, layerHeight, copiedActorData} = props;
     const [backdropImage] = useImage('images/'+backdropImg.imgSrc);
-    const [selectedId, selectImg] = React.useState(null);
+    const [selectedId, setSelectedId] = React.useState(null);
     const [actorData, setActorData] = React.useState([]);
     const [dataReceived, setDataReceived] = React.useState(false);
     const dispatch = useDispatch();
@@ -100,7 +100,7 @@ const StarLayerOld = (props) => {
         // // console.log('e.target.id: ', !actorData.map(a => a.id).includes(e.target.id()));
         const clickedOnEmpty = e.target.id()==="backdrop";
         if (clickedOnEmpty) {
-            selectImg(null);
+            setSelectedId(null);
         }
     };
 
@@ -127,7 +127,7 @@ const StarLayerOld = (props) => {
                         starData={img}
                         isSelected={img.id === selectedId}
                         onSelect={() => {
-                            selectImg(img.id);
+                            setSelectedId(img.id);
                         }}
                         onChange={(newAttrs) => {
                             const rects = actorData.slice();

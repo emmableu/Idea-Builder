@@ -15,6 +15,7 @@ import * as UUID from "uuid"
 import {addFrame} from "../../redux/features/projectSlice";
 import {setSelectedFrameId} from "../../redux/features/selectedFrameSlice";
 import globalConfig from "../../globalConfig";
+import FrameThumbnail from "./FrameThumbnail";
 
 
 const snapshotHeight = 0.15*window.innerHeight;
@@ -42,19 +43,7 @@ const useStyles = makeStyles((theme) => ({
 const FrameList = () => {
     const classes = useStyles();
     const _id = useSelector((state) => state.selectedFrame.value._id);
-    const imgUpdated = useSelector((state) => state.selectedFrame.value.imgUpdated);
-    // const [fakeState, setFakeState] = React.useState(false);
-    //
-    // React.useEffect(() => {
-    //     // console.log("rerendering...........................................");
-    // }, []);
-    //
-    //
-    // React.useEffect(() => {
-    //     setFakeState(!fakeState);
-    //     // console.log("updated.......................");
-    // }, [imgUpdated]);
-    //
+
 
     const [storyboardId, setStoryboardId] = React.useState(null);
     const selectedStoryboard = useSelector(state => state.selectedStoryboard.value);
@@ -79,20 +68,18 @@ const FrameList = () => {
 
     return (<>
                     <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3} className={classes.box}>
-                        {frameList.map((s, i) => (
+                        {frameList.map((frameData, i) => (
                             <Grid className={classes.grid} item key={i}>
                                 <Card variant="outlined"
                                       className={classes.paper}
                                       style={{
-                                          border: s._id===_id? "2px solid orange":"1px solid #e0e0e0"
+                                          border: frameData._id===_id? "2px solid orange":"1px solid #e0e0e0"
                                       }}
                                 >
-                                    {/*<span> {axios.defaults.baseURL+s._id+`?${imgUpdated.toString()}`} </span>*/}
-                                    {/*<img key={imgUpdated.toString()} src={axios.defaults.baseURL + s._id} />*/}
+                                    <CardActionArea onClick={(e) => { dispatch(setSelectedFrameId(frameData._id)); }}>
 
-                                    <CardActionArea onClick={(e) => { dispatch(setSelectedFrameId(s._id)); }}>
-                                        <CardMedia
-                                        component='img' src={axios.defaults.baseURL+s._id+`?fakeRender=${imgUpdated.toString()}`}
+                                        <FrameThumbnail
+                                            frameData={frameData}
                                         />
 
                                     </CardActionArea>

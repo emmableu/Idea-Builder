@@ -1,6 +1,7 @@
 import * as UUID from "uuid";
 import {IStarData, StarData} from "./StarData";
 import {Star} from "konva/lib/shapes/Star";
+import globalConfig from "../globalConfig";
 
 export interface IFrameData {
     _id: string;
@@ -17,7 +18,7 @@ export class FrameData implements IFrameData{
                 backdropId?:string,
                 starList?: Array<StarData>,
 ) {
-        this._id = _id? _id:UUID.v4();
+        this._id = _id? _id:globalConfig.imageServer.student.frame + UUID.v4() + ".png";
         this.backdropId = backdropId? backdropId:"EMPTY";
         this.starList = starList? starList:[];
     }
@@ -31,7 +32,12 @@ export class FrameData implements IFrameData{
     }
 
     starListJSON() {
-        return  this.starList.map(s => s.toJSON());
+        if (this.starList.length > 0) {
+            return this.starList.map(s => s.toJSON());
+        }
+        else {
+            return [];
+        }
     }
 
     addStar(prototypeId:string) {

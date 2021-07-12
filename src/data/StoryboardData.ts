@@ -15,7 +15,7 @@ export class StoryboardData implements IStoryboardData {
     constructor(storyboardId?: string, name?:string, order?:number, frameList?:Array<FrameData>) {
         this._id = storyboardId? storyboardId:UUID.v4();
         this.name = name? name:"Untitled";
-        this.frameList = frameList? frameList:[]
+        this.frameList = frameList? frameList:[new FrameData()]
     }
 
     addFrame(frameId:string) {

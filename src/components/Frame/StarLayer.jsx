@@ -1,7 +1,7 @@
 import React from "react"
 import axios from '../../axiosConfig'
 import Star from "../Star/Star.jsx";
-import {Image, Layer} from 'react-konva';
+import {Image, Layer, Stage} from 'react-konva';
 import useImage from "use-image";
 import backdropImg from ".//Frame";
 import {useDispatch, useSelector} from 'react-redux';
@@ -11,9 +11,8 @@ import {updateStarList} from "../../redux/features/projectSlice";
 
 
 const StarLayer = (props) => {
-    const {storyboardId, frameId} = props;
+    const {storyboardId, frameId, width, selectedId, setSelectedId} = props;
     const [starList, setStarList] = React.useState([]);
-    const [selectedId, selectImg] = React.useState(null);
     const dispatch = useDispatch();
 
 
@@ -21,7 +20,16 @@ const StarLayer = (props) => {
             if (state.project.value === null) return "[]";
             if (storyboardId === null) return "[]";
             if (frameId === null) return "[]";
-            return JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON())
+            try {
+                return JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON())
+            }
+            catch (error) {
+                console.log(error);
+                console.log(state.project.value.getStoryboard(storyboardId));
+                console.log(state.project.value.getStoryboard(storyboardId).getFrame(frameId));
+                console.log("frameId: ", frameId);
+                return "[]";
+            }
         }
     );
 
@@ -29,17 +37,22 @@ const StarLayer = (props) => {
         setStarList(JSON.parse(starListString));
     }, [starListString])
 
+
+
  return (
      <>
          <Layer
+             width={width}
+             height={(width * 3) / 4}
+
          >
              {starList.map((img, i) => {
                  return (
                      <Star
                          starData={img}
-                         isSelected={img.id === selectedId}
+                         isSelected={img._id === selectedId}
                          onSelect={() => {
-                             selectImg(img.id);
+                             setSelectedId(img._id);
                          }}
                          onChange={(newAttrs) => {
                              const rects = starList.slice();

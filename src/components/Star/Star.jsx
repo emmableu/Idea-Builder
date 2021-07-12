@@ -29,7 +29,7 @@ const Star = (props) => {
                 image={image}
                 key={starData._id}
                 {...starData}
-                id={starData.name}
+                id={starData._id}
                 onClick={onSelect}
                 onTap={onSelect}
                 draggable

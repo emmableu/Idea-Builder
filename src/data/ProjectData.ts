@@ -10,6 +10,10 @@ import {BackdropData} from "./BackdropData";
 export class ProjectData {
     _id: string;
     name: string;
+    storyboardList: Array<StoryboardData>;
+    actorList: Array<ActorData>;
+    backdropList: Array<BackdropData>;
+    note:string;
     storyboardMenu: {
         "final": {
             "name": string,
@@ -20,13 +24,16 @@ export class ProjectData {
             "items": Array<{ "_id": string, "name": string}>
         }
     };
-    storyboardList: Array<StoryboardData>;
-    actorList: Array<ActorData>;
-    backdropList: Array<BackdropData>;
+    selectedStoryboardId: string;
+    selectedFrameId: string;
 
     constructor(
         _id?: string,
         name?:string,
+        storyboardList?:Array<StoryboardData>,
+        actorList?:Array<ActorData>,
+        backdropList?:Array<BackdropData>,
+        note?:string,
         storyboardMenu?:{
             "final": {
                 "name": string,
@@ -37,25 +44,39 @@ export class ProjectData {
                 "items": Array<{ "_id": string, "name": string}>
             }
         },
-        storyboardList?:Array<StoryboardData>,
-        actorList?:Array<ActorData>,
-        backdropList?:Array<BackdropData>,
+        selectedStoryboardId?: string,
+        selectedFrameId?: string,
+
     ) {
         this._id = _id? _id:UUID.v4();
         this.name = name? name:"Untitled";
-        this.storyboardMenu = storyboardMenu? storyboardMenu: {
-            "final": {
-                "name": "My storyboards",
-                "items": []
-            },
-            "draft":  {
-                "name": "Drafts",
-                "items": []
-            }
-        };
-        this.storyboardList = storyboardList? storyboardList:[];
-        this.actorList = actorList? actorList:[];
+        this.storyboardList = storyboardList? storyboardList:[new StoryboardData()];
+        this.actorList = actorList? actorList:[new ActorData()];
         this.backdropList = backdropList? backdropList:[];
+        this.note = note? note:"**Enter your notes here:**";
+
+        if (storyboardMenu === undefined) {
+            this.storyboardMenu =  {
+                "final": {
+                    "name": "My storyboards",
+                    "items": [
+                        {"_id": this.storyboardList[0]._id,
+                        "name": this.storyboardList[0].name,}
+                    ]
+                },
+                "draft":  {
+                    "name": "Drafts",
+                    "items": []
+                }
+            };
+        }
+        else {
+            this.storyboardMenu = storyboardMenu;
+        }
+        this.selectedStoryboardId = selectedStoryboardId? selectedStoryboardId:this.storyboardList[0]._id;
+        // @ts-ignore
+        this.selectedFrameId = selectedFrameId? selectedFrameId:this.getStoryboard(this.selectedStoryboardId).frameList[0]._id;
+
     }
 
     toJSON() {
@@ -66,6 +87,9 @@ export class ProjectData {
             storyboardList: this.storyboardList.map(a => a.toJSON()),
             actorList: this.actorList.map(a => a.toJSON()),
             backdropList: this.backdropList.map(a => a.toJSON()),
+            note:this.note,
+            selectedStoryboardId: this.selectedStoryboardId,
+            selectedFrameId: this.selectedFrameId,
         }
     }
 
@@ -75,11 +99,16 @@ export class ProjectData {
 
     static parse(projectJSON: any): ProjectData {
 
-        const projectData = new ProjectData(projectJSON._id, projectJSON.name, projectJSON.storyboardMenu);
+        const projectData = new ProjectData(projectJSON._id, projectJSON.name);
 
         projectData.storyboardList = projectJSON.storyboardList.map((ele:any) => StoryboardData.parse(ele));
         projectData.actorList = projectJSON.actorList.map((ele:any) => ActorData.parse(ele));
         projectData.backdropList = projectJSON.backdropList.map((ele:any) => BackdropData.parse(ele));
+
+        projectData.note = projectJSON.note;
+        projectData.storyboardMenu = projectJSON.storyboardMenu;
+        projectData.selectedStoryboardId = projectJSON.selectedStoryboardId;
+        projectData.selectedFrameId = projectJSON.selectedFrameId;
 
         return projectData;
     }
@@ -216,27 +245,27 @@ export class ProjectData {
 
     download () {
         let filename = 'project';
-        const urls = [
-            'https://assets.thehindustep.in/user_tasks/01bd55804ecb6f90408f87d5710df126.docx',
-            'https://assets.thehindustep.in/user_tasks/0304e0e4913e9a37a5ee6c38a8a2b1a8.pdf',
-            'https://assets.thehindustep.in/user_tasks/02e8131da84606bf8457c38455b19ead.mp3'
-        ];
+        // const urls = [
+        //     'https://assets.thehindustep.in/user_tasks/01bd55804ecb6f90408f87d5710df126.docx',
+        //     'https://assets.thehindustep.in/user_tasks/0304e0e4913e9a37a5ee6c38a8a2b1a8.pdf',
+        //     'https://assets.thehindustep.in/user_tasks/02e8131da84606bf8457c38455b19ead.mp3'
+        // ];
         const zip = new JSZip();
         const folder = zip.folder('project');
         if (folder === null) return;
-        folder.file('Hello.json', this.toString());
-        urls.forEach(url => {
-            const blobPromise = fetch(url).then(function(response) {
-                console.log({ response });
-                if (response.status === 200 || response.status === 0) {
-                    return Promise.resolve(response.blob());
-                } else {
-                    return Promise.reject(new Error(response.statusText));
-                }
-            });
-            const name = url.substring(url.lastIndexOf('/'));
-            folder.file(name, blobPromise);
-        });
+        folder.file('project.json', this.toString());
+        // urls.forEach(url => {
+        //     const blobPromise = fetch(url).then(function(response) {
+        //         console.log({ response });
+        //         if (response.status === 200 || response.status === 0) {
+        //             return Promise.resolve(response.blob());
+        //         } else {
+        //             return Promise.reject(new Error(response.statusText));
+        //         }
+        //     });
+        //     const name = url.substring(url.lastIndexOf('/'));
+        //     folder.file(name, blobPromise);
+        // });
 
         zip
             .generateAsync({ type: 'blob' })
