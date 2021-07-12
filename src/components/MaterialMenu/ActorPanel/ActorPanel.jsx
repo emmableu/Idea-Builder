@@ -49,9 +49,10 @@ const getListStyle = isDraggingOver => ({
     padding: grid,
     width: "100%",
     overflowY: "scroll",
-    height: `calc(100vh - ${globalConfig.toolBarHeight}px - ${globalConfig.storyboardToolBarHeight}px
-    - ${globalConfig.addNewActorBoxHeight}px
-     - ${globalConfig.storyboardPageMargin*2}px)`,
+    height: `calc(100vh - ${globalConfig.toolBarHeight}px
+                         - ${globalConfig.storyboardToolBarHeight}px
+                        - ${globalConfig.addNewActorBoxHeight}px
+                         - ${globalConfig.storyboardPageMargin*2}px)`,
     position: 'relative',
 });
 

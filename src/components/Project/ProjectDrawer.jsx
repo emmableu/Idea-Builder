@@ -52,9 +52,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: globalConfig.storyboardMenuColor.titleBar,
         color: globalConfig.storyboardMenuColor.whiteText,
     },
-    iconButton: {
-        marginRight: theme.spacing(2)
-    },
     appBar: {
         width: `calc(100% - ${globalConfig.storyboardDrawerWidth}px)`,
         marginLeft: globalConfig.storyboardDrawerWidth,

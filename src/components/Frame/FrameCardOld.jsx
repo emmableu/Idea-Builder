@@ -1,5 +1,5 @@
 import {Stage} from "react-konva";
-import StarLayer from "./StarLayer";
+import StarLayerOld from "./StarLayerOld";
 import React, {useEffect} from "react";
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const FrameCard = (props) => {
+const FrameCardOld = (props) => {
     // const {images, setImages, frameRef, dragUrl} = props;
     const frameRef = React.useRef();
     const [images, setImages] = React.useState([]);
@@ -79,7 +79,7 @@ const FrameCard = (props) => {
                             ref={frameRef}
                         >
                             <Provider store={store}>
-                            <StarLayer
+                            <StarLayerOld
                                 frameRef={frameRef}
                                 layerHeight={frameHeight}
                                 copiedActorData = {images.map(d => ({
@@ -100,7 +100,7 @@ const FrameCard = (props) => {
     );
 };
 
-export default  FrameCard;
+export default  FrameCardOld;
 
 
 

@@ -6,7 +6,8 @@ import useImage from 'use-image';
 const Star = (props) => {
     const {shapeProps, isSelected, onSelect, onChange} = props;
     // console.log('shapeProps: ', shapeProps);
-    const [image] = useImage('images/' + actorImg.filter((e) => e.name===shapeProps.name)[0].imgSrc);
+    // const [image] = useImage('images/' + actorImg.filter((e) => e.name===shapeProps.name)[0].imgSrc);
+    const [image] = useImage('http://localhost:1000/static/5a8dd875-2dd4-4d47-b1e4-5c3a3d6322e7.png');
     const imageRef = React.useRef(null);
     const transformerRef = React.useRef(null);
     React.useEffect(() => {
