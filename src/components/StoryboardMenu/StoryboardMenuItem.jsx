@@ -6,6 +6,8 @@ import DragHandleIcon from "../primitives/DragHandleIcon";
 import StoryboardActionDropdown from "./StoryboardActionDropdown";
 import {setSelectedStoryboard} from "../../redux/features/selectedStoryboardSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {setSelectedFrameId} from "../../redux/features/selectedFrameSlice";
+import {setSelectedStar} from "../../redux/features/selectedStarSlice";
 
 const StoryboardMenuItem = (props) => {
     const {provided, snapshot, item} = props;
@@ -17,7 +19,11 @@ const StoryboardMenuItem = (props) => {
             elevation={3}
             ref={provided.innerRef}
             {...provided.draggableProps}
-            onClick={(e) => {dispatch(setSelectedStoryboard(item._id))}}
+            onClick={(e) => {
+                dispatch(setSelectedStoryboard(item._id))
+                dispatch(setSelectedFrameId(null));  //TODO: SHOULd use a asyncTHUNK here so that it can be the first of the storyboard.
+                dispatch(setSelectedStar(null));
+            }}
             style={{
                 width: "100%",
                 userSelect: "none",

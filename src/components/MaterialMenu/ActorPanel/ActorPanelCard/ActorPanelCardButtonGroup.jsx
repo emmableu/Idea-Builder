@@ -10,10 +10,15 @@ import DragHandleIcon from '../../../primitives/DragHandleIcon';
 import ActorPanelCardUploadButton from './ActorPanelCardUploadButton';
 import {useDispatch} from "react-redux";
 import {deleteActor} from "../../../../redux/features/projectSlice";
+import SearchDialog from "./SearchDialog";
 
 const ActorPanelCardButtonGroup = props => {
     const {_id} = props;
     const dispatch = useDispatch();
+    const [searchDialogOpen, setSearchDialogOpen] = React.useState(false);
+
+    const handleClickOpen = (e) => {setSearchDialogOpen(true)};
+    const handleClose = (e) => {setSearchDialogOpen(false)};
 
 
     const handleDeleteActor = (e) => {
@@ -22,11 +27,15 @@ const ActorPanelCardButtonGroup = props => {
     }
     return (
         <>
+            <div  style={{flex: "0 0 100px"}}>
             <ActorPanelCardUploadButton _id={_id}/>
             <Tooltip title="Search for state">
-                <Button type="link" shape="circle" size="small" icon={<SearchOutlined />} />
+                <Button type="link" shape="circle" size="small"
+                        onClick= {handleClickOpen}
+                        icon={<SearchOutlined />} />
             </Tooltip>
-            <Button {...props} type="link" shape="circle"  size="small" icon={<DragHandleIcon />} />
+            <Button {...props}
+                    type="link" shape="circle"  size="small" icon={<DragHandleIcon />} />
 
             <Tooltip title="Delete actor">
                 <Button
@@ -37,6 +46,12 @@ const ActorPanelCardButtonGroup = props => {
                     icon={<DeleteTwoTone twoToneColor="#eb2f96" />}
                 />
             </Tooltip>
+            </div>
+            <SearchDialog
+                actorId={_id}
+                searchDialogOpen={searchDialogOpen}
+                handleClose={handleClose} />
+
         </>
     );
 };

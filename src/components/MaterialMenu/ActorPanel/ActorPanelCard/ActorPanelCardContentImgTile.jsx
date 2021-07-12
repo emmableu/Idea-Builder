@@ -13,11 +13,6 @@ const ContentNode = (props) => (
 
 const ActorPanelCardContentImgTile = (props) => {
     const {actorId, stateId} = props;
-    React.useEffect(() => {
-        // console.log("stateId: ", stateId);
-        // // console.log(axios.defaults.baseURL + "/static/" + stateId);
-        },[stateId]
-    );
 
     return (
         <>

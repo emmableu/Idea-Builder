@@ -11,6 +11,7 @@ import {setSelectedFrameId} from "./selectedFrameSlice";
 import {updateFrameAction} from "./frameActionSlice";
 import globalConfig from "../../globalConfig";
 import {StarData} from "../../data/StarData";
+import {setSelectedStar} from "./selectedStarSlice";
 
 const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
@@ -126,6 +127,7 @@ const addFrame = createAsyncThunk(
         })));
         console.log("after dispatch");
         dispatch(setSelectedFrameId(frameId));
+        dispatch(setSelectedStar(null));
         setTimeout(() => {
             dispatch(updateFrameAction());
         }, 500)

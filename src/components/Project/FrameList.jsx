@@ -16,6 +16,7 @@ import {addFrame} from "../../redux/features/projectSlice";
 import {setSelectedFrameId} from "../../redux/features/selectedFrameSlice";
 import globalConfig from "../../globalConfig";
 import FrameThumbnail from "./FrameThumbnail";
+import {setSelectedStar} from "../../redux/features/selectedStarSlice";
 
 
 const snapshotHeight = 0.15*window.innerHeight;
@@ -76,7 +77,10 @@ const FrameList = () => {
                                           border: frameData._id===_id? "2px solid orange":"1px solid #e0e0e0"
                                       }}
                                 >
-                                    <CardActionArea onClick={(e) => { dispatch(setSelectedFrameId(frameData._id)); }}>
+                                    <CardActionArea onClick={(e) => {
+                                        dispatch(setSelectedFrameId(frameData._id));
+                                        dispatch(setSelectedStar(null));
+                                    }}>
 
                                         <FrameThumbnail
                                             frameData={frameData}

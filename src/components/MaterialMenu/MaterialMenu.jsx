@@ -82,17 +82,16 @@ export const MaterialMenu = () => {
                 className={classes.tabs}
             >
                 <Tab icon={<Widgets />} label="Actors" {...a11yProps(0)} />
-                <Tab icon={<Panorama/>} label="Backdrops" {...a11yProps(1)} />
+                {/*<Tab icon={<Panorama/>} label="Backdrops" {...a11yProps(1)} />*/}
                 <Tab icon={<Theaters/>} label="Templates" {...a11yProps(2)} />
 
             </Tabs>
             <TabPanel value={value} index={0}>
             </TabPanel>
-            <TabPanel value={value} index={1}>
-                Item Two
-            </TabPanel>
+            {/*<TabPanel value={value} index={1}>*/}
+            {/*    Item Two*/}
+            {/*</TabPanel>*/}
             <TabPanel value={value} index={2}>
-                Item Three
             </TabPanel>
         </div>
     );
