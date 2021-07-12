@@ -67,6 +67,7 @@ const FrameCardContainer = props => {
                     width: width,
                     height: globalConfig.trashToolBarHeight,
                     backgroundColor: globalConfig.color.veryLightGrey,
+                    zIndex: -5,
                     margin:`${globalConfig.topAndBottomMarginOutsideFrame}px 0 0 0`,
                 }}
             />
