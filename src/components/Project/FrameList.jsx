@@ -23,12 +23,13 @@ const useStyles = makeStyles((theme) => ({
     // highlighted: {
     //     backgroundColor: "pink"
     // },
-    // grid: {
-    //     minWidth: "15vh",
-    //     maxWidth: "20vh",
-    // },
+    grid: {
+    },
     box: {
         overflow: "auto",
+        height: "100%",
+        margin: "0 0",
+        width: "100%",
     },
     paper: {
       height: globalConfig.frameListHeight*0.75,
@@ -89,8 +90,7 @@ const FrameList = () => {
     //     );
     // };
     return (<>
-                <Box padding={2} className={classes.box}>
-                    <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3}>
+                    <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3} className={classes.box}>
                         {frameList.map((s, i) => (
                             <Grid className={classes.grid} item key={i}>
                                 <Card variant="outlined"
@@ -104,7 +104,7 @@ const FrameList = () => {
                                 </Card>
                             </Grid>
                         ))}
-                        <Grid item xs={1} align="middle">
+                        <Grid item xs={2} align="middle">
                             <Fab color="default" aria-label="add"
                                  onClick={(e) =>{ handleAddFrame(e)}}
                             >
@@ -113,7 +113,6 @@ const FrameList = () => {
                         </Grid>
 
                     </Grid>
-                </Box>
             </>);
 };
 
