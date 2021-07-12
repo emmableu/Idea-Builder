@@ -45,9 +45,15 @@ const globalConfig = {
      addNewActorBoxHeight: 50,
      projectDrawerWidth: 270,
      panelTabsWidth: 65,
-     noteWidth: 260,
+     noteWidth: 335,
      frameListHeight: 200,
      trashToolBarHeight: 35,
+     innerBoxLeftRightPaddingEach: 20,
+     topAndBottomMarginOutsideFrame: 5,
+
+     color: {
+          veryLightGrey: "#fafafa",
+     },
 
      storyboardMenuColor: {
           titleBar: {
@@ -101,13 +107,17 @@ const calcFrameWidth = ( windowInnerWidth, windowInnerHeight ) => {
          - globalConfig.toolBarHeight
          - globalConfig.storyboardToolBarHeight
          - globalConfig.storyboardPageMargin*2
-         - globalConfig.frameListHeight)*0.85 - globalConfig.trashToolBarHeight*2;
+         - globalConfig.frameListHeight
+         - globalConfig.topAndBottomMarginOutsideFrame*2
+     ) - globalConfig.trashToolBarHeight*2;
 
      const bestFrameWidth = (windowInnerWidth
          - globalConfig.storyboardDrawerWidth
          - globalConfig.panelTabsWidth
          - globalConfig.actorDrawerWidth
-         - globalConfig.noteWidth) * 0.85;
+         - globalConfig.noteWidth
+         -  globalConfig.innerBoxLeftRightPaddingEach*2
+     );
 
      return Math.min(bestFrameWidth, bestFrameHeight * 4 / 3);
 }

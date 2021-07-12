@@ -3,11 +3,11 @@ import { createSlice } from '@reduxjs/toolkit'
 export const frameActionSlice = createSlice({
     name: 'frameAction',
     initialState: {
-        value: false,
+        value: 0,
     },
     reducers: {
         updateFrameAction: (state) => {
-            state.value = !state.value;
+            state.value = state.value + 1;
         },
     },
 })

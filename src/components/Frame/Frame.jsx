@@ -7,6 +7,7 @@ import axios from "../../axiosConfig";
 import {addState} from "../../redux/features/projectSlice";
 import {setSelectedFrameImgAsUpdated} from "../../redux/features/selectedFrameSlice";
 import {ProjectAPI} from "../../api/ProjectAPI";
+import globalConfig from "../../globalConfig";
 
 const Frame = (props) => {
     const {width} = props;
@@ -53,7 +54,7 @@ const Frame = (props) => {
             ref={frameRef}
             width={width}
             height={(width * 3) / 4}
-            backgroundColor="yellow">
+            backgroundColor={globalConfig.color.veryLightGrey}>
             <Provider store={store}>
                 <StarLayer
                     storyboardId={storyboardId}

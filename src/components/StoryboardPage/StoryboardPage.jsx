@@ -7,12 +7,13 @@ import StoryboardTitleBar from "../StoryboardTitleBar/StoryboardTitleBar";
 import {MaterialMenu} from "../MaterialMenu/MaterialMenu";
 import FrameCardContainer from "../Frame/FrameCardContainer";
 import FrameList from "../Project/FrameList";
+import NoteBox from "../NoteBox/NoteBox";
 
 const useStyles = makeStyles((theme) => ({
     rootContainer: {
         display: "flex",
         maxWidth: `calc(100vw  - ${globalConfig.storyboardDrawerWidth}px)`,
-        backgroundColor: "red",
+        backgroundColor: globalConfig.color.veryLightGrey,
         justifyContent: "space-between",
         alignItems: "stretch",
         margin: `${globalConfig.storyboardPageMargin}px 0px`,
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         flex: `0 0 ${globalConfig.actorDrawerWidth}px`
     },
     outerFrameSpace: {
-        backgroundColor: "blue",
+        backgroundColor:  globalConfig.color.veryLightGrey,
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
@@ -30,17 +31,18 @@ const useStyles = makeStyles((theme) => ({
         width: `calc(100vw  - ${globalConfig.storyboardDrawerWidth}px
                                             -  ${globalConfig.panelTabsWidth}px
                                             - ${globalConfig.actorDrawerWidth}px
-                                             - ${globalConfig.noteWidth}px )`
+                                             - ${globalConfig.noteWidth}px )`,
+        borderRight: "1px solid, #e0e0e0",
+        padding: `0px ${globalConfig.innerBoxLeftRightPaddingEach}px`
     },
     frameList: {
-        border: "5px solid yellow",
-        backgroundColor: "purple",
+        borderBottom: "1px solid #e0e0e0",
+        backgroundColor:  globalConfig.color.veryLightGrey,
         height: `${globalConfig.frameListHeight}px`,
         flex: `0 0 ${globalConfig.frameListHeight}px`
     },
     frameDiv: {
-        border: "5px solid pink",
-        backgroundColor: "red",
+        backgroundColor:  globalConfig.color.veryLightGrey,
         height: `calc(100vh - ${globalConfig.toolBarHeight}px
                          - ${globalConfig.storyboardToolBarHeight}px
                          - ${globalConfig.storyboardPageMargin*2}px
@@ -51,9 +53,10 @@ const useStyles = makeStyles((theme) => ({
                          - ${globalConfig.frameListHeight}px)`,
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+
     },
-    noteDiv: {backgroundColor: "black",
+    noteDiv: {backgroundColor:  globalConfig.color.veryLightGrey,
         flex:`0 0 ${globalConfig.noteWidth}px`,
         width: globalConfig.noteWidth}
 
@@ -88,11 +91,10 @@ const StoryboardPage = () => {
                         >
                             <FrameCardContainer/>
                         </div>
-                        {/*<FrameList*/}
-                        {/*/>*/}
 
                     </div>
                     <div className={classes.noteDiv} >
+                        <NoteBox/>
                     </div>
                 </div>
             </ThemeProvider>

@@ -167,7 +167,10 @@ const addStar = createAsyncThunk(
         dispatch(addStarInMemory(JSON.stringify({
             storyboardId, frameId, stateId,
         })));
-        dispatch(updateFrameAction());
+        setTimeout(() => {
+            dispatch(updateFrameAction());
+        }, 500)
+        //sometimes the first dispatch does not work, because the actor is not yet fully updated on the canvas.
         const starList = state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON();
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,

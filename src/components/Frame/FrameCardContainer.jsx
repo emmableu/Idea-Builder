@@ -39,16 +39,15 @@ const FrameCardContainer = props => {
                 style={{
                     width: width,
                     height: globalConfig.trashToolBarHeight,
-                    backgroundColor: 'grey',
-                    padding: '0 0',
+                    backgroundColor: globalConfig.color.veryLightGrey,
                     display: 'flex',
                     justifyContent: 'flex-end',
-                    margin:"0 0 2px 0"
+                    margin:`0 0 ${globalConfig.topAndBottomMarginOutsideFrame}px 0`,
                 }}
             >
                 <Tooltip title="Delete Actor">
                     <IconButton aria-label="delete star" color="inherit" size="small">
-                        <DeleteOutline style={{ color: '#333333' }} />
+                        <DeleteOutline style={{ color: 'grey' }} />
                     </IconButton>
                 </Tooltip>
             </div>
@@ -59,6 +58,7 @@ const FrameCardContainer = props => {
                     backgroundColor: 'white'
                 }}
                 square
+                elevation={4}
             >
                 <Frame width={width}/>
             </Paper>
@@ -66,8 +66,8 @@ const FrameCardContainer = props => {
                 style={{
                     width: width,
                     height: globalConfig.trashToolBarHeight,
-                    backgroundColor: 'grey',
-                    margin:"2px 0 0 0",
+                    backgroundColor: globalConfig.color.veryLightGrey,
+                    margin:`${globalConfig.topAndBottomMarginOutsideFrame}px 0 0 0`,
                 }}
             />
             <div />
