@@ -1,23 +1,21 @@
-# This stage installs our modules
-FROM mhart/alpine-node:16
-WORKDIR /app
-COPY package.json package-lock.json ./
-
-# If you have native dependencies, you'll need extra tools
-# RUN apk add --no-cache make gcc g++ python3
-
-RUN yarn install
-
-# Then we copy over the modules from above onto a `slim` image
-FROM mhart/alpine-node:slim-12
-
-# If possible, run your container using `docker run --init`
-# Otherwise, you can use `tini`:
-# RUN apk add --no-cache tini
-# ENTRYPOINT ["/sbin/tini", "--"]
+# Stage 0, "build-stage", based on Node.js, to build and compile the frontend
+FROM tiangolo/node-frontend:10 as build-stage
 
 WORKDIR /app
-COPY --from=0 /app .
-COPY . .
-CMD ["node", "index.js"]
-CMD serve -s build -l 4000
+
+COPY package*.json /app/
+
+RUN npm install
+
+COPY ./ /app/
+
+RUN npm run build
+
+
+# Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
+FROM nginx:1.15
+
+COPY --from=build-stage /app/build/ /usr/share/nginx/html
+
+# Copy the default nginx.conf provided by tiangolo/node-frontend
+COPY --from=build-stage /nginx.conf /etc/nginx/conf.d/default.conf
