@@ -22,6 +22,10 @@ export class StoryboardData implements IStoryboardData {
         this.frameList.push(new FrameData(frameId))
     }
 
+    getFrame (frameId:string) {
+        return this.frameList.find(f => f._id === frameId);
+    }
+
     toJSON ():IStoryboardData {
         return {
             _id: this._id,

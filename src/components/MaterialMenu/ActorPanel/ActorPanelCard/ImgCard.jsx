@@ -7,7 +7,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import {useDispatch} from "react-redux";
-import {deleteState} from "../../../../redux/features/projectSlice";
+import {addStar, deleteState} from "../../../../redux/features/projectSlice";
 import {IconButton} from "@material-ui/core";
 import MoreIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import {ArrowForward, DeleteOutlined} from "@material-ui/icons";
@@ -77,7 +77,7 @@ const ImgCard = (props) =>  {
     const [onHover, setOnHover] = React.useState();
 
     const handleDelete = () => {
-        console.log("stateId: ", stateId)
+        // console.log("stateId: ", stateId)
         dispatch(deleteState(
             {actorId,
             stateId}
@@ -85,14 +85,9 @@ const ImgCard = (props) =>  {
     }
 
 
-    // const menu = () => {
-    //     return (<Menu>
-    //         <Menu.Item
-    //             key="1"
-    //             onClick={handleClick}
-    //         >delete state</Menu.Item>
-    //     </Menu>)
-    // };
+    const handleAddStar = () => {
+        dispatch(addStar(stateId));
+    }
 
 
     return (
@@ -118,6 +113,7 @@ const ImgCard = (props) =>  {
                                         className={classes.buttonOverlapUse}
                                         color="inherit"
                                         variant="contained"
+                                        onClick={e => {handleAddStar(e)}}
                                         size="small">
                                 <ArrowForward style={{color: "white"}} />
                             </IconButton>

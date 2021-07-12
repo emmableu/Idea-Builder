@@ -9,6 +9,8 @@ import * as UUID from "uuid";
 import {ActorData} from "../../data/ActorData";
 import {setSelectedFrameId} from "./selectedFrameSlice";
 import {updateFrameAction} from "./frameActionSlice";
+import globalConfig from "../../globalConfig";
+import {StarData} from "../../data/StarData";
 
 const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
@@ -117,7 +119,7 @@ const addFrame = createAsyncThunk(
         console.log("in thunk");
         const {dispatch, getState} = thunkAPI;
         const storyboardId = getState().selectedStoryboard.value;
-        const frameId = UUID.v4();
+        const frameId = globalConfig.imageServer.student.frame + UUID.v4() + ".png";
         console.log("frameId: ", frameId);
         dispatch(addFrameInMemory(JSON.stringify({
             storyboardId, frameId,
@@ -150,6 +152,52 @@ const deleteFrame = createAsyncThunk(
         return response.status;
     }
 );
+
+/* The next section are about stars on the frame */
+const addStar = createAsyncThunk(
+    'project/addStar',
+    async (stateId, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        const state = getState();
+        const storyboardId = state.selectedStoryboard.value;
+        const frameId = state.selectedFrame.value._id;
+        console.log("storyboardId: ", storyboardId)
+        console.log("frameId: ", frameId)
+        if (storyboardId === null || frameId === null) {return;}
+        dispatch(addStarInMemory(JSON.stringify({
+            storyboardId, frameId, stateId,
+        })));
+        dispatch(updateFrameAction());
+        const starList = state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON();
+        const response = await ProjectAPI.replaceStarListInDatabase({
+            frameId,
+            starList
+        });
+        return response.status;
+    }
+);
+
+
+const updateStarList = createAsyncThunk(
+    'project/updateStarList',
+    async (payload, thunkAPI) => {
+        console.log("====================================inside update starlist================")
+        const {storyboardId, frameId, starData} = JSON.parse(payload);
+        const {dispatch, getState} = thunkAPI;
+        dispatch(updateStarListInMemory(payload));
+        const state = getState();
+        console.log("====================================before dispatching updatefrmaeaction================")
+        dispatch(updateFrameAction());
+        const starList = state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON();
+        const response = await ProjectAPI.replaceStarListInDatabase({
+            frameId,
+            starList: starList
+        });
+        return response.status;
+    }
+);
+
+
 
 /* The next section are about actors:
  */
@@ -366,6 +414,47 @@ export const projectSlice = createSlice({
             },
         },
 
+        /* the next section is about stars */
+
+        addStarInMemory: {
+            reducer: (state, action) => {
+                const frame = state.value.getStoryboard(action.payload.storyboardId).getFrame(action.payload.frameId);
+                frame.addStar(action.payload.stateId);
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "storyboardId": obj.storyboardId,
+                        "frameId": obj.frameId,
+                        "stateId": obj.stateId,
+                    }
+                }
+            },
+        },
+
+
+        updateStarListInMemory: {
+            reducer: (state, action) => {
+                const frame = state.value.getStoryboard(action.payload.storyboardId).getFrame(action.payload.frameId);
+                const starIndex = frame.starList.findIndex(s => s._id === action.payload.starData._id);
+                console.log("starIndex: ", starIndex);
+                if (starIndex !== -1) {
+                    frame.starList[starIndex] =  StarData.parse(action.payload.starData);
+                }
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "storyboardId": obj.storyboardId,
+                        "frameId": obj.frameId,
+                        "starData": obj.starData,
+                    }
+                }
+            },
+        },
+
         /* The next section are about actors:
         */
 
@@ -493,6 +582,7 @@ export const projectSlice = createSlice({
 export const {
     updateNameInMemory, //project
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
+    addStarInMemory, updateStarListInMemory, //star
     addFrameInMemory, deleteFrameInMemory, //frame
     addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, //actor
     addStateInMemory, deleteStateInMemory, updateStateNameInMemory, //state
@@ -502,6 +592,7 @@ export {
     insertEmptyProjectToDatabase, loadProjectFromDatabase, updateName, //project
     addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
     addFrame, deleteFrame, //frame
+    addStar, updateStarList, //star
     addActor, deleteActor, updateActorOrder, updateActorName, //actor
     addState, deleteState, updateStateName //state
 };

@@ -85,11 +85,6 @@ class ProjectAPI {
         return response;
     }
 
-    // ({
-    //                                              storyboardId,
-    //                                              frameId,
-    //                                              frameList,
-    //                                          });
     static async insertFrameAndReplaceFrameListInDatabase(text: any) {
         const response = await axios({
             method: 'post',
@@ -98,6 +93,18 @@ class ProjectAPI {
         });
         return response;
     }
+
+    /* this section is on star */
+
+    static async replaceStarListInDatabase(text: any) {
+        const response = await axios({
+            method: 'post',
+            url: `/star_list/replace`,
+            data: text,
+        });
+        return response;
+    }
+
 
     /* this section is on actor */
     static async addActor(text:any) {

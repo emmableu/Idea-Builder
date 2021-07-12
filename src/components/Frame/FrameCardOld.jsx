@@ -66,7 +66,7 @@ const FrameCardOld = (props) => {
                                     }
                                 ])
                             );
-                            console.log('frameRef.current.getPointerPosition(): ', frameRef.current.getPointerPosition());
+                            // console.log('frameRef.current.getPointerPosition(): ', frameRef.current.getPointerPosition());
                         }}
                         onDragOver={(e) => {
                             e.preventDefault()}}

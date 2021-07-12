@@ -5,7 +5,7 @@ import Paper from "@material-ui/core/Paper/Paper";
 import StarLayer from "./StarLayer";
 import axios from "../../axiosConfig";
 import {addState} from "../../redux/features/projectSlice";
-import {setSelectedFrameImgAsLoaded} from "../../redux/features/selectedFrameSlice";
+import {setSelectedFrameImgAsUpdated} from "../../redux/features/selectedFrameSlice";
 import {ProjectAPI} from "../../api/ProjectAPI";
 
 const Frame = (props) => {
@@ -13,26 +13,33 @@ const Frame = (props) => {
     const frameRef = React.useRef();
     const dispatch = useDispatch();
 
-    const frameActionUpdate = useSelector((state) => state.frameAction.value);
-    const selectedFrame = useSelector((state) => state.selectedFrame.value._id);
+    const storyboardId = useSelector(state => state.selectedStoryboard.value);
+    const frameActionUpdate = useSelector((state) => state.frameAction.value.toString());
+    const frameId = useSelector((state) => state.selectedFrame.value._id);
 
     React.useEffect(
         () => {
+            // console.log('[[[[[[[[[[[[[[frame action updated]]]]]]]]]]]]]');
+            try {
             frameRef.current.toImage({
-                pixelRatio: 0.5,
+                pixelRatio: 1,
                 callback(img) {
-                    console.log("selectedFrame: ", selectedFrame)
-                    console.log("img: ", img.src)
+                    // // console.log("frameId: ", frameId);
+                    // // console.log("img: ", img.src);
                     ProjectAPI.sendFrameImg({
-
-                        selectedFrame,
+                        "selectedFrame": frameId,
                         img: img.src,
                     }).then(response => {
-                        dispatch(setSelectedFrameImgAsLoaded())
+                        dispatch(setSelectedFrameImgAsUpdated())
                     })
                     ;
                 }
             });
+            }
+            catch (error) {
+                // console.log("failed to save image to remote: ", error);
+            }
+
 
         }, [frameActionUpdate]
     )
@@ -48,7 +55,10 @@ const Frame = (props) => {
             height={(width * 3) / 4}
             backgroundColor="yellow">
             <Provider store={store}>
-                <StarLayer/>
+                <StarLayer
+                    storyboardId={storyboardId}
+                    frameId={frameId}
+                />
             </Provider>
         </Stage>)}
         </ReactReduxContext.Consumer>

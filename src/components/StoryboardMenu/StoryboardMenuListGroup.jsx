@@ -42,8 +42,8 @@ function StoryboardMenuListGroup() {
 
     React.useEffect(()=> {
 
-        console.log("USEEFFECT!!!!!!!!!!!!!!!!!!!! COLUMNS: ", columns);
-        console.log("USEEFFECT!!!!!!!!!!!!!!!!!!!! storyboardListMenu: ", storyboardMenu);
+        // console.log("USEEFFECT!!!!!!!!!!!!!!!!!!!! COLUMNS: ", columns);
+        // console.log("USEEFFECT!!!!!!!!!!!!!!!!!!!! storyboardListMenu: ", storyboardMenu);
 
         setColumns(JSON.parse(storyboardMenu));
 

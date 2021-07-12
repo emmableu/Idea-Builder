@@ -14,8 +14,8 @@ const ContentNode = (props) => (
 const ActorPanelCardContentImgTile = (props) => {
     const {actorId, stateId} = props;
     React.useEffect(() => {
-        console.log("stateId: ", stateId);
-        // console.log(axios.defaults.baseURL + "/static/" + stateId);
+        // console.log("stateId: ", stateId);
+        // // console.log(axios.defaults.baseURL + "/static/" + stateId);
         },[stateId]
     );
 
@@ -24,7 +24,7 @@ const ActorPanelCardContentImgTile = (props) => {
             <ImgCard
                 actorId={actorId}
                 stateId={stateId}
-                imgSrc={axios.defaults.baseURL + globalConfig.imageServer.state + stateId}
+                imgSrc={axios.defaults.baseURL + stateId}
                 heightToWidthRatio={'75%'}
                 contentNode={<ContentNode {...props}/>}
             />

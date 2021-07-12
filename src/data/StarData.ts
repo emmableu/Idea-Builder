@@ -2,6 +2,7 @@ import * as UUID from "uuid";
 
 export interface IStarData {
     _id: string;
+    prototypeId: string;
     x: number;
     y: number;
     width: number;
@@ -11,17 +12,20 @@ export interface IStarData {
 
 export class StarData implements IStarData{
     _id: string;
+    prototypeId:string;
     x: number;
     y: number;
     width: number;
     height: number;
 
-    constructor(_id?: string,
+    constructor(prototypeId:string,
+                _id?: string,
                 x?:number,
                 y?:number,
                 width?:number,
                 height?:number,
     ) {
+        this.prototypeId = prototypeId;
         this._id = _id? _id:UUID.v4();
         this.x = x? x:0;
         this.y = y? y:0;
@@ -32,6 +36,7 @@ export class StarData implements IStarData{
     toJSON (): IStarData {
         return {
             _id: this._id,
+            prototypeId: this.prototypeId,
             x: this.x,
             y: this.y,
             width: this.width,
@@ -41,11 +46,12 @@ export class StarData implements IStarData{
 
     static parse (starJSON:IStarData): StarData {
         return new StarData(
+            starJSON.prototypeId,
             starJSON._id,
             starJSON.x,
             starJSON.y,
             starJSON.width,
             starJSON.height,
-        )
+        );
     }
 }

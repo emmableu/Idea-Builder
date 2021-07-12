@@ -5,22 +5,21 @@ export const selectedFrameSlice = createSlice({
     initialState: {
         value: {
             _id: null,
-            imgLoaded: false
+            imgUpdated: 0
         },
     },
     reducers: {
         setSelectedFrameId: (state, action) => {
             state.value._id = action.payload;
-            state.value.imgLoaded = false;
         },
-        setSelectedFrameImgAsLoaded: (state) => {
-            state.value.imgLoaded = true;
+        setSelectedFrameImgAsUpdated: (state) => {
+            state.value.imgUpdated = state.value.imgUpdated + 1;
         },
 
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { setSelectedFrameId, setSelectedFrameImgAsLoaded } = selectedFrameSlice.actions;
+export const { setSelectedFrameId, setSelectedFrameImgAsUpdated } = selectedFrameSlice.actions;
 
 export default selectedFrameSlice.reducer;

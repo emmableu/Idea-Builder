@@ -36,14 +36,25 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "white",
         width: globalConfig.frameListHeight*0.75*4/3
     },
-    highlighted: {
-        border: "1px solid pink"
-    }
+
 }));
 
 const FrameList = () => {
     const classes = useStyles();
-    const {_id, imgLoaded} = useSelector((state) => state.selectedFrame.value);
+    const _id = useSelector((state) => state.selectedFrame.value._id);
+    const imgUpdated = useSelector((state) => state.selectedFrame.value.imgUpdated);
+    // const [fakeState, setFakeState] = React.useState(false);
+    //
+    // React.useEffect(() => {
+    //     // console.log("rerendering...........................................");
+    // }, []);
+    //
+    //
+    // React.useEffect(() => {
+    //     setFakeState(!fakeState);
+    //     // console.log("updated.......................");
+    // }, [imgUpdated]);
+    //
 
     const [storyboardId, setStoryboardId] = React.useState(null);
     const selectedStoryboard = useSelector(state => state.selectedStoryboard.value);
@@ -56,7 +67,7 @@ const FrameList = () => {
 
     React.useEffect(
         () => {
-            console.log("--------------usEffECT")
+            // console.log("--------------usEffECT")
             setFrameList(JSON.parse(frameListString))}
     , [frameListString])
 
@@ -66,40 +77,24 @@ const FrameList = () => {
         dispatch(addFrame());
     }
 
-    // React.useEffect(() => {
-    //     axios({
-    //         method: 'get',
-    //         url: '/snapshots/get',
-    //     }).then(response =>
-    //         {
-    //             const responseSnapshotData = response.data;
-    //             setSnapshot(responseSnapshotData);
-    //         }
-    //     );
-    // }, [count]);
-    //
-    // const addNewFrame = () => {
-    //     axios({
-    //         method: 'post',
-    //         url: '/frames/add',
-    //     }).then(response =>
-    //         {
-    //             const responseSnapshotData = Object.values(response.data.frames).map((v) => v.base64);
-    //             setSnapshot(responseSnapshotData);
-    //         }
-    //     );
-    // };
     return (<>
                     <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3} className={classes.box}>
                         {frameList.map((s, i) => (
                             <Grid className={classes.grid} item key={i}>
                                 <Card variant="outlined"
-                                      className={classes.paper}>
-                                      {/*className={classes[]`paper ${i===selectedFrame ? classes.highlighted : null}`}>*/}
-                                    <CardActionArea onClick={() => { dispatch(setSelectedFrameId(i)); }}>
-                                        {/*<CardMedia*/}
-                                        {/*component='img' src={s}*/}
-                                        {/*/>*/}
+                                      className={classes.paper}
+                                      style={{
+                                          border: s._id===_id? "3px solid orange":"0"
+                                      }}
+                                >
+                                    {/*<span> {axios.defaults.baseURL+s._id+`?${imgUpdated.toString()}`} </span>*/}
+                                    {/*<img key={imgUpdated.toString()} src={axios.defaults.baseURL + s._id} />*/}
+
+                                    <CardActionArea onClick={(e) => { dispatch(setSelectedFrameId(s._id)); }}>
+                                        <CardMedia
+                                        component='img' src={axios.defaults.baseURL+s._id+`?fakeRender=${imgUpdated.toString()}`}
+                                        />
+
                                     </CardActionArea>
                                 </Card>
                             </Grid>

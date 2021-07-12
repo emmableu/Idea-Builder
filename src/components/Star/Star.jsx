@@ -2,12 +2,18 @@ import React from 'react';
 import actorImg from './Stars.json';
 import {Transformer, Image} from 'react-konva';
 import useImage from 'use-image';
+import axios from "../../axiosConfig";
+import {useDispatch} from "react-redux";
 
 const Star = (props) => {
-    const {shapeProps, isSelected, onSelect, onChange} = props;
-    // console.log('shapeProps: ', shapeProps);
-    // const [image] = useImage('images/' + actorImg.filter((e) => e.name===shapeProps.name)[0].imgSrc);
-    const [image] = useImage('http://localhost:1000/static/5a8dd875-2dd4-4d47-b1e4-5c3a3d6322e7.png');
+    const {starData, isSelected, onSelect, onChange} = props;
+    // console.log('starData: ', starData);
+    // const [image] = useImage('images/' + actorImg.filter((e) => e.name===starData.name)[0].imgSrc);
+    const [image] = useImage(axios.defaults.baseURL + starData.prototypeId);
+    // console.log("image: ", image);
+    if (image !== undefined) {
+        image.crossOrigin = "Anonymous";
+    }
     const imageRef = React.useRef(null);
     const transformerRef = React.useRef(null);
     React.useEffect(() => {
@@ -21,16 +27,16 @@ const Star = (props) => {
         <>
             <Image
                 image={image}
-                key={shapeProps.key}
-                {...shapeProps}
-                id={shapeProps.name}
+                key={starData._id}
+                {...starData}
+                id={starData.name}
                 onClick={onSelect}
                 onTap={onSelect}
                 draggable
                 ref={imageRef}
                 onDragEnd={(e) => {
                     onChange({
-                        ...shapeProps,
+                        ...starData,
                         x: e.target.x(),
                         y: e.target.y(),
                     });
@@ -41,8 +47,8 @@ const Star = (props) => {
                     // but in the store we have only width and height
                     const node = imageRef.current;
                     // to match the data better we will reset scale on transform end
-                    // console.log("node.width: ", node.width());
-                    // console.log("node.scaleX: ", node.scaleX());
+                    // // console.log("node.width: ", node.width());
+                    // // console.log("node.scaleX: ", node.scaleX());
                     const scaleX = node.scaleX();
                     const scaleY = node.scaleY();
 
@@ -50,7 +56,7 @@ const Star = (props) => {
                     node.scaleX(1);
                     node.scaleY(1);
                     onChange({
-                        ...shapeProps,
+                        ...starData,
                         x: node.x(),
                         y: node.y(),
                         // set minimal value

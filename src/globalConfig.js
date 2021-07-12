@@ -81,9 +81,17 @@ const globalConfig = {
           FINAL: true,
      },
      imageServer: {
-          state: "/static/state/",
-          backdrop: "/static/backdrop/",
-          frame: "/static/frame/",
+          "student": {
+               "state": "static/student/state/",
+               "backdrop": "static/student/backdrop/",
+               "frame": "static/student/frame/",
+          },
+          "sample": {
+               "state": "static/sample/state/",
+               "backdrop": "static/sample/backdrop/",
+               "frame": "static/sample/frame/",
+          }
+
      }
 }
 

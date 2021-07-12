@@ -11,7 +11,7 @@ const { SubMenu } = Menu;
 
 const ProjectMenu = () => {
     const handleClick = e => {
-        console.log('click ', e);
+        // console.log('click ', e);
     };
 
     return (

@@ -48,9 +48,9 @@ const ActorPanelCardUploadButton = (props) => {
         //         config
         //     );
         //     onSuccess('Ok');
-        //     console.log('server res: ', res);
+        //     // console.log('server res: ', res);
         // } catch (err) {
-        //     console.log('Eroor: ', err);
+        //     // console.log('Eroor: ', err);
         //     const error = new Error('Some error');
         //     onError({ err });
         // }
