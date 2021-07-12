@@ -5,7 +5,7 @@ import {Image, Layer} from 'react-konva';
 import useImage from "use-image";
 import backdropImg from ".//Frame";
 import {useDispatch, useSelector} from 'react-redux';
-import { increment } from '../../redux/features/counterSlice';
+import { updateFrameAction } from '../../redux/features/frameActionSlice';
 
 
 const StarLayerOld = (props) => {
@@ -15,7 +15,7 @@ const StarLayerOld = (props) => {
     const [actorData, setActorData] = React.useState([]);
     const [dataReceived, setDataReceived] = React.useState(false);
     const dispatch = useDispatch();
-    const selectedFrame = useSelector((state) => state.selectedFrame.value);
+    const selectedFrame = useSelector((state) => state.selectedFrame.value._id);
 
 
     React.useEffect(() => {
@@ -69,7 +69,7 @@ const StarLayerOld = (props) => {
                 }
             ).then(
                 setTimeout(
-                    () => {dispatch(increment());},
+                    () => {dispatch(updateFrameAction());},
                     50)
             )
         }

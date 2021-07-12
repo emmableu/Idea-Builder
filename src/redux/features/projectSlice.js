@@ -7,6 +7,8 @@ import {ProjectAPI} from "../../api/ProjectAPI";
 import Cookies from "js-cookie";
 import * as UUID from "uuid";
 import {ActorData} from "../../data/ActorData";
+import {setSelectedFrameId} from "./selectedFrameSlice";
+import {updateFrameAction} from "./frameActionSlice";
 
 const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
@@ -112,13 +114,23 @@ const updateStoryboardName = createAsyncThunk(
 const addFrame = createAsyncThunk(
     'project/addFrame',
     async (payload, thunkAPI) => {
-        const {storyboardId} = payload
+        console.log("in thunk");
         const {dispatch, getState} = thunkAPI;
-        dispatch(addFrameInMemory(JSON.stringify(payload)));
+        const storyboardId = getState().selectedStoryboard.value;
+        const frameId = UUID.v4();
+        console.log("frameId: ", frameId);
+        dispatch(addFrameInMemory(JSON.stringify({
+            storyboardId, frameId,
+        })));
+        console.log("after dispatch");
+        dispatch(setSelectedFrameId(frameId));
+        dispatch(updateFrameAction());
         const frameList = getState().project.value.frameListJSON(storyboardId);
-        const response = await ProjectAPI.replaceFrameListInDatabase({
+        console.log("===============frameList: ", frameList);
+        const response = await ProjectAPI.insertFrameAndReplaceFrameListInDatabase({
             storyboardId,
-            frameList
+            frameId,
+            frameList,
         });
         return response.status;
     }
@@ -322,10 +334,11 @@ export const projectSlice = createSlice({
 
         addFrameInMemory: {
             reducer: (state, action) => {
-                const storyboard = state.value.storyboardList.find(a => a._id === action.payload.storyboardId);
+                const storyboard = state.value.getStoryboard(action.payload.storyboardId);
                 storyboard.addFrame(
                     action.payload.frameId
                 )
+                console.log("storyboard: ", storyboard);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);

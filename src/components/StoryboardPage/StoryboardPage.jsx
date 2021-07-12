@@ -6,6 +6,7 @@ import globalConfig from "../../globalConfig";
 import StoryboardTitleBar from "../StoryboardTitleBar/StoryboardTitleBar";
 import {MaterialMenu} from "../MaterialMenu/MaterialMenu";
 import FrameCardContainer from "../Frame/FrameCardContainer";
+import FrameList from "../Project/FrameList";
 
 const useStyles = makeStyles((theme) => ({
     rootContainer: {
@@ -79,8 +80,9 @@ const StoryboardPage = () => {
 
                     <div  className={classes.outerFrameSpace}>
                         <div
-                            className = {classes.frameList}
-                        />
+                            className = {classes.frameList}>
+                            <FrameList/>
+                        </div>
                         <div
                             className = {classes.frameDiv}
                         >

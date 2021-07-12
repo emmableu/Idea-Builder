@@ -28,7 +28,6 @@ import Paper from '@material-ui/core/Paper';
 
 import InfoIcon from '@material-ui/icons/Info';
 import styled from 'styled-components';
-import FrameList from "./FrameList";
 import globalConfig from "../../globalConfig";
 import ProjectTitleBar from "../ProjectTitleBar/ProjectTitleBar";
 import StoryboardActionDropdown from "../StoryboardMenu/StoryboardActionDropdown";

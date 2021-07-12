@@ -84,9 +84,8 @@ export class ProjectData {
         return projectData;
     }
 
-    get actorDataKeys () {
-        return this.actorList.map(a => a._id);
-    }
+
+    /* below are about storyboards */
 
     addStoryboard (type:"draft"|"final", storyboardDataJSON:any) {
        this.storyboardMenu[type].items.unshift(
@@ -161,6 +160,26 @@ export class ProjectData {
         }
     }
 
+
+    /* below are about frames */
+
+    frameListJSON (storyboardId:string) {
+        const storyboardData = this.getStoryboard(storyboardId);
+        const frameList = storyboardData === undefined? []:storyboardData.frameList;
+        return frameList.map(s => (
+            s.toJSON()
+        ))
+    }
+
+
+
+
+    /* below are about actors */
+
+    get actorDataKeys () {
+        return this.actorList.map(a => a._id);
+    }
+
     addActor(actorDataJSON:IActorData) {
         this.actorList.unshift(
             ActorData.parse(actorDataJSON)
@@ -173,6 +192,9 @@ export class ProjectData {
         const [removed] = this.actorList.splice(beginOrder, 1);
         this.actorList.splice(endOrder, 0, removed);
     }
+
+
+    /* below are about states */
 
     stateListJSON (actorId:string) {
         const actorData = this.actorList.find(e => e._id===actorId);
@@ -188,6 +210,9 @@ export class ProjectData {
         const stateIndex = stateList.findIndex(s => s._id === stateId);
         stateList.splice(stateIndex, 1);
     }
+
+
+
 
     download () {
         let filename = 'project';

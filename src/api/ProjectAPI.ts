@@ -62,6 +62,43 @@ class ProjectAPI {
         return response;
     }
 
+    /* this section is on frame */
+    static async replaceFrameIdListInDatabase(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/frame_id_list/replace`,
+            data: text,
+        });
+        return response;
+    }
+    // selectedFrame,
+    // img: img,
+    static async sendFrameImg(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/frame/upload`,
+            data: {
+                _id: text.selectedFrame,
+                base64: text.img
+            },
+        });
+        return response;
+    }
+
+    // ({
+    //                                              storyboardId,
+    //                                              frameId,
+    //                                              frameList,
+    //                                          });
+    static async insertFrameAndReplaceFrameListInDatabase(text: any) {
+        const response = await axios({
+            method: 'post',
+            url: `/insert_and_replace_frame`,
+            data: text,
+        });
+        return response;
+    }
+
     /* this section is on actor */
     static async addActor(text:any) {
         const response = await axios({
