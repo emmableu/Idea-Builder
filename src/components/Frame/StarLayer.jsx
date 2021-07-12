@@ -7,13 +7,16 @@ import backdropImg from ".//Frame";
 import {useDispatch, useSelector} from 'react-redux';
 import { updateFrameAction } from '../../redux/features/frameActionSlice';
 import {updateStarList} from "../../redux/features/projectSlice";
+import {setSelectedStar} from "../../redux/features/selectedStarSlice";
 
 
 
 const StarLayer = (props) => {
-    const {storyboardId, frameId, width, selectedId, setSelectedId} = props;
+    const {storyboardId, frameId, width} = props;
     const [starList, setStarList] = React.useState([]);
     const dispatch = useDispatch();
+
+    const selectedStar = useSelector(state => state.selectedStar.value);
 
 
     const starListString = useSelector(state => {
@@ -25,9 +28,6 @@ const StarLayer = (props) => {
             }
             catch (error) {
                 console.log(error);
-                console.log(state.project.value.getStoryboard(storyboardId));
-                console.log(state.project.value.getStoryboard(storyboardId).getFrame(frameId));
-                console.log("frameId: ", frameId);
                 return "[]";
             }
         }
@@ -50,9 +50,9 @@ const StarLayer = (props) => {
                  return (
                      <Star
                          starData={img}
-                         isSelected={img._id === selectedId}
+                         isSelected={img._id === selectedStar}
                          onSelect={() => {
-                             setSelectedId(img._id);
+                             dispatch(setSelectedStar(img._id));
                          }}
                          onChange={(newAttrs) => {
                              const rects = starList.slice();

@@ -13,7 +13,10 @@ const FrameThumbnail = (props) => {
     const loadedUrl = axios.defaults.baseURL+frameData._id
 
     React.useEffect(()=> {
-        if (urlExists) return;
+        if (urlExists) {
+            setImgSrc(loadedUrl+`?fakeRender=${imgUpdated.toString()}`)
+            return;
+        };
         urlExist(loadedUrl).then( exists =>
             {   console.log("loadedUrl: ", loadedUrl, "exists: ", exists);
                 setUrlExists(exists)}

@@ -126,7 +126,9 @@ const addFrame = createAsyncThunk(
         })));
         console.log("after dispatch");
         dispatch(setSelectedFrameId(frameId));
-        dispatch(updateFrameAction());
+        setTimeout(() => {
+            dispatch(updateFrameAction());
+        }, 500)
         const frameList = getState().project.value.frameListJSON(storyboardId);
         console.log("===============frameList: ", frameList);
         const response = await ProjectAPI.insertFrameAndReplaceFrameListInDatabase({
@@ -199,6 +201,30 @@ const updateStarList = createAsyncThunk(
         return response.status;
     }
 );
+
+
+const deleteStar = createAsyncThunk(
+    'project/updateStarList',
+    async (starId, thunkAPI) => {
+        console.log("====================================inside update starlist================")
+        const {dispatch, getState} = thunkAPI;
+        const state = getState();
+        const storyboardId = state.selectedStoryboard.value;
+        const frameId = state.selectedFrame.value._id;
+        dispatch(deleteStarInMemory(JSON.stringify({
+            storyboardId, frameId, starId
+        })));
+        console.log("====================================before dispatching updatefrmaeaction================")
+        dispatch(updateFrameAction());
+        const starList = state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON();
+        const response = await ProjectAPI.replaceStarListInDatabase({
+            frameId,
+            starList: starList
+        });
+        return response.status;
+    }
+);
+
 
 
 
@@ -472,6 +498,25 @@ export const projectSlice = createSlice({
             },
         },
 
+
+        deleteStarInMemory: {
+            reducer: (state, action) => {
+                const frame = state.value.getStoryboard(action.payload.storyboardId).getFrame(action.payload.frameId);
+                frame.deleteStar(action.payload.starId);
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "storyboardId": obj.storyboardId,
+                        "frameId": obj.frameId,
+                        "starId": obj.starId,
+                    }
+                }
+            },
+        },
+
+
         /* The next section are about actors:
         */
 
@@ -606,7 +651,7 @@ export const projectSlice = createSlice({
 export const {
     updateNameInMemory, //project
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
-    addStarInMemory, updateStarListInMemory, //star
+    addStarInMemory, updateStarListInMemory, deleteStarInMemory, //star
     addFrameInMemory, deleteFrameInMemory, //frame
     addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, //actor
     addStateInMemory, deleteStateInMemory, updateStateNameInMemory, //state
@@ -617,7 +662,7 @@ export {
     insertEmptyProjectToDatabase, loadProjectFromDatabase, updateName, //project
     addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
     addFrame, deleteFrame, //frame
-    addStar, updateStarList, //star
+    addStar, updateStarList, deleteStar, //star
     addActor, deleteActor, updateActorOrder, updateActorName, //actor
     addState, deleteState, updateStateName, //state
     saveNote, //note

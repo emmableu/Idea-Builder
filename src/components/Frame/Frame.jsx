@@ -8,12 +8,13 @@ import {addState} from "../../redux/features/projectSlice";
 import {setSelectedFrameImgAsUpdated} from "../../redux/features/selectedFrameSlice";
 import {ProjectAPI} from "../../api/ProjectAPI";
 import globalConfig from "../../globalConfig";
+import {setSelectedStar} from "../../redux/features/selectedStarSlice";
 
 const Frame = (props) => {
     const {width} = props;
     const frameRef = React.useRef();
     const dispatch = useDispatch();
-    const [selectedId, setSelectedId] = React.useState(null);
+    // const [selectedId, setSelectedId] = React.useState(null);
 
 
     const storyboardId = useSelector(state => state.selectedStoryboard.value);
@@ -53,7 +54,7 @@ const Frame = (props) => {
         // deselect when clicked on empty area
         const clickedOnEmpty = e.target === e.target.getStage();
         if (clickedOnEmpty) {
-            setSelectedId(null);
+            dispatch(setSelectedStar(null));
         }
     };
 
@@ -75,8 +76,6 @@ const Frame = (props) => {
                     storyboardId={storyboardId}
                     frameId={frameId}
                     width={width}
-                    selectedId={selectedId}
-                    setSelectedId={setSelectedId}
                 />
             </Provider>
         </Stage>)}

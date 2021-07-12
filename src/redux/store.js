@@ -4,6 +4,7 @@ import selectedFrameReducer from './features/selectedFrameSlice'
 import projectReducer from './features/projectSlice'
 import dashboardReducer from './features/dashboardSlice'
 import selectedStoryboardReducer from './features/selectedStoryboardSlice'
+import selectedStarReducer from './features/selectedStarSlice'
 import dragUrlReducer from './features/dragUrlSlice'
 
 export default configureStore({
@@ -13,6 +14,7 @@ export default configureStore({
         project: projectReducer,
         dashboard: dashboardReducer,
         selectedStoryboard: selectedStoryboardReducer,
-        dragUrl: dragUrlReducer,
+        selectedStar: selectedStarReducer,
+        // dragUrl: dragUrlReducer,
     },
 })

@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-import { ReactReduxContext, Provider, useSelector } from 'react-redux';
+import {ReactReduxContext, Provider, useSelector, useDispatch} from 'react-redux';
 import { IconButton, makeStyles } from '@material-ui/core';
 import { DeleteOutline } from '@material-ui/icons';
 import globalConfig, { calcFrameWidth } from '../../globalConfig';
@@ -14,6 +14,7 @@ import { Button, Tooltip } from 'antd';
 import { DeleteFilled, DeleteTwoTone } from '@ant-design/icons';
 import { ArrowForward } from '@material-ui/icons';
 import Frame from "./Frame.jsx";
+import {deleteStar} from "../../redux/features/projectSlice";
 
 const useStyles = makeStyles(theme => ({}));
 
@@ -27,6 +28,14 @@ const FrameCardContainer = props => {
         window.addEventListener('resize', fitFrameWidth);
         fitFrameWidth();
     }, []);
+
+    const selectedStar = useSelector(state => state.selectedStar.value);
+    const dispatch = useDispatch();
+
+    const handleDeleteStar = (e) => {
+        if ( selectedStar === null ) return;
+        dispatch(deleteStar(selectedStar));
+    }
 
     return (
         <div
@@ -46,7 +55,11 @@ const FrameCardContainer = props => {
                 }}
             >
                 <Tooltip title="Delete Actor">
-                    <IconButton aria-label="delete star" color="inherit" size="small">
+                    <IconButton aria-label="delete star"
+                                color="inherit"
+                                size="small"
+                                onClick={handleDeleteStar}
+                    >
                         <DeleteOutline style={{ color: 'grey' }} />
                     </IconButton>
                 </Tooltip>
