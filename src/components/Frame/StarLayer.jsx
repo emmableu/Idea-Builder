@@ -5,9 +5,8 @@ import {Image, Layer, Stage} from 'react-konva';
 import useImage from "use-image";
 import backdropImg from ".//Frame";
 import {useDispatch, useSelector} from 'react-redux';
-import { updateFrameAction } from '../../redux/features/frameActionSlice';
 import {updateStarList} from "../../redux/features/projectSlice";
-import {setSelectedStar} from "../../redux/features/selectedStarSlice";
+import {setSelectedStarId} from "../../redux/features/projectSlice";
 
 
 
@@ -16,13 +15,13 @@ const StarLayer = (props) => {
     const [starList, setStarList] = React.useState([]);
     const dispatch = useDispatch();
 
-    const selectedStar = useSelector(state => state.selectedStar.value);
+    const selectedStar = useSelector(state => state.project.value.selectedId.starId);
 
 
     const starListString = useSelector(state => {
             if (state.project.value === null) return "[]";
-            if (storyboardId === null) return "[]";
-            if (frameId === null) return "[]";
+            if (storyboardId === "UNDEFINED") return "[]";
+            if (frameId === "UNDEFINED") return "[]";
             try {
                 return JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON())
             }
@@ -52,7 +51,7 @@ const StarLayer = (props) => {
                          starData={img}
                          isSelected={img._id === selectedStar}
                          onSelect={() => {
-                             dispatch(setSelectedStar(img._id));
+                             dispatch(setSelectedStarId(img._id));
                          }}
                          onChange={(newAttrs) => {
                              const rects = starList.slice();

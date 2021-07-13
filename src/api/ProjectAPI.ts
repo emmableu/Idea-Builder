@@ -78,9 +78,18 @@ class ProjectAPI {
             method: 'post',
             url: `/frame/upload`,
             data: {
-                _id: text.selectedFrame,
-                base64: text.img
+                _id: text._id,
+                img: text.img
             },
+        });
+        return response;
+    }
+
+    static async requestCopyFrameImg(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/copy_frame`,
+            data: text,
         });
         return response;
     }

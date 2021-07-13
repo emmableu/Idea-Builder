@@ -1,20 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import frameActionReducer from './features/frameActionSlice'
 import selectedFrameReducer from './features/selectedFrameSlice'
 import projectReducer from './features/projectSlice'
 import dashboardReducer from './features/dashboardSlice'
-import selectedStoryboardReducer from './features/selectedStoryboardSlice'
 import selectedStarReducer from './features/selectedStarSlice'
-import dragUrlReducer from './features/dragUrlSlice'
+import frameThumbnailStateReducer from "./features/frameThumbnailStateSlice";
 
 export default configureStore({
     reducer: {
-        frameAction: frameActionReducer,
-        selectedFrame: selectedFrameReducer,
         project: projectReducer,
         dashboard: dashboardReducer,
-        selectedStoryboard: selectedStoryboardReducer,
-        selectedStar: selectedStarReducer,
-        // dragUrl: dragUrlReducer,
+        frameThumbnailState: frameThumbnailStateReducer
     },
 })

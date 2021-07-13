@@ -7,7 +7,7 @@ import { Modal, Button, Space } from 'antd';
 import { ExclamationCircleOutlined, CopyOutlined, DeleteOutlined } from '@ant-design/icons';
 import {deleteStoryboard} from "../../redux/features/projectSlice";
 import {useDispatch} from "react-redux";
-import {setSelectedStoryboard} from "../../redux/features/selectedStoryboardSlice";
+import {setSelectedStoryboardId} from "../../redux/features/projectSlice";
 
 const { confirm } = Modal;
 
@@ -27,7 +27,7 @@ const StoryboardActionDropdown  = (props) => {
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                dispatch(setSelectedStoryboard(null));
+                dispatch(setSelectedStoryboardId(null));
                 dispatch(deleteStoryboard(storyboardId));
             },
             onCancel() {

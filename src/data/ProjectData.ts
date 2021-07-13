@@ -5,6 +5,7 @@ import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import {StoryboardData} from "./StoryboardData";
 import {BackdropData} from "./BackdropData";
+import {SelectedIdData} from "./SelectedIdData";
 
 
 export class ProjectData {
@@ -24,8 +25,7 @@ export class ProjectData {
             "items": Array<{ "_id": string, "name": string}>
         }
     };
-    selectedStoryboardId: string;
-    selectedFrameId: string;
+    selectedId: SelectedIdData;
 
     constructor(
         _id?: string,
@@ -44,8 +44,7 @@ export class ProjectData {
                 "items": Array<{ "_id": string, "name": string}>
             }
         },
-        selectedStoryboardId?: string,
-        selectedFrameId?: string,
+        selectedId?: SelectedIdData
 
     ) {
         this._id = _id? _id:UUID.v4();
@@ -73,10 +72,11 @@ export class ProjectData {
         else {
             this.storyboardMenu = storyboardMenu;
         }
-        this.selectedStoryboardId = selectedStoryboardId? selectedStoryboardId:this.storyboardList[0]._id;
-        // @ts-ignore
-        this.selectedFrameId = selectedFrameId? selectedFrameId:this.getStoryboard(this.selectedStoryboardId).frameList[0]._id;
 
+        this.selectedId = selectedId?selectedId: new SelectedIdData(
+            this.storyboardList[0]._id,
+            this.storyboardList[0].frameList[0]._id,
+        )
     }
 
     toJSON() {
@@ -88,8 +88,7 @@ export class ProjectData {
             actorList: this.actorList.map(a => a.toJSON()),
             backdropList: this.backdropList.map(a => a.toJSON()),
             note:this.note,
-            selectedStoryboardId: this.selectedStoryboardId,
-            selectedFrameId: this.selectedFrameId,
+            selectedId: this.selectedId,
         }
     }
 
@@ -107,8 +106,7 @@ export class ProjectData {
 
         projectData.note = projectJSON.note;
         projectData.storyboardMenu = projectJSON.storyboardMenu;
-        projectData.selectedStoryboardId = projectJSON.selectedStoryboardId;
-        projectData.selectedFrameId = projectJSON.selectedFrameId;
+        projectData.selectedId = SelectedIdData.parse(projectJSON.selectedId);
 
         return projectData;
     }
@@ -123,8 +121,7 @@ export class ProjectData {
         this.storyboardList.unshift(
             StoryboardData.parse(storyboardDataJSON)
         )
-        console.log("storyboardMenu: ====================: ", this.storyboardMenu);
-        console.log("storyboardList: ====================: ", this.storyboardList);
+        this.selectedId.setStoryboardId(storyboardDataJSON);
     }
 
     getStoryboard (storyboardId:string) {

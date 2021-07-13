@@ -4,15 +4,13 @@ import {Button} from "antd";
 import React from "react";
 import DragHandleIcon from "../primitives/DragHandleIcon";
 import StoryboardActionDropdown from "./StoryboardActionDropdown";
-import {setSelectedStoryboard} from "../../redux/features/selectedStoryboardSlice";
+import {setSelectedStoryboardId} from "../../redux/features/projectSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {setSelectedFrameId} from "../../redux/features/selectedFrameSlice";
-import {setSelectedStar} from "../../redux/features/selectedStarSlice";
 
 const StoryboardMenuItem = (props) => {
     const {provided, snapshot, item} = props;
     const dispatch = useDispatch();
-    const selectedStoryboard = useSelector(state => state.selectedStoryboard.value);
+    const selectedStoryboard = useSelector(state => state.project.value.selectedId.storyboardId);
 
     return (
         <Paper
@@ -20,9 +18,7 @@ const StoryboardMenuItem = (props) => {
             ref={provided.innerRef}
             {...provided.draggableProps}
             onClick={(e) => {
-                dispatch(setSelectedStoryboard(item._id))
-                dispatch(setSelectedFrameId(null));  //TODO: SHOULd use a asyncTHUNK here so that it can be the first of the storyboard.
-                dispatch(setSelectedStar(null));
+                dispatch(setSelectedStoryboardId(item._id));
             }}
             style={{
                 width: "100%",

@@ -36,7 +36,7 @@
 //     const classes = useStyles();
 //     const [snapshot, setSnapshot] = React.useState([]);
 //     const count = useSelector((state) => state.counter.value);
-//     const selectedFrame = useSelector((state) => state.selectedFrame.value._id);
+//     const selectedFrame = useSelector((state) => state.project.value.selectedId.frameId);
 //     const dispatch = useDispatch();
 //
 //     const handleAddFrame = (e) => {

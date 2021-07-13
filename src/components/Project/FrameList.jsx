@@ -13,10 +13,10 @@ import {useDispatch} from 'react-redux';
 import Box from '@material-ui/core/Box';
 import * as UUID from "uuid"
 import {addFrame} from "../../redux/features/projectSlice";
-import {setSelectedFrameId} from "../../redux/features/selectedFrameSlice";
+import {setSelectedFrameId} from "../../redux/features/projectSlice";
 import globalConfig from "../../globalConfig";
 import FrameThumbnail from "./FrameThumbnail";
-import {setSelectedStar} from "../../redux/features/selectedStarSlice";
+import {setSelectedStarId} from "../../redux/features/projectSlice";
 
 
 const snapshotHeight = 0.15*window.innerHeight;
@@ -43,14 +43,11 @@ const useStyles = makeStyles((theme) => ({
 
 const FrameList = () => {
     const classes = useStyles();
-    const _id = useSelector((state) => state.selectedFrame.value._id);
+    const _id = useSelector((state) => state.project.value.selectedId.frameId);
 
 
-    const [storyboardId, setStoryboardId] = React.useState(null);
-    const selectedStoryboard = useSelector(state => state.selectedStoryboard.value);
-    React.useEffect(
-        () => setStoryboardId(selectedStoryboard), [selectedStoryboard]
-    )
+    const storyboardId = useSelector(state => state.project.value.selectedId.storyboardId);
+
 
     const [frameList, setFrameList] = React.useState([]);
     const frameListString = useSelector(state => JSON.stringify(state.project.value.frameListJSON(storyboardId)));
@@ -79,7 +76,6 @@ const FrameList = () => {
                                 >
                                     <CardActionArea onClick={(e) => {
                                         dispatch(setSelectedFrameId(frameData._id));
-                                        dispatch(setSelectedStar(null));
                                     }}>
 
                                         <FrameThumbnail

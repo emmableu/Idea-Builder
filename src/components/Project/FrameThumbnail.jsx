@@ -7,25 +7,25 @@ import urlExist from "url-exist"
 
 const FrameThumbnail = (props) => {
     const {frameData} = props;
-    const imgUpdated = useSelector((state) => state.selectedFrame.value.imgUpdated);
+    const imgUpdated = useSelector((state) => state.frameThumbnailState.value.serverActionCounter);
     const [imgSrc, setImgSrc] = React.useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAQAAAAe/WZNAAAADklEQVR42mNkgAJGDAYAAFEABCaLYqoAAAAASUVORK5CYII=");
     const [urlExists, setUrlExists] = React.useState(false);
-    const loadedUrl = axios.defaults.baseURL+frameData._id
 
     React.useEffect(()=> {
+        console.log("frameData ID in thumbnail ", frameData._id);
         if (urlExists) {
-            setImgSrc(loadedUrl+`?fakeRender=${imgUpdated.toString()}`)
+            setImgSrc(axios.defaults.baseURL + frameData._id+`?fakeRender=${imgUpdated.toString()}`)
             return;
         };
-        urlExist(loadedUrl).then( exists =>
-            {   console.log("loadedUrl: ", loadedUrl, "exists: ", exists);
+        urlExist(axios.defaults.baseURL + frameData._id).then( exists =>
+            {
                 setUrlExists(exists)}
         )
     }, [imgUpdated]);
 
     React.useEffect(()=> {
         if (urlExists === true){
-            setImgSrc(loadedUrl+`?fakeRender=${imgUpdated.toString()}`)
+            setImgSrc(axios.defaults.baseURL + frameData._id+`?fakeRender=${imgUpdated.toString()}`)
         }
     }, [urlExists]);
 

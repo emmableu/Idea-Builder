@@ -29,7 +29,7 @@ const FrameCardContainer = props => {
         fitFrameWidth();
     }, []);
 
-    const selectedStar = useSelector(state => state.selectedStar.value);
+    const selectedStar = useSelector(state => state.project.value.selectedId.starId);
     const dispatch = useDispatch();
 
     const handleDeleteStar = (e) => {

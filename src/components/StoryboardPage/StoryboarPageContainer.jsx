@@ -5,7 +5,7 @@ import EmptyStoryboardOptions from "../primitives/EmptyStoryboardOptions";
 
 const StoryboardPageContainer = () => {
     const selectedStoryboard = useSelector(
-        state => state.selectedStoryboard.value
+        state => state.project.value.selectedId.storyboardId
     );
     const storyboardListLength = useSelector(
         state =>

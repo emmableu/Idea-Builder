@@ -7,11 +7,20 @@ import {ProjectAPI} from "../../api/ProjectAPI";
 import Cookies from "js-cookie";
 import * as UUID from "uuid";
 import {ActorData} from "../../data/ActorData";
-import {setSelectedFrameId} from "./selectedFrameSlice";
-import {updateFrameAction} from "./frameActionSlice";
 import globalConfig from "../../globalConfig";
 import {StarData} from "../../data/StarData";
 import {setSelectedStar} from "./selectedStarSlice";
+import {
+    copyPreviousFrameImg,
+    sendEmptyFrameImg,
+    sendFrameImg,
+    updateUserActionCounter
+} from "./frameThumbnailStateSlice";
+
+
+
+
+
 
 const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
@@ -45,6 +54,44 @@ const updateName = createAsyncThunk(
     }
 );
 
+/* The next section are about selectedIds:
+ */
+
+const setSelectedStoryboardId = createAsyncThunk(
+    'project/setSelectedStoryboardId',
+    async (storyboardId, thunkAPI) => {
+        const {getState} = thunkAPI;
+        const project = getState().project.value;
+        const storyboardData = project.getStoryboard(storyboardId);
+        project.selectedId.setStoryboardId(storyboardData);
+    }
+);
+
+
+const setSelectedFrameId = createAsyncThunk(
+    'project/setSelectedFrameId',
+    async (frameId, thunkAPI) => {
+        const {getState} = thunkAPI;
+        const project = getState().project.value;
+        project.selectedId.setFrameId(frameId);
+    }
+);
+
+
+const setSelectedStarId = createAsyncThunk(
+    'project/setSelectedStarId',
+    async (starId, thunkAPI) => {
+        const {getState} = thunkAPI;
+        const project = getState().project.value;
+        project.selectedId.setStarId(starId);
+    }
+);
+
+
+
+
+
+
 /* The next section are about storyboards:
  */
 
@@ -53,17 +100,21 @@ const addStoryboard = createAsyncThunk(
     async (type, thunkAPI) => {
         const {dispatch, getState}  = thunkAPI;
         const storyboardId = UUID.v4();
-        console.log("storyboardId: ", storyboardId);
-        const storyboardDataJSON = new StoryboardData(storyboardId).toJSON();
-        console.log("storyboardDataJSON: ", storyboardDataJSON);
+        const storyboardData = new StoryboardData(storyboardId)
+        const storyboardDataJSON = storyboardData.toJSON();
         const state = getState();
-        const projectId = state.project.value._id;
+        const project = state.project.value;
+        const projectId = project._id;
         const payload =  {
             projectId,
             type,
             storyboardDataJSON
         };
         dispatch(addStoryboardInMemory(JSON.stringify(payload)));
+        console.log("storyboardJSON: ", storyboardDataJSON);
+        const newFrameId = storyboardDataJSON.frameList[0]._id;
+        console.log("newFrameId: ", newFrameId);
+        await dispatch(sendEmptyFrameImg(newFrameId));
         const response = await ProjectAPI.addStoryboard(payload);
         return response.status;
     }
@@ -76,8 +127,10 @@ const deleteStoryboard = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(deleteStoryboardInMemory(storyboardId));
         const state = getState();
-        const projectId = state.project.value._id;
+        const project = state.project.value;
+        const projectId = project._id;
         const storyboardMenu = state.project.value.storyboardMenu;
+        project.selectedId.voidStoryboardId();
         const response = await ProjectAPI.replaceStoryboardIdMenuInDatabase({
             projectId, storyboardMenu
         });
@@ -119,8 +172,9 @@ const addFrame = createAsyncThunk(
     async (payload, thunkAPI) => {
         console.log("in thunk");
         const {dispatch, getState} = thunkAPI;
-        const storyboardId = getState().selectedStoryboard.value;
+        const storyboardId = getState().project.value.selectedId.storyboardId;
         const frameId = globalConfig.imageServer.student.frame + UUID.v4() + ".png";
+        await dispatch(copyPreviousFrameImg(frameId));
         console.log("frameId: ", frameId);
         dispatch(addFrameInMemory(JSON.stringify({
             storyboardId, frameId,
@@ -128,9 +182,6 @@ const addFrame = createAsyncThunk(
         console.log("after dispatch");
         dispatch(setSelectedFrameId(frameId));
         dispatch(setSelectedStar(null));
-        setTimeout(() => {
-            dispatch(updateFrameAction());
-        }, 500)
         const frameList = getState().project.value.frameListJSON(storyboardId);
         console.log("===============frameList: ", frameList);
         const response = await ProjectAPI.insertFrameAndReplaceFrameListInDatabase({
@@ -163,8 +214,8 @@ const addStar = createAsyncThunk(
     async (stateId, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const state = getState();
-        const storyboardId = state.selectedStoryboard.value;
-        const frameId = state.selectedFrame.value._id;
+        const storyboardId = state.project.value.selectedId.storyboardId;
+        const frameId = state.project.value.selectedId.frameId
         console.log("storyboardId: ", storyboardId)
         console.log("frameId: ", frameId)
         if (storyboardId === null || frameId === null) {return;}
@@ -172,7 +223,7 @@ const addStar = createAsyncThunk(
             storyboardId, frameId, stateId,
         })));
         setTimeout(() => {
-            dispatch(updateFrameAction());
+            dispatch(updateUserActionCounter());
         }, 500)
         //sometimes the first dispatch does not work, because the actor is not yet fully updated on the canvas.
         const starList = state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON();
@@ -188,13 +239,11 @@ const addStar = createAsyncThunk(
 const updateStarList = createAsyncThunk(
     'project/updateStarList',
     async (payload, thunkAPI) => {
-        console.log("====================================inside update starlist================")
         const {storyboardId, frameId, starData} = JSON.parse(payload);
         const {dispatch, getState} = thunkAPI;
         dispatch(updateStarListInMemory(payload));
         const state = getState();
-        console.log("====================================before dispatching updatefrmaeaction================")
-        dispatch(updateFrameAction());
+        dispatch(updateUserActionCounter());
         const starList = state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON();
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
@@ -208,16 +257,14 @@ const updateStarList = createAsyncThunk(
 const deleteStar = createAsyncThunk(
     'project/updateStarList',
     async (starId, thunkAPI) => {
-        console.log("====================================inside update starlist================")
         const {dispatch, getState} = thunkAPI;
         const state = getState();
-        const storyboardId = state.selectedStoryboard.value;
-        const frameId = state.selectedFrame.value._id;
+        const storyboardId = state.project.value.selectedId.storyboardId;
+        const frameId = state.project.value.selectedId.frameId
         dispatch(deleteStarInMemory(JSON.stringify({
             storyboardId, frameId, starId
         })));
-        console.log("====================================before dispatching updatefrmaeaction================")
-        dispatch(updateFrameAction());
+        dispatch(updateUserActionCounter());
         const starList = state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON();
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
@@ -662,6 +709,7 @@ export const {
 } = projectSlice.actions;
 export {
     insertEmptyProjectToDatabase, loadProjectFromDatabase, updateName, //project
+    setSelectedStoryboardId, setSelectedFrameId, setSelectedStarId, //selectedId
     addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
     addFrame, deleteFrame, //frame
     addStar, updateStarList, deleteStar, //star

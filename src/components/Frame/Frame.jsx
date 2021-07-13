@@ -5,10 +5,10 @@ import Paper from "@material-ui/core/Paper/Paper";
 import StarLayer from "./StarLayer";
 import axios from "../../axiosConfig";
 import {addState} from "../../redux/features/projectSlice";
-import {setSelectedFrameImgAsUpdated} from "../../redux/features/selectedFrameSlice";
 import {ProjectAPI} from "../../api/ProjectAPI";
 import globalConfig from "../../globalConfig";
-import {setSelectedStar} from "../../redux/features/selectedStarSlice";
+import {setSelectedStarId} from "../../redux/features/projectSlice";
+import {sendFrameImg} from "../../redux/features/frameThumbnailStateSlice";
 
 const Frame = (props) => {
     const {width} = props;
@@ -17,35 +17,42 @@ const Frame = (props) => {
     // const [selectedId, setSelectedId] = React.useState(null);
 
 
-    const storyboardId = useSelector(state => state.selectedStoryboard.value);
-    const frameActionUpdate = useSelector((state) => state.frameAction.value.toString());
-    const frameId = useSelector((state) => state.selectedFrame.value._id);
+    const storyboardId = useSelector(state => state.project.value.selectedId.storyboardId);
+    const userActionCounter = useSelector((state) => state.frameThumbnailState.value.userActionCounter);
+    const frameId = useSelector((state) => state.project.value.selectedId.frameId);
+
 
     React.useEffect(
         () => {
-            // console.log('[[[[[[[[[[[[[[frame action updated]]]]]]]]]]]]]');
+            if (storyboardId === "UNDEFINED" || frameId === "UNDEFINED") {
+                return;
+            }
             try {
             frameRef.current.toImage({
                 pixelRatio: 1,
                 callback(img) {
-                    // // console.log("frameId: ", frameId);
-                    // // console.log("img: ", img.src);
-                    ProjectAPI.sendFrameImg({
-                        "selectedFrame": frameId,
-                        img: img.src,
-                    }).then(response => {
-                        dispatch(setSelectedFrameImgAsUpdated())
-                    })
-                    ;
+                    img = img.src;
+                    dispatch(sendFrameImg({
+                        _id: frameId,
+                        img,
+                    }))
+
+                    // ProjectAPI.sendFrameImg({
+                    //     "selectedFrame": frameId,
+                    //     img: img,
+                    // }).then(response => {
+                    //     dispatch(setSelectedFrameImgAsUpdated())
+                    // })
+                    // ;
                 }
             });
             }
             catch (error) {
-                // console.log("failed to save image to remote: ", error);
+                console.log("failed to save image to remote: ", error);
             }
 
 
-        }, [frameActionUpdate]
+        }, [userActionCounter]
     )
 
 
@@ -54,7 +61,7 @@ const Frame = (props) => {
         // deselect when clicked on empty area
         const clickedOnEmpty = e.target === e.target.getStage();
         if (clickedOnEmpty) {
-            dispatch(setSelectedStar(null));
+            dispatch(setSelectedStarId(null));
         }
     };
 

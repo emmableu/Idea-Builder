@@ -49,7 +49,7 @@ const StoryboardTitleEdiText = () => {
     const [localSelectedStoryboard, setLocalSelectedStoryboard]  = useState(null);
     const dispatch = useDispatch()
 
-    const selectedStoryboard = useSelector(state => state.selectedStoryboard.value)
+    const selectedStoryboard = useSelector(state => state.project.value.selectedId.storyboardId)
 
     const titleName = useSelector(state =>
         {   if (localSelectedStoryboard === null) return "Untitled";
