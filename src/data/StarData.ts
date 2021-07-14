@@ -54,4 +54,15 @@ export class StarData implements IStarData{
             starJSON.height,
         );
     }
+
+    static shallowCopy (starData:StarData): StarData {
+        return new StarData(
+            starData.prototypeId,
+            UUID.v4(),
+            starData.x,
+            starData.y,
+            starData.width,
+            starData.height,
+        );
+    }
 }

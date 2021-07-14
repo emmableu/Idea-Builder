@@ -56,5 +56,23 @@ export class FrameData implements IFrameData{
         frameData.starList = frameJSON.starList.map((ele:any) => StarData.parse(ele));
         return frameData;
     }
+
+    static shallowCopy (frameData: FrameData, newId?:string): FrameData {
+        let newFrameData;
+        if (newId) {
+            newFrameData = new FrameData(
+                    newId,
+            );
+        }
+        else {
+            newFrameData = new FrameData(
+                globalConfig.imageServer.student.frame + UUID.v4() + ".png"
+            );
+        }
+        newFrameData.backdropId = globalConfig.imageServer.student.backdrop + UUID.v4() + ".png";
+
+        newFrameData.starList = frameData.starList.map((ele:any) => StarData.shallowCopy(ele));
+        return newFrameData;
+    }
 }
 

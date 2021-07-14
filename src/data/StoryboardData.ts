@@ -18,8 +18,13 @@ export class StoryboardData implements IStoryboardData {
         this.frameList = frameList? frameList:[new FrameData()]
     }
 
-    addFrame(frameId:string) {
-        this.frameList.push(new FrameData(frameId))
+    addFrame(newId:string, prevId:string) {
+        const prevIndex = this.frameList.findIndex(f => f._id === prevId);
+        const prevFrame = this.frameList[prevIndex];
+        this.frameList.splice(prevIndex+1,
+            0,
+                FrameData.shallowCopy(prevFrame, newId),
+            )
     }
 
     getFrame (frameId:string) {
@@ -40,4 +45,5 @@ export class StoryboardData implements IStoryboardData {
         storyboardData.frameList = storyboardJSON.frameList.map((ele:any) => FrameData.parse(ele));
         return storyboardData;
     }
+
 }

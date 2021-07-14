@@ -27,17 +27,7 @@ const sendEmptyFrameImg = createAsyncThunk(
 const copyPreviousFrameImg = createAsyncThunk(
     'frameThumbnailState/sendTransparentFrameImg',
     async (payload, thunkAPI) => {
-        console.log("dispatching: ", payload)
-        const newId = payload;
-        const {getState} = thunkAPI;
-        const project = getState().project.value;
-        console.log("project: ", project);
-        const storyboardId = project.selectedId.storyboardId;
-        console.log("storyboardId: ", storyboardId);
-        const frameList = project.getStoryboard(storyboardId).frameList;
-        console.log("frameList: ", frameList);
-        const prevId = frameList[frameList.length-1]._id;
-        console.log("------!_!_!_!_!_!!_ prevId, newId: ", prevId, newId);
+        const {prevId, newId} = payload;
         const response = await ProjectAPI.requestCopyFrameImg(
             {
                 fromId: prevId,

@@ -8,7 +8,7 @@ import {addState} from "../../redux/features/projectSlice";
 import {ProjectAPI} from "../../api/ProjectAPI";
 import globalConfig from "../../globalConfig";
 import {setSelectedStarId} from "../../redux/features/projectSlice";
-import {sendFrameImg} from "../../redux/features/frameThumbnailStateSlice";
+import {sendFrameImg, updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
 
 const Frame = (props) => {
     const {width} = props;
@@ -36,14 +36,6 @@ const Frame = (props) => {
                         _id: frameId,
                         img,
                     }))
-
-                    // ProjectAPI.sendFrameImg({
-                    //     "selectedFrame": frameId,
-                    //     img: img,
-                    // }).then(response => {
-                    //     dispatch(setSelectedFrameImgAsUpdated())
-                    // })
-                    // ;
                 }
             });
             }
@@ -61,7 +53,8 @@ const Frame = (props) => {
         // deselect when clicked on empty area
         const clickedOnEmpty = e.target === e.target.getStage();
         if (clickedOnEmpty) {
-            dispatch(setSelectedStarId(null));
+            dispatch(setSelectedStarId("UNDEFINED"));
+            dispatch(updateUserActionCounter());
         }
     };
 

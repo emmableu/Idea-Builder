@@ -60,7 +60,7 @@ const updateName = createAsyncThunk(
 const setSelectedStoryboardId = createAsyncThunk(
     'project/setSelectedStoryboardId',
     async (storyboardId, thunkAPI) => {
-        const {getState} = thunkAPI;
+        const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
         const storyboardData = project.getStoryboard(storyboardId);
         project.selectedId.setStoryboardId(storyboardData);
@@ -78,10 +78,16 @@ const setSelectedStoryboardId = createAsyncThunk(
 const setSelectedFrameId = createAsyncThunk(
     'project/setSelectedFrameId',
     async (frameId, thunkAPI) => {
-        const {getState} = thunkAPI;
+        const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
         project.selectedId.setFrameId(frameId);
-        await ProjectAPI.updateSelectedIdData(project.selectedId.toJSON());
+        const response = await ProjectAPI.updateSelectedIdData(
+            {
+                projectId: project._id,
+                selectedId: project.selectedId.toJSON()
+            }
+        );
+        return response.status;
     }
 );
 
@@ -89,10 +95,16 @@ const setSelectedFrameId = createAsyncThunk(
 const setSelectedStarId = createAsyncThunk(
     'project/setSelectedStarId',
     async (starId, thunkAPI) => {
-        const {getState} = thunkAPI;
+        const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
         project.selectedId.setStarId(starId);
-        await ProjectAPI.updateSelectedIdData(project.selectedId.toJSON());
+        const response = await ProjectAPI.updateSelectedIdData(
+            {
+                projectId: project._id,
+                selectedId: project.selectedId.toJSON()
+            }
+        );
+        return response.status;
     }
 );
 
@@ -119,11 +131,11 @@ const addStoryboard = createAsyncThunk(
             type,
             storyboardDataJSON
         };
-        dispatch(addStoryboardInMemory(JSON.stringify(payload)));
-        console.log("storyboardJSON: ", storyboardDataJSON);
         const newFrameId = storyboardDataJSON.frameList[0]._id;
         console.log("newFrameId: ", newFrameId);
         await dispatch(sendEmptyFrameImg(newFrameId));
+        dispatch(addStoryboardInMemory(JSON.stringify(payload)));
+        console.log("storyboardJSON: ", storyboardDataJSON);
         const response = await ProjectAPI.addStoryboard(payload);
         return response.status;
     }
@@ -179,18 +191,28 @@ const updateStoryboardName = createAsyncThunk(
 const addFrame = createAsyncThunk(
     'project/addFrame',
     async (payload, thunkAPI) => {
-        console.log("in thunk");
         const {dispatch, getState} = thunkAPI;
-        const storyboardId = getState().project.value.selectedId.storyboardId;
+
+        const project = getState().project.value;
+        console.log("project: ", project);
+        const storyboardId = project.selectedId.storyboardId;
+        console.log("storyboardId: ", storyboardId);
+        const frameList = project.getStoryboard(storyboardId).frameList;
+        console.log("frameList: ", frameList);
+        const prevId = frameList[frameList.length-1]._id;
+
+
         const frameId = globalConfig.imageServer.student.frame + UUID.v4() + ".png";
-        await dispatch(copyPreviousFrameImg(frameId));
+        await dispatch(copyPreviousFrameImg({
+            prevId: prevId,
+            newId: frameId}));
         console.log("frameId: ", frameId);
         dispatch(addFrameInMemory(JSON.stringify({
-            storyboardId, frameId,
+            storyboardId,
+            prevId,
+            newId: frameId,
         })));
-        console.log("after dispatch");
         dispatch(setSelectedFrameId(frameId));
-        const frameList = getState().project.value.frameListJSON(storyboardId);
         console.log("===============frameList: ", frameList);
         const response = await ProjectAPI.insertFrameAndReplaceFrameListInDatabase({
             storyboardId,
@@ -485,7 +507,8 @@ export const projectSlice = createSlice({
             reducer: (state, action) => {
                 const storyboard = state.value.getStoryboard(action.payload.storyboardId);
                 storyboard.addFrame(
-                    action.payload.frameId
+                    action.payload.newId,
+                    action.payload.prevId
                 )
                 console.log("storyboard!!!!!!!!!!!!!!!!!!!!!!: ", storyboard);
             },
@@ -494,7 +517,8 @@ export const projectSlice = createSlice({
                 return {
                     payload: {
                         "storyboardId": obj.storyboardId,
-                        "frameId": obj.frameId,
+                        "prevId": obj.prevId,
+                        "newId": obj.newId,
                     }
                 }
             },

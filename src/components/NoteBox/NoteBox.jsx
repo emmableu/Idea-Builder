@@ -39,7 +39,7 @@ export default function NoteBox() {
 
     React.useEffect(
         () => {setValue(loadedNote)},
-        [loadedNote])
+        [])
 
     const saveNoteDebounce = AwesomeDebouncePromise(
         text => dispatch(saveNote(text)),

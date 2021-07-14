@@ -8,20 +8,26 @@ import urlExist from "url-exist"
 const FrameThumbnail = (props) => {
     const {frameData} = props;
     const imgUpdated = useSelector((state) => state.frameThumbnailState.value.serverActionCounter);
+    const isSelected = useSelector(state => state.project.value.selectedId.frameId === frameData._id)
     const [imgSrc, setImgSrc] = React.useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAQAAAAe/WZNAAAADklEQVR42mNkgAJGDAYAAFEABCaLYqoAAAAASUVORK5CYII=");
     const [urlExists, setUrlExists] = React.useState(false);
 
-    React.useEffect(()=> {
-        console.log("frameData ID in thumbnail ", frameData._id);
+
+    const updateSrc = () => {
         if (urlExists) {
             setImgSrc(axios.defaults.baseURL + frameData._id+`?fakeRender=${imgUpdated.toString()}`)
             return;
         };
         urlExist(axios.defaults.baseURL + frameData._id).then( exists =>
-            {
+            {   console.log("exists: ", exists);
                 setUrlExists(exists)}
         )
-    }, [imgUpdated]);
+    }
+
+    React.useEffect(()=> {
+        updateSrc()
+    }, [isSelected, imgUpdated]);
+
 
     React.useEffect(()=> {
         if (urlExists === true){
