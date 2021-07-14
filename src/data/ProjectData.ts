@@ -121,7 +121,6 @@ export class ProjectData {
         this.storyboardList.unshift(
             StoryboardData.parse(storyboardDataJSON)
         )
-        this.selectedId.setStoryboardId(storyboardDataJSON);
     }
 
     getStoryboard (storyboardId:string) {

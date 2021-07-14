@@ -46,21 +46,23 @@ const EditButton = () => (
 const StoryboardTitleEdiText = () => {
     const [editing, setEditing] = useState(false);
     const [value, setValue] = useState("Untitled");
-    const [localSelectedStoryboard, setLocalSelectedStoryboard]  = useState(null);
     const dispatch = useDispatch()
 
     const selectedStoryboard = useSelector(state => state.project.value.selectedId.storyboardId)
 
     const titleName = useSelector(state =>
-        {   if (localSelectedStoryboard === null) return "Untitled";
+        {
+            if (selectedStoryboard === "UNDEFINED") return "Untitled";
+            if (selectedStoryboard === null) return "Untitled";
             if (state.project.value===null) return "Untitled";
-            return state.project.value.getStoryboard(localSelectedStoryboard).name;
+            // undefined can still happen when page reloads.
+            if (state.project.value.getStoryboard(selectedStoryboard) === undefined) {
+                return "Untitled"
+            }
+            return state.project.value.getStoryboard(selectedStoryboard).name;
         }
     )
 
-    React.useEffect(() => {
-        setLocalSelectedStoryboard(selectedStoryboard)
-    }, [selectedStoryboard])
 
     React.useEffect(() => {
         setValue(titleName)
@@ -71,7 +73,7 @@ const StoryboardTitleEdiText = () => {
         setValue(value);
         dispatch(
             updateStoryboardName({
-                "_id": localSelectedStoryboard,
+                "_id": selectedStoryboard,
                 "name": value
             }));
     };

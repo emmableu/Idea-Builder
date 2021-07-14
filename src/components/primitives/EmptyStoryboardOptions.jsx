@@ -53,7 +53,6 @@ const EmptyStoryboardOptions = (props) => {
     const {text} = props;
     const classes = useStyles();
 
-
     return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />

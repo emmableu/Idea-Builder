@@ -34,6 +34,17 @@ class ProjectAPI {
         return response;
     }
 
+
+    /* below are about selectedIds */
+    static async updateSelectedIdData(text:any) {
+        const response = await axios ({
+            method: 'post',
+            url: `/selected_id/update`,
+            data: text
+        })
+        return response;
+    }
+
     /* this section is on storyboard */
     static async addStoryboard(text:any) {
         const response = await axios({

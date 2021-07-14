@@ -22,6 +22,8 @@ const StarLayer = (props) => {
             if (state.project.value === null) return "[]";
             if (storyboardId === "UNDEFINED") return "[]";
             if (frameId === "UNDEFINED") return "[]";
+
+            // undefined can still happen when page reloads.
             try {
                 return JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON())
             }

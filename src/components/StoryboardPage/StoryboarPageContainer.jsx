@@ -11,13 +11,15 @@ const StoryboardPageContainer = () => {
         state =>
             state.project.value===null? 0: state.project.value.storyboardList.length
     )
+
+
     return (
         <>
-        {(storyboardListLength !== 0  && selectedStoryboard !== null)
+        {(storyboardListLength !== 0  && selectedStoryboard !== null && selectedStoryboard !== "UNDEFINED")
             && <StoryboardPage/>}
         {(storyboardListLength === 0 )
             && <EmptyStoryboardOptions text={`Your project is currently empty. Please create a new storyboard.`}/>}
-        {(storyboardListLength !== 0  && selectedStoryboard === null)
+        {(storyboardListLength !== 0  && (selectedStoryboard === null || selectedStoryboard === "UNDEFINED"))
             && <EmptyStoryboardOptions text={`Currently, no file is selected. Please select a storyboard from the file tree.`}/>}
         </>
     )
