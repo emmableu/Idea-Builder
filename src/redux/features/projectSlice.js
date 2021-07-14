@@ -37,6 +37,12 @@ const loadProjectFromDatabase = createAsyncThunk(
     'project/loadProjectFromDatabase',
     async (_id, thunkAPI) => {
         const response = await ProjectAPI.loadProject(_id);
+        const {dispatch} = thunkAPI;
+        //below is needed because otherwise the first frame is not updated.
+        setTimeout( () => {
+                dispatch(updateUserActionCounter());
+            }, 2000
+        )
         return response.data;
     }
 )
