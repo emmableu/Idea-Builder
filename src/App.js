@@ -43,7 +43,7 @@ const App = () => {
 
   return (
       <ProvideAuth>
-      <Router  basename={`${process.env.PUBLIC_URL}`}>
+      <Router  basename={`/idea-builder`}>
         <ThemeProvider theme={theme}>
           <Route path={`${process.env.PUBLIC_URL}/${globalConfig.routes.login}`} children={<LoginPage/>} />
           <PrivateRoute path={`${process.env.PUBLIC_URL}/${globalConfig.routes.dashboard}`} children={<Dashboard />} />
