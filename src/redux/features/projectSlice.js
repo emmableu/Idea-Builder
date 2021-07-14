@@ -63,7 +63,20 @@ const setSelectedStoryboardId = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
         const storyboardData = project.getStoryboard(storyboardId);
+
         project.selectedId.setStoryboardId(storyboardData);
+
+        //although adding storyboard automatically set frame IDs, we should do it again because sometimes redux does not recognize it being updated.
+        if (storyboardData.frameList.length > 0){
+            project.selectedId.setFrameId(storyboardData.frameList[0]._id);
+        }
+
+        //this is also because frame thumbnail does not update.
+        setTimeout( () => {
+                dispatch(updateUserActionCounter());
+            }, 500
+        )
+
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
@@ -199,17 +212,25 @@ const addFrame = createAsyncThunk(
         console.log("storyboardId: ", storyboardId);
         const frameList = project.getStoryboard(storyboardId).frameList;
         console.log("frameList: ", frameList);
-        const prevId = frameList[frameList.length-1]._id;
-
-
+        let prevIndex = frameList.length - 1
         const frameId = globalConfig.imageServer.student.frame + UUID.v4() + ".png";
-        await dispatch(copyPreviousFrameImg({
-            prevId: prevId,
-            newId: frameId}));
+        if (prevIndex >= 0) {
+            await dispatch(copyPreviousFrameImg({
+                prevId: frameList[prevIndex]._id,
+                newId: frameId}));
+        }
+        else {
+            await dispatch(
+                sendEmptyFrameImg(
+                    frameId
+                )
+            )
+        }
+
         console.log("frameId: ", frameId);
         dispatch(addFrameInMemory(JSON.stringify({
             storyboardId,
-            prevId,
+            prevIndex,
             newId: frameId,
         })));
         dispatch(setSelectedFrameId(frameId));
@@ -225,14 +246,47 @@ const addFrame = createAsyncThunk(
 
 const deleteFrame = createAsyncThunk(
     'project/deleteFrame',
-    async (payload, thunkAPI) => {
-        const {storyboardId} = payload
+    async (frameIndex, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
-        dispatch(deleteFrameInMemory(JSON.stringify(payload)));
-        const frameList = getState().project.value.frameListJSON(storyboardId);
-        const response = await ProjectAPI.replaceFrameListInDatabase({
+
+
+        const project = getState().project.value;
+        const storyboardId = project.selectedId.storyboardId;
+        // dispatch(deleteFrameInMemory(JSON.stringify({storyboardId, frameId})));
+        // const storyboardData = state.value.getStoryboard(storyboardId);
+
+        // project.getStoryboard(storyboardId).frameList = frameList;
+        // console.log("frame list here: ", frameList);
+        dispatch(updateFrameListInMemory(JSON.stringify(
+            {storyboardId,
+                    frameIndex
+            }
+        )));
+        // if (frameIndex < frameList.length) {
+        //     console.log("old id: ", frameId)
+        //     console.log('frameIndex: ', frameIndex)
+        //     console.log('frameList: ', frameList.length)
+        //     dispatch(setSelectedFrameId(frameList[frameIndex]._id))
+        //     console.log("selected frameID changed")
+        //     console.log("new id: ", project.selectedId.frameId)
+        // }
+        // else {
+        //     if (frameList.length > 0) {
+        //         console.log('frameIndex: ', frameIndex)
+        //         console.log('frameList: ', frameList.length)
+        //         dispatch(setSelectedFrameId(frameList[frameIndex-1]._id))
+        //     }
+        //     else {
+        //         console.log('frameIndex: ', frameIndex)
+        //         console.log('frameList: ', frameList.length)
+        //         // state.value.selectedId.voidFrameId();
+        //         dispatch(setSelectedFrameId("UNDEFINED"))
+        //     }
+        // }
+
+        const response = await ProjectAPI.replaceFrameIdListInDatabase({
             storyboardId,
-            frameList
+            frameIdList: project.getStoryboard(storyboardId).frameList.map(f => f._id)
         });
         return response.status;
     }
@@ -508,7 +562,7 @@ export const projectSlice = createSlice({
                 const storyboard = state.value.getStoryboard(action.payload.storyboardId);
                 storyboard.addFrame(
                     action.payload.newId,
-                    action.payload.prevId
+                    action.payload.prevIndex,
                 )
                 console.log("storyboard!!!!!!!!!!!!!!!!!!!!!!: ", storyboard);
             },
@@ -517,27 +571,67 @@ export const projectSlice = createSlice({
                 return {
                     payload: {
                         "storyboardId": obj.storyboardId,
-                        "prevId": obj.prevId,
+                        "prevIndex": obj.prevIndex,
                         "newId": obj.newId,
                     }
                 }
             },
         },
 
-        deleteFrameInMemory: {
+        updateFrameListInMemory: {
             reducer: (state, action) => {
-                state.value.deleteFrame(action.payload.storyboardId, action.payload.frameId);
-            },
-            prepare: (text) => {
-                const obj = JSON.parse(text);
-                return {
-                    payload: {
-                        "storyboardId": obj.storyboardId,
-                        "frameId": obj.frameId,
-                    }
-                }
-            },
+                const {storyboardId, frameIndex} = JSON.parse(action.payload);
+                // const storyboard = state.value.getStoryboard(storyboardId);
+                // storyboard.frameList = frameList;
+                const frameList = state.value.getStoryboard(storyboardId).frameList;
+                frameList.splice(frameIndex, 1);
+                console.log("frameList!!!!!!!!!!!!!!!!!!!!!!: ", frameList);
+            }
         },
+
+        // deleteFrameInMemory: {
+        //     reducer: (state, action) => {
+        //         const {storyboardId, frameId} = action.payload
+        //         const storyboardData = state.value.getStoryboard(storyboardId);
+        //         const frameList = storyboardData === undefined? []:storyboardData.frameList;
+        //         const frameIndex = frameList.findIndex(f => f._id === frameId);
+        //         if (frameIndex !== -1) {
+        //             frameList.splice(frameIndex, 1);
+        //         }
+        //         if (frameIndex < frameList.length) {
+        //             console.log("old id: ", frameId)
+        //             console.log('frameIndex: ', frameIndex)
+        //             console.log('frameList: ', frameList.length)
+        //             state.value.selectedId.setFrameId(frameList[frameIndex]._id)
+        //             console.log("selected frameID changed")
+        //             console.log("new id: ", this.selectedId.frameId)
+        //         }
+        //         else {
+        //             if (frameList.length > 0) {
+        //                 console.log('frameIndex: ', frameIndex)
+        //                 console.log('frameList: ', frameList.length)
+        //                 state.value.selectedId.setFrameId(frameList[frameIndex-1]._id)
+        //             }
+        //             else {
+        //                 console.log('frameIndex: ', frameIndex)
+        //                 console.log('frameList: ', frameList.length)
+        //                 state.value.selectedId.voidFrameId();
+        //             }
+        //         }
+
+
+        //
+        //     },
+        //     prepare: (text) => {
+        //         const obj = JSON.parse(text);
+        //         return {
+        //             payload: {
+        //                 "storyboardId": obj.storyboardId,
+        //                 "frameId": obj.frameId,
+        //             }
+        //         }
+        //     },
+        // },
 
         /* the next section is about stars */
 
@@ -734,7 +828,7 @@ export const {
     updateNameInMemory, //project
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
     addStarInMemory, updateStarListInMemory, deleteStarInMemory, //star
-    addFrameInMemory, deleteFrameInMemory, //frame
+    addFrameInMemory, updateFrameListInMemory, //frame
     addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, //actor
     addStateInMemory, deleteStateInMemory, updateStateNameInMemory, //state
     saveNoteInMemory, //note

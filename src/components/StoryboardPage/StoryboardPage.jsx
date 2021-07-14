@@ -8,6 +8,7 @@ import {MaterialMenu} from "../MaterialMenu/MaterialMenu";
 import FrameCardContainer from "../Frame/FrameCardContainer";
 import FrameList from "../Project/FrameList";
 import NoteBox from "../NoteBox/NoteBox";
+import FrameCardOptions from "../Frame/FrameCardOptions";
 
 const useStyles = makeStyles((theme) => ({
     rootContainer: {
@@ -89,7 +90,8 @@ const StoryboardPage = () => {
                         <div
                             className = {classes.frameDiv}
                         >
-                            <FrameCardContainer/>
+                            <FrameCardOptions/>
+                            {/*<FrameCardContainer/>*/}
                         </div>
 
                     </div>

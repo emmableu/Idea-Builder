@@ -12,7 +12,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import {useDispatch} from 'react-redux';
 import Box from '@material-ui/core/Box';
 import * as UUID from "uuid"
-import {addFrame} from "../../redux/features/projectSlice";
+import {addFrame, deleteFrame} from "../../redux/features/projectSlice";
 import {setSelectedFrameId} from "../../redux/features/projectSlice";
 import globalConfig from "../../globalConfig";
 import FrameThumbnail from "./FrameThumbnail";
@@ -49,20 +49,51 @@ const FrameList = () => {
     const storyboardId = useSelector(state => state.project.value.selectedId.storyboardId);
 
 
-    const [frameList, setFrameList] = React.useState([]);
-    const frameListString = useSelector(state => JSON.stringify(state.project.value.frameListJSON(storyboardId)));
+    // const [frameList, setFrameList] = React.useState([]);
+    const frameList = useSelector(state =>
+        state.project.value.getStoryboard(storyboardId).frameList);
 
-    React.useEffect(
-        () => {
-            // console.log("--------------usEffECT")
-            setFrameList(JSON.parse(frameListString))}
-    , [frameListString])
+
+
+    // React.useEffect(
+    //     () => {
+    //         console.log("--------------usEffECT, framelIST: ", frameList, frameListString, JSON.parse(frameListString));
+    //         setFrameList(JSON.parse(frameListString))
+    //         console.log("--------------usEffECT, framelIST: ", frameList);
+    //     }
+    // , [frameListString])
 
     const dispatch = useDispatch();
 
     const handleAddFrame = (e) => {
         dispatch(addFrame());
     }
+
+    const handleDeleteFrame = async (e, frameIndex) => {
+        // console.log("deleting:: : ", frameId)
+        // dispatch(deleteFrame
+        //     (frameIndex)
+        // );
+        await dispatch(deleteFrame(frameIndex));
+        // setTimeout(() => {
+            // const frameList = JSON.parse(frameListString);
+        console.log("frameIndex, frameList: ", frameIndex, frameList);
+        if (frameIndex < frameList.length) {
+            dispatch(setSelectedFrameId(frameList[frameIndex]._id));
+        }
+        else if (frameList.length === 0 ) {
+            dispatch(setSelectedFrameId("UNDEFINED"));
+        }
+        else if (frameIndex === frameList.length) {
+            dispatch(setSelectedFrameId(frameList[frameIndex - 1]._id));
+        }
+        // }, 1000)
+    }
+
+    React.useEffect(() => {
+        console.log("selected frame id updated: ", _id)
+        console.log("frameList: ", frameList);
+    }, [_id])
 
     return (<>
                     <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3} className={classes.box}>
@@ -79,7 +110,9 @@ const FrameList = () => {
                                     }}>
 
                                         <FrameThumbnail
-                                            frameData={frameData}
+                                            frameId={frameData._id}
+                                            frameIndex={i}
+                                            handleDelete={handleDeleteFrame}
                                         />
 
                                     </CardActionArea>

@@ -34,6 +34,7 @@ export class SelectedIdData {
 
     setStoryboardId (storyboardData: StoryboardData) {
         this.storyboardId = storyboardData._id;
+        // this is needed to hard refresh the frameList, otherwise the images were kept as the cached ones.
         this.frameId = storyboardData.frameList[0]._id;
         this.starId = "UNDEFINED"
     }
@@ -48,6 +49,13 @@ export class SelectedIdData {
         this.frameId = frameId;
         this.starId = "UNDEFINED"
     }
+
+
+    voidFrameId () {
+        this.frameId = "UNDEFINED";
+        this.starId = "UNDEFINED"
+    }
+
 
     setStarId (starId:string) {
         this.starId = starId;

@@ -191,13 +191,11 @@ export class ProjectData {
     frameListJSON (storyboardId:string) {
         const storyboardData = this.getStoryboard(storyboardId);
         const frameList = storyboardData === undefined? []:storyboardData.frameList;
+        console.log("frameList in project data !!!!!!!!!!!!: ", frameList, frameList.map(f => f._id));
         return frameList.map(s => (
             s.toJSON()
         ))
     }
-
-
-
 
     /* below are about actors */
 

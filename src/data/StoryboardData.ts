@@ -18,13 +18,18 @@ export class StoryboardData implements IStoryboardData {
         this.frameList = frameList? frameList:[new FrameData()]
     }
 
-    addFrame(newId:string, prevId:string) {
-        const prevIndex = this.frameList.findIndex(f => f._id === prevId);
+    addFrame(newId:string, prevIndex:number) {
+        if (prevIndex === -1) {
+            this.frameList.splice(
+                0, 0, new FrameData(newId)
+            )
+            return;
+        }
         const prevFrame = this.frameList[prevIndex];
         this.frameList.splice(prevIndex+1,
             0,
-                FrameData.shallowCopy(prevFrame, newId),
-            )
+            FrameData.shallowCopy(prevFrame, newId),
+        )
     }
 
     getFrame (frameId:string) {

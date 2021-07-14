@@ -11,4 +11,8 @@ export default configureStore({
         dashboard: dashboardReducer,
         frameThumbnailState: frameThumbnailStateReducer
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 })

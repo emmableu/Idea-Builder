@@ -77,7 +77,7 @@ class ProjectAPI {
     static async replaceFrameIdListInDatabase(text:any) {
         const response = await axios({
             method: 'post',
-            url: `/frame_id_list/replace`,
+            url: `/frame_list/replace`,
             data: text,
         });
         return response;
@@ -175,9 +175,6 @@ class ProjectAPI {
         });
         return response;
     }
-
-
-
 
 }
 
