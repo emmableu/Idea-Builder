@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({}));
 
 const FrameCardContainer = props => {
     const initialWidth = calcFrameWidth(window.innerWidth, window.innerHeight);
-    const initialScale = 1 //todo: update later.
+    const initialScale = initialWidth/globalConfig.noScaleWidth;
 
     const [updatedWidth, setUpdatedWidth] = React.useState(initialWidth);
     const [updatedScale, setUpdatedScale] = React.useState(initialScale);

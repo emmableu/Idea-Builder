@@ -50,6 +50,7 @@ const globalConfig = {
      trashToolBarHeight: 35,
      innerBoxLeftRightPaddingEach: 20,
      topAndBottomMarginOutsideFrame: 5,
+     noScaleWidth: 488,
 
      color: {
           veryLightGrey: "#fafafa",
@@ -97,7 +98,6 @@ const globalConfig = {
                "backdrop": "static/sample/backdrop/",
                "frame": "static/sample/frame/",
           }
-
      }
 }
 

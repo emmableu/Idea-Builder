@@ -7,6 +7,7 @@ import ProjectDrawer from "./ProjectDrawer";
 import Spinner from "../Spinner";
 import {setSelectedStoryboardId} from "../../redux/features/projectSlice";
 import {setSelectedFrameId} from "../../redux/features/projectSlice";
+import {updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
 
 
 const ProjectPageContainer = () => {
@@ -23,6 +24,10 @@ const ProjectPageContainer = () => {
 
     React.useEffect( () => {
         console.log("----------------projectData: ", projectData);
+        //below somehow does not seem to work, but anyway, need to update the frame status when page loaded.
+        // setTimeout(() => {
+        //     updateUserActionCounter();
+        // }, 1000);
         }, [projectData===null]
     )
 
