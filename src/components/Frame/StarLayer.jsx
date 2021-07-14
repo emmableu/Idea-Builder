@@ -43,8 +43,6 @@ const StarLayer = (props) => {
  return (
      <>
          <Layer
-             width={width}
-             height={(width * 3) / 4}
 
          >
              {starList.map((img, i) => {
@@ -69,7 +67,8 @@ const StarLayer = (props) => {
                      />
                  );
              })}
-         </Layer>
+         </Layer
+>
      </>
  )
 }

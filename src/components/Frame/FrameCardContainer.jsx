@@ -19,11 +19,20 @@ import {deleteStar} from "../../redux/features/projectSlice";
 const useStyles = makeStyles(theme => ({}));
 
 const FrameCardContainer = props => {
+    const initialWidth = calcFrameWidth(window.innerWidth, window.innerHeight);
+    const initialScale = 1 //todo: update later.
+
+    const [updatedWidth, setUpdatedWidth] = React.useState(initialWidth);
+    const [updatedScale, setUpdatedScale] = React.useState(initialScale);
+
+
     const fitFrameWidth = () => {
         const newFrameWidth = calcFrameWidth(window.innerWidth, window.innerHeight);
-        setWidth(newFrameWidth);
+        console.log("new frame width: ", newFrameWidth, "initial width: ", initialWidth)
+        setUpdatedScale(newFrameWidth/initialWidth * initialScale);
+        setUpdatedWidth(newFrameWidth);
+        // console.log("fitting frame width, updated scale: ", updatedScale);
     };
-    const [width, setWidth] = React.useState(0);
     useEffect(() => {
         window.addEventListener('resize', fitFrameWidth);
         fitFrameWidth();
@@ -40,13 +49,13 @@ const FrameCardContainer = props => {
     return (
         <div
             style={{
-                width: width,
-                height: (width * 3) / 4 + 2 * globalConfig.trashToolBarHeight
+                width: updatedWidth,
+                height: (updatedWidth * 3) / 4 + 2 * globalConfig.trashToolBarHeight
             }}
         >
             <div
                 style={{
-                    width: width,
+                    width: updatedWidth,
                     height: globalConfig.trashToolBarHeight,
                     backgroundColor: globalConfig.color.veryLightGrey,
                     display: 'flex',
@@ -66,18 +75,22 @@ const FrameCardContainer = props => {
             </div>
             <Paper
                 style={{
-                    width: width,
-                    height: (width * 3) / 4,
+                    width: updatedWidth,
+                    height: (updatedWidth * 3) / 4,
                     backgroundColor: 'white'
                 }}
                 square
                 elevation={4}
             >
-                <Frame width={width}/>
+                <Frame width={initialWidth}
+                       scale={initialScale}
+                       updatedWidth={updatedWidth}
+                       updatedScale={updatedScale}
+                />
             </Paper>
             <div
                 style={{
-                    width: width,
+                    width: updatedWidth,
                     height: globalConfig.trashToolBarHeight,
                     backgroundColor: globalConfig.color.veryLightGrey,
                     zIndex: -5,

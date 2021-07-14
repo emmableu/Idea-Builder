@@ -11,11 +11,19 @@ import {setSelectedStarId} from "../../redux/features/projectSlice";
 import {sendFrameImg, updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
 
 const Frame = (props) => {
-    const {width} = props;
+    const {width, updatedWidth, updatedScale} = props;
     const frameRef = React.useRef();
     const dispatch = useDispatch();
     // const [selectedId, setSelectedId] = React.useState(null);
-
+    React.useEffect(() => {
+        console.log("updated scale: ", updatedScale)
+        frameRef.current.width(updatedWidth);
+        frameRef.current.height(updatedWidth*3/4);
+        frameRef.current.scale({
+            x: updatedScale,
+            y: updatedScale
+        })
+    }, [updatedScale])
 
     const storyboardId = useSelector(state => state.project.value.selectedId.storyboardId);
     const userActionCounter = useSelector((state) => state.frameThumbnailState.value.userActionCounter);
