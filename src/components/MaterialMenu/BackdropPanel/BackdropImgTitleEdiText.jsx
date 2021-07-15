@@ -3,7 +3,7 @@ import EdiText from "react-editext";
 import styled from 'styled-components';
 import {IconButton, Tooltip} from "@material-ui/core";
 import {Create} from "@material-ui/icons";
-import {updateActorName, updateStateName} from "../../../../redux/features/projectSlice";
+import {updateBackdropName, updateStateName} from "../../../redux/features/projectSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 
@@ -48,32 +48,33 @@ const EditButton = () => (
     </Tooltip>
 )
 
-const ImgTitleEdiText = (props) => {
-    const {actorId, stateId} = props;
+const BackdropImgTitleEdiText = (props) => {
+    const {backdropId} = props;
     const dispatch = useDispatch();
     const [editing, setEditing] = useState(false);
-    const [value, setValue] = useState("state");
+    const [value, setValue] = useState("backdrop");
 
-    const sliceStateName = useSelector(
+
+    const sliceBackdropName = useSelector(
         state => {
-            return state.project.value.stateListJSON(actorId).find(s => s._id === stateId).name
+            return state.project.value.backdropListJSON().find(s => s._id === backdropId).name
         }
     )
 
     React.useEffect(() => {
-        setValue(sliceStateName);
-    }, [sliceStateName]);
+        setValue(sliceBackdropName);
+    }, [sliceBackdropName]);
 
     const handleSave = (value) => {
         // console.log(value);
         setValue(value);
         dispatch(
-            updateStateName({
-                "actorId": actorId,
-                "stateId": stateId,
-                "stateName": value
+            updateBackdropName({
+                "backdropId": backdropId,
+                "backdropName": value
             }));
     };
+
     return (
         <StyledEdiText
             submitOnUnfocus
@@ -91,4 +92,4 @@ const ImgTitleEdiText = (props) => {
 }
 
 
-export default ImgTitleEdiText;
+export default BackdropImgTitleEdiText;

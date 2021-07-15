@@ -25,6 +25,7 @@
     "eslint-plugin-react": "^7.24.0",
     "file-saver": "^2.0.5",
     "js-cookie": "^2.2.1",
+    "js-file-download": "^0.4.12",
     "jszip": "^3.6.0",
     "konva": "^8.1.0",
     "material-table": "^1.69.3",

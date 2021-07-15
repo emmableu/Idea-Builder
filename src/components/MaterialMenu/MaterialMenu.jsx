@@ -6,6 +6,7 @@ import Tab from "@material-ui/core/Tab";
 import {Panorama, Theaters, Widgets} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core";
 import globalConfig from "../../globalConfig";
+import BackdropPanel from "./BackdropPanel/BackdropPanel";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,6 +52,7 @@ function TabPanel(props) {
         >
             <Box>
                 {index === 0 && <ActorPanel/>}
+                {index === 1 && <BackdropPanel/>}
             </Box>
         </div>
     );
@@ -82,17 +84,16 @@ export const MaterialMenu = () => {
                 className={classes.tabs}
             >
                 <Tab icon={<Widgets />} label="Actors" {...a11yProps(0)} />
-                {/*<Tab icon={<Panorama/>} label="Backdrops" {...a11yProps(1)} />*/}
-                <Tab icon={<Theaters/>} label="Templates" {...a11yProps(2)} />
+                <Tab icon={<Panorama/>} label="Backdrops" {...a11yProps(1)} />
+                {/*<Tab icon={<Theaters/>} label="Templates" {...a11yProps(2)} />*/}
 
             </Tabs>
             <TabPanel value={value} index={0}>
             </TabPanel>
-            {/*<TabPanel value={value} index={1}>*/}
-            {/*    Item Two*/}
-            {/*</TabPanel>*/}
-            <TabPanel value={value} index={2}>
+            <TabPanel value={value} index={1}>
             </TabPanel>
+            {/*<TabPanel value={value} index={2}>*/}
+            {/*</TabPanel>*/}
         </div>
     );
 }

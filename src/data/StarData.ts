@@ -7,6 +7,7 @@ export interface IStarData {
     y: number;
     width: number;
     height: number;
+    transform: any;
 }
 
 
@@ -17,6 +18,7 @@ export class StarData implements IStarData{
     y: number;
     width: number;
     height: number;
+    transform: any;
 
     constructor(prototypeId:string,
                 _id?: string,
@@ -24,6 +26,7 @@ export class StarData implements IStarData{
                 y?:number,
                 width?:number,
                 height?:number,
+                transform?:any,
     ) {
         this.prototypeId = prototypeId;
         this._id = _id? _id:UUID.v4();
@@ -31,6 +34,7 @@ export class StarData implements IStarData{
         this.y = y? y:0;
         this.width = width? width:100;
         this.height = height? height:100;
+        this.transform=transform?this.transform:null;
     }
 
     toJSON (): IStarData {
@@ -41,6 +45,7 @@ export class StarData implements IStarData{
             y: this.y,
             width: this.width,
             height: this.height,
+            transform:this.transform,
         }
     }
 
@@ -52,6 +57,7 @@ export class StarData implements IStarData{
             starJSON.y,
             starJSON.width,
             starJSON.height,
+            starJSON.transform
         );
     }
 
@@ -63,6 +69,7 @@ export class StarData implements IStarData{
             starData.y,
             starData.width,
             starData.height,
+            starData.transform
         );
     }
 }

@@ -5,28 +5,40 @@ import globalConfig from "../globalConfig";
 
 export interface IFrameData {
     _id: string;
-    backdropId: string;
+    backdropStar: {
+        prototypeId: string,
+        _id: string,
+    };
     starList: Array<IStarData>;
 }
 
 export class FrameData implements IFrameData{
     _id: string;
-    backdropId: string;
+    backdropStar: {
+        prototypeId: string,
+        _id: string,
+    };
     starList: Array<StarData>;
 
     constructor(_id?: string,
-                backdropId?:string,
+                backdropStar?: {
+                    prototypeId: string,
+                    _id: string,
+                },
                 starList?: Array<StarData>,
 ) {
         this._id = _id? _id:globalConfig.imageServer.student.frame + UUID.v4() + ".png";
-        this.backdropId = backdropId? backdropId:"EMPTY";
+        this.backdropStar = backdropStar? backdropStar:{
+            prototypeId: "EMPTY",
+            _id: "EMPTY",
+        };;
         this.starList = starList? starList:[];
     }
 
     toJSON (): IFrameData {
         return {
             _id: this._id,
-            backdropId: this.backdropId,
+            backdropStar: this.backdropStar,
             starList: this.starList.map(s => s.toJSON()),
         }
     }
@@ -53,6 +65,7 @@ export class FrameData implements IFrameData{
     static  parse(frameJSON: any): FrameData {
         console.log("frameJSON: ", frameJSON);
         const frameData = new FrameData(frameJSON._id, frameJSON.backdropId);
+        frameData.backdropStar = frameJSON.backdropStar;
         frameData.starList = frameJSON.starList.map((ele:any) => StarData.parse(ele));
         return frameData;
     }
@@ -69,7 +82,18 @@ export class FrameData implements IFrameData{
                 globalConfig.imageServer.student.frame + UUID.v4() + ".png"
             );
         }
-        newFrameData.backdropId = globalConfig.imageServer.student.backdrop + UUID.v4() + ".png";
+        if (frameData.backdropStar._id === "EMPTY" || frameData.backdropStar.prototypeId === "EMPTY" ){
+            newFrameData.backdropStar = {
+                _id: "EMPTY",
+                prototypeId: "EMPTY",
+            }
+        }
+        else {
+            newFrameData.backdropStar = {
+                _id: globalConfig.imageServer.student.backdrop + UUID.v4() + ".png",
+                prototypeId: frameData.backdropStar.prototypeId,
+            }
+        }
 
         newFrameData.starList = frameData.starList.map((ele:any) => StarData.shallowCopy(ele));
         return newFrameData;

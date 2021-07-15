@@ -7,7 +7,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import {useDispatch} from "react-redux";
-import {addStar, deleteState} from "../../../../redux/features/projectSlice";
+import {addBackdropStar, deleteBackdrop} from "../../../redux/features/projectSlice";
 import {IconButton} from "@material-ui/core";
 import MoreIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import {ArrowForward, DeleteOutlined} from "@material-ui/icons";
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
         height: '100%',
     },
     imgStyle: {
-        objectFit: 'contain',
+        objectFit: 'cover',
         width: '100%',
         height: '100%',
 
@@ -54,39 +54,38 @@ const useStyles = makeStyles({
     buttonOverlapUse: {
         position: "relative",
         zIndex: 2,
-        left: "15%",
-        top: "30%",
+        left: "28%",
+        top: "40%",
         width: "35px",
         height: "35px",
     },
     buttonOverlapDelete: {
         position: "relative",
         zIndex: 2,
-        left: "20%",
-        top: "30%",
+        left: "35%",
+        top: "40%",
         width: "35px",
         height: "35px",
     },
 });
 
 
-const ImgCard = (props) =>  {
-    const {actorId, stateId, imgSrc, contentNode } = props;
+const BackdropImgCard = (props) =>  {
+    const { backdropId, imgSrc, contentNode } = props;
     const classes = useStyles(props);
     const dispatch  = useDispatch();
     const [onHover, setOnHover] = React.useState();
 
-    const handleDelete = () => {
-        // console.log("stateId: ", stateId)
-        dispatch(deleteState(
-            {actorId,
-            stateId}
+    const handleDelete = (e) => {
+        // console.log("backdropId: ", backdropId)
+        dispatch(deleteBackdrop(
+                backdropId
         ));
     }
 
 
-    const handleAddStar = () => {
-        dispatch(addStar(stateId));
+    const handleAddBackdropStar = (e) => {
+        dispatch(addBackdropStar(backdropId));
     }
 
 
@@ -94,48 +93,47 @@ const ImgCard = (props) =>  {
         <Card
             variant="outlined"
             className={classes.root}>
-            {/*<Dropdown overlay={menu(stateId)} trigger={['contextMenu']}>*/}
+            {/*<Dropdown overlay={menu(backdropId)} trigger={['contextMenu']}>*/}
             <CardMedia className={classes.media}
                        onMouseEnter={() => {setOnHover(true)}}
                        onMouseLeave={() =>{ setOnHover(false)}}
             >
-                    <div className={classes.elementToStretch}
-                    >
-                        <img
-                            draggable
-                            className={classes.imgStyle}
-                            src={imgSrc}
-                            alt="img"
-                        />
-                        <div className={classes.divOverlap} style={{display: onHover? "block":"none" }}>
-                            <Tooltip title="Use">
+                <div className={classes.elementToStretch}
+                >
+                    <img
+                        draggable
+                        className={classes.imgStyle}
+                        src={imgSrc}
+                        alt="img"
+                    />
+                    <div className={classes.divOverlap} style={{display: onHover? "block":"none" }}>
+                        <Tooltip title="Use">
                             <IconButton aria-label="add"
                                         className={classes.buttonOverlapUse}
                                         color="inherit"
                                         variant="contained"
-                                        onClick={e => {handleAddStar(e)}}
-                                        size="small">
+                                        onClick={e => {handleAddBackdropStar(e)}}
+                                        size="medium">
                                 <ArrowForward style={{color: "white"}} />
                             </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Delete">
-                                <IconButton aria-label="add"
-                                     className={classes.buttonOverlapDelete}
-                                     color="inherit"
-                                     variant="contained"
-                                     size="small"
-                                     onClick={handleDelete}>
-                                    <DeleteOutlined style={{color: "white"}} />
-                                </IconButton>
-                            </Tooltip>
-                        </div>
+                        </Tooltip>
+                        <Tooltip title="Delete">
+                            <IconButton aria-label="add"
+                                        className={classes.buttonOverlapDelete}
+                                        color="inherit"
+                                        variant="contained"
+                                        size="medium"
+                                        onClick={handleDelete}>
+                                <DeleteOutlined style={{color: "white"}} />
+                            </IconButton>
+                        </Tooltip>
                     </div>
-                </CardMedia>
-            {/*</Dropdown>*/}
+                </div>
+            </CardMedia>
             {contentNode}
         </Card>
     );
 }
 
 
-export default ImgCard;
+export default BackdropImgCard;

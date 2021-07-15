@@ -12,7 +12,7 @@ export class StateData implements IStateData{
 
     constructor(_id?: string, name?:string) {
         this._id = _id? _id:UUID.v4();
-        this.name = name? name:"state";
+        this.name = name? name:"Untitled";
     }
 
     toJSON (): IStateData {

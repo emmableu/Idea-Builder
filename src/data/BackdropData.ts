@@ -11,7 +11,7 @@ export class BackdropData implements IBackdropData {
 
     constructor(BackdropId?: string, name?:string, order?:number) {
         this._id = BackdropId? BackdropId:UUID.v4();
-        this.name = name? name:"";
+        this.name = name? name:"Untitled";
     }
 
 

@@ -7,12 +7,12 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Paper from '@material-ui/core/Paper'
-import globalConfig from "../../../../globalConfig";
-import axios from "../../../../axiosConfig";
+import globalConfig from "../../globalConfig";
+import axios from "../../axiosConfig";
 import {Grid} from "@material-ui/core";
-import ActorPanelCardContentImgTile from "./ActorPanelCardContentImgTile";
+import ActorPanelCardContentImgTile from "../MaterialMenu/ActorPanel/ActorPanelCard/ActorPanelCardContentImgTile";
 import SearchDialogImgCard from "./SearchDialogImgCard";
-import ImgCard from "./ImgCard";
+import ActorImgCard from "../MaterialMenu/ActorPanel/ActorPanelCard/ActorImgCard";
 // import Draggable from 'react-draggable'
 
 // function PaperComponent(props) {
@@ -24,7 +24,9 @@ import ImgCard from "./ImgCard";
 // }
 
 const SearchDialog = (props) => {
-    const {actorId, searchDialogOpen, handleClose} = props;
+    const {_id, searchDialogOpen, handleClose, type} = props;
+    //type can be "state" or "backdrop"
+    // _id means either _id or backdropId
     const dialogLeft =  globalConfig.storyboardDrawerWidth
                             + globalConfig.panelTabsWidth
                             + globalConfig.actorDrawerWidth;
@@ -34,12 +36,10 @@ const SearchDialog = (props) => {
         () => {
             axios({
                 method: 'get',
-                url: "/sample_state_id_list/get",
+                url: `/sample_${type}_id_list/get`,
             }).then(
                 res => {
                     setImgList(res.data)
-                    console.log("imgList: ", imgList)
-
                 }
             )
         }, [searchDialogOpen]
@@ -60,19 +60,21 @@ const SearchDialog = (props) => {
                     aria-labelledby="draggable-dialog-title"
                     disableBackdropClick
                 >
-                    <DialogTitle id="dialog-title">Actor States</DialogTitle>
+                    {type === "states" && <DialogTitle id="dialog-title">Actor States</DialogTitle>}
+                    {type === "states" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}
                     <DialogContent>
                         <Grid container spacing={1} >
-                            {imgList.map(id => (
+                            {imgList.map(imgId => (
                                 <>
                                     <Grid
                                         item xs={3}
-                                        key={id}
+                                        key={imgId}
                                     >
                                         <SearchDialogImgCard
-                                            actorId={actorId}
-                                            id={id}
-                                            imgSrc={axios.defaults.baseURL + id}
+                                            type={type}
+                                            _id={_id}
+                                            imgId={imgId}
+                                            imgSrc={axios.defaults.baseURL + imgId}
                                             heightToWidthRatio={'75%'}
                                         />
                                     </Grid>
@@ -90,5 +92,7 @@ const SearchDialog = (props) => {
         )
 
 }
+
+//TODO: currently, searched images may have the same id, which is wrong.
 
 export default SearchDialog

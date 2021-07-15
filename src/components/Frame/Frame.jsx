@@ -59,7 +59,8 @@ const Frame = (props) => {
 
     const checkDeselect = (e) => {
         // deselect when clicked on empty area
-        const clickedOnEmpty = e.target === e.target.getStage();
+        console.log("e.target: ", e.target);
+        const clickedOnEmpty = ( e.target === e.target.getStage() || e.target.id() === "backdropStar");
         if (clickedOnEmpty) {
             dispatch(setSelectedStarId("UNDEFINED"));
             dispatch(updateUserActionCounter());
@@ -83,7 +84,7 @@ const Frame = (props) => {
                 <StarLayer
                     storyboardId={storyboardId}
                     frameId={frameId}
-                    width={width}
+                    updatedWidth={updatedWidth}
                 />
             </Provider>
         </Stage>)}

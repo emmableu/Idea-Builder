@@ -7,16 +7,17 @@ import backdropImg from ".//Frame";
 import {useDispatch, useSelector} from 'react-redux';
 import {updateStarList} from "../../redux/features/projectSlice";
 import {setSelectedStarId} from "../../redux/features/projectSlice";
+import BackdropStar from "../Star/BackdropStar";
+import globalConfig from "../../globalConfig";
 
 
 
 const StarLayer = (props) => {
-    const {storyboardId, frameId, width} = props;
+    const {storyboardId, frameId, updatedWidth} = props;
     const [starList, setStarList] = React.useState([]);
     const dispatch = useDispatch();
 
     const selectedStar = useSelector(state => state.project.value.selectedId.starId);
-
 
     const starListString = useSelector(state => {
             if (state.project.value === null) return "[]";
@@ -34,17 +35,51 @@ const StarLayer = (props) => {
         }
     );
 
+    const backdropStar = useSelector(state => {
+            try {
+                console.log("backdropstar: ", JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).backdropStar))
+                return JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).backdropStar)
+            }
+            catch (error) {
+                console.log(error);
+                    return JSON.stringify({
+                        _id: "EMPTY", prototypeId: "EMPTY"
+                    })
+            }
+        }
+    );
+
     React.useEffect(()=> {
         setStarList(JSON.parse(starListString));
     }, [starListString])
 
-
+    // const [imgSrc, setImgSrc] = React.useState();
+    const [backdropImg] = useImage(axios.defaults.baseURL + JSON.parse(backdropStar).prototypeId);
+    if (backdropImg !== undefined) {
+        backdropImg.crossOrigin = "Anonymous";
+    }
+    // React.useEffect( () => {
+    //         console.log("img src updated: ", axios.defaults.baseURL + backdropStar.prototypeId)
+    //         setImgSrc(axios.defaults.baseURL + backdropStar.prototypeId);
+    //     }
+    //     , [backdropStar._id]
+    // )
 
  return (
      <>
          <Layer
-
          >
+             {
+                 backdropStar._id !== "EMPTY" && (
+                     <Image
+                         image={backdropImg}
+                         key={backdropStar._id}
+                         id={backdropStar._id}
+                         width={globalConfig.noScaleWidth}
+                         height={globalConfig.noScaleWidth*3/4}
+                     />
+                 )
+             }
              {starList.map((img, i) => {
                  return (
                      <Star

@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 import {StoryboardData} from "./StoryboardData";
 import {BackdropData} from "./BackdropData";
 import {SelectedIdData} from "./SelectedIdData";
-
+import fileDownload from "js-file-download";
 
 export class ProjectData {
     _id: string;
@@ -192,6 +192,10 @@ export class ProjectData {
         ))
     }
 
+    backdropListJSON () {
+        return this.backdropList.map(b => b.toJSON());
+    }
+
     /* below are about actors */
 
     get actorDataKeys () {
@@ -233,33 +237,7 @@ export class ProjectData {
 
 
     download () {
-        let filename = 'project';
-        // const urls = [
-        //     'https://assets.thehindustep.in/user_tasks/01bd55804ecb6f90408f87d5710df126.docx',
-        //     'https://assets.thehindustep.in/user_tasks/0304e0e4913e9a37a5ee6c38a8a2b1a8.pdf',
-        //     'https://assets.thehindustep.in/user_tasks/02e8131da84606bf8457c38455b19ead.mp3'
-        // ];
-        const zip = new JSZip();
-        const folder = zip.folder('project');
-        if (folder === null) return;
-        folder.file('project.json', this.toString());
-        // urls.forEach(url => {
-        //     const blobPromise = fetch(url).then(function(response) {
-        //         console.log({ response });
-        //         if (response.status === 200 || response.status === 0) {
-        //             return Promise.resolve(response.blob());
-        //         } else {
-        //             return Promise.reject(new Error(response.statusText));
-        //         }
-        //     });
-        //     const name = url.substring(url.lastIndexOf('/'));
-        //     folder.file(name, blobPromise);
-        // });
-
-        zip
-            .generateAsync({ type: 'blob' })
-            .then(blob => saveAs(blob, filename))
-            .catch(e => console.log(e));
+        fileDownload(this.toString(), 'project.json');
     }
 
 }

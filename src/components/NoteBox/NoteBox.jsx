@@ -30,7 +30,7 @@ const converter = new Showdown.Converter({
 
 
 export default function NoteBox() {
-    const [value, setValue] = React.useState("**Enter your notes here:**");
+    const [value, setValue] = React.useState("**Game mechanic:**");
     const [selectedTab, setSelectedTab] = React.useState("write");
     const dispatch = useDispatch();
 

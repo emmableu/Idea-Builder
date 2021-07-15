@@ -1,8 +1,8 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from '@material-ui/core';
-import ImgCard from './ImgCard';
-import ImgTitleEdiText from './ImgTitleEdiText';
+import ActorImgCard from './ActorImgCard';
+import ActorImgTitleEdiText from './ActorImgTitleEdiText';
 import ActorPanelCardContentImgTile from './ActorPanelCardContentImgTile';
 import CardContent from '@material-ui/core/CardContent';
 import { useDispatch, useSelector } from 'react-redux';

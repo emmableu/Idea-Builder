@@ -10,7 +10,7 @@ import DragHandleIcon from '../../../primitives/DragHandleIcon';
 import ActorPanelCardUploadButton from './ActorPanelCardUploadButton';
 import {useDispatch} from "react-redux";
 import {deleteActor} from "../../../../redux/features/projectSlice";
-import SearchDialog from "./SearchDialog";
+import SearchDialog from "../../../primitives/SearchDialog";
 
 const ActorPanelCardButtonGroup = props => {
     const {_id} = props;
@@ -48,7 +48,8 @@ const ActorPanelCardButtonGroup = props => {
             </Tooltip>
             </div>
             <SearchDialog
-                actorId={_id}
+                _id={_id}
+                type="state"
                 searchDialogOpen={searchDialogOpen}
                 handleClose={handleClose} />
 

@@ -125,6 +125,17 @@ class ProjectAPI {
         return response;
     }
 
+    /* this section is on backdropStar */
+
+    static async replaceBackdropStarInDatabase(text: any) {
+        const response = await axios({
+            method: 'post',
+            url: `/backdrop_star/replace`,
+            data: text,
+        });
+        return response;
+    }
+
 
     /* this section is on actor */
     static async addActor(text:any) {
@@ -163,6 +174,17 @@ class ProjectAPI {
         });
         return response;
     }
+
+    /* this section is on backdrop */
+    static async replaceBackdropListInDatabase(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/backdrop_list/replace`,
+            data: text,
+        });
+        return response;
+    }
+
 
 
     /* this section is on note */

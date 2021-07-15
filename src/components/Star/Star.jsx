@@ -10,8 +10,10 @@ const Star = (props) => {
     // console.log('starData: ', starData);
     // const [image] = useImage('images/' + actorImg.filter((e) => e.name===starData.name)[0].imgSrc);
     const [image] = useImage(axios.defaults.baseURL + starData.prototypeId);
+    console.log("image: ", image);
     // console.log("image: ", image);
     if (image !== undefined) {
+        starData.height = starData.width * image.height/image.width;
         image.crossOrigin = "Anonymous";
     }
     const imageRef = React.useRef(null);
@@ -62,6 +64,7 @@ const Star = (props) => {
                         // set minimal value
                         width: Math.max(5, node.width() * scaleX),
                         height: Math.max(5, node.height() * scaleY),
+                        transform: node.getAbsoluteTransform().getMatrix(),
                     });
                 }}/>
             {isSelected && (

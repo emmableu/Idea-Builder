@@ -1,13 +1,13 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import {Button, CardActions} from '@material-ui/core';
-import ImgCard from "./ImgCard";
-import ImgTitleEdiText from "./ImgTitleEdiText";
+import ActorImgCard from "./ActorImgCard";
+import ActorImgTitleEdiText from "./ActorImgTitleEdiText";
 import axios from "../../../../axiosConfig";
 import globalConfig from "../../../../globalConfig";
 
 const ContentNode = (props) => (
-    <ImgTitleEdiText {...props}/>
+    <ActorImgTitleEdiText {...props}/>
 );
 
 
@@ -16,7 +16,7 @@ const ActorPanelCardContentImgTile = (props) => {
 
     return (
         <>
-            <ImgCard
+            <ActorImgCard
                 actorId={actorId}
                 stateId={stateId}
                 imgSrc={axios.defaults.baseURL + stateId}

@@ -16,6 +16,7 @@ import {
     sendFrameImg,
     updateUserActionCounter
 } from "./frameThumbnailStateSlice";
+import {BackdropData} from "../../data/BackdropData";
 
 
 
@@ -367,6 +368,35 @@ const deleteStar = createAsyncThunk(
 );
 
 
+/* The next section are about backdrop stars on on the frame */
+const addBackdropStar = createAsyncThunk(
+    'project/addBackdropStar',
+    async (prototypeId, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        const state = getState();
+        const storyboardId = state.project.value.selectedId.storyboardId;
+        const frameId = state.project.value.selectedId.frameId
+        console.log("storyboardId: ", storyboardId)
+        console.log("frameId: ", frameId)
+        if (storyboardId === null || frameId === null) {return;}
+        if (storyboardId === "UNDEFINED" || frameId === "UNDEFINED") {return;}
+        dispatch(addBackdropStarInMemory(JSON.stringify({
+            storyboardId, frameId, prototypeId,
+        })));
+        setTimeout(() => {
+            dispatch(updateUserActionCounter());
+        }, 500)
+        //sometimes the first dispatch does not work, because the actor is not yet fully updated on the canvas.
+        const backdropStar = state.project.value.getStoryboard(storyboardId).getFrame(frameId).backdropStar;
+        const response = await ProjectAPI.replaceBackdropStarInDatabase({
+            frameId,
+            backdropStar
+        });
+        return response.status;
+    }
+);
+
+
 
 
 /* The next section are about actors:
@@ -480,14 +510,66 @@ const updateStateName = createAsyncThunk(
     }
 );
 
+
+// The next session is about backdrops
+
+const addBackdrop = createAsyncThunk(
+    'project/addBackdrop',
+    async (backdropId, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        const projectId = getState().project.value._id;
+        dispatch(addBackdropInMemory(
+                backdropId)
+        );
+        const backdropList = getState().project.value.backdropListJSON();
+        const response = await ProjectAPI.replaceBackdropListInDatabase({
+            projectId, backdropList
+        });
+        return response.status;
+    }
+);
+
+const deleteBackdrop = createAsyncThunk(
+    'project/deleteBackdrop',
+    async (backdropId, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        const projectId = getState().project.value._id;
+        dispatch(deleteBackdropInMemory(
+            backdropId)
+        );
+        const backdropList = getState().project.value.backdropListJSON();
+        const response = await ProjectAPI.replaceBackdropListInDatabase({
+            projectId, backdropList
+        });
+        return response.status;
+    }
+);
+
+const updateBackdropName = createAsyncThunk(
+    'project/updateStateName',
+    async (payload, thunkAPI) => {
+        const {backdropId, backdropName} = payload
+        const {dispatch, getState} = thunkAPI;
+        const projectId = getState().project.value._id;
+        dispatch(updateBackdropNameInMemory(JSON.stringify({
+            backdropId, backdropName
+        })));
+        const backdropList = getState().project.value.backdropListJSON();
+        const response = await ProjectAPI.replaceBackdropListInDatabase({
+            projectId, backdropList
+        });
+        return response.status;
+    }
+);
+
 const saveNote = createAsyncThunk(
     'project/saveNote',
     async (text, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         dispatch(saveNoteInMemory(text));
-        const projectId = getState().project.value._id;
+        const storyboardId = getState().project.value.selectedId.storyboardId;
         const response = await ProjectAPI.saveNote({
-            projectId,
+            storyboardId,
            text
         });
 
@@ -596,49 +678,7 @@ export const projectSlice = createSlice({
             }
         },
 
-        // deleteFrameInMemory: {
-        //     reducer: (state, action) => {
-        //         const {storyboardId, frameId} = action.payload
-        //         const storyboardData = state.value.getStoryboard(storyboardId);
-        //         const frameList = storyboardData === undefined? []:storyboardData.frameList;
-        //         const frameIndex = frameList.findIndex(f => f._id === frameId);
-        //         if (frameIndex !== -1) {
-        //             frameList.splice(frameIndex, 1);
-        //         }
-        //         if (frameIndex < frameList.length) {
-        //             console.log("old id: ", frameId)
-        //             console.log('frameIndex: ', frameIndex)
-        //             console.log('frameList: ', frameList.length)
-        //             state.value.selectedId.setFrameId(frameList[frameIndex]._id)
-        //             console.log("selected frameID changed")
-        //             console.log("new id: ", this.selectedId.frameId)
-        //         }
-        //         else {
-        //             if (frameList.length > 0) {
-        //                 console.log('frameIndex: ', frameIndex)
-        //                 console.log('frameList: ', frameList.length)
-        //                 state.value.selectedId.setFrameId(frameList[frameIndex-1]._id)
-        //             }
-        //             else {
-        //                 console.log('frameIndex: ', frameIndex)
-        //                 console.log('frameList: ', frameList.length)
-        //                 state.value.selectedId.voidFrameId();
-        //             }
-        //         }
 
-
-        //
-        //     },
-        //     prepare: (text) => {
-        //         const obj = JSON.parse(text);
-        //         return {
-        //             payload: {
-        //                 "storyboardId": obj.storyboardId,
-        //                 "frameId": obj.frameId,
-        //             }
-        //         }
-        //     },
-        // },
 
         /* the next section is about stars */
 
@@ -699,6 +739,29 @@ export const projectSlice = createSlice({
             },
         },
 
+        //        dispatch(addBackdropStarInMemory(JSON.stringify({
+        //             storyboardId, frameId, backdropId,
+        //         })));
+
+        addBackdropStarInMemory: {
+            reducer: (state, action) => {
+                const frame = state.value.getStoryboard(action.payload.storyboardId).getFrame(action.payload.frameId);
+                frame.backdropStar =  {
+                    "_id": UUID.v4(),
+                    "prototypeId": action.payload.prototypeId,
+                };
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "storyboardId": obj.storyboardId,
+                        "frameId": obj.frameId,
+                        "prototypeId": obj.prototypeId,
+                    }
+                }
+            },
+        },
 
         /* The next section are about actors:
         */
@@ -807,6 +870,43 @@ export const projectSlice = createSlice({
             },
         },
 
+        /* The next section are about backdrops:
+        */
+
+
+        addBackdropInMemory: {
+            reducer: (state, action) => {
+                state.value.backdropList.push(new BackdropData(action.payload))
+            }
+        },
+
+        deleteBackdropInMemory: {
+            reducer: (state, action) => {
+                const backdropIndex = state.value.backdropList.findIndex(b => b._id === action.payload);
+                state.value.backdropList.splice(backdropIndex, 1);
+            }
+        },
+
+        updateBackdropNameInMemory: {
+            reducer: (state, action) => {
+                const backdropIndex = state.value.backdropList.findIndex(s => s._id === action.payload.backdropId);
+                state.value.backdropList[backdropIndex].name = action.payload.backdropName;
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "backdropId": obj.backdropId,
+                        "backdropName": obj.backdropName,
+                    }
+                }
+            },
+        },
+
+
+
+
+
 
         saveNoteInMemory: {
           reducer: (state, action) => {
@@ -835,9 +935,11 @@ export const {
     updateNameInMemory, //project
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
     addStarInMemory, updateStarListInMemory, deleteStarInMemory, //star
+    addBackdropStarInMemory, //backdropStar
     addFrameInMemory, updateFrameListInMemory, //frame
     addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, //actor
     addStateInMemory, deleteStateInMemory, updateStateNameInMemory, //state
+    addBackdropInMemory, deleteBackdropInMemory, updateBackdropNameInMemory, //backdrop
     saveNoteInMemory, //note
     download,
 } = projectSlice.actions;
@@ -847,8 +949,10 @@ export {
     addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
     addFrame, deleteFrame, //frame
     addStar, updateStarList, deleteStar, //star
+    addBackdropStar, //backdropStar
     addActor, deleteActor, updateActorOrder, updateActorName, //actor
     addState, deleteState, updateStateName, //state
+    addBackdrop, deleteBackdrop, updateBackdropName, //backdrop
     saveNote, //note
 };
 export default projectSlice.reducer;
