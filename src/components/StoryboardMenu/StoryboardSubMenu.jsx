@@ -7,14 +7,10 @@ import StoryboardMenuItem from "./StoryboardMenuItem";
 import React, {useState} from "react";
 import {addStoryboard} from "../../redux/features/projectSlice";
 import {useDispatch} from "react-redux";
+import NewStoryboardDialogue from "./NewStoryboardDialogue";
 
 export const StoryboardSubMenu = (props) => {
     const {columnId, column} = props;
-    const dispatch = useDispatch();
-
-    const handleAddStoryboard = () => {
-        dispatch(addStoryboard(columnId))
-    }
 
     return (
         <div
@@ -38,14 +34,15 @@ export const StoryboardSubMenu = (props) => {
                                     color: "white",
                                     flexGrow: 1,
                                 }}>{'\u00A0'} {column.name}</span>
-                <Button
-                    type="ghost"
-                    shape="circle"
-                    style={{"float": "right"}}
-                    onClick={handleAddStoryboard}
-                    icon={<PlusOutlined
-                        style={{fontSize: "100%", color: "white"}}
-                    />} />
+                                <NewStoryboardDialogue type={columnId}/>
+                {/*<Button*/}
+                {/*    type="ghost"*/}
+                {/*    shape="circle"*/}
+                {/*    style={{"float": "right"}}*/}
+                {/*    onClick={handleAddStoryboard}*/}
+                {/*    icon={<PlusOutlined*/}
+                {/*        style={{fontSize: "100%", color: "white"}}*/}
+                {/*    />} />*/}
             </Paper>
             <div>
                 <Droppable droppableId={columnId} key={columnId}>

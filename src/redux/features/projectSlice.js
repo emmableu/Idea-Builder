@@ -137,10 +137,11 @@ const setSelectedStarId = createAsyncThunk(
 
 const addStoryboard = createAsyncThunk(
     'project/addStoryboard',
-    async (type, thunkAPI) => {
+    async (text, thunkAPI) => {
+        const {storyboardName, type} = text;
         const {dispatch, getState}  = thunkAPI;
         const storyboardId = UUID.v4();
-        const storyboardData = new StoryboardData(storyboardId)
+        const storyboardData = new StoryboardData(storyboardId, storyboardName)
         const storyboardDataJSON = storyboardData.toJSON();
         const state = getState();
         const project = state.project.value;

@@ -21,16 +21,6 @@ const ProjectPageContainer = () => {
             dispatch(loadProjectFromDatabase(_id))
         }, [])
 
-
-    React.useEffect( () => {
-        console.log("----------------projectData: ", projectData);
-        //below somehow does not seem to work, but anyway, need to update the frame status when page loaded.
-        // setTimeout(() => {
-        //     updateUserActionCounter();
-        // }, 1000);
-        }, [projectData===null]
-    )
-
     return (
         <>
         {projectData===null && <Spinner loading={true}/>}
