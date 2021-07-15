@@ -34,12 +34,27 @@ export default function NoteBox() {
     const [selectedTab, setSelectedTab] = React.useState("write");
     const dispatch = useDispatch();
 
-    const loadedNote = useSelector(state =>
-        state.project.value===null?null:state.project.value.note);
+    const project = useSelector(state => state.project.value)
+    const selectedStoryboardId = useSelector(state => state.project.value === null?"UNDEFINED":state.project.value.selectedId.storyboardId);
+
 
     React.useEffect(
-        () => {setValue(loadedNote)},
-        [])
+        () => {
+            if (selectedStoryboardId === "UNDEFINED"|| selectedStoryboardId === null) {
+                return;
+            }
+            else {
+                try {
+                    const loadedNote = project.getStoryboard(selectedStoryboardId).note;
+                    setValue(loadedNote)
+                }
+                catch (error) {
+                    console.log("error in loading note: ", error);
+                }
+            }
+        },
+
+        [selectedStoryboardId])
 
     const saveNoteDebounce = AwesomeDebouncePromise(
         text => dispatch(saveNote(text)),

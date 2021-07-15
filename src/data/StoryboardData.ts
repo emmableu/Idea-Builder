@@ -5,17 +5,23 @@ export interface IStoryboardData {
     _id: string;
     name: string;
     frameList: Array<IFrameData>
+    note:string;
 }
 
 export class StoryboardData implements IStoryboardData {
     _id: string;
     name: string = "";
     frameList: Array<FrameData> = [];
+    note:string;
 
-    constructor(storyboardId?: string, name?:string, order?:number, frameList?:Array<FrameData>) {
+
+    constructor(storyboardId?: string, name?:string, order?:number, frameList?:Array<FrameData>,
+                note?:string,
+    ) {
         this._id = storyboardId? storyboardId:UUID.v4();
         this.name = name? name:"Untitled";
         this.frameList = frameList? frameList:[new FrameData()]
+        this.note = note? note:"**Enter your notes here:**";
     }
 
     addFrame(newId:string, prevIndex:number) {
@@ -41,6 +47,7 @@ export class StoryboardData implements IStoryboardData {
             _id: this._id,
             name: this.name,
             frameList: this.frameList.map(s => s.toJSON()),
+            note:this.note,
         }
     }
 
@@ -48,6 +55,7 @@ export class StoryboardData implements IStoryboardData {
         console.log("storyboardJSON: ", storyboardJSON);
         const storyboardData = new StoryboardData(storyboardJSON._id, storyboardJSON.name);
         storyboardData.frameList = storyboardJSON.frameList.map((ele:any) => FrameData.parse(ele));
+        storyboardData.note = storyboardJSON.note;
         return storyboardData;
     }
 

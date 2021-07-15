@@ -14,7 +14,6 @@ export class ProjectData {
     storyboardList: Array<StoryboardData>;
     actorList: Array<ActorData>;
     backdropList: Array<BackdropData>;
-    note:string;
     storyboardMenu: {
         "final": {
             "name": string,
@@ -33,7 +32,6 @@ export class ProjectData {
         storyboardList?:Array<StoryboardData>,
         actorList?:Array<ActorData>,
         backdropList?:Array<BackdropData>,
-        note?:string,
         storyboardMenu?:{
             "final": {
                 "name": string,
@@ -52,7 +50,6 @@ export class ProjectData {
         this.storyboardList = storyboardList? storyboardList:[new StoryboardData()];
         this.actorList = actorList? actorList:[new ActorData()];
         this.backdropList = backdropList? backdropList:[];
-        this.note = note? note:"**Enter your notes here:**";
 
         if (storyboardMenu === undefined) {
             this.storyboardMenu =  {
@@ -87,7 +84,6 @@ export class ProjectData {
             storyboardList: this.storyboardList.map(a => a.toJSON()),
             actorList: this.actorList.map(a => a.toJSON()),
             backdropList: this.backdropList.map(a => a.toJSON()),
-            note:this.note,
             selectedId: this.selectedId,
         }
     }
@@ -104,7 +100,6 @@ export class ProjectData {
         projectData.actorList = projectJSON.actorList.map((ele:any) => ActorData.parse(ele));
         projectData.backdropList = projectJSON.backdropList.map((ele:any) => BackdropData.parse(ele));
 
-        projectData.note = projectJSON.note;
         projectData.storyboardMenu = projectJSON.storyboardMenu;
         projectData.selectedId = SelectedIdData.parse(projectJSON.selectedId);
 
