@@ -36,7 +36,7 @@ const BlankProjectMenuItem = props => {
             setConfirmLoading(false);
             history.push(`${match.url}/${newProjectId}`);
         } catch (rejectedValueOrSerializedError) {
-            // console.log('Error: ', rejectedValueOrSerializedError);
+            // // console.log('Error: ', rejectedValueOrSerializedError);
         }
     };
 

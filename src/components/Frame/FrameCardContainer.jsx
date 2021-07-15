@@ -28,10 +28,10 @@ const FrameCardContainer = props => {
 
     const fitFrameWidth = () => {
         const newFrameWidth = calcFrameWidth(window.innerWidth, window.innerHeight);
-        console.log("new frame width: ", newFrameWidth, "initial width: ", initialWidth)
+        // console.log("new frame width: ", newFrameWidth, "initial width: ", initialWidth)
         setUpdatedScale(newFrameWidth/initialWidth * initialScale);
         setUpdatedWidth(newFrameWidth);
-        // console.log("fitting frame width, updated scale: ", updatedScale);
+        // // console.log("fitting frame width, updated scale: ", updatedScale);
     };
     useEffect(() => {
         window.addEventListener('resize', fitFrameWidth);

@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 const BackdropPanelCardContent = props => {
     // const { backdropList } = props;
     const backdropList = useSelector(state =>{
-        console.log(state.project.value.backdropListJSON());
+        // console.log(state.project.value.backdropListJSON());
         return state.project.value.backdropListJSON()});
 
     return (

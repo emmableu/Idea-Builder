@@ -77,7 +77,7 @@ const BackdropImgCard = (props) =>  {
     const [onHover, setOnHover] = React.useState();
 
     const handleDelete = (e) => {
-        // console.log("backdropId: ", backdropId)
+        // // console.log("backdropId: ", backdropId)
         dispatch(deleteBackdrop(
                 backdropId
         ));

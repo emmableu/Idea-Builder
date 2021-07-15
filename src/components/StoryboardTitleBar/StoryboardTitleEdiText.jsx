@@ -69,7 +69,7 @@ const StoryboardTitleEdiText = () => {
     }, [titleName])
 
     const handleSave = (value) => {
-        // console.log(value);
+        // // console.log(value);
         setValue(value);
         dispatch(
             updateStoryboardName({

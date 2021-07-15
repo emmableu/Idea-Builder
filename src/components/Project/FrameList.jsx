@@ -57,9 +57,9 @@ const FrameList = () => {
 
     // React.useEffect(
     //     () => {
-    //         console.log("--------------usEffECT, framelIST: ", frameList, frameListString, JSON.parse(frameListString));
+    //         // console.log("--------------usEffECT, framelIST: ", frameList, frameListString, JSON.parse(frameListString));
     //         setFrameList(JSON.parse(frameListString))
-    //         console.log("--------------usEffECT, framelIST: ", frameList);
+    //         // console.log("--------------usEffECT, framelIST: ", frameList);
     //     }
     // , [frameListString])
 
@@ -70,14 +70,14 @@ const FrameList = () => {
     }
 
     const handleDeleteFrame = async (e, frameIndex) => {
-        // console.log("deleting:: : ", frameId)
+        // // console.log("deleting:: : ", frameId)
         // dispatch(deleteFrame
         //     (frameIndex)
         // );
         await dispatch(deleteFrame(frameIndex));
         // setTimeout(() => {
             // const frameList = JSON.parse(frameListString);
-        console.log("frameIndex, frameList: ", frameIndex, frameList);
+        // console.log("frameIndex, frameList: ", frameIndex, frameList);
         if (frameIndex < frameList.length) {
             dispatch(setSelectedFrameId(frameList[frameIndex]._id));
         }
@@ -91,8 +91,8 @@ const FrameList = () => {
     }
 
     React.useEffect(() => {
-        console.log("selected frame id updated: ", _id)
-        console.log("frameList: ", frameList);
+        // console.log("selected frame id updated: ", _id)
+        // console.log("frameList: ", frameList);
     }, [_id])
 
     return (<>

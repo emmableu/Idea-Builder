@@ -7,11 +7,10 @@ import {useDispatch} from "react-redux";
 
 const Star = (props) => {
     const {starData, isSelected, onSelect, onChange} = props;
-    // console.log('starData: ', starData);
+    // // console.log('starData: ', starData);
     // const [image] = useImage('images/' + actorImg.filter((e) => e.name===starData.name)[0].imgSrc);
     const [image] = useImage(axios.defaults.baseURL + starData.prototypeId);
-    console.log("image: ", image);
-    // console.log("image: ", image);
+    // // console.log("image: ", image);
     if (image !== undefined) {
         starData.height = starData.width * image.height/image.width;
         image.crossOrigin = "Anonymous";
@@ -49,8 +48,8 @@ const Star = (props) => {
                     // but in the store we have only width and height
                     const node = imageRef.current;
                     // to match the data better we will reset scale on transform end
-                    // // console.log("node.width: ", node.width());
-                    // // console.log("node.scaleX: ", node.scaleX());
+                    // // // console.log("node.width: ", node.width());
+                    // // // console.log("node.scaleX: ", node.scaleX());
                     const scaleX = node.scaleX();
                     const scaleY = node.scaleY();
 

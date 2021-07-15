@@ -65,7 +65,7 @@ const ActorImgTitleEdiText = (props) => {
     }, [sliceStateName]);
 
     const handleSave = (value) => {
-        // console.log(value);
+        // // console.log(value);
         setValue(value);
         dispatch(
             updateStateName({

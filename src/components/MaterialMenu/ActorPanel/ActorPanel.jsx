@@ -74,7 +74,7 @@ const ActorPanel = (props) => {
     );
 
     React.useEffect(() => {
-        // console.log("actorList: ", actorList);
+        // // console.log("actorList: ", actorList);
     }, [actorList]);
 
     const handleAddNewActorButtonClick = (e) => {

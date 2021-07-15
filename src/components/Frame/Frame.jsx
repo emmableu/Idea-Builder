@@ -16,7 +16,7 @@ const Frame = (props) => {
     const dispatch = useDispatch();
     // const [selectedId, setSelectedId] = React.useState(null);
     React.useEffect(() => {
-        console.log("updated scale: ", updatedScale)
+        // console.log("updated scale: ", updatedScale)
         frameRef.current.width(updatedWidth);
         frameRef.current.height(updatedWidth*3/4);
         frameRef.current.scale({
@@ -48,7 +48,7 @@ const Frame = (props) => {
             });
             }
             catch (error) {
-                console.log("failed to save image to remote: ", error);
+                // console.log("failed to save image to remote: ", error);
             }
 
 
@@ -59,8 +59,9 @@ const Frame = (props) => {
 
     const checkDeselect = (e) => {
         // deselect when clicked on empty area
-        console.log("e.target: ", e.target);
-        const clickedOnEmpty = ( e.target === e.target.getStage() || e.target.id() === "backdropStar");
+        // console.log("e.target: ", e.target);
+        // console.log("e.target: ", e.target.attrs.id);
+        const clickedOnEmpty = e.target === e.target.getStage();
         if (clickedOnEmpty) {
             dispatch(setSelectedStarId("UNDEFINED"));
             dispatch(updateUserActionCounter());

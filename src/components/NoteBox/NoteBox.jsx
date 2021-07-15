@@ -49,7 +49,7 @@ export default function NoteBox() {
                     setValue(loadedNote)
                 }
                 catch (error) {
-                    console.log("error in loading note: ", error);
+                    // console.log("error in loading note: ", error);
                 }
             }
         },

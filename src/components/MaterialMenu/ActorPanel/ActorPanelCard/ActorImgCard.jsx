@@ -77,7 +77,7 @@ const ActorImgCard = (props) =>  {
     const [onHover, setOnHover] = React.useState();
 
     const handleDelete = () => {
-        // console.log("stateId: ", stateId)
+        // // console.log("stateId: ", stateId)
         dispatch(deleteState(
             {actorId,
             stateId}

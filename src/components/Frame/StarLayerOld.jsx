@@ -76,14 +76,14 @@
 //     }, [actorData]);
 //
 //     const concatCopied = (actorData, copiedActorData) => {
-//         // // console.log('copiedActorData: ', copiedActorData);
+//         // // // console.log('copiedActorData: ', copiedActorData);
 //         const actorDataKeys = actorData.map((a) => a.key);
-//         // // console.log('actorDataKeys: ', actorDataKeys);
+//         // // // console.log('actorDataKeys: ', actorDataKeys);
 //         const newArray = [...actorData]
 //         copiedActorData.forEach(
 //             (d) => {
 //                 if (!actorDataKeys.includes(d.key)){
-//                     // // console.log(newArray);
+//                     // // // console.log(newArray);
 //                     newArray.push(d);
 //                 }
 //             }
@@ -95,8 +95,8 @@
 //
 //     const checkDeselect = (e) => {
 //         // deselect when clicked on empty area
-//         // // console.log('e.target: ', e.target.id());
-//         // // console.log('e.target.id: ', !actorData.map(a => a.id).includes(e.target.id()));
+//         // // // console.log('e.target: ', e.target.id());
+//         // // // console.log('e.target.id: ', !actorData.map(a => a.id).includes(e.target.id()));
 //         const clickedOnEmpty = e.target.id()==="backdrop";
 //         if (clickedOnEmpty) {
 //             setSelectedId(null);

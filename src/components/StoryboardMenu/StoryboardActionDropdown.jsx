@@ -31,7 +31,7 @@ const StoryboardActionDropdown  = (props) => {
                 dispatch(deleteStoryboard(storyboardId));
             },
             onCancel() {
-                // console.log('Cancel');
+                // // console.log('Cancel');
             },
         });
     }

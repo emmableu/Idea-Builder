@@ -31,14 +31,14 @@ const FrameThumbnail = (props) => {
 
 
     const updateSrc = () => {
-        console.log( "----------- updating SRC ------------------------------------------------------------------------")
-        console.log(axios.defaults.baseURL + frameId);
+        // console.log( "----------- updating SRC ------------------------------------------------------------------------")
+        // console.log(axios.defaults.baseURL + frameId);
         if (urlExists) {
             setImgSrc(axios.defaults.baseURL + frameId+`?fakeRender=${imgUpdated.toString()}`)
             return;
         };
         urlExist(axios.defaults.baseURL + frameId).then( exists =>
-            {   console.log("exists: ", exists);
+            {   // console.log("exists: ", exists);
                 setUrlExists(exists)}
         )
     }

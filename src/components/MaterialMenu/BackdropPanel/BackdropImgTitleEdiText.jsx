@@ -66,7 +66,7 @@ const BackdropImgTitleEdiText = (props) => {
     }, [sliceBackdropName]);
 
     const handleSave = (value) => {
-        // console.log(value);
+        // // console.log(value);
         setValue(value);
         dispatch(
             updateBackdropName({

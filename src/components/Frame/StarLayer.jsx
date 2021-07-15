@@ -29,7 +29,7 @@ const StarLayer = (props) => {
                 return JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON())
             }
             catch (error) {
-                console.log(error);
+                // console.log(error);
                 return "[]";
             }
         }
@@ -37,11 +37,11 @@ const StarLayer = (props) => {
 
     const backdropStar = useSelector(state => {
             try {
-                console.log("backdropstar: ", JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).backdropStar))
+                // console.log("backdropstar: ", JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).backdropStar))
                 return JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).backdropStar)
             }
             catch (error) {
-                console.log(error);
+                // console.log(error);
                     return JSON.stringify({
                         _id: "EMPTY", prototypeId: "EMPTY"
                     })
@@ -59,7 +59,7 @@ const StarLayer = (props) => {
         backdropImg.crossOrigin = "Anonymous";
     }
     // React.useEffect( () => {
-    //         console.log("img src updated: ", axios.defaults.baseURL + backdropStar.prototypeId)
+    //         // console.log("img src updated: ", axios.defaults.baseURL + backdropStar.prototypeId)
     //         setImgSrc(axios.defaults.baseURL + backdropStar.prototypeId);
     //     }
     //     , [backdropStar._id]
@@ -77,6 +77,12 @@ const StarLayer = (props) => {
                          id={backdropStar._id}
                          width={globalConfig.noScaleWidth}
                          height={globalConfig.noScaleWidth*3/4}
+                         onClick={(e) => {
+                             dispatch(setSelectedStarId("UNDEFINED"));
+                         }}
+                         onTap={(e) => {
+                             dispatch(setSelectedStarId("UNDEFINED"));
+                         }}
                      />
                  )
              }
@@ -92,7 +98,7 @@ const StarLayer = (props) => {
                              const rects = starList.slice();
                              rects[i] = newAttrs;
                              // setStarList(rects);
-                             // console.log("on change!==========: ", rects, i, newAttrs);
+                             // // console.log("on change!==========: ", rects, i, newAttrs);
                              dispatch(updateStarList(JSON.stringify({
                                  storyboardId,
                                  frameId,
