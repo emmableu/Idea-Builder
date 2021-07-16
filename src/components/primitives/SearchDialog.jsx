@@ -24,7 +24,7 @@ import ActorImgCard from "../MaterialMenu/ActorPanel/ActorPanelCard/ActorImgCard
 // }
 
 const SearchDialog = (props) => {
-    const {_id, searchDialogOpen, handleClose, type} = props;
+    const {_id, searchDialogOpen, handleClose, type, searchLoading, setSearchLoading} = props;
     //type can be "state" or "backdrop"
     // _id means either _id or backdropId
     const dialogLeft =  globalConfig.responsiveSizeData.storyboardDrawerWidth
@@ -34,12 +34,14 @@ const SearchDialog = (props) => {
 
     React.useEffect(
         () => {
+            setSearchLoading(true);
             axios({
                 method: 'get',
                 url: `/sample_${type}_id_list/get`,
             }).then(
                 res => {
-                    setImgList(res.data)
+                    setImgList(res.data.sort());
+                    setSearchLoading(false);
                 }
             )
         }, [searchDialogOpen]

@@ -16,6 +16,8 @@ const ActorPanelCardButtonGroup = props => {
     const {_id} = props;
     const dispatch = useDispatch();
     const [searchDialogOpen, setSearchDialogOpen] = React.useState(false);
+    const [searchLoading, setSearchLoading] = React.useState(false);
+
 
     const handleClickOpen = (e) => {setSearchDialogOpen(true)};
     const handleClose = (e) => {setSearchDialogOpen(false)};
@@ -32,6 +34,7 @@ const ActorPanelCardButtonGroup = props => {
             <Tooltip title="Search for state">
                 <Button type="link" shape="circle" size="small"
                         onClick= {handleClickOpen}
+                        loading={searchLoading}
                         icon={<SearchOutlined />} />
             </Tooltip>
             <Button {...props}
@@ -51,7 +54,10 @@ const ActorPanelCardButtonGroup = props => {
                 _id={_id}
                 type="state"
                 searchDialogOpen={searchDialogOpen}
-                handleClose={handleClose} />
+                handleClose={handleClose}
+                searchLoading={searchLoading}
+                setSearchLoading={setSearchLoading}
+            />
 
         </>
     );

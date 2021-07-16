@@ -12,7 +12,7 @@ import SearchDialog from "../../primitives/SearchDialog";
 
 const BackdropPanelCardButtonGroup = props => {
     const [searchDialogOpen, setSearchDialogOpen] = React.useState(false);
-
+    const [searchLoading, setSearchLoading] = React.useState(false);
     const handleClickOpen = (e) => {setSearchDialogOpen(true)};
     const handleClose = (e) => {setSearchDialogOpen(false)};
 
@@ -25,6 +25,7 @@ const BackdropPanelCardButtonGroup = props => {
             <Tooltip title="Search for state">
                 <Button type="link" shape="circle" size="large"
                         onClick= {handleClickOpen}
+                        loading={searchLoading}
                         icon={<SearchOutlined />} />
             </Tooltip>
 
@@ -34,7 +35,11 @@ const BackdropPanelCardButtonGroup = props => {
                 _id="EMPTY"
                 type="backdrop"
                 searchDialogOpen={searchDialogOpen}
-                handleClose={handleClose} />
+                handleClose={handleClose}
+                searchLoading={searchLoading}
+                setSearchLoading={setSearchLoading}
+
+            />
 
         </>
     );

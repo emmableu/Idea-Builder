@@ -21,7 +21,7 @@ export class StoryboardData implements IStoryboardData {
         this._id = storyboardId? storyboardId:UUID.v4();
         this.name = name? name:"Untitled";
         this.frameList = frameList? frameList:[new FrameData()]
-        this.note = note? note:"**Game mechanic:**";
+        this.note = note? note:"**Key changes between the begin and end frame:**";
     }
 
     addFrame(newId:string, prevIndex:number) {

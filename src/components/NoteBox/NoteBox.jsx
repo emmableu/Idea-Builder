@@ -31,7 +31,7 @@ const calcBoxHeight = (windowInnerHeight) => {
 
 
 export default function NoteBox() {
-    const [value, setValue] = React.useState("**Game mechanic:**");
+    const [value, setValue] = React.useState("**Key changes between the begin and end frame:**");
     const [selectedTab, setSelectedTab] = React.useState("write");
     const dispatch = useDispatch();
     const editorHeight = calcBoxHeight(window.innerHeight);
