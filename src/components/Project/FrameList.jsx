@@ -34,9 +34,9 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
     },
     paper: {
-      height: globalConfig.frameListHeight*0.75,
+      height: globalConfig.responsiveSizeData.frameListHeight*0.75,
         backgroundColor: "white",
-        width: globalConfig.frameListHeight*0.75*4/3
+        width: globalConfig.responsiveSizeData.frameListHeight*0.75*4/3
     },
 
 }));

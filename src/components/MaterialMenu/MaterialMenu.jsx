@@ -7,6 +7,7 @@ import {Panorama, Theaters, Widgets} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core";
 import globalConfig from "../../globalConfig";
 import BackdropPanel from "./BackdropPanel/BackdropPanel";
+import TemplatePanel from "./TemplatePanel/TemplatePanel";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,10 +30,11 @@ const useStyles = makeStyles((theme) => ({
         width: globalConfig.panelTabsWidth,
     },
     tabPanel: {
-        width: `${globalConfig.actorDrawerWidth}px`,
+        width: `${globalConfig.responsiveSizeData.actorDrawerWidth}px`,
         height: `calc(100vh - ${globalConfig.toolBarHeight}px - ${globalConfig.storyboardToolBarHeight}px - ${globalConfig.storyboardPageMargin*2}px)`,
         borderRight: `1px solid #e0e0e0`,
         color: "black",
+        overflow:"scroll"
     },
 }));
 
@@ -53,6 +55,7 @@ function TabPanel(props) {
             <Box>
                 {index === 0 && <ActorPanel/>}
                 {index === 1 && <BackdropPanel/>}
+                {index === 2 && <TemplatePanel/>}
             </Box>
         </div>
     );
@@ -85,15 +88,15 @@ export const MaterialMenu = () => {
             >
                 <Tab icon={<Widgets />} label="Actors" {...a11yProps(0)} />
                 <Tab icon={<Panorama/>} label="Backdrops" {...a11yProps(1)} />
-                {/*<Tab icon={<Theaters/>} label="Templates" {...a11yProps(2)} />*/}
+                <Tab icon={<Theaters/>} label="Templates" {...a11yProps(2)} />
 
             </Tabs>
             <TabPanel value={value} index={0}>
             </TabPanel>
             <TabPanel value={value} index={1}>
             </TabPanel>
-            {/*<TabPanel value={value} index={2}>*/}
-            {/*</TabPanel>*/}
+            <TabPanel value={value} index={2}>
+            </TabPanel>
         </div>
     );
 }

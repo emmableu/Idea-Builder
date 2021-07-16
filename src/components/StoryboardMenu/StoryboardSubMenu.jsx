@@ -55,7 +55,7 @@ export const StoryboardSubMenu = (props) => {
                                     background: snapshot.isDraggingOver
                                         ? globalConfig.storyboardMenuColor.menuBackgroundOnDrag
                                         : globalConfig.storyboardMenuColor.menuBackground,
-                                    width: globalConfig.storyboardDrawerWidth,
+                                    width: globalConfig.responsiveSizeData.storyboardDrawerWidth,
                                     padding: 10,
                                     minHeight: 30,
                                 }}

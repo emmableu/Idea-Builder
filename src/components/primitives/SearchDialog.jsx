@@ -27,9 +27,9 @@ const SearchDialog = (props) => {
     const {_id, searchDialogOpen, handleClose, type} = props;
     //type can be "state" or "backdrop"
     // _id means either _id or backdropId
-    const dialogLeft =  globalConfig.storyboardDrawerWidth
+    const dialogLeft =  globalConfig.responsiveSizeData.storyboardDrawerWidth
                             + globalConfig.panelTabsWidth
-                            + globalConfig.actorDrawerWidth;
+                            + globalConfig.responsiveSizeData.actorDrawerWidth;
     const [imgList ,setImgList] = React.useState([]);
 
     React.useEffect(
@@ -60,8 +60,8 @@ const SearchDialog = (props) => {
                     aria-labelledby="draggable-dialog-title"
                     disableBackdropClick
                 >
-                    {type === "states" && <DialogTitle id="dialog-title">Actor States</DialogTitle>}
-                    {type === "states" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}
+                    {type === "state" && <DialogTitle id="dialog-title">Actor States</DialogTitle>}
+                    {type === "backdrop" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}
                     <DialogContent>
                         <Grid container spacing={1} >
                             {imgList.map(imgId => (

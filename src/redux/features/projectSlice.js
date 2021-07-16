@@ -397,6 +397,29 @@ const addBackdropStar = createAsyncThunk(
 );
 
 
+/* The next section are about template stars on on the frame */
+const addTemplateStar = createAsyncThunk(
+    'project/addBackdropStar',
+    async (templateId, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        const state = getState();
+        const storyboardId = state.project.value.selectedId.storyboardId;
+        const frameId = state.project.value.selectedId.frameId
+        console.log("storyboardId: ", storyboardId)
+        console.log("frameId: ", frameId)
+        if (storyboardId === null || frameId === null) {return;}
+        if (storyboardId === "UNDEFINED" || frameId === "UNDEFINED") {return;}
+        dispatch(addTemplateStarInMemory(JSON.stringify({
+            storyboardId, frameId, templateId,
+        })));
+        setTimeout(() => {
+            dispatch(updateUserActionCounter());
+        }, 500)
+        //sometimes the first dispatch does not work, because the actor is not yet fully updated on the canvas.
+
+        return "OK";
+    }
+);
 
 
 /* The next section are about actors:
@@ -617,7 +640,14 @@ export const projectSlice = createSlice({
                 const storyboardIndex = state.value.storyboardList.findIndex(
                     a => a._id === action.payload
                 )
-                state.value.storyboardList.splice(storyboardIndex, 1)
+                const storyboardData = state.value.storyboardList[storyboardIndex];
+                for (const frameId of storyboardData.frameList) {
+                    const templateIndex = state.value.templateList.indexOf(frameId);
+                    if (templateIndex !== -1) {
+                        state.value.templateList.splice(templateIndex, 1);
+                    }
+                }
+                state.value.storyboardList.splice(storyboardIndex, 1);
             }
         },
 
@@ -653,6 +683,7 @@ export const projectSlice = createSlice({
                     action.payload.newId,
                     action.payload.prevIndex,
                 )
+                state.value.templateList.unshift(action.payload.newId);
                 console.log("storyboard!!!!!!!!!!!!!!!!!!!!!!: ", storyboard);
             },
             prepare: (text) => {
@@ -673,8 +704,13 @@ export const projectSlice = createSlice({
                 // const storyboard = state.value.getStoryboard(storyboardId);
                 // storyboard.frameList = frameList;
                 const frameList = state.value.getStoryboard(storyboardId).frameList;
-                frameList.splice(frameIndex, 1);
+                const frameId = frameList[frameIndex]._id;
+                const templateIndex = state.value.templateList.indexOf(frameId);
+                state.value.templateList.splice(templateIndex, 1);
+
                 console.log("frameList!!!!!!!!!!!!!!!!!!!!!!: ", frameList);
+
+                frameList.splice(frameIndex, 1);
             }
         },
 
@@ -762,6 +798,26 @@ export const projectSlice = createSlice({
                 }
             },
         },
+
+        addTemplateStarInMemory: {
+            reducer: (state, action) => {
+                const {storyboardId, frameId, templateId} = action.payload;
+                const frame = state.value.getStoryboard(storyboardId).getFrame(frameId);
+                const templateFrame = state.value.findFrame(templateId);
+                frame.acquireFrame(templateFrame);
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "storyboardId": obj.storyboardId,
+                        "frameId": obj.frameId,
+                        "templateId": obj.templateId,
+                    }
+                }
+            },
+        },
+
 
         /* The next section are about actors:
         */
@@ -936,6 +992,7 @@ export const {
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
     addStarInMemory, updateStarListInMemory, deleteStarInMemory, //star
     addBackdropStarInMemory, //backdropStar
+    addTemplateStarInMemory, //templateStar
     addFrameInMemory, updateFrameListInMemory, //frame
     addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, //actor
     addStateInMemory, deleteStateInMemory, updateStateNameInMemory, //state
@@ -950,6 +1007,7 @@ export {
     addFrame, deleteFrame, //frame
     addStar, updateStarList, deleteStar, //star
     addBackdropStar, //backdropStar
+    addTemplateStar, //templateSar,
     addActor, deleteActor, updateActorOrder, updateActorName, //actor
     addState, deleteState, updateStateName, //state
     addBackdrop, deleteBackdrop, updateBackdropName, //backdrop

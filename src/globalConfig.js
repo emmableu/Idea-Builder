@@ -36,17 +36,52 @@ const draftTheme = {
      darkBaseAppBar2: "#F291B5",
 }
 
-const globalConfig = {
+
+console.log(window.innerWidth);
+console.log(window.innerHeight);
+
+
+let mode = "LARGE"
+
+if (window.innerWidth < 1380) {
+     mode = "SMALL"
+}
+
+if (window.innerWidth >= 1380 && window.innerWidth < 1600 ) {
+     mode = "MEDIUM"
+}
+
+let responsiveSizeData = {
      actorDrawerWidth: 270,
      storyboardDrawerWidth: 240,
+     noteWidth: 335,
+     frameListHeight: 200,
+}
+
+if (mode === "MEDIUM") {
+     responsiveSizeData.frameListHeight = 150
+}
+
+if (mode === "SMALL") {
+     responsiveSizeData = {
+          actorDrawerWidth: 200,
+          storyboardDrawerWidth: 200,
+          noteWidth: 230,
+          frameListHeight: 130
+     }
+}
+
+const globalConfig = {
+     // actorDrawerWidth: 270,
+     // storyboardDrawerWidth: 240,
      toolBarHeight: 48,
      storyboardPageMargin: 8,
      storyboardToolBarHeight: 40,
      addNewActorBoxHeight: 50,
      projectDrawerWidth: 270,
      panelTabsWidth: 65,
-     noteWidth: 335,
-     frameListHeight: 200,
+     // noteWidth: 335,
+     // responsiveSizeData.frameListHeight: 200,
      trashToolBarHeight: 35,
      innerBoxLeftRightPaddingEach: 20,
      topAndBottomMarginOutsideFrame: 5,
@@ -101,21 +136,24 @@ const globalConfig = {
      }
 }
 
+globalConfig.mode = mode;
+globalConfig.responsiveSizeData = responsiveSizeData;
+
 
 const calcFrameWidth = ( windowInnerWidth, windowInnerHeight ) => {
      const bestFrameHeight = (windowInnerHeight
          - globalConfig.toolBarHeight
          - globalConfig.storyboardToolBarHeight
          - globalConfig.storyboardPageMargin*2
-         - globalConfig.frameListHeight
+         - globalConfig.responsiveSizeData.frameListHeight
          - globalConfig.topAndBottomMarginOutsideFrame*2
      ) - globalConfig.trashToolBarHeight*2;
 
      const bestFrameWidth = (windowInnerWidth
-         - globalConfig.storyboardDrawerWidth
+         - globalConfig.responsiveSizeData.storyboardDrawerWidth
          - globalConfig.panelTabsWidth
-         - globalConfig.actorDrawerWidth
-         - globalConfig.noteWidth
+         - globalConfig.responsiveSizeData.actorDrawerWidth
+         - globalConfig.responsiveSizeData.noteWidth
          -  globalConfig.innerBoxLeftRightPaddingEach*2
      );
 

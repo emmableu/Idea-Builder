@@ -98,5 +98,16 @@ export class FrameData implements IFrameData{
         newFrameData.starList = frameData.starList.map((ele:any) => StarData.shallowCopy(ele));
         return newFrameData;
     }
+
+    acquireFrame (templateFrame:FrameData) {
+        this.backdropStar = {
+            _id: globalConfig.imageServer.student.backdrop + UUID.v4() + ".png",
+            prototypeId: templateFrame.backdropStar.prototypeId,
+        }
+        const newStarList = templateFrame.starList.map((ele:any) => StarData.shallowCopy(ele));
+        this.starList.push(...newStarList);
+    }
+
+
 }
 

@@ -13,15 +13,15 @@ import FrameCardOptions from "../Frame/FrameCardOptions";
 const useStyles = makeStyles((theme) => ({
     rootContainer: {
         display: "flex",
-        maxWidth: `calc(100vw  - ${globalConfig.storyboardDrawerWidth}px)`,
+        maxWidth: `calc(100vw  - ${globalConfig.responsiveSizeData.storyboardDrawerWidth}px)`,
         backgroundColor: globalConfig.color.veryLightGrey,
         justifyContent: "space-between",
         alignItems: "stretch",
         margin: `${globalConfig.storyboardPageMargin}px 0px`,
     },
     materialMenu: {
-        width: globalConfig.actorDrawerWidth,
-        flex: `0 0 ${globalConfig.actorDrawerWidth}px`
+        width: globalConfig.responsiveSizeData.actorDrawerWidth,
+        flex: `0 0 ${globalConfig.responsiveSizeData.actorDrawerWidth}px`
     },
     outerFrameSpace: {
         backgroundColor:  globalConfig.color.veryLightGrey,
@@ -29,37 +29,37 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "stretch",
         justifyContent: "flex-start",
-        width: `calc(100vw  - ${globalConfig.storyboardDrawerWidth}px
+        width: `calc(100vw  - ${globalConfig.responsiveSizeData.storyboardDrawerWidth}px
                                             -  ${globalConfig.panelTabsWidth}px
-                                            - ${globalConfig.actorDrawerWidth}px
-                                             - ${globalConfig.noteWidth}px )`,
+                                            - ${globalConfig.responsiveSizeData.actorDrawerWidth}px
+                                             - ${globalConfig.responsiveSizeData.noteWidth}px )`,
         borderRight: "1px solid, #e0e0e0",
         padding: `0px ${globalConfig.innerBoxLeftRightPaddingEach}px`
     },
     frameList: {
         borderBottom: "1px solid #e0e0e0",
         backgroundColor:  globalConfig.color.veryLightGrey,
-        height: `${globalConfig.frameListHeight}px`,
-        flex: `0 0 ${globalConfig.frameListHeight}px`
+        height: `${globalConfig.responsiveSizeData.frameListHeight}px`,
+        flex: `0 0 ${globalConfig.responsiveSizeData.frameListHeight}px`
     },
     frameDiv: {
         backgroundColor:  globalConfig.color.veryLightGrey,
         height: `calc(100vh - ${globalConfig.toolBarHeight}px
                          - ${globalConfig.storyboardToolBarHeight}px
                          - ${globalConfig.storyboardPageMargin*2}px
-                         - ${globalConfig.frameListHeight}px)`,
+                         - ${globalConfig.responsiveSizeData.frameListHeight}px)`,
         flex: `0 0 calc(100vh - ${globalConfig.toolBarHeight}px
                          - ${globalConfig.storyboardToolBarHeight}px
                          - ${globalConfig.storyboardPageMargin*2}px
-                         - ${globalConfig.frameListHeight}px)`,
+                         - ${globalConfig.responsiveSizeData.frameListHeight}px)`,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
 
     },
     noteDiv: {backgroundColor:  globalConfig.color.veryLightGrey,
-        flex:`0 0 ${globalConfig.noteWidth}px`,
-        width: globalConfig.noteWidth}
+        flex:`0 0 ${globalConfig.responsiveSizeData.noteWidth}px`,
+        width: globalConfig.responsiveSizeData.noteWidth}
 
 
 }));

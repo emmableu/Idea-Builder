@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
     },
     drawer: {
-        width: globalConfig.storyboardDrawerWidth,
+        width: globalConfig.responsiveSizeData.storyboardDrawerWidth,
         flexShrink: 0,
         backgroundColor: globalConfig.storyboardMenuColor.surface,
     },
@@ -52,8 +52,8 @@ const useStyles = makeStyles((theme) => ({
         color: globalConfig.storyboardMenuColor.whiteText,
     },
     appBar: {
-        width: `calc(100% - ${globalConfig.storyboardDrawerWidth}px)`,
-        marginLeft: globalConfig.storyboardDrawerWidth,
+        width: `calc(100% - ${globalConfig.responsiveSizeData.storyboardDrawerWidth}px)`,
+        marginLeft: globalConfig.responsiveSizeData.storyboardDrawerWidth,
         backgroundColor: globalConfig.storyboardMenuColor.surface,
         color: globalConfig.storyboardMenuColor.whiteText,
     },
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     drawerPaper: {
-        width: globalConfig.storyboardDrawerWidth,
+        width: globalConfig.responsiveSizeData.storyboardDrawerWidth,
         backgroundColor: globalConfig.storyboardMenuColor.surface,
         position: "fixed",
         zIndex: 0,

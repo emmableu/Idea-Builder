@@ -7,6 +7,7 @@ import {StoryboardData} from "./StoryboardData";
 import {BackdropData} from "./BackdropData";
 import {SelectedIdData} from "./SelectedIdData";
 import fileDownload from "js-file-download";
+import {FrameData} from "./FrameData";
 
 export class ProjectData {
     _id: string;
@@ -24,6 +25,7 @@ export class ProjectData {
             "items": Array<{ "_id": string, "name": string}>
         }
     };
+    templateList: Array<string>;
     selectedId: SelectedIdData;
 
     constructor(
@@ -42,6 +44,7 @@ export class ProjectData {
                 "items": Array<{ "_id": string, "name": string}>
             }
         },
+        templateList?: Array<string>,
         selectedId?: SelectedIdData
 
     ) {
@@ -50,6 +53,13 @@ export class ProjectData {
         this.storyboardList = storyboardList? storyboardList:[new StoryboardData()];
         this.actorList = actorList? actorList:[new ActorData()];
         this.backdropList = backdropList? backdropList:[];
+
+        if (templateList === undefined) {
+            this.templateList = [this.storyboardList[0].frameList[0]._id]
+        }
+        else {
+            this.templateList = templateList;
+        }
 
         if (storyboardMenu === undefined) {
             this.storyboardMenu =  {
@@ -84,6 +94,7 @@ export class ProjectData {
             storyboardList: this.storyboardList.map(a => a.toJSON()),
             actorList: this.actorList.map(a => a.toJSON()),
             backdropList: this.backdropList.map(a => a.toJSON()),
+            templateList: this.templateList,
             selectedId: this.selectedId,
         }
     }
@@ -99,6 +110,7 @@ export class ProjectData {
         projectData.storyboardList = projectJSON.storyboardList.map((ele:any) => StoryboardData.parse(ele));
         projectData.actorList = projectJSON.actorList.map((ele:any) => ActorData.parse(ele));
         projectData.backdropList = projectJSON.backdropList.map((ele:any) => BackdropData.parse(ele));
+        projectData.templateList = projectJSON.templateList;
 
         projectData.storyboardMenu = projectJSON.storyboardMenu;
         projectData.selectedId = SelectedIdData.parse(projectJSON.selectedId);
@@ -110,12 +122,18 @@ export class ProjectData {
     /* below are about storyboards */
 
     addStoryboard (type:"draft"|"final", storyboardDataJSON:any) {
-       this.storyboardMenu[type].items.unshift(
+
+       const newStoryboardData = StoryboardData.parse(storyboardDataJSON);
+
+        this.storyboardMenu[type].items.unshift(
            {"_id": storyboardDataJSON._id, "name": storyboardDataJSON.name}
        );
         this.storyboardList.unshift(
-            StoryboardData.parse(storyboardDataJSON)
+            newStoryboardData
         )
+
+        this.templateList.unshift(newStoryboardData.frameList[0]._id);
+
     }
 
     getStoryboard (storyboardId:string) {
@@ -182,6 +200,18 @@ export class ProjectData {
 
 
     /* below are about frames */
+
+    findFrame (frameId: string) {
+        for (const storyboardData of this.storyboardList) {
+            for (const frameData of storyboardData.frameList) {
+                if (frameData._id === frameId){
+                    return frameData
+                }
+            }
+        }
+        return new FrameData(frameId)
+    }
+
 
     frameListJSON (storyboardId:string) {
         const storyboardData = this.getStoryboard(storyboardId);

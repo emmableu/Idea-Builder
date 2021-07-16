@@ -12,7 +12,7 @@ import {updateUserActionCounter} from "../../redux/features/frameThumbnailStateS
 const FrameThumbnail = (props) => {
     const {frameId, frameIndex, handleDelete} = props;
     const imgUpdated = useSelector((state) => state.frameThumbnailState.value.serverActionCounter);
-    const isSelected = useSelector(state => state.project.value.selectedId === frameId);
+    const isSelected = useSelector(state => state.project.value.selectedId.frameId === frameId);
     const [imgSrc, setImgSrc] = React.useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAQAAAAe/WZNAAAADklEQVR42mNkgAJGDAYAAFEABCaLYqoAAAAASUVORK5CYII=");
     const [urlExists, setUrlExists] = React.useState(false);
     const dispatch = useDispatch();

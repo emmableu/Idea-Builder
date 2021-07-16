@@ -16,12 +16,13 @@ const converter = new Showdown.Converter({
     tasklists: true
 });
 
-// const calcBoxHeight = (windowInnerHeight) => {
-//     return windowInnerHeight
-//         - globalConfig.toolBarHeight
-//         - globalConfig.storyboardToolBarHeight
-//         - globalConfig.storyboardPageMargin*2
-// }
+const calcBoxHeight = (windowInnerHeight) => {
+    return windowInnerHeight
+        - globalConfig.toolBarHeight
+        - globalConfig.storyboardToolBarHeight
+        - globalConfig.storyboardPageMargin*2
+        - 200
+}
 
 
 
@@ -33,6 +34,7 @@ export default function NoteBox() {
     const [value, setValue] = React.useState("**Game mechanic:**");
     const [selectedTab, setSelectedTab] = React.useState("write");
     const dispatch = useDispatch();
+    const editorHeight = calcBoxHeight(window.innerHeight);
 
     const project = useSelector(state => state.project.value)
     const selectedStoryboardId = useSelector(state => state.project.value === null?"UNDEFINED":state.project.value.selectedId.storyboardId);
@@ -75,6 +77,7 @@ export default function NoteBox() {
         }}>
             <ReactMde
                 value={value}
+                minEditorHeight={editorHeight}
                 onChange={text => onFieldTextChange(text)}
                 selectedTab={selectedTab}
                 onTabChange={setSelectedTab}
