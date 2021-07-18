@@ -17,6 +17,7 @@ import {setSelectedFrameId} from "../../redux/features/projectSlice";
 import globalConfig from "../../globalConfig";
 import FrameThumbnail from "./FrameThumbnail";
 import {setSelectedStarId} from "../../redux/features/projectSlice";
+import {ProjectDataHandler} from "../../data/ProjectData";
 
 
 const snapshotHeight = 0.15*window.innerHeight;
@@ -51,7 +52,12 @@ const FrameList = () => {
 
     // const [frameList, setFrameList] = React.useState([]);
     const frameList = useSelector(state =>
-        state.project.value.getStoryboard(storyboardId).frameList);
+
+        ProjectDataHandler.getStoryboard(
+            state.project.value, storyboardId
+        ).frameList
+
+        );
 
 
 

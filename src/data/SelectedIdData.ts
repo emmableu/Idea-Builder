@@ -1,64 +1,54 @@
 import {StoryboardData} from "./StoryboardData";
 
-export class SelectedIdData {
+
+export interface SelectedIdData {
     storyboardId: string;
     frameId: string;
     starId: string;
+}
 
-    constructor (
+
+export class SelectedIdDataHandler {
+    static initializeSelectedId (
         storyboardId?:string,
         frameId?:string,
         starId?:string
-    ) {
-        this.storyboardId = storyboardId?storyboardId:"UNDEFINED";
-        this.frameId = frameId?frameId:"UNDEFINED";
-        this.starId = starId?starId:"UNDEFINED"
-    }
-
-
-    toJSON () {
+    ) : SelectedIdData
+    {
         return {
-            storyboardId: this.storyboardId,
-            frameId: this.frameId,
-            starId: this.starId,
+            storyboardId : storyboardId?storyboardId:"UNDEFINED",
+            frameId : frameId?frameId:"UNDEFINED",
+            starId : starId?starId:"UNDEFINED"
         }
     }
 
-    static parse(selectedJSON:any) {
-        return new SelectedIdData(
-            selectedJSON.storyboardId,
-            selectedJSON.frameId,
-            selectedJSON.starId,
-        )
+    static setStoryboardId (selectedIdData: SelectedIdData, storyboardData: StoryboardData) {
+        selectedIdData.storyboardId = storyboardData._id;
+        // selectedIdData is needed to hard refresh the frameList, otherwise the images were kept as the cached ones.
+        selectedIdData.frameId = storyboardData.frameList[0]._id;
+        selectedIdData.starId = "UNDEFINED"
     }
 
-    setStoryboardId (storyboardData: StoryboardData) {
-        this.storyboardId = storyboardData._id;
-        // this is needed to hard refresh the frameList, otherwise the images were kept as the cached ones.
-        this.frameId = storyboardData.frameList[0]._id;
-        this.starId = "UNDEFINED"
+    static voidStoryboardId (selectedIdData: SelectedIdData) {
+        selectedIdData.storyboardId = "UNDEFINED";
+        selectedIdData.frameId = "UNDEFINED";
+        selectedIdData.starId = "UNDEFINED"
     }
 
-    voidStoryboardId () {
-        this.storyboardId = "UNDEFINED";
-        this.frameId = "UNDEFINED";
-        this.starId = "UNDEFINED"
-    }
-
-    setFrameId (frameId:string) {
-        this.frameId = frameId;
-        this.starId = "UNDEFINED"
+    static setFrameId (selectedIdData: SelectedIdData, frameId:string) {
+        selectedIdData.frameId = frameId;
+        selectedIdData.starId = "UNDEFINED"
     }
 
 
-    voidFrameId () {
-        this.frameId = "UNDEFINED";
-        this.starId = "UNDEFINED"
+    static voidFrameId (selectedIdData: SelectedIdData) {
+        selectedIdData.frameId = "UNDEFINED";
+        selectedIdData.starId = "UNDEFINED"
     }
 
 
-    setStarId (starId:string) {
-        this.starId = starId;
+    static setStarId (selectedIdData: SelectedIdData, starId:string) {
+        selectedIdData.starId = starId;
     }
 
 }

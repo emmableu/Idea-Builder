@@ -18,7 +18,7 @@ export class DashboardAPIData {
     }
 
     toString () {
-        return JSON.stringify(this.toJSON())
+        return JSON.stringify(this)
     }
 
     toEmptyDashboardViewData () {

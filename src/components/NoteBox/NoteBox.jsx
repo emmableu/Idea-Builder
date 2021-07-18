@@ -8,6 +8,7 @@ import AwesomeDebouncePromise from "awesome-debounce-promise";
 import {ProjectAPI} from "../../api/ProjectAPI";
 import {useDispatch, useSelector} from "react-redux";
 import {saveNote} from "../../redux/features/projectSlice";
+import {ProjectDataHandler} from "../../data/ProjectData";
 
 const converter = new Showdown.Converter({
     tables: true,
@@ -47,7 +48,8 @@ export default function NoteBox() {
             }
             else {
                 try {
-                    const loadedNote = project.getStoryboard(selectedStoryboardId).note;
+                    const storyboardData = ProjectDataHandler.getStoryboard(project, selectedStoryboardId);
+                    const loadedNote = storyboardData.note;
                     setValue(loadedNote)
                 }
                 catch (error) {

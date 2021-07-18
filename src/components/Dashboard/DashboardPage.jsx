@@ -70,7 +70,7 @@ const DashboardPage = () => {
     const projectList = useSelector(state =>
     {
         // // console.log("state.dashboard.value: ", state.dashboard.value);
-        return (state.dashboard.value===null? null: state.dashboard.value.projectListJSON())
+        return (state.dashboard.value===null? null: state.dashboard.value.projectList())
     });
 
     React.useEffect(() =>

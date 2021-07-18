@@ -22,17 +22,9 @@ export class DashboardViewData {
     }
 
     toString() {
-        return JSON.stringify(this.toJSON());
+        return JSON.stringify(this);
     }
 
-    projectListJSON () {
-        return this.projectList.map(s => (
-            {
-                "_id": s._id,
-                "name": s.name,
-            }
-        ))
-    }
 
     static parse(dashboardJSON: {
         userId: string;

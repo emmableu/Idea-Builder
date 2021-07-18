@@ -17,7 +17,7 @@ const fetchDashboardByUserID = createAsyncThunk(
             const dashboardAPIData = new DashboardAPIData(userId);
             await DashboardAPI.insertDashboard(dashboardAPIData);
             dashboardData = dashboardAPIData.toEmptyDashboardViewData();
-            return dashboardData.toJSON();
+            return dashboardData;
         }
         else if (response.status === 200) {
             return response.data;

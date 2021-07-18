@@ -1,12 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {ProjectData} from "../../data/ProjectData";
-import {StoryboardData} from "../../data/StoryboardData";
+import {ProjectData, ProjectDataHandler} from "../../data/ProjectData";
+import {StoryboardData, StoryboardDataHandler} from "../../data/StoryboardData";
 import {DashboardAPI} from "../../api/DashboardAPI";
 import {DashboardAPIData} from "../../data/DashboardData/DashboardAPIData";
 import {ProjectAPI} from "../../api/ProjectAPI";
 import Cookies from "js-cookie";
 import * as UUID from "uuid";
-import {ActorData} from "../../data/ActorData";
+import {ActorDataHandler} from "../../data/ActorData";
+import {BackdropDataHandler} from "../../data/BackdropData";
 import globalConfig from "../../globalConfig";
 import {StarData} from "../../data/StarData";
 import {setSelectedStar} from "./selectedStarSlice";
@@ -17,6 +18,7 @@ import {
     updateUserActionCounter
 } from "./frameThumbnailStateSlice";
 import {BackdropData} from "../../data/BackdropData";
+import {FrameDataHandler} from "../../data/FrameData";
 
 
 
@@ -27,7 +29,7 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
     async (text, thunkAPI) => {
         const {newProjectId, newProjectName} = JSON.parse(text);
-        const projectData = new ProjectData(newProjectId, newProjectName);
+        const projectData = ProjectDataHandler.initilaizeProject(newProjectId, newProjectName);
         console.log('projectData: ', projectData);
         const response = await ProjectAPI.insertProject(Cookies.get("userId"), projectData);
         return response.status;
@@ -69,7 +71,7 @@ const setSelectedStoryboardId = createAsyncThunk(
     async (storyboardId, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
-        const storyboardData = project.getStoryboard(storyboardId);
+        const storyboardData = ProjectDataHandler.getStoryboard(project, storyboardId);
 
         project.selectedId.setStoryboardId(storyboardData);
 
@@ -87,7 +89,7 @@ const setSelectedStoryboardId = createAsyncThunk(
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
-                selectedId: project.selectedId.toJSON()
+                selectedId: project.selectedId
                 }
             );
         return response.status;
@@ -104,7 +106,7 @@ const setSelectedFrameId = createAsyncThunk(
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
-                selectedId: project.selectedId.toJSON()
+                selectedId: project.selectedId
             }
         );
         return response.status;
@@ -121,7 +123,7 @@ const setSelectedStarId = createAsyncThunk(
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
-                selectedId: project.selectedId.toJSON()
+                selectedId: project.selectedId
             }
         );
         return response.status;
@@ -142,8 +144,8 @@ const addStoryboard = createAsyncThunk(
         const {storyboardName, type} = text;
         const {dispatch, getState}  = thunkAPI;
         const storyboardId = UUID.v4();
-        const storyboardData = new StoryboardData(storyboardId, storyboardName)
-        const storyboardDataJSON = storyboardData.toJSON();
+        const storyboardData = StoryboardDataHandler.intializeStoryboard(storyboardId, storyboardName)
+        const storyboardDataJSON = storyboardData;
         const state = getState();
         const project = state.project.value;
         const projectId = project._id;
@@ -218,7 +220,7 @@ const addFrame = createAsyncThunk(
         console.log("project: ", project);
         const storyboardId = project.selectedId.storyboardId;
         console.log("storyboardId: ", storyboardId);
-        const frameList = project.getStoryboard(storyboardId).frameList;
+        const frameList = ProjectDataHandler.getStoryboard(project, storyboardId).frameList;
         console.log("frameList: ", frameList);
         let prevIndex = frameList.length - 1
         const frameId = globalConfig.imageServer.student.frame + UUID.v4() + ".png";
@@ -294,7 +296,7 @@ const deleteFrame = createAsyncThunk(
 
         const response = await ProjectAPI.replaceFrameIdListInDatabase({
             storyboardId,
-            frameIdList: project.getStoryboard(storyboardId).frameList.map(f => f._id)
+            frameIdList: ProjectDataHandler.getStoryboard(project, storyboardId).frameList.map(f => f._id)
         });
         return response.status;
     }
@@ -318,8 +320,12 @@ const addStar = createAsyncThunk(
         setTimeout(() => {
             dispatch(updateUserActionCounter());
         }, 500)
+
+        const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
+        const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+        const starList =  frameData.starList;
+
         //sometimes the first dispatch does not work, because the actor is not yet fully updated on the canvas.
-        const starList = state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON();
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList
@@ -337,7 +343,9 @@ const updateStarList = createAsyncThunk(
         dispatch(updateStarListInMemory(payload));
         const state = getState();
         dispatch(updateUserActionCounter());
-        const starList = state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON();
+        const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
+        const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+        const starList =  frameData.starList;
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList: starList
@@ -358,7 +366,9 @@ const deleteStar = createAsyncThunk(
             storyboardId, frameId, starId
         })));
         dispatch(updateUserActionCounter());
-        const starList = state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON();
+        const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
+        const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+        const starList =  frameData.starList;
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList: starList
@@ -386,8 +396,12 @@ const addBackdropStar = createAsyncThunk(
         setTimeout(() => {
             dispatch(updateUserActionCounter());
         }, 500)
+
+        const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
+        const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+        const backdropStar =  frameData.backdropStar;
+
         //sometimes the first dispatch does not work, because the actor is not yet fully updated on the canvas.
-        const backdropStar = state.project.value.getStoryboard(storyboardId).getFrame(frameId).backdropStar;
         const response = await ProjectAPI.replaceBackdropStarInDatabase({
             frameId,
             backdropStar
@@ -431,7 +445,7 @@ const addActor = createAsyncThunk(
         const {dispatch, getState}  = thunkAPI;
         const actorId = UUID.v4();
         console.log("actorId: ", actorId);
-        const actorDataJSON = new ActorData(actorId).toJSON();
+        const actorDataJSON = ActorDataHandler.initializeActor(actorId);
         const state = getState();
         const projectId = state.project.value._id;
         const payload =  JSON.stringify({
@@ -494,7 +508,7 @@ const addState = createAsyncThunk(
         const {actorId} = payload
         const {dispatch, getState} = thunkAPI;
         dispatch(addStateInMemory(JSON.stringify(payload)));
-        const stateList = getState().project.value.stateListJSON(actorId);
+        const stateList = getState().project.value.stateList(actorId);
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
@@ -509,7 +523,7 @@ const deleteState = createAsyncThunk(
         const {actorId} = payload
         const {dispatch, getState} = thunkAPI;
         dispatch(deleteStateInMemory(JSON.stringify(payload)));
-        const stateList = getState().project.value.stateListJSON(actorId);
+        const stateList = getState().project.value.stateList(actorId);
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
@@ -524,7 +538,7 @@ const updateStateName = createAsyncThunk(
         const {actorId} = payload
         const {dispatch, getState} = thunkAPI;
         dispatch(updateStateNameInMemory(JSON.stringify(payload)));
-        const stateList = getState().project.value.stateListJSON(actorId);
+        const stateList = getState().project.value.stateList(actorId);
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
@@ -544,7 +558,7 @@ const addBackdrop = createAsyncThunk(
         dispatch(addBackdropInMemory(
                 backdropId)
         );
-        const backdropList = getState().project.value.backdropListJSON();
+        const backdropList = getState().project.value.backdropList();
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
@@ -560,7 +574,7 @@ const deleteBackdrop = createAsyncThunk(
         dispatch(deleteBackdropInMemory(
             backdropId)
         );
-        const backdropList = getState().project.value.backdropListJSON();
+        const backdropList = getState().project.value.backdropList();
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
@@ -577,7 +591,7 @@ const updateBackdropName = createAsyncThunk(
         dispatch(updateBackdropNameInMemory(JSON.stringify({
             backdropId, backdropName
         })));
-        const backdropList = getState().project.value.backdropListJSON();
+        const backdropList = getState().project.value.backdropList();
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
@@ -620,7 +634,7 @@ export const projectSlice = createSlice({
         addStoryboardInMemory: {
             reducer: (state, action) => {
                 const {type, storyboardDataJSON} = JSON.parse(action.payload);
-                state.value.addStoryboard(type, storyboardDataJSON);
+                ProjectDataHandler.addStoryboard(state.value, type, storyboardDataJSON);
             }
         },
 
@@ -678,8 +692,9 @@ export const projectSlice = createSlice({
 
         addFrameInMemory: {
             reducer: (state, action) => {
-                const storyboard = state.value.getStoryboard(action.payload.storyboardId);
-                storyboard.addFrame(
+                const storyboard = ProjectDataHandler.getStoryboard(state.value,action.payload.storyboardId);
+                StoryboardDataHandler.addFrame(
+                    storyboard,
                     action.payload.newId,
                     action.payload.prevIndex,
                 )
@@ -703,7 +718,7 @@ export const projectSlice = createSlice({
                 const {storyboardId, frameIndex} = JSON.parse(action.payload);
                 // const storyboard = state.value.getStoryboard(storyboardId);
                 // storyboard.frameList = frameList;
-                const frameList = state.value.getStoryboard(storyboardId).frameList;
+                const frameList = ProjectDataHandler.getStoryboard(state.value, storyboardId).frameList;
                 const frameId = frameList[frameIndex]._id;
                 const templateIndex = state.value.templateList.indexOf(frameId);
                 state.value.templateList.splice(templateIndex, 1);
@@ -720,8 +735,9 @@ export const projectSlice = createSlice({
 
         addStarInMemory: {
             reducer: (state, action) => {
-                const frame = state.value.getStoryboard(action.payload.storyboardId).getFrame(action.payload.frameId);
-                frame.addStar(action.payload.stateId);
+                const storyboardData = ProjectDataHandler.getStoryboard(state.value, action.payload.storyboardId);
+                const frameData = StoryboardDataHandler.getFrame(storyboardData, action.payload.frameId);
+                FrameDataHandler.addStar(frameData, action.payload.stateId);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
@@ -738,11 +754,12 @@ export const projectSlice = createSlice({
 
         updateStarListInMemory: {
             reducer: (state, action) => {
-                const frame = state.value.getStoryboard(action.payload.storyboardId).getFrame(action.payload.frameId);
+                const storyboardData = ProjectDataHandler.getStoryboard(state.value, action.payload.storyboardId);
+                const frame = StoryboardDataHandler.getFrame(storyboardData, action.payload.frameId);
                 const starIndex = frame.starList.findIndex(s => s._id === action.payload.starData._id);
                 console.log("starIndex: ", starIndex);
                 if (starIndex !== -1) {
-                    frame.starList[starIndex] =  StarData.parse(action.payload.starData);
+                    frame.starList[starIndex] =  action.payload.starData;
                 }
             },
             prepare: (text) => {
@@ -760,8 +777,9 @@ export const projectSlice = createSlice({
 
         deleteStarInMemory: {
             reducer: (state, action) => {
-                const frame = state.value.getStoryboard(action.payload.storyboardId).getFrame(action.payload.frameId);
-                frame.deleteStar(action.payload.starId);
+                const storyboardData = ProjectDataHandler.getStoryboard(state.value, action.payload.storyboardId);
+                const frame = StoryboardDataHandler.getFrame(storyboardData, action.payload.frameId);
+                FrameDataHandler.deleteStar(frame, action.payload.starId);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
@@ -781,7 +799,8 @@ export const projectSlice = createSlice({
 
         addBackdropStarInMemory: {
             reducer: (state, action) => {
-                const frame = state.value.getStoryboard(action.payload.storyboardId).getFrame(action.payload.frameId);
+                const storyboardData = ProjectDataHandler.getStoryboard(state.value, action.payload.storyboardId);
+                const frame = StoryboardDataHandler.getFrame(storyboardData, action.payload.frameId);
                 frame.backdropStar =  {
                     "_id": UUID.v4(),
                     "prototypeId": action.payload.prototypeId,
@@ -802,7 +821,8 @@ export const projectSlice = createSlice({
         addTemplateStarInMemory: {
             reducer: (state, action) => {
                 const {storyboardId, frameId, templateId} = action.payload;
-                const frame = state.value.getStoryboard(storyboardId).getFrame(frameId);
+                const storyboardData = ProjectDataHandler.getStoryboard(state.value, storyboardId);
+                const frame = StoryboardDataHandler.getFrame(storyboardData, frameId);
                 const templateFrame = state.value.findFrame(templateId);
                 frame.acquireFrame(templateFrame);
             },
@@ -932,7 +952,7 @@ export const projectSlice = createSlice({
 
         addBackdropInMemory: {
             reducer: (state, action) => {
-                state.value.backdropList.push(new BackdropData(action.payload))
+                state.value.backdropList.push(BackdropDataHandler.initializeBackdrop(action.payload))
             }
         },
 
@@ -980,7 +1000,7 @@ export const projectSlice = createSlice({
     },
     extraReducers: {
         [loadProjectFromDatabase.fulfilled]: (state, action) => {
-            state.value = ProjectData.parse(action.payload);
+            state.value = ProjectDataHandler.initializeProject(action.payload);
             console.log("parsed project: ", state.value);
         },
     }

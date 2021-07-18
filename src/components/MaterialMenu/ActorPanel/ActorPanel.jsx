@@ -70,7 +70,7 @@ const getBoxStyle = () => ({
 const ActorPanel = (props) => {
     const dispatch = useDispatch();
     const actorList = useSelector(state =>
-        state.project.value===null? []:state.project.value.toJSON().actorList
+        state.project.value===null? []:state.project.value.actorList
     );
 
     React.useEffect(() => {

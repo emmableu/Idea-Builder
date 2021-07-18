@@ -1,15 +1,12 @@
-import {ActorData, IActorData} from "./ActorData";
+import {ActorData, ActorDataHandler} from "./ActorData";
 import * as UUID from "uuid";
-import {StateData} from "./StateData";
-import JSZip from 'jszip';
-import { saveAs } from 'file-saver';
-import {StoryboardData} from "./StoryboardData";
 import {BackdropData} from "./BackdropData";
-import {SelectedIdData} from "./SelectedIdData";
+import {SelectedIdData, SelectedIdDataHandler} from "./SelectedIdData";
 import fileDownload from "js-file-download";
-import {FrameData} from "./FrameData";
+import {FrameData, FrameDataHandler} from "./FrameData";
+import {StoryboardData, StoryboardDataHandler} from "./StoryboardData";
 
-export class ProjectData {
+export interface ProjectData {
     _id: string;
     name: string;
     storyboardList: Array<StoryboardData>;
@@ -27,8 +24,10 @@ export class ProjectData {
     };
     templateList: Array<string>;
     selectedId: SelectedIdData;
+}
 
-    constructor(
+export class ProjectDataHandler {
+    static initializeProject(
         _id?: string,
         name?:string,
         storyboardList?:Array<StoryboardData>,
@@ -47,27 +46,29 @@ export class ProjectData {
         templateList?: Array<string>,
         selectedId?: SelectedIdData
 
-    ) {
-        this._id = _id? _id:UUID.v4();
-        this.name = name? name:"Untitled";
-        this.storyboardList = storyboardList? storyboardList:[new StoryboardData()];
-        this.actorList = actorList? actorList:[new ActorData()];
-        this.backdropList = backdropList? backdropList:[];
+    ) : ProjectData
+    {
+        const projectId = _id? _id:UUID.v4();
+        const projectName = name? name:"Untitled";
+        const projectStoryboardList = storyboardList? storyboardList:[StoryboardDataHandler.initializeStoryboard()];
+        const projectActorList = actorList? actorList:[ActorDataHandler.initializeActor()];
+        const projectBackdropList = backdropList? backdropList:[];
 
+        let projectTemplateList;
         if (templateList === undefined) {
-            this.templateList = [this.storyboardList[0].frameList[0]._id]
+            projectTemplateList = [projectStoryboardList[0].frameList[0]._id]
         }
         else {
-            this.templateList = templateList;
+            projectTemplateList = templateList;
         }
-
+        let projectStoryboardMenu;
         if (storyboardMenu === undefined) {
-            this.storyboardMenu =  {
+             projectStoryboardMenu =  {
                 "final": {
                     "name": "My storyboards",
                     "items": [
-                        {"_id": this.storyboardList[0]._id,
-                        "name": this.storyboardList[0].name,}
+                        {"_id": projectStoryboardList[0]._id,
+                            "name": projectStoryboardList[0].name,}
                     ]
                 },
                 "draft":  {
@@ -77,77 +78,56 @@ export class ProjectData {
             };
         }
         else {
-            this.storyboardMenu = storyboardMenu;
+            projectStoryboardMenu = storyboardMenu;
         }
 
-        this.selectedId = selectedId?selectedId: new SelectedIdData(
-            this.storyboardList[0]._id,
-            this.storyboardList[0].frameList[0]._id,
+        const projectSelectedId = selectedId?selectedId: SelectedIdDataHandler.initializeSelectedId(
+            projectStoryboardList[0]._id,
+            projectStoryboardList[0].frameList[0]._id,
         )
-    }
 
-    toJSON() {
         return {
-            _id: this._id,
-            name: this.name,
-            storyboardMenu: this.storyboardMenu,
-            storyboardList: this.storyboardList.map(a => a.toJSON()),
-            actorList: this.actorList.map(a => a.toJSON()),
-            backdropList: this.backdropList.map(a => a.toJSON()),
-            templateList: this.templateList,
-            selectedId: this.selectedId,
+            _id: projectId,
+            name: projectName,
+            storyboardList: projectStoryboardList,
+            actorList: projectActorList,
+            backdropList: projectBackdropList,
+            storyboardMenu: projectStoryboardMenu,
+            templateList: projectTemplateList,
+            selectedId: projectSelectedId,
         }
-    }
-
-    toString() {
-        return JSON.stringify(this.toJSON());
-    }
-
-    static parse(projectJSON: any): ProjectData {
-
-        const projectData = new ProjectData(projectJSON._id, projectJSON.name);
-
-        projectData.storyboardList = projectJSON.storyboardList.map((ele:any) => StoryboardData.parse(ele));
-        projectData.actorList = projectJSON.actorList.map((ele:any) => ActorData.parse(ele));
-        projectData.backdropList = projectJSON.backdropList.map((ele:any) => BackdropData.parse(ele));
-        projectData.templateList = projectJSON.templateList;
-
-        projectData.storyboardMenu = projectJSON.storyboardMenu;
-        projectData.selectedId = SelectedIdData.parse(projectJSON.selectedId);
-
-        return projectData;
     }
 
 
     /* below are about storyboards */
 
-    addStoryboard (type:"draft"|"final", storyboardDataJSON:any) {
+    static addStoryboard (projectData: ProjectData, type:"draft"|"final", newStoryboardData:any) {
 
-       const newStoryboardData = StoryboardData.parse(storyboardDataJSON);
 
-        this.storyboardMenu[type].items.unshift(
-           {"_id": storyboardDataJSON._id, "name": storyboardDataJSON.name}
-       );
-        this.storyboardList.unshift(
+        projectData.storyboardMenu[type].items.unshift(
+            {"_id": newStoryboardData._id, "name": newStoryboardData.name}
+        );
+        projectData.storyboardList.unshift(
             newStoryboardData
         )
 
-        this.templateList.unshift(newStoryboardData.frameList[0]._id);
+        projectData.templateList.unshift(newStoryboardData.frameList[0]._id);
 
     }
 
-    getStoryboard (storyboardId:string) {
-        return this.storyboardList.find(s => s._id === storyboardId);
+    static getStoryboard (projectData: ProjectData, storyboardId:string) {
+        return projectData.storyboardList.find(s => s._id === storyboardId);
     }
 
-    updateStoryboardName (storyboardId:string, name:string) {
-        const storyboard = this.getStoryboard(storyboardId);
+
+    static updateStoryboardName (projectData: ProjectData, storyboardId:string, name:string) {
+        const storyboard = ProjectDataHandler.getStoryboard(projectData, storyboardId);
         if (storyboard===undefined) return;
         storyboard.name = name;
         let candidateStoryboard;
         for (const type of ["final", "draft"]) {
             // @ts-ignore
-            candidateStoryboard = this.storyboardMenu[type].items.find((el:any) => el._id === storyboardId)
+            candidateStoryboard = projectData.storyboardMenu[type].items.find((el:any) => el._id === storyboardId)
             if (candidateStoryboard !== undefined) {
                 candidateStoryboard.name = name;
                 return;
@@ -156,7 +136,7 @@ export class ProjectData {
     }
 
 
-    updateStoryboardOrder(text:string) {
+    updateStoryboardOrder(projectData: ProjectData, text:string) {
         const result = JSON.parse(text);
         console.log("result: ", result);
         if (!result.destination) return;
@@ -171,8 +151,8 @@ export class ProjectData {
             const destItems = [...destColumn.items];
             const [removed] = sourceItems.splice(source.index, 1);
             destItems.splice(destination.index, 0, removed);
-            this.storyboardMenu = ({
-                ...this.storyboardMenu,
+            projectData.storyboardMenu = ({
+                ...projectData.storyboardMenu,
                 [source.droppableId]: {
                     ...sourceColumn,
                     items: sourceItems
@@ -184,12 +164,12 @@ export class ProjectData {
             });
         } else {
             //@ts-ignore
-            const column = this.storyboardMenu[source.droppableId];
+            const column = projectData.storyboardMenu[source.droppableId];
             const copiedItems = [...column.items];
             const [removed] = copiedItems.splice(source.index, 1);
             copiedItems.splice(destination.index, 0, removed);
-            this.storyboardMenu = ({
-                ...this.storyboardMenu,
+            projectData.storyboardMenu = ({
+                ...projectData.storyboardMenu,
                 [source.droppableId]: {
                     ...column,
                     items: copiedItems
@@ -201,73 +181,52 @@ export class ProjectData {
 
     /* below are about frames */
 
-    findFrame (frameId: string) {
-        for (const storyboardData of this.storyboardList) {
+    findFrame (projectData: ProjectData, frameId: string) {
+        for (const storyboardData of projectData.storyboardList) {
             for (const frameData of storyboardData.frameList) {
                 if (frameData._id === frameId){
                     return frameData
                 }
             }
         }
-        return new FrameData(frameId)
+        return FrameDataHandler.initializeFrame(frameId)
     }
 
 
-    frameListJSON (storyboardId:string) {
-        const storyboardData = this.getStoryboard(storyboardId);
-        const frameList = storyboardData === undefined? []:storyboardData.frameList;
-        console.log("frameList in project data !!!!!!!!!!!!: ", frameList, frameList.map(f => f._id));
-        return frameList.map(s => (
-            s.toJSON()
-        ))
+    frameList (projectData:ProjectData, storyboardId:string) {
+        const storyboardData = ProjectDataHandler.getStoryboard(projectData, storyboardId);
+        return storyboardData === undefined? []:storyboardData.frameList;
     }
 
-    backdropListJSON () {
-        return this.backdropList.map(b => b.toJSON());
-    }
 
     /* below are about actors */
 
-    get actorDataKeys () {
-        return this.actorList.map(a => a._id);
-    }
-
-    addActor(actorDataJSON:IActorData) {
-        this.actorList.unshift(
-            ActorData.parse(actorDataJSON)
-        )
-        console.log("actorList: ", this.actorList)
+    addActor(projectData:ProjectData, actorData:ActorData) {
+        projectData.actorList.unshift(actorData)
     }
 
 
-    updateActorOrder(beginOrder:number, endOrder:number) {
-        const [removed] = this.actorList.splice(beginOrder, 1);
-        this.actorList.splice(endOrder, 0, removed);
+    updateActorOrder(projectData:ProjectData, beginOrder:number, endOrder:number) {
+        const [removed] = projectData.actorList.splice(beginOrder, 1);
+        projectData.actorList.splice(endOrder, 0, removed);
     }
 
 
     /* below are about states */
 
-    stateListJSON (actorId:string) {
-        const actorData = this.actorList.find(e => e._id===actorId);
-        const stateList = actorData === undefined? []:actorData.stateList;
-        return stateList.map(s => (
-            s.toJSON()
-        ))
+    stateList (projectData:ProjectData,  actorId:string) {
+        const actorData = projectData.actorList.find(e => e._id===actorId);
+        return actorData === undefined ? [] : actorData.stateList
     }
 
-    deleteState (actorId:string, stateId: string) {
-        const actorData = this.actorList.find(e => e._id===actorId);
+    deleteState (projectData:ProjectData, actorId:string, stateId: string) {
+        const actorData = projectData.actorList.find(e => e._id===actorId);
         const stateList = actorData === undefined? []:actorData.stateList;
         const stateIndex = stateList.findIndex(s => s._id === stateId);
         stateList.splice(stateIndex, 1);
     }
 
-
-
-
     download () {
         fileDownload(this.toString(), 'project.json');
     }
-
 }

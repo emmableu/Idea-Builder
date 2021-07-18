@@ -56,7 +56,7 @@ const ActorImgTitleEdiText = (props) => {
 
     const sliceStateName = useSelector(
         state => {
-            return state.project.value.stateListJSON(actorId).find(s => s._id === stateId).name
+            return state.project.value.stateList(actorId).find(s => s._id === stateId).name
         }
     )
 

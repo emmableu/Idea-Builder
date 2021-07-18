@@ -9,6 +9,8 @@ import {updateStarList} from "../../redux/features/projectSlice";
 import {setSelectedStarId} from "../../redux/features/projectSlice";
 import BackdropStar from "../Star/BackdropStar";
 import globalConfig from "../../globalConfig";
+import {ProjectDataHandler} from "../../data/ProjectData";
+import {StoryboardDataHandler} from "../../data/StoryboardData";
 
 
 
@@ -26,7 +28,9 @@ const StarLayer = (props) => {
 
             // undefined can still happen when page reloads.
             try {
-                return JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).starListJSON())
+                const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
+                const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+                return frameData.starList;
             }
             catch (error) {
                 // console.log(error);
@@ -37,8 +41,9 @@ const StarLayer = (props) => {
 
     const backdropStar = useSelector(state => {
             try {
-                // console.log("backdropstar: ", JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).backdropStar))
-                return JSON.stringify(state.project.value.getStoryboard(storyboardId).getFrame(frameId).backdropStar)
+                const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
+                const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+                return frameData.backdropStar;
             }
             catch (error) {
                 // console.log(error);

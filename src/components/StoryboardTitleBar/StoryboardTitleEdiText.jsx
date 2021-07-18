@@ -5,6 +5,7 @@ import {IconButton, Tooltip} from "@material-ui/core";
 import {Create} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {updateName, updateStoryboardName} from "../../redux/features/projectSlice";
+import {ProjectDataHandler} from "../../data/ProjectData";
 
 
 const StyledEdiText = styled(EdiText)`
@@ -56,10 +57,10 @@ const StoryboardTitleEdiText = () => {
             if (selectedStoryboard === null) return "Untitled";
             if (state.project.value===null) return "Untitled";
             // undefined can still happen when page reloads.
-            if (state.project.value.getStoryboard(selectedStoryboard) === undefined) {
+            if (ProjectDataHandler.getStoryboard(state.project.value, selectedStoryboard) === undefined) {
                 return "Untitled"
             }
-            return state.project.value.getStoryboard(selectedStoryboard).name;
+            return ProjectDataHandler.getStoryboard(state.project.value, selectedStoryboard).name;
         }
     )
 

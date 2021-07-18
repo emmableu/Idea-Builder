@@ -1,84 +1,64 @@
 import * as UUID from "uuid";
-import {IStarData, StarData} from "./StarData";
-import {Star} from "konva/lib/shapes/Star";
+import {StarData, StarDataHandler} from "./StarData";
 import globalConfig from "../globalConfig";
 
-export interface IFrameData {
-    _id: string;
-    backdropStar: {
-        prototypeId: string,
-        _id: string,
-    };
-    starList: Array<IStarData>;
-}
-
-export class FrameData implements IFrameData{
+export interface FrameData {
     _id: string;
     backdropStar: {
         prototypeId: string,
         _id: string,
     };
     starList: Array<StarData>;
+}
 
-    constructor(_id?: string,
+export class FrameDataHandler{
+
+    static initializeFrame(_id?: string,
                 backdropStar?: {
                     prototypeId: string,
                     _id: string,
                 },
                 starList?: Array<StarData>,
-) {
-        this._id = _id? _id:globalConfig.imageServer.student.frame + UUID.v4() + ".png";
-        this.backdropStar = backdropStar? backdropStar:{
+    ) : FrameData
+    {
+        const frameId = _id? _id:globalConfig.imageServer.student.frame + UUID.v4() + ".png";
+        const frameBackdropStar = backdropStar? backdropStar:{
             prototypeId: "EMPTY",
             _id: "EMPTY",
-        };;
-        this.starList = starList? starList:[];
-    }
-
-    toJSON (): IFrameData {
+        };
+        const frameStarList = starList? starList:[];
         return {
-            _id: this._id,
-            backdropStar: this.backdropStar,
-            starList: this.starList.map(s => s.toJSON()),
+            _id: frameId,
+            backdropStar: frameBackdropStar,
+            starList: frameStarList,
         }
     }
 
-    starListJSON() {
-        if (this.starList.length > 0) {
-            return this.starList.map(s => s.toJSON());
-        }
-        else {
-            return [];
-        }
+
+    static addStar(
+        frameData:FrameData,
+        prototypeId:string
+    ) {
+        frameData.starList.push(StarDataHandler.initializeStar(prototypeId))
     }
 
-    addStar(prototypeId:string) {
-        this.starList.push(new StarData(prototypeId))
-        console.log("frame after pushing: ", this.starList);
-    }
-
-    deleteStar(starId:string) {
-        const starIndex = this.starList.findIndex(s => s._id === starId);
-        this.starList.splice(starIndex, 1);
-    }
-
-    static  parse(frameJSON: any): FrameData {
-        console.log("frameJSON: ", frameJSON);
-        const frameData = new FrameData(frameJSON._id, frameJSON.backdropId);
-        frameData.backdropStar = frameJSON.backdropStar;
-        frameData.starList = frameJSON.starList.map((ele:any) => StarData.parse(ele));
-        return frameData;
+    static deleteStar(
+        frameData:FrameData,
+        starId:string)
+    {
+        const starIndex = frameData.starList.findIndex(s => s._id === starId);
+        frameData.starList.splice(starIndex, 1);
     }
 
     static shallowCopy (frameData: FrameData, newId?:string): FrameData {
         let newFrameData;
         if (newId) {
-            newFrameData = new FrameData(
+            newFrameData =  FrameDataHandler.initializeFrame(
                     newId,
             );
         }
         else {
-            newFrameData = new FrameData(
+            newFrameData = FrameDataHandler.initializeFrame(
                 globalConfig.imageServer.student.frame + UUID.v4() + ".png"
             );
         }
@@ -95,17 +75,17 @@ export class FrameData implements IFrameData{
             }
         }
 
-        newFrameData.starList = frameData.starList.map((ele:any) => StarData.shallowCopy(ele));
+        newFrameData.starList = frameData.starList.map((ele:any) => StarDataHandler.shallowCopy(ele));
         return newFrameData;
     }
 
-    acquireFrame (templateFrame:FrameData) {
-        this.backdropStar = {
+    static acquireFrame (selectedFrame:FrameData, templateFrame:FrameData) {
+        selectedFrame.backdropStar = {
             _id: globalConfig.imageServer.student.backdrop + UUID.v4() + ".png",
             prototypeId: templateFrame.backdropStar.prototypeId,
         }
-        const newStarList = templateFrame.starList.map((ele:any) => StarData.shallowCopy(ele));
-        this.starList.push(...newStarList);
+        const newStarList = templateFrame.starList.map((ele:any) => StarDataHandler.shallowCopy(ele));
+        selectedFrame.starList.push(...newStarList);
     }
 
 

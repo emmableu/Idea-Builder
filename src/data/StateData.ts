@@ -1,24 +1,16 @@
 import * as UUID from "uuid";
 
-export interface IStateData {
+export interface StateData {
     _id: string;
     name: string;
 }
 
 
-export class StateData implements IStateData{
-    _id: string;
-    name: string;
-
-    constructor(_id?: string, name?:string) {
-        this._id = _id? _id:UUID.v4();
-        this.name = name? name:"Untitled";
-    }
-
-    toJSON (): IStateData {
+export class StateDataHandler{
+    static initializeState(_id?: string, name?:string):StateData  {
         return {
-            _id: this._id,
-            name: this.name
+            _id: _id? _id:UUID.v4(),
+            name: name? name:"Untitled"
         }
     }
 }
