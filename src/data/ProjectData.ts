@@ -136,7 +136,7 @@ export class ProjectDataHandler {
     }
 
 
-    updateStoryboardOrder(projectData: ProjectData, text:string) {
+    static updateStoryboardOrder(projectData: ProjectData, text:string) {
         const result = JSON.parse(text);
         console.log("result: ", result);
         if (!result.destination) return;
@@ -181,7 +181,7 @@ export class ProjectDataHandler {
 
     /* below are about frames */
 
-    findFrame (projectData: ProjectData, frameId: string) {
+    static findFrame (projectData: ProjectData, frameId: string) {
         for (const storyboardData of projectData.storyboardList) {
             for (const frameData of storyboardData.frameList) {
                 if (frameData._id === frameId){
@@ -193,7 +193,7 @@ export class ProjectDataHandler {
     }
 
 
-    frameList (projectData:ProjectData, storyboardId:string) {
+    static frameList (projectData:ProjectData, storyboardId:string) {
         const storyboardData = ProjectDataHandler.getStoryboard(projectData, storyboardId);
         return storyboardData === undefined? []:storyboardData.frameList;
     }
@@ -201,12 +201,12 @@ export class ProjectDataHandler {
 
     /* below are about actors */
 
-    addActor(projectData:ProjectData, actorData:ActorData) {
+    static addActor(projectData:ProjectData, actorData:ActorData) {
         projectData.actorList.unshift(actorData)
     }
 
 
-    updateActorOrder(projectData:ProjectData, beginOrder:number, endOrder:number) {
+    static updateActorOrder(projectData:ProjectData, beginOrder:number, endOrder:number) {
         const [removed] = projectData.actorList.splice(beginOrder, 1);
         projectData.actorList.splice(endOrder, 0, removed);
     }
@@ -214,19 +214,19 @@ export class ProjectDataHandler {
 
     /* below are about states */
 
-    stateList (projectData:ProjectData,  actorId:string) {
+    static stateList (projectData:ProjectData,  actorId:string) {
         const actorData = projectData.actorList.find(e => e._id===actorId);
         return actorData === undefined ? [] : actorData.stateList
     }
 
-    deleteState (projectData:ProjectData, actorId:string, stateId: string) {
+    static deleteState (projectData:ProjectData, actorId:string, stateId: string) {
         const actorData = projectData.actorList.find(e => e._id===actorId);
         const stateList = actorData === undefined? []:actorData.stateList;
         const stateIndex = stateList.findIndex(s => s._id === stateId);
         stateList.splice(stateIndex, 1);
     }
 
-    download () {
-        fileDownload(this.toString(), 'project.json');
+    static download (projectData:ProjectData) {
+        fileDownload(JSON.stringify(projectData), 'project.json');
     }
 }

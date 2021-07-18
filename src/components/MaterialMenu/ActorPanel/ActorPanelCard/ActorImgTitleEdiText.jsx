@@ -5,6 +5,7 @@ import {IconButton, Tooltip} from "@material-ui/core";
 import {Create} from "@material-ui/icons";
 import {updateActorName, updateStateName} from "../../../../redux/features/projectSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {ProjectDataHandler} from "../../../../data/ProjectData";
 
 
 const StyledEdiText = styled(EdiText)`
@@ -56,7 +57,7 @@ const ActorImgTitleEdiText = (props) => {
 
     const sliceStateName = useSelector(
         state => {
-            return state.project.value.stateList(actorId).find(s => s._id === stateId).name
+            return ProjectDataHandler.stateList(state.project.value, actorId).find(s => s._id === stateId).name
         }
     )
 

@@ -127,7 +127,7 @@ const SearchDialogImgCard = (props) =>  {
                                         color="inherit"
                                         variant="contained"
                                         onClick={e => {handleAddStar(e)}}
-                                        size="large">
+                                        size="medium">
                                 <Add style={{color: "white"}} />
                             </IconButton>
                         </Tooltip>

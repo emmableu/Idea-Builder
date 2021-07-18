@@ -1,35 +1,22 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {ProjectData, ProjectDataHandler} from "../../data/ProjectData";
-import {StoryboardData, StoryboardDataHandler} from "../../data/StoryboardData";
-import {DashboardAPI} from "../../api/DashboardAPI";
-import {DashboardAPIData} from "../../data/DashboardData/DashboardAPIData";
+import {ProjectDataHandler} from "../../data/ProjectData";
+import {StoryboardDataHandler} from "../../data/StoryboardData";
 import {ProjectAPI} from "../../api/ProjectAPI";
 import Cookies from "js-cookie";
 import * as UUID from "uuid";
 import {ActorDataHandler} from "../../data/ActorData";
 import {BackdropDataHandler} from "../../data/BackdropData";
 import globalConfig from "../../globalConfig";
-import {StarData} from "../../data/StarData";
-import {setSelectedStar} from "./selectedStarSlice";
-import {
-    copyPreviousFrameImg,
-    sendEmptyFrameImg,
-    sendFrameImg,
-    updateUserActionCounter
-} from "./frameThumbnailStateSlice";
-import {BackdropData} from "../../data/BackdropData";
+import {copyPreviousFrameImg, sendEmptyFrameImg, updateUserActionCounter} from "./frameThumbnailStateSlice";
 import {FrameDataHandler} from "../../data/FrameData";
-
-
-
-
+import {SelectedIdDataHandler} from "../../data/SelectedIdData";
 
 
 const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
     async (text, thunkAPI) => {
         const {newProjectId, newProjectName} = JSON.parse(text);
-        const projectData = ProjectDataHandler.initilaizeProject(newProjectId, newProjectName);
+        const projectData = ProjectDataHandler.initializeProject(newProjectId, newProjectName);
         console.log('projectData: ', projectData);
         const response = await ProjectAPI.insertProject(Cookies.get("userId"), projectData);
         return response.status;
@@ -42,6 +29,7 @@ const loadProjectFromDatabase = createAsyncThunk(
         const response = await ProjectAPI.loadProject(_id);
         const {dispatch} = thunkAPI;
         //below is needed because otherwise the first frame is not updated.
+        dispatch(updateUserActionCounter());
         setTimeout( () => {
                 dispatch(updateUserActionCounter());
             }, 2000
@@ -73,13 +61,15 @@ const setSelectedStoryboardId = createAsyncThunk(
         const project = getState().project.value;
         const storyboardData = ProjectDataHandler.getStoryboard(project, storyboardId);
 
-        project.selectedId.setStoryboardId(storyboardData);
+        // SelectedIdDataHandler.setStoryboardId(project.selectedId, storyboardData);
+        dispatch(setSelectedStoryboardIdInMemory(storyboardData));
 
         //although adding storyboard automatically set frame IDs, we should do it again because sometimes redux does not recognize it being updated.
         if (storyboardData.frameList.length > 0){
-            project.selectedId.setFrameId(storyboardData.frameList[0]._id);
+            dispatch(setSelectedFrameIdInMemory(storyboardData.frameList[0]._id));
+            // SelectedIdDataHandler.setFrameId(project.selectedId, storyboardData.frameList[0]._id);
         }
-
+        dispatch(updateUserActionCounter());
         //this is also because frame thumbnail does not update.
         setTimeout( () => {
                 dispatch(updateUserActionCounter());
@@ -102,7 +92,7 @@ const setSelectedFrameId = createAsyncThunk(
     async (frameId, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
-        project.selectedId.setFrameId(frameId);
+        dispatch(setSelectedFrameIdInMemory(frameId));
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
@@ -119,7 +109,7 @@ const setSelectedStarId = createAsyncThunk(
     async (starId, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
-        project.selectedId.setStarId(starId);
+        SelectedIdDataHandler.setStarId(project.selectedId, starId);
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
@@ -144,8 +134,7 @@ const addStoryboard = createAsyncThunk(
         const {storyboardName, type} = text;
         const {dispatch, getState}  = thunkAPI;
         const storyboardId = UUID.v4();
-        const storyboardData = StoryboardDataHandler.intializeStoryboard(storyboardId, storyboardName)
-        const storyboardDataJSON = storyboardData;
+        const storyboardDataJSON = StoryboardDataHandler.initializeStoryboard(storyboardId, storyboardName);
         const state = getState();
         const project = state.project.value;
         const projectId = project._id;
@@ -317,6 +306,8 @@ const addStar = createAsyncThunk(
         dispatch(addStarInMemory(JSON.stringify({
             storyboardId, frameId, stateId,
         })));
+        dispatch(updateUserActionCounter());
+
         setTimeout(() => {
             dispatch(updateUserActionCounter());
         }, 500)
@@ -393,6 +384,7 @@ const addBackdropStar = createAsyncThunk(
         dispatch(addBackdropStarInMemory(JSON.stringify({
             storyboardId, frameId, prototypeId,
         })));
+        dispatch(updateUserActionCounter());
         setTimeout(() => {
             dispatch(updateUserActionCounter());
         }, 500)
@@ -426,6 +418,7 @@ const addTemplateStar = createAsyncThunk(
         dispatch(addTemplateStarInMemory(JSON.stringify({
             storyboardId, frameId, templateId,
         })));
+        dispatch(updateUserActionCounter());
         setTimeout(() => {
             dispatch(updateUserActionCounter());
         }, 500)
@@ -508,7 +501,7 @@ const addState = createAsyncThunk(
         const {actorId} = payload
         const {dispatch, getState} = thunkAPI;
         dispatch(addStateInMemory(JSON.stringify(payload)));
-        const stateList = getState().project.value.stateList(actorId);
+        const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
@@ -523,7 +516,7 @@ const deleteState = createAsyncThunk(
         const {actorId} = payload
         const {dispatch, getState} = thunkAPI;
         dispatch(deleteStateInMemory(JSON.stringify(payload)));
-        const stateList = getState().project.value.stateList(actorId);
+        const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
@@ -538,7 +531,7 @@ const updateStateName = createAsyncThunk(
         const {actorId} = payload
         const {dispatch, getState} = thunkAPI;
         dispatch(updateStateNameInMemory(JSON.stringify(payload)));
-        const stateList = getState().project.value.stateList(actorId);
+        const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
@@ -558,7 +551,7 @@ const addBackdrop = createAsyncThunk(
         dispatch(addBackdropInMemory(
                 backdropId)
         );
-        const backdropList = getState().project.value.backdropList();
+        const backdropList = getState().project.value.backdropList;
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
@@ -574,7 +567,7 @@ const deleteBackdrop = createAsyncThunk(
         dispatch(deleteBackdropInMemory(
             backdropId)
         );
-        const backdropList = getState().project.value.backdropList();
+        const backdropList = getState().project.value.backdropList;
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
@@ -591,7 +584,7 @@ const updateBackdropName = createAsyncThunk(
         dispatch(updateBackdropNameInMemory(JSON.stringify({
             backdropId, backdropName
         })));
-        const backdropList = getState().project.value.backdropList();
+        const backdropList = getState().project.value.backdropList;
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
@@ -625,6 +618,28 @@ export const projectSlice = createSlice({
         updateNameInMemory: {
             reducer: (state, action) => {
                 state.value.name = action.payload;
+            }
+        },
+
+        /* The next section is about selected IDs */
+//         // SelectedIdDataHandler.setStoryboardId(project.selectedId, storyboardData);
+//         dispatch(setSelectedFrameId(storyboardData));
+//
+// //although adding storyboard automatically set frame IDs, we should do it again because sometimes redux does not recognize it being updated.
+// if (storyboardData.frameList.length > 0){
+//     dispatch(setSelectedFrameId(storyboardData.frameList[0]._id));
+//     // SelectedIdDataHandler.setFrameId(project.selectedId, storyboardData.frameList[0]._id);
+// }
+
+        setSelectedStoryboardIdInMemory: {
+            reducer: (state, action) => {
+                SelectedIdDataHandler.setStoryboardId(state.value.selectedId, action.payload);
+            }
+        },
+
+        setSelectedFrameIdInMemory : {
+            reducer: (state, action) => {
+                SelectedIdDataHandler.setFrameId(state.value.selectedId, action.payload);
             }
         },
 
@@ -667,14 +682,16 @@ export const projectSlice = createSlice({
 
         updateStoryboardOrderInMemory: {
             reducer: (state, action) => {
-                state.value.updateStoryboardOrder(action.payload)
+                ProjectDataHandler.updateStoryboardOrder(state.value, action.payload);
             },
         },
 
         updateStoryboardNameInMemory: {
             reducer: (state, action) => {
                 const {_id, name} = action.payload;
-                state.value.updateStoryboardName(_id, name);
+                ProjectDataHandler.updateStoryboardName(
+                    state.value, _id, name
+                )
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
@@ -823,8 +840,8 @@ export const projectSlice = createSlice({
                 const {storyboardId, frameId, templateId} = action.payload;
                 const storyboardData = ProjectDataHandler.getStoryboard(state.value, storyboardId);
                 const frame = StoryboardDataHandler.getFrame(storyboardData, frameId);
-                const templateFrame = state.value.findFrame(templateId);
-                frame.acquireFrame(templateFrame);
+                const templateFrame = ProjectDataHandler.findFrame(state.value, templateId);
+                FrameDataHandler.acquireFrame(frame, templateFrame);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
@@ -845,7 +862,7 @@ export const projectSlice = createSlice({
         addActorInMemory: {
             reducer: (state, action) => {
                 const {actorDataJSON} = JSON.parse(action.payload);
-                state.value.addActor(actorDataJSON);
+                ProjectDataHandler.addActor(state.value, actorDataJSON);
             }
         },
 
@@ -860,7 +877,7 @@ export const projectSlice = createSlice({
 
         updateActorOrderInMemory: {
             reducer: (state, action) => {
-                state.value.updateActorOrder(action.payload.beginOrder, action.payload.endOrder);
+                ProjectDataHandler.updateActorOrder(state.value, action.payload.beginOrder, action.payload.endOrder);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
@@ -896,7 +913,8 @@ export const projectSlice = createSlice({
         addStateInMemory: {
             reducer: (state, action) => {
                 const actor = state.value.actorList.find(a => a._id === action.payload.actorId);
-                actor.addState(
+                ActorDataHandler.addState(
+                    actor,
                     action.payload.stateId
                 )
             },
@@ -913,7 +931,7 @@ export const projectSlice = createSlice({
 
         deleteStateInMemory: {
             reducer: (state, action) => {
-                state.value.deleteState(action.payload.actorId, action.payload.stateId);
+                ProjectDataHandler.deleteState(state.value, action.payload.actorId, action.payload.stateId);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
@@ -994,7 +1012,7 @@ export const projectSlice = createSlice({
 
         download: {
             reducer: (state) => {
-                state.value.download();
+                ProjectDataHandler.download(state.value);
             }
         }
     },
@@ -1009,6 +1027,7 @@ export const projectSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
     updateNameInMemory, //project
+    setSelectedFrameIdInMemory, setSelectedStoryboardIdInMemory, //selectedId
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
     addStarInMemory, updateStarListInMemory, deleteStarInMemory, //star
     addBackdropStarInMemory, //backdropStar

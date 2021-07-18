@@ -26,11 +26,6 @@ const calcBoxHeight = (windowInnerHeight) => {
 }
 
 
-
-
-
-
-
 export default function NoteBox() {
     const [value, setValue] = React.useState("**Key changes between the begin and end frame:**");
     const [selectedTab, setSelectedTab] = React.useState("write");
@@ -50,6 +45,7 @@ export default function NoteBox() {
                 try {
                     const storyboardData = ProjectDataHandler.getStoryboard(project, selectedStoryboardId);
                     const loadedNote = storyboardData.note;
+                    console.log("loadedNote: ", loadedNote);
                     setValue(loadedNote)
                 }
                 catch (error) {

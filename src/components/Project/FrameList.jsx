@@ -60,15 +60,6 @@ const FrameList = () => {
         );
 
 
-
-    // React.useEffect(
-    //     () => {
-    //         // console.log("--------------usEffECT, framelIST: ", frameList, frameListString, JSON.parse(frameListString));
-    //         setFrameList(JSON.parse(frameListString))
-    //         // console.log("--------------usEffECT, framelIST: ", frameList);
-    //     }
-    // , [frameListString])
-
     const dispatch = useDispatch();
 
     const handleAddFrame = (e) => {

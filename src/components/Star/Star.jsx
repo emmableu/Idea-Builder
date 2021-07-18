@@ -12,7 +12,7 @@ const Star = (props) => {
     const [image] = useImage(axios.defaults.baseURL + starData.prototypeId);
     // // console.log("image: ", image);
     if (image !== undefined) {
-        starData.height = starData.width * image.height/image.width;
+        // starData.height = starData.width * image.height/image.width;
         image.crossOrigin = "Anonymous";
     }
     const imageRef = React.useRef(null);

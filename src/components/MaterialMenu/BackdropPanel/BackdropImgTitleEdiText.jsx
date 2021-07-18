@@ -57,7 +57,7 @@ const BackdropImgTitleEdiText = (props) => {
 
     const sliceBackdropName = useSelector(
         state => {
-            return state.project.value.backdropList().find(s => s._id === backdropId).name
+            return state.project.value.backdropList.find(s => s._id === backdropId).name
         }
     )
 

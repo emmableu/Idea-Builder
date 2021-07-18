@@ -16,15 +16,14 @@ import {StoryboardDataHandler} from "../../data/StoryboardData";
 
 const StarLayer = (props) => {
     const {storyboardId, frameId, updatedWidth} = props;
-    const [starList, setStarList] = React.useState([]);
     const dispatch = useDispatch();
 
     const selectedStar = useSelector(state => state.project.value.selectedId.starId);
 
-    const starListString = useSelector(state => {
-            if (state.project.value === null) return "[]";
-            if (storyboardId === "UNDEFINED") return "[]";
-            if (frameId === "UNDEFINED") return "[]";
+    const starList = useSelector(state => {
+            if (state.project.value === null) return [];
+            if (storyboardId === "UNDEFINED") return [];
+            if (frameId === "UNDEFINED") return [];
 
             // undefined can still happen when page reloads.
             try {
@@ -34,7 +33,7 @@ const StarLayer = (props) => {
             }
             catch (error) {
                 // console.log(error);
-                return "[]";
+                return [];
             }
         }
     );
@@ -54,12 +53,9 @@ const StarLayer = (props) => {
         }
     );
 
-    React.useEffect(()=> {
-        setStarList(JSON.parse(starListString));
-    }, [starListString])
 
     // const [imgSrc, setImgSrc] = React.useState();
-    const [backdropImg] = useImage(axios.defaults.baseURL + JSON.parse(backdropStar).prototypeId);
+    const [backdropImg] = useImage(axios.defaults.baseURL + backdropStar.prototypeId);
     if (backdropImg !== undefined) {
         backdropImg.crossOrigin = "Anonymous";
     }

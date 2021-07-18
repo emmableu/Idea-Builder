@@ -33,21 +33,12 @@ function StoryboardMenuListGroup() {
             items: []
         },
     };
-    const [columns, setColumns] = useState(initialColumns);
 
-    const storyboardMenu = useSelector(state => {
+    const columns = useSelector(state => {
         if (state.project.value === null) return;
-        return JSON.stringify(state.project.value.storyboardMenu);
+        return state.project.value.storyboardMenu;
     })
 
-    React.useEffect(()=> {
-
-        // // console.log("USEEFFECT!!!!!!!!!!!!!!!!!!!! COLUMNS: ", columns);
-        // // console.log("USEEFFECT!!!!!!!!!!!!!!!!!!!! storyboardListMenu: ", storyboardMenu);
-
-        setColumns(JSON.parse(storyboardMenu));
-
-    }, [storyboardMenu]);
 
 
     return (
