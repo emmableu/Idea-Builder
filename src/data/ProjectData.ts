@@ -27,27 +27,9 @@ export interface ProjectData {
 }
 
 export class ProjectDataHandler {
-    static initializeProject(
-        _id?: string,
-        name?:string,
-        storyboardList?:Array<StoryboardData>,
-        actorList?:Array<ActorData>,
-        backdropList?:Array<BackdropData>,
-        storyboardMenu?:{
-            "final": {
-                "name": string,
-                "items": Array<{ "_id": string, "name": string}>
-            }
-            "draft":  {
-                "name": string,
-                "items": Array<{ "_id": string, "name": string}>
-            }
-        },
-        templateList?: Array<string>,
-        selectedId?: SelectedIdData
-
-    ) : ProjectData
+    static initializeProject( importedData:any ) : ProjectData
     {
+        const {_id, name, storyboardList, actorList, backdropList, storyboardMenu, templateList, selectedId} = importedData;
         const projectId = _id? _id:UUID.v4();
         const projectName = name? name:"Untitled";
         const projectStoryboardList = storyboardList? storyboardList:[StoryboardDataHandler.initializeStoryboard()];

@@ -14,9 +14,9 @@ import {SelectedIdDataHandler} from "../../data/SelectedIdData";
 
 const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
-    async (text, thunkAPI) => {
-        const {newProjectId, newProjectName} = JSON.parse(text);
-        const projectData = ProjectDataHandler.initializeProject(newProjectId, newProjectName);
+    async (obj, thunkAPI) => {
+        const {_id, name} = obj;
+        const projectData = ProjectDataHandler.initializeProject({_id, name});
         console.log('projectData: ', projectData);
         const response = await ProjectAPI.insertProject(Cookies.get("userId"), projectData);
         return response.status;
@@ -204,7 +204,6 @@ const addFrame = createAsyncThunk(
     'project/addFrame',
     async (payload, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
-
         const project = getState().project.value;
         console.log("project: ", project);
         const storyboardId = project.selectedId.storyboardId;
@@ -233,11 +232,12 @@ const addFrame = createAsyncThunk(
             newId: frameId,
         })));
         dispatch(setSelectedFrameId(frameId));
-        console.log("===============frameList: ", frameList);
+        const newFrameList = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId).frameList;
+        console.log("newFrameList: ", newFrameList);
         const response = await ProjectAPI.insertFrameAndReplaceFrameListInDatabase({
             storyboardId,
             frameId,
-            frameList,
+            frameList: newFrameList,
         });
         return response.status;
     }
@@ -709,7 +709,7 @@ export const projectSlice = createSlice({
 
         addFrameInMemory: {
             reducer: (state, action) => {
-                const storyboard = ProjectDataHandler.getStoryboard(state.value,action.payload.storyboardId);
+                const storyboard = ProjectDataHandler.getStoryboard(state.value, action.payload.storyboardId);
                 StoryboardDataHandler.addFrame(
                     storyboard,
                     action.payload.newId,
@@ -1018,6 +1018,7 @@ export const projectSlice = createSlice({
     },
     extraReducers: {
         [loadProjectFromDatabase.fulfilled]: (state, action) => {
+            console.log("action payload", action.payload);
             state.value = ProjectDataHandler.initializeProject(action.payload);
             console.log("parsed project: ", state.value);
         },

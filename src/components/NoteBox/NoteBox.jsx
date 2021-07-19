@@ -58,7 +58,7 @@ export default function NoteBox() {
 
     const saveNoteDebounce = AwesomeDebouncePromise(
         text => dispatch(saveNote(text)),
-        500);
+        5000);
 
     const onFieldTextChange = async (text) => {
         setValue(text);

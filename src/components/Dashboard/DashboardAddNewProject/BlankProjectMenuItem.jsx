@@ -28,9 +28,7 @@ const BlankProjectMenuItem = props => {
         const newProjectId = UUID.v4();
         try {
             const originalPromiseResult = await dispatch(
-                insertEmptyProjectToDatabase(
-                    JSON.stringify({ newProjectId, newProjectName })
-                )
+                insertEmptyProjectToDatabase( { _id: newProjectId, name: newProjectName })
             ).unwrap();
             setIsModalVisible(false);
             setConfirmLoading(false);
