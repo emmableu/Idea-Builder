@@ -127,11 +127,17 @@ const globalConfig = {
                "state": "static/student/state/",
                "backdrop": "static/student/backdrop/",
                "frame": "static/student/frame/",
+               "userInput": "static/student/userInput/",
+               "text": "static/student/text/",
+               "resource": "static/student/resource/",
           },
           "sample": {
                "state": "static/sample/state/",
                "backdrop": "static/sample/backdrop/",
                "frame": "static/sample/frame/",
+               "userInput": "static/sample/userInput/",
+               "text": "static/sample/text/",
+               "resource": "static/sample/resource/",
           }
      }
 }

@@ -108,8 +108,8 @@ const setSelectedStarId = createAsyncThunk(
     'project/setSelectedStarId',
     async (starId, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
+        dispatch(setSelectedStarIdInMemory(starId));
         const project = getState().project.value;
-        SelectedIdDataHandler.setStarId(project.selectedId, starId);
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
@@ -119,10 +119,6 @@ const setSelectedStarId = createAsyncThunk(
         return response.status;
     }
 );
-
-
-
-
 
 
 /* The next section are about storyboards:
@@ -643,6 +639,12 @@ export const projectSlice = createSlice({
             }
         },
 
+        setSelectedStarIdInMemory : {
+            reducer: (state, action) => {
+                SelectedIdDataHandler.setStarId(state.value.selectedId, action.payload);
+            }
+        },
+
         /* The next section are about storyboards:
         */
 
@@ -999,6 +1001,64 @@ export const projectSlice = createSlice({
 
 
 
+        /* The next section are about textData in the panels:
+        */
+
+        addTextInMemory: {
+            reducer: (state, action) => {
+                // payload looks like {type: "message" | "say"}
+                state.value.textList.push({
+                    _id: globalConfig.imageServer.text.frame + UUID.v4() + ".png",
+                    type: action.payload.type,
+                    name: ""
+                });
+            }
+        },
+
+        deleteTextInMemory: {
+            reducer: (state, action) => {
+                const textIndex = state.value.textList.findIndex(b => b._id === action.payload);
+                state.value.textList.splice(textIndex, 1);
+            }
+        },
+
+        updateTextNameInMemory: {
+            reducer: (state, action) => {
+                // payload looks like {"_id": id , "name": name}
+                const textIndex = state.value.textList.findIndex(s => s._id === action.payload._id);
+                state.value.textList[textIndex].name = action.payload.name;
+            },
+        },
+
+
+
+        addResourceInMemory: {
+            reducer: (state, action) => {
+                // no action is needed
+                state.value.resourceList.push({
+                    _id: globalConfig.imageServer.resource.frame + UUID.v4() + ".png",
+                    name: ""
+                });
+            }
+        },
+
+        deleteResourceInMemory: {
+            reducer: (state, action) => {
+                const resourceIndex = state.value.resourceList.findIndex(b => b._id === action.payload);
+                state.value.resourceList.splice(resourceIndex, 1);
+            }
+        },
+
+        updateResourceValueInMemory: {
+            reducer: (state, action) => {
+                // payload looks like {"_id": id , "value": value}
+                const resourceIndex = state.value.resourceList.findIndex(s => s._id === action.payload._id);
+                state.value.resourceList[resourceIndex].name = action.payload.value;
+            },
+        },
+
+
+
 
 
 
@@ -1028,11 +1088,13 @@ export const projectSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
     updateNameInMemory, //project
-    setSelectedFrameIdInMemory, setSelectedStoryboardIdInMemory, //selectedId
+    setSelectedFrameIdInMemory, setSelectedStoryboardIdInMemory, setSelectedStarIdInMemory, //selectedId
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
     addStarInMemory, updateStarListInMemory, deleteStarInMemory, //star
     addBackdropStarInMemory, //backdropStar
     addTemplateStarInMemory, //templateStar
+    addTextInMemory, deleteTextInMemory, updateTextNameInMemory, //text
+    addResourceInMemory, deleteResourceInMemory, updateResourceValueInMemory, //resource
     addFrameInMemory, updateFrameListInMemory, //frame
     addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, //actor
     addStateInMemory, deleteStateInMemory, updateStateNameInMemory, //state

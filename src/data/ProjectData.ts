@@ -5,6 +5,7 @@ import {SelectedIdData, SelectedIdDataHandler} from "./SelectedIdData";
 import fileDownload from "js-file-download";
 import {FrameData, FrameDataHandler} from "./FrameData";
 import {StoryboardData, StoryboardDataHandler} from "./StoryboardData";
+import globalConfig from "../globalConfig";
 
 export interface ProjectData {
     _id: string;
@@ -24,12 +25,29 @@ export interface ProjectData {
     };
     templateList: Array<string>;
     selectedId: SelectedIdData;
+    textList: Array<{
+        _id: string;
+        type: string; //type can only be "say" or "message"
+        name: string;
+    }>;
+    variableList: Array<{
+        _id: string;
+        name: string;
+        operator: string; //can be +, -, =
+        value: string;
+    }>;
+    userInputList: Array<{ //user inputs are like key pressed, mouse moving, etc
+        _id: string; //this id is fixed for now because they are given by default
+        name: string; //this name is also fixed for now because this is given by default
+    }>;
 }
 
 export class ProjectDataHandler {
     static initializeProject( importedData:any ) : ProjectData
     {
-        const {_id, name, storyboardList, actorList, backdropList, storyboardMenu, templateList, selectedId} = importedData;
+        const {_id, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
+            selectedId, textList, variableList, userInputList,
+        } = importedData;
         const projectId = _id? _id:UUID.v4();
         const projectName = name? name:"Untitled";
         const projectStoryboardList = storyboardList? storyboardList:[StoryboardDataHandler.initializeStoryboard()];
@@ -68,6 +86,31 @@ export class ProjectDataHandler {
             projectStoryboardList[0].frameList[0]._id,
         )
 
+        const projectTextList = textList?textList:[];
+
+        const projectUserInputList = userInputList? userInputList:[
+            {
+                _id: globalConfig.imageServer.sample.userInput + "space-bar-3661045-3095465.png",
+                name: "space key pressed",
+            },
+            {
+                _id: globalConfig.imageServer.sample.userInput + "left-keyboard-arrow-key-direction-30505.png",
+                name: "left arrow key pressed",
+            },
+            {
+                _id: globalConfig.imageServer.sample.userInput + "right-keyboard-arrow-key-direction-30592.png",
+                name: "right arrow key pressed",
+            },
+            {
+                _id: globalConfig.imageServer.sample.userInput + "cursor-3537292-2960010.png",
+                name: "mouse clicked",
+            }
+        ];
+
+        const projectVariableList = variableList? variableList: [];
+
+        //variable changes to resources (e.g., should have icons, should have big text and character limit.
+
         return {
             _id: projectId,
             name: projectName,
@@ -77,6 +120,9 @@ export class ProjectDataHandler {
             storyboardMenu: projectStoryboardMenu,
             templateList: projectTemplateList,
             selectedId: projectSelectedId,
+            textList: projectTextList,
+            userInputList: projectUserInputList,
+            variableList: projectVariableList,
         }
     }
 

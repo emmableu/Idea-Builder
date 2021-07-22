@@ -14,7 +14,7 @@ const uploadButtonProps = {
     accept:"image/*",
 };
 
-const BackdropPanelCardUploadButton = (props) => {
+const BackdropPanelUploadButton = (props) => {
     const dispatch = useDispatch();
 
     const uploadImage = async options => {
@@ -49,4 +49,4 @@ const BackdropPanelCardUploadButton = (props) => {
     );
 };
 
-export default BackdropPanelCardUploadButton;
+export default BackdropPanelUploadButton;

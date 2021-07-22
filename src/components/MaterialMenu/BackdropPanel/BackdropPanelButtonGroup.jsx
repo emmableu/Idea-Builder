@@ -6,11 +6,11 @@ import {
     UploadOutlined
 } from '@ant-design/icons';
 import React from 'react';
-import BackdropPanelCardUploadButton from './BackdropPanelCardUploadButton';
+import BackdropPanelUploadButton from './BackdropPanelUploadButton';
 import {useDispatch} from "react-redux";
 import SearchDialog from "../../primitives/SearchDialog";
 
-const BackdropPanelCardButtonGroup = props => {
+const BackdropPanelButtonGroup = props => {
     const [searchDialogOpen, setSearchDialogOpen] = React.useState(false);
     const [searchLoading, setSearchLoading] = React.useState(false);
     const handleClickOpen = (e) => {setSearchDialogOpen(true)};
@@ -21,7 +21,7 @@ const BackdropPanelCardButtonGroup = props => {
     return (
         <>
             <div  style={{flex: "0 0 100px"}}>
-            <BackdropPanelCardUploadButton/>
+            <BackdropPanelUploadButton/>
             <Tooltip title="Search for state">
                 <Button type="link" shape="circle" size="large"
                         onClick= {handleClickOpen}
@@ -45,4 +45,4 @@ const BackdropPanelCardButtonGroup = props => {
     );
 };
 
-export default BackdropPanelCardButtonGroup;
+export default BackdropPanelButtonGroup;

@@ -29,7 +29,8 @@ const StarLayer = (props) => {
             try {
                 const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
                 const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
-                return frameData.starList;
+                //need to make a copy, otherwise changing props have side effects
+                return JSON.parse(JSON.stringify(frameData.starList));
             }
             catch (error) {
                 // console.log(error);
@@ -54,17 +55,11 @@ const StarLayer = (props) => {
     );
 
 
-    // const [imgSrc, setImgSrc] = React.useState();
     const [backdropImg] = useImage(axios.defaults.baseURL + backdropStar.prototypeId);
     if (backdropImg !== undefined) {
         backdropImg.crossOrigin = "Anonymous";
     }
-    // React.useEffect( () => {
-    //         // console.log("img src updated: ", axios.defaults.baseURL + backdropStar.prototypeId)
-    //         setImgSrc(axios.defaults.baseURL + backdropStar.prototypeId);
-    //     }
-    //     , [backdropStar._id]
-    // )
+
 
  return (
      <>

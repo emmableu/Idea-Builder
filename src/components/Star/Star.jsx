@@ -8,11 +8,10 @@ import {useDispatch} from "react-redux";
 const Star = (props) => {
     const {starData, isSelected, onSelect, onChange} = props;
     // // console.log('starData: ', starData);
-    // const [image] = useImage('images/' + actorImg.filter((e) => e.name===starData.name)[0].imgSrc);
     const [image] = useImage(axios.defaults.baseURL + starData.prototypeId);
     // // console.log("image: ", image);
     if (image !== undefined) {
-        // starData.height = starData.width * image.height/image.width;
+        starData.height = starData.width * image.height/image.width;
         image.crossOrigin = "Anonymous";
     }
     const imageRef = React.useRef(null);

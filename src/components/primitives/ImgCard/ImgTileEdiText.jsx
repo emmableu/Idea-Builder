@@ -3,8 +3,6 @@ import EdiText from "react-editext";
 import styled from 'styled-components';
 import {IconButton, Tooltip} from "@material-ui/core";
 import {Create} from "@material-ui/icons";
-import {updateBackdropName, updateStateName} from "../../../redux/features/projectSlice";
-import {useDispatch, useSelector} from "react-redux";
 
 
 const StyledEdiText = styled(EdiText)`
@@ -44,52 +42,36 @@ const StyledEdiText = styled(EdiText)`
 
 const EditButton = () => (
     <Tooltip title="rename">
-            <Create/>
+        <Create/>
     </Tooltip>
 )
 
-const BackdropImgTitleEdiText = (props) => {
-    const {backdropId} = props;
-    const dispatch = useDispatch();
+const ImgTileEdiText = (props) => {
+    const {_id, name, handleSave} = props;
     const [editing, setEditing] = useState(false);
-    const [value, setValue] = useState("backdrop");
-
-
-    const sliceBackdropName = useSelector(
-        state => {
-            return state.project.value.backdropList.find(s => s._id === backdropId).name
-        }
-    )
-
-    React.useEffect(() => {
-        setValue(sliceBackdropName);
-    }, [sliceBackdropName]);
-
-    const handleSave = (value) => {
-        // // console.log(value);
-        setValue(value);
-        dispatch(
-            updateBackdropName({
-                "backdropId": backdropId,
-                "backdropName": value
-            }));
-    };
+    const [value, setValue] = useState(name);
 
     return (
-        <StyledEdiText
+        <>
+       { (handleSave !== null) &&
+       <StyledEdiText
             submitOnUnfocus
             submitOnEnter
             cancelOnEscape
             value={value}
             type="text"
-            onSave={handleSave}
+            onSave={ value =>
+                handleSave({_id, name:value})}
             editButtonContent={<EditButton/>}
             editing={editing}
             showButtonsOnHover
             hideIcons={true}
-        />
+        />}
+        { (handleSave === null) &&
+        <span> {name} </span>}
+        </>
     );
 }
 
 
-export default BackdropImgTitleEdiText;
+export default ImgTileEdiText;
