@@ -6,7 +6,7 @@ import globalConfig from "../../globalConfig";
 import StoryboardTitleBar from "../StoryboardTitleBar/StoryboardTitleBar";
 import {MaterialMenu} from "../MaterialMenu/MaterialMenu";
 import FrameCardContainer from "../Frame/FrameCardContainer";
-import FrameList from "../Project/FrameList";
+import FrameList from "../FrameList/FrameList";
 import NoteBox from "../NoteBox/NoteBox";
 import FrameCardOptions from "../Frame/FrameCardOptions";
 

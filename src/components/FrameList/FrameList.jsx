@@ -33,6 +33,19 @@ const useStyles = makeStyles((theme) => ({
         height: "100%",
         margin: "0 0",
         width: "100%",
+        "--background": "rgba(0, 0, 0, .15)",
+        "--size": "7px",
+        "backgroundImage":`
+                linear-gradient(to right, var(--background) var(--size), transparent var(--size)),
+                linear-gradient(to bottom, var(--background) var(--size), transparent var(--size)),
+                linear-gradient(to right, var(--background) var(--size), transparent var(--size)),
+                linear-gradient(to bottom, var(--background) var(--size), transparent var(--size)),
+                linear-gradient(to bottom, transparent var(--size), var(--background) var(--size))`,
+        "backgroundSize": `calc(var(--size) * 2) var(--size), calc(var(--size) * 2) var(--size), calc(var(--size) * 2) var(--size), calc(var(--size) * 2) var(--size), 100% calc(100% - var(--size) * 3)`,
+        "backgroundRepeat": "repeat-x",
+        "backgroundPosition": "0 var(--size), top left, 0 calc(100% - var(--size)), bottom left, 0 var(--size)",
+        "padding": "calc(var(--size) * 3) calc(var(--size) * 2.5)",
+        "boxSizing": "border-box",
     },
     paper: {
       height: globalConfig.responsiveSizeData.frameListHeight*0.75,
@@ -93,7 +106,8 @@ const FrameList = () => {
     }, [_id])
 
     return (<>
-                    <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3} className={classes.box}>
+                    <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3}
+                          className={classes.box}>
                         {frameList.map((frameData, i) => (
                             <Grid className={classes.grid} item key={i}>
                                 <Card variant="outlined"
