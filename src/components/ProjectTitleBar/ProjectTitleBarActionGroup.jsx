@@ -1,5 +1,5 @@
 import {Dropdown, Menu} from "antd";
-import {IconButton, Tooltip} from "@material-ui/core";
+import {IconButton, makeStyles, Tooltip, withStyles} from "@material-ui/core";
 import {Home, SaveAlt, InsertDriveFile, Visibility, Edit} from "@material-ui/icons";
 import React from "react";
 import {CopyOutlined, DeleteOutlined, DownloadOutlined, ImportOutlined} from "@ant-design/icons";
@@ -12,12 +12,54 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
 
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        width: 42,
+        height: 26,
+        padding: 0,
+        margin: theme.spacing(1),
+    },
+    switchBase: {
+        padding: 1,
+        '&$checked': {
+            transform: 'translateX(16px)',
+            color: theme.palette.common.white,
+            '& + $track': {
+                backgroundColor: globalConfig.storyboardMenuColor.titleBar.background,
+                opacity: 1,
+                border: 'none',
+            },
+        },
+        '&$focusVisible $thumb': {
+            color: globalConfig.storyboardMenuColor.titleBar.background,
+            border: '6px solid #fff',
+        },
+    },
+    thumb: {
+        width: 24,
+        height: 24,
+    },
+    track: {
+        borderRadius: 26 / 2,
+        border: `1px solid ${theme.palette.grey[400]}`,
+        backgroundColor: theme.palette.grey[50],
+        opacity: 1,
+        transition: theme.transitions.create(['background-color', 'border']),
+    },
+    checked: {},
+    focusVisible: {},
+}))
 
 const ProjectTitleBarActionGroup  = () => {
+    const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
     const mode = useSelector(state => state.project.value.mode);
+
 
     const backToHome = () => {
         history.push(globalConfig.routes.dashboard);
@@ -26,35 +68,34 @@ const ProjectTitleBarActionGroup  = () => {
         dispatch(download());
     }
     const handleChange = (event) => {
-        setMode(event.target.value);
+        if (event.target.checked === true) {
+            dispatch(setMode("view"));
+        }
+        else {
+            dispatch(setMode("edit"));
+        }
     };
 
     return (
         <>
-            {/*{<Tooltip title="Change to view mode">*/}
-            {/*    <IconButton*/}
-            {/*        aria-label="view"*/}
-            {/*        size="medium"*/}
-            {/*        onClick={dispatch(setMode("view"))}*/}
-            {/*        >*/}
-            {/*        */}
-            {/*    </IconButton>*/}
-            {/*</Tooltip>}*/}
 
-            <FormControl>
-                <InputLabel id="demo-simple-select-label">
 
-                </InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={mode}
+            <FormControlLabel
+                control={<Switch
+                    focusVisibleClassName={classes.focusVisible}
+                    checked={mode==="view"}
                     onChange={handleChange}
-                >
-                    <MenuItem value={"view"}><Visibility style={{color: "white"}} /></MenuItem>
-                    <MenuItem value={"edit"}><Edit style={{color: "white"}} /></MenuItem>
-                </Select>
-            </FormControl>
+                    name="mode"
+                    classes={{
+                        root: classes.root,
+                        switchBase: classes.switchBase,
+                        thumb: classes.thumb,
+                        track: classes.track,
+                        checked: classes.checked,
+                    }}
+                />}
+                label="Viewing"
+            />
 
             <Tooltip title="Save to computer">
                 <IconButton
