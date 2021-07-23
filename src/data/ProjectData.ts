@@ -10,6 +10,7 @@ import globalConfig from "../globalConfig";
 export interface ProjectData {
     _id: string;
     name: string;
+    mode: string; //mode is the mode the ACTUAL OWNER last opened with. For non-OWNDERs, the mode in system is always view. mode is either view or edit.
     storyboardList: Array<StoryboardData>;
     actorList: Array<ActorData>;
     backdropList: Array<BackdropData>;
@@ -46,7 +47,7 @@ export interface ProjectData {
 export class ProjectDataHandler {
     static initializeProject( importedData:any ) : ProjectData
     {
-        const {_id, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
+        const {_id, name, mode, storyboardList, actorList, backdropList, storyboardMenu, templateList,
             selectedId, speechBubbleList, variableList, userInputList,
         } = importedData;
         const projectId = _id? _id:UUID.v4();
@@ -115,6 +116,7 @@ export class ProjectDataHandler {
         return {
             _id: projectId,
             name: projectName,
+            mode: mode?mode:"edit",
             storyboardList: projectStoryboardList,
             actorList: projectActorList,
             backdropList: projectBackdropList,

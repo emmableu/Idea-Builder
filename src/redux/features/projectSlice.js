@@ -617,6 +617,12 @@ export const projectSlice = createSlice({
             }
         },
 
+        setMode: {
+            reducer: (state, action) => {
+                state.value.mode = action.payload;
+            }
+        },
+
         /* The next section is about selected IDs */
 //         // SelectedIdDataHandler.setStoryboardId(project.selectedId, storyboardData);
 //         dispatch(setSelectedFrameId(storyboardData));
@@ -1095,7 +1101,7 @@ export const projectSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
-    updateNameInMemory, //project
+    updateNameInMemory, setMode,//project
     setSelectedFrameIdInMemory, setSelectedStoryboardIdInMemory, setSelectedStarIdInMemory, //selectedId
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
     addStarInMemory, updateStarListInMemory, deleteStarInMemory, //star
