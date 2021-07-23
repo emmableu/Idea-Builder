@@ -1,25 +1,18 @@
 import './App.less';
 import React, { useContext, createContext, useState, useEffect } from "react";
 import { hot } from 'react-hot-loader';
-import ProjectDrawer from './components/Project/ProjectDrawer.jsx';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import Dashboard from './components/Dashboard/Dashboard';
-import { ProjectData } from './data/ProjectData';
 import { useDispatch } from 'react-redux';
-import { importProject } from './redux/features/projectSlice';
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
-  Link,
   Redirect,
-  useHistory,
-  useLocation
 } from "react-router-dom";
 import LoginPage from './components/LoginPage/LoginPage'
 import  {authContext, useAuth, ProvideAuth, useProvideAuth, PrivateRoute} from "./hooks/useAuth";
-import Cookies from "js-cookie"
 import globalConfig from "./globalConfig";
+import {ChakraProvider} from "@chakra-ui/react";
 
 const theme = createMuiTheme({
   typography: {

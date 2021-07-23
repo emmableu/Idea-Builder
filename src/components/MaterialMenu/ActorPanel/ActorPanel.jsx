@@ -56,7 +56,7 @@ const getListStyle = isDraggingOver => ({
     position: 'relative',
 });
 
-const getBoxStyle = () => ({
+export const getBoxStyle = () => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

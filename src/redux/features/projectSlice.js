@@ -1004,32 +1004,40 @@ export const projectSlice = createSlice({
         /* The next section are about textData in the panels:
         */
 
-        addTextInMemory: {
+        addSpeechBubbleInMemory: {
             reducer: (state, action) => {
                 // payload looks like {type: "message" | "say"}
-                state.value.textList.push({
+                state.value.speechBubbleList.push({
                     _id: globalConfig.imageServer.text.frame + UUID.v4() + ".png",
-                    type: action.payload.type,
+                    who: action.payload.who,
                     name: ""
                 });
             }
         },
 
-        deleteTextInMemory: {
+        deleteSpeechBubbleInMemory: {
             reducer: (state, action) => {
-                const textIndex = state.value.textList.findIndex(b => b._id === action.payload);
-                state.value.textList.splice(textIndex, 1);
+                const textIndex = state.value.speechBubbleList.findIndex(b => b._id === action.payload);
+                state.value.speechBubbleList.splice(textIndex, 1);
             }
         },
 
-        updateTextNameInMemory: {
+        updateSpeechBubbleNameInMemory: {
             reducer: (state, action) => {
                 // payload looks like {"_id": id , "name": name}
-                const textIndex = state.value.textList.findIndex(s => s._id === action.payload._id);
-                state.value.textList[textIndex].name = action.payload.name;
+                const textIndex = state.value.speechBubbleList.findIndex(s => s._id === action.payload._id);
+                state.value.speechBubbleList[textIndex].name = action.payload.name;
             },
         },
 
+
+        updateSpeechBubbleWhoInMemory: {
+            reducer: (state, action) => {
+                // payload looks like {"_id": id , "name": name}
+                const textIndex = state.value.speechBubbleList.findIndex(s => s._id === action.payload._id);
+                state.value.speechBubbleList[textIndex].who = action.payload.who;
+            },
+        },
 
 
         addResourceInMemory: {
@@ -1093,7 +1101,7 @@ export const {
     addStarInMemory, updateStarListInMemory, deleteStarInMemory, //star
     addBackdropStarInMemory, //backdropStar
     addTemplateStarInMemory, //templateStar
-    addTextInMemory, deleteTextInMemory, updateTextNameInMemory, //text
+    addSpeechBubbleInMemory, deleteSpeechBubbleInMemory, updateTextNameInMemory, //text
     addResourceInMemory, deleteResourceInMemory, updateResourceValueInMemory, //resource
     addFrameInMemory, updateFrameListInMemory, //frame
     addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, //actor

@@ -3,12 +3,13 @@ import ActorPanel from "./ActorPanel/ActorPanel";
 import React from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import {Panorama, Theaters, Widgets} from "@material-ui/icons";
+import {Panorama, Theaters, Face, Widgets, Mouse, Chat, ExposurePlus1} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core";
 import globalConfig from "../../globalConfig";
 import BackdropPanel from "./BackdropPanel/BackdropPanel";
 import TemplatePanel from "./TemplatePanel/TemplatePanel";
 import UserInputPanel from "./UserInputPanel/UserInputPanel";
+import {SpeechBubblePanel} from "./SpeechBubblePanel/SpeechBubblePanel";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 function TabPanel(props) {
     const classes = useStyles();
-    const { children, value, index, ...other } = props;
+    const { children, value, tabData, index, ...other } = props;
 
     return (
         <div
@@ -54,19 +55,17 @@ function TabPanel(props) {
             {...other}
         >
             <Box>
-                {index === 0 && <ActorPanel/>}
-                {index === 1 && <BackdropPanel/>}
-                {index === 2 && <TemplatePanel/>}
-                {index === 3 && <UserInputPanel/>}
+                {tabData.panel}
             </Box>
         </div>
     );
 }
 
-function a11yProps(index) {
+function a11yProps(tabData, index) {
     return {
         id: `vertical-tab-${index}`,
-        "aria-controls": `vertical-tabpanel-${index}`
+        "aria-controls": `vertical-tabpanel-${index}`,
+        tabData: tabData,
     };
 }
 
@@ -78,6 +77,44 @@ export const MaterialMenu = () => {
         setValue(newValue);
     };
 
+    const tabList = [
+        {
+            label: "Actors",
+            icon: <Face/>,
+            panel: <ActorPanel/>
+        },
+        {
+            label: "Backdrops",
+            icon: <Panorama/>,
+            panel: <BackdropPanel/>
+        },
+        {
+            label: "UI Widgets",
+            icon: <Widgets/>,
+            panel: <div />
+        },
+        {
+            label: "Keyboard & Mouse",
+            icon: <Mouse/>,
+            panel: <UserInputPanel />
+        },
+        {
+            label: "Speech Bubbles",
+            icon: <Chat/>,
+            panel: <SpeechBubblePanel />
+        },
+        {
+            label: "Resources",
+            icon: <ExposurePlus1/>,
+            panel: <div />
+        },
+        {
+            label: "Templates",
+            icon: <Theaters/>,
+            panel: <TemplatePanel />
+        },
+    ];
+
     return (
         <div className={classes.root}>
             <Tabs
@@ -88,20 +125,19 @@ export const MaterialMenu = () => {
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
             >
-                <Tab icon={<Widgets />} label="Actors" {...a11yProps(0)} />
-                <Tab icon={<Panorama/>} label="Backdrops" {...a11yProps(1)} />
-                <Tab icon={<Theaters/>} label="Templates" {...a11yProps(2)} />
-                <Tab icon={<Widgets/>} label="User Inputs" {...a11yProps(3)} />
-
+                {tabList.map(
+                    (tabData, index) =>
+                        (<Tab icon={tabData.icon} label={tabData.label} {...a11yProps(index)}/>)
+                            )
+                    }
             </Tabs>
-            <TabPanel value={value} index={0}>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-            </TabPanel>
-            <TabPanel value={value} index={3}>
-            </TabPanel>
+            {tabList.map(
+                (tabData, i) => (<TabPanel value={value}
+                                index={i}
+                                tabData={tabData}
+                >
+                </TabPanel>)
+            )}
         </div>
     );
 }

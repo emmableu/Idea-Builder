@@ -20,12 +20,12 @@ const UserInputPanel = (props) => {
 
     return (
         <ImgCard
-            title = "User Inputs"
+            title = "Keyboard and mouse"
             type = "input"
             // buttonGroup={<UserInputPanelButtonGroup/>}
             buttonGroup={null}
             dataList = {userInputList}
-            imgWidth={7}
+            imgWidth={5}
             handleSave={null}
             handleDelete={null}
             handleUse={handleUse}

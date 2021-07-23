@@ -25,9 +25,10 @@ export interface ProjectData {
     };
     templateList: Array<string>;
     selectedId: SelectedIdData;
-    textList: Array<{
+    speechBubbleList: Array<{
         _id: string;
-        type: string; //type can only be "say" or "message"
+        who: string; //if it's actor's message, should include "WHO" says
+        direction: string; //direction can be left or right.
         name: string;
     }>;
     variableList: Array<{
@@ -46,7 +47,7 @@ export class ProjectDataHandler {
     static initializeProject( importedData:any ) : ProjectData
     {
         const {_id, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
-            selectedId, textList, variableList, userInputList,
+            selectedId, speechBubbleList, variableList, userInputList,
         } = importedData;
         const projectId = _id? _id:UUID.v4();
         const projectName = name? name:"Untitled";
@@ -86,7 +87,7 @@ export class ProjectDataHandler {
             projectStoryboardList[0].frameList[0]._id,
         )
 
-        const projectTextList = textList?textList:[];
+        const projectSpeechBubbleList = speechBubbleList?speechBubbleList:[];
 
         const projectUserInputList = userInputList? userInputList:[
             {
@@ -109,7 +110,7 @@ export class ProjectDataHandler {
 
         const projectVariableList = variableList? variableList: [];
 
-        //variable changes to resources (e.g., should have icons, should have big text and character limit.
+        //variable changes to resources (e.g., should have icons, should have big speechBubble and character limit.
 
         return {
             _id: projectId,
@@ -120,7 +121,7 @@ export class ProjectDataHandler {
             storyboardMenu: projectStoryboardMenu,
             templateList: projectTemplateList,
             selectedId: projectSelectedId,
-            textList: projectTextList,
+            speechBubbleList: projectSpeechBubbleList,
             userInputList: projectUserInputList,
             variableList: projectVariableList,
         }
@@ -164,8 +165,8 @@ export class ProjectDataHandler {
     }
 
 
-    static updateStoryboardOrder(projectData: ProjectData, text:string) {
-        const result = JSON.parse(text);
+    static updateStoryboardOrder(projectData: ProjectData, speechBubble:string) {
+        const result = JSON.parse(speechBubble);
         console.log("result: ", result);
         if (!result.destination) return;
         const { source, destination } = result;
