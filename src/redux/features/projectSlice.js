@@ -367,19 +367,19 @@ const addBackdropStar = createAsyncThunk(
         const state = getState();
         const storyboardId = state.project.value.selectedId.storyboardId;
         const frameId = state.project.value.selectedId.frameId
-        console.log("storyboardId: ", storyboardId)
-        console.log("frameId: ", frameId)
         if (storyboardId === null || frameId === null) {return;}
         if (storyboardId === "UNDEFINED" || frameId === "UNDEFINED") {return;}
         dispatch(addBackdropStarInMemory(JSON.stringify({
             storyboardId, frameId, prototypeId,
         })));
+        //the stage needs time to update the frame, so this update user action counter will fire another time to ensure it is triggered after the frame backdrop is updated.
         dispatch(updateUserActionCounter());
+        setTimeout(() => {
+            dispatch(updateUserActionCounter());
+        }, 500);
         const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const backdropStar =  frameData.backdropStar;
-
-        //sometimes the first dispatch does not work, because the actor is not yet fully updated on the canvas.
         const response = await ProjectAPI.replaceBackdropStarInDatabase({
             frameId,
             backdropStar

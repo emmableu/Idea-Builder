@@ -60,6 +60,10 @@ const StarLayer = (props) => {
         backdropImg.crossOrigin = "Anonymous";
     }
 
+    const selectStar = async (starId) => {
+        dispatch(setSelectedStarId(starId));
+    }
+
 
  return (
      <>
@@ -74,10 +78,10 @@ const StarLayer = (props) => {
                          width={globalConfig.noScaleWidth}
                          height={globalConfig.noScaleWidth*3/4}
                          onClick={(e) => {
-                             dispatch(setSelectedStarId("UNDEFINED"));
+                             selectStar("UNDEFINED");
                          }}
                          onTap={(e) => {
-                             dispatch(setSelectedStarId("UNDEFINED"));
+                             selectStar("UNDEFINED");
                          }}
                      />
                  )
@@ -88,7 +92,7 @@ const StarLayer = (props) => {
                          starData={img}
                          isSelected={img._id === selectedStar}
                          onSelect={() => {
-                             dispatch(setSelectedStarId(img._id));
+                             selectStar(img._id);
                          }}
                          onChange={(newAttrs) => {
                              const rects = starList.slice();
