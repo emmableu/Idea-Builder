@@ -1,18 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import { Menu, Dropdown } from 'antd';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import {useDispatch} from "react-redux";
 import {addBackdrop, addStar, addState, deleteState} from "../../redux/features/projectSlice";
 import {IconButton} from "@material-ui/core";
-import MoreIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import {ArrowForward, DeleteOutlined, Add} from "@material-ui/icons";
-import Fab from "@material-ui/core/Fab";
+import {Add} from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
+import LazyLoad from 'react-lazyload';
 
 const useStyles = makeStyles({
     root: {
@@ -36,9 +31,6 @@ const useStyles = makeStyles({
         objectFit: 'contain',
         width: '100%',
         height: '100%',
-
-
-
     },
     divOverlap: {
         position: "absolute",
@@ -107,7 +99,8 @@ const SearchDialogImgCard = (props) =>  {
         <Card
             variant="outlined"
             className={classes.root}>
-            {/*<Dropdown overlay={menu(stateId)} trigger={['contextMenu']}>*/}
+            <LazyLoad>
+
             <CardMedia className={classes.media}
                        onMouseEnter={() => {setOnHover(true)}}
                        onMouseLeave={() =>{ setOnHover(false)}}
@@ -134,10 +127,12 @@ const SearchDialogImgCard = (props) =>  {
                     </div>
                 </div>
             </CardMedia>
+            </LazyLoad>
             <div style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent:"center"
+                justifyContent:"center",
+                height: "40px"
             }}>
                 <span>{getName()}</span>
             </div>
