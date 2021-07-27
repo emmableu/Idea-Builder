@@ -99,7 +99,7 @@ const SearchDialogImgCard = (props) =>  {
         <Card
             variant="outlined"
             className={classes.root}>
-            <LazyLoad>
+            <LazyLoad height="100%">
 
             <CardMedia className={classes.media}
                        onMouseEnter={() => {setOnHover(true)}}

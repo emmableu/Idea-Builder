@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback, useEffect} from 'react'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -8,6 +8,9 @@ import globalConfig from "../../globalConfig";
 import axios from "../../axiosConfig";
 import {Grid} from "@material-ui/core";
 import SearchDialogImgCard from "./SearchDialogImgCard";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+
 
 const SearchDialog = (props) => {
     const {_id, searchDialogOpen, handleClose, type, searchLoading, setSearchLoading} = props;
@@ -18,6 +21,8 @@ const SearchDialog = (props) => {
         + globalConfig.responsiveSizeData.actorDrawerWidth;
     const [imgList ,setImgList] = React.useState([]);
     const [page, setPage] = React.useState(0);
+    const [hasMore, setHasMore] = React.useState(true);
+    const fullLength = 320;
 
     React.useEffect(
         () => {
@@ -27,12 +32,55 @@ const SearchDialog = (props) => {
                 url: `/sample_${type}_id_list/get/?page=${page}`,
             }).then(
                 res => {
-                    setImgList(res.data.sort());
+                    setImgList(res.data);
                     setSearchLoading(false);
                 }
             )
         }, [searchDialogOpen]
     )
+
+    const fetchMoreData = () => {
+        if (imgList.length >= fullLength) {
+            setHasMore(false);
+            return;
+        }
+        setPage(page+1);
+        axios({
+            method: 'get',
+            url: `/sample_${type}_id_list/get/?page=${page}`,
+        }).then(
+            res => {
+                setImgList(imgList.concat(res.data));
+            }
+        )
+
+    };
+
+
+    const ImgRow = (props) => {
+        const {index} = props;
+        const imgSubList = imgList.slice(index*4, index*4+4);
+        return (
+            <Grid container spacing={1}>
+                {
+                    imgSubList.map(imgId => (
+                        <Grid
+                            item xs={3}
+                            key={imgId}
+                        >
+                            <SearchDialogImgCard
+                                type={type}
+                                _id={_id}
+                                imgId={imgId}
+                                imgSrc={axios.defaults.baseURL + imgId}
+                                heightToWidthRatio={'75%'}
+                            />
+                        </Grid>
+                    ))
+                }
+            </Grid>
+        );
+    }
 
     return (
         <div>
@@ -52,24 +100,25 @@ const SearchDialog = (props) => {
                 {type === "state" && <DialogTitle id="dialog-title">Actor States</DialogTitle>}
                 {type === "backdrop" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}
                 <DialogContent>
-                    <Grid container spacing={1} >
-                        {imgList.map(imgId => (
-                            <>
-                                <Grid
-                                    item xs={3}
-                                    key={imgId}
-                                >
-                                    <SearchDialogImgCard
-                                        type={type}
-                                        _id={_id}
-                                        imgId={imgId}
-                                        imgSrc={axios.defaults.baseURL + imgId}
-                                        heightToWidthRatio={'75%'}
-                                    />
-                                </Grid>
-                            </>
-                        ))}
-                    </Grid>
+                    <InfiniteScroll
+                        dataLength={Math.floor(imgList.length/4)}
+                        next={fetchMoreData}
+                        hasMore={hasMore}
+                        loader={<h4>Loading...</h4>}
+                        height={400}
+                        endMessage={
+                            <p style={{ textAlign: "center" }}>
+                                <b>Yay! You have seen it all</b>
+                            </p>
+                        }
+                    >
+                        {[...Array(Math.floor(imgList.length/4)).keys()].map(
+                            index => (
+                                <ImgRow
+                                    index={index} />
+                            )
+                        )}
+                    </InfiniteScroll>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
