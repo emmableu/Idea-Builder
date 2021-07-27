@@ -3,14 +3,20 @@ import React from "react";
 import ImgCard from "../../primitives/ImgCard/ImgCard";
 import {useDispatch, useSelector} from "react-redux";
 import {addBackdropStar, deleteBackdrop, updateBackdropName} from "../../../redux/features/projectSlice";
+import { connect } from 'react-redux';
 
 
+const mapStateToProps = (state) => {
+    return {
+        backdropList: state.project.value.backdropList
+    };
+};
 
 const BackdropPanel = (props) => {
-    //, buttonGroup, dataList, imgWidth, handleSave, handleUse, handleDelete
+    const {backdropList} = props;
     const dispatch = useDispatch();
-    const backdropList = useSelector(state =>{
-        return state.project.value.backdropList});
+    // const backdropList = useSelector(state =>{
+    //     return state.project.value.backdropList});
 
     const handleSave = (data) => {
         const {_id, name} = data;
@@ -46,12 +52,4 @@ const BackdropPanel = (props) => {
     )
 };
 
-export default BackdropPanel;
-// {/*<Card*/}
-// {/*    title="My backdrops"*/}
-// {/*    size="small"*/}
-// {/*    style={{ width: "100%" }}*/}
-// {/*    extra={<ActorPanelButtonGroup*/}
-// {/*        {...props}/>}>*/}
-// {/*    <BackdropPanelContent/>*/}
-// {/*</Card>*/}
+export default connect(mapStateToProps)(BackdropPanel);
