@@ -54,7 +54,14 @@ function TabPanel(props) {
             aria-labelledby={`vertical-tab-${index}`}
             {...other}
         >
-            <Box>
+            <Box
+                style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent:"center",
+                    padding: "0px 5px",
+                }}
+            >
                 {tabData.panel}
             </Box>
         </div>
@@ -132,7 +139,8 @@ export const MaterialMenu = () => {
                     }
             </Tabs>
             {tabList.map(
-                (tabData, i) => (<TabPanel value={value}
+                (tabData, i) => (<TabPanel
+                                value={value}
                                 index={i}
                                 tabData={tabData}
                 >

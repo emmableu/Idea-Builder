@@ -6,22 +6,12 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import Paper from '@material-ui/core/Paper'
 import globalConfig from "../../globalConfig";
 import axios from "../../axiosConfig";
 import {Grid} from "@material-ui/core";
-import ActorPanelCardContentImgTile from "../MaterialMenu/ActorPanel/ActorPanelCard/ActorPanelCardContentImgTile";
 import SearchDialogImgCard from "./SearchDialogImgCard";
-import ActorImgCard from "../MaterialMenu/ActorPanel/ActorPanelCard/ActorImgCard";
-// import Draggable from 'react-draggable'
+import ReactList from 'react-list';
 
-// function PaperComponent(props) {
-//     return (
-//         <Draggable>
-//             <Paper {...props} />
-//         </Draggable>
-//     )
-// }
 
 const SearchDialog = (props) => {
     const {_id, searchDialogOpen, handleClose, type, searchLoading, setSearchLoading} = props;
@@ -47,6 +37,23 @@ const SearchDialog = (props) => {
         }, [searchDialogOpen]
     )
 
+    const renderItem = (index) => {
+        const imgId = imgList[index];
+        return (
+            <Grid
+                item xs={3}
+                key={imgId}
+            >
+                <SearchDialogImgCard
+                    type={type}
+                    _id={_id}
+                    imgId={imgId}
+                    imgSrc={axios.defaults.baseURL + imgId}
+                    heightToWidthRatio={'75%'}
+                />
+            </Grid>
+        );
+    }
         return (
             <div>
                 <Dialog
@@ -66,22 +73,11 @@ const SearchDialog = (props) => {
                     {type === "backdrop" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}
                     <DialogContent>
                         <Grid container spacing={1} >
-                            {imgList.map(imgId => (
-                                <>
-                                    <Grid
-                                        item xs={3}
-                                        key={imgId}
-                                    >
-                                        <SearchDialogImgCard
-                                            type={type}
-                                            _id={_id}
-                                            imgId={imgId}
-                                            imgSrc={axios.defaults.baseURL + imgId}
-                                            heightToWidthRatio={'75%'}
-                                        />
-                                    </Grid>
-                                </>
-                            ))}
+                            <ReactList
+                                itemRenderer={renderItem}
+                                length={imgList.length}
+                                type='uniform'
+                            />
                         </Grid>
                     </DialogContent>
                     <DialogActions>

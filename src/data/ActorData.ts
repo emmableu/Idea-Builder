@@ -8,12 +8,15 @@ export interface ActorData {
 }
 
 export class ActorDataHandler {
-
-    static initializeActor(actorId?: string, name?:string, order?:number, stateList?:Array<StateData>)
+    //actorId?: string, name?:string, order?:number, stateList?:Array<StateData>
+    static initializeActor(
+        actorData:any
+    )
         : ActorData
     {
+        const {_id, name, order, stateList} = actorData;
         return {
-            _id: actorId? actorId:UUID.v4(),
+            _id: _id? _id:UUID.v4(),
             name: name? name: "",
             stateList: stateList?stateList:[]
         };

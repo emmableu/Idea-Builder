@@ -42,7 +42,7 @@ const BackdropPanelUploadButton = (props) => {
                 customRequest={uploadImage}
                 {...uploadButtonProps}>
                 <Tooltip title="Upload">
-                    <Button type="link" shape="circle"  size="large" icon={<UploadOutlined />} />
+                    <Button type="link" shape="circle"  size="medium" icon={<UploadOutlined />} />
                 </Tooltip>
             </Upload>
         </>

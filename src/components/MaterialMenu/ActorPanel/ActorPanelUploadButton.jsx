@@ -1,9 +1,9 @@
 import React from 'react';
 import { Upload, message, Button, Tooltip } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import axios from "../../../../axiosConfig";
+import axios from "../../../axiosConfig"
 import {useDispatch} from "react-redux";
-import {addState} from "../../../../redux/features/projectSlice";
+import {addActor} from "../../../redux/features/projectSlice";
 
 const uploadButtonProps = {
     name: 'file',
@@ -14,9 +14,7 @@ const uploadButtonProps = {
     accept:"image/*",
 };
 
-const ActorPanelCardUploadButton = (props) => {
-    const {_id} = props;
-    const [progress, setProgress] = React.useState(0);
+const ActorPanelUploadButton = (props) => {
     const dispatch = useDispatch();
 
     const uploadImage = async options => {
@@ -33,28 +31,14 @@ const ActorPanelCardUploadButton = (props) => {
             data: fmData,
             config
         }).then(response => {
-            dispatch(addState(
-         {
-             actorId: _id,
-             stateId: response.data._id,
-                }
-            ))
-        })
-
-        // try {
-        //     const res = await axios.post(
-        //         'https://jsonplaceholder.typicode.com/posts',
-        //         fmData,
-        //         config
-        //     );
-        //     onSuccess('Ok');
-        //     // // console.log('server res: ', res);
-        // } catch (err) {
-        //     // // console.log('Eroor: ', err);
-        //     const error = new Error('Some error');
-        //     onError({ err });
-        // }
-    };
+            dispatch(addActor({
+                stateList: [{
+                    _id: response.data._id,
+                    name: "Untitled"
+                }]
+                }));
+            })
+        };
 
 
     return (
@@ -63,11 +47,11 @@ const ActorPanelCardUploadButton = (props) => {
                 customRequest={uploadImage}
                 {...uploadButtonProps}>
                 <Tooltip title="Upload">
-                    <Button type="link" shape="circle"  size="small" icon={<UploadOutlined />} />
+                    <Button type="link" shape="circle"  size="medium" icon={<UploadOutlined />} />
                 </Tooltip>
             </Upload>
         </>
     );
 };
 
-export default ActorPanelCardUploadButton;
+export default ActorPanelUploadButton;

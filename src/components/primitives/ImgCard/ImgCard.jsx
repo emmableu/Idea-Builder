@@ -28,6 +28,7 @@ const ImgCard = React.memo((props) => {
     return (
         <Card
             title={title}
+            bordered={false}
             size="small"
             style={{ width: "100%" }}
             // extra={<BackdropPanelButtonGroup

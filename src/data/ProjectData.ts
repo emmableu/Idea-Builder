@@ -53,7 +53,7 @@ export class ProjectDataHandler {
         const projectId = _id? _id:UUID.v4();
         const projectName = name? name:"Untitled";
         const projectStoryboardList = storyboardList? storyboardList:[StoryboardDataHandler.initializeStoryboard()];
-        const projectActorList = actorList? actorList:[ActorDataHandler.initializeActor()];
+        const projectActorList = actorList? actorList:[];
         const projectBackdropList = backdropList? backdropList:[];
 
         let projectTemplateList;

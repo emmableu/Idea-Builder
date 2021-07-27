@@ -51,7 +51,7 @@ export default BackdropPanel;
 // {/*    title="My backdrops"*/}
 // {/*    size="small"*/}
 // {/*    style={{ width: "100%" }}*/}
-// {/*    extra={<BackdropPanelButtonGroup*/}
+// {/*    extra={<ActorPanelButtonGroup*/}
 // {/*        {...props}/>}>*/}
 // {/*    <BackdropPanelContent/>*/}
 // {/*</Card>*/}

@@ -23,7 +23,7 @@ const BackdropPanelButtonGroup = props => {
             <div  style={{flex: "0 0 100px"}}>
             <BackdropPanelUploadButton/>
             <Tooltip title="Search for state">
-                <Button type="link" shape="circle" size="large"
+                <Button type="link" shape="circle" size="medium"
                         onClick= {handleClickOpen}
                         loading={searchLoading}
                         icon={<SearchOutlined />} />
