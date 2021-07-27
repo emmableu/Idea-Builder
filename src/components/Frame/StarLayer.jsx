@@ -48,7 +48,7 @@ const StarLayer = (props) => {
             catch (error) {
                 // console.log(error);
                     return JSON.stringify({
-                        _id: "EMPTY", prototypeId: "EMPTY"
+                        _id: "UNDEFINED", prototypeId: "UNDEFINED"
                     })
             }
         }
@@ -66,7 +66,7 @@ const StarLayer = (props) => {
          <Layer
          >
              {
-                 backdropStar._id !== "EMPTY" && (
+                 backdropStar._id !== "UNDEFINED" && (
                      <Image
                          image={backdropImg}
                          key={backdropStar._id}

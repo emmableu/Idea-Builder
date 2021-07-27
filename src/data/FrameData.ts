@@ -23,8 +23,8 @@ export class FrameDataHandler{
     {
         const frameId = _id? _id:globalConfig.imageServer.student.frame + UUID.v4() + ".png";
         const frameBackdropStar = backdropStar? backdropStar:{
-            prototypeId: "EMPTY",
-            _id: "EMPTY",
+            prototypeId: "UNDEFINED",
+            _id: "UNDEFINED",
         };
         const frameStarList = starList? starList:[];
         return {
@@ -62,10 +62,10 @@ export class FrameDataHandler{
                 globalConfig.imageServer.student.frame + UUID.v4() + ".png"
             );
         }
-        if (frameData.backdropStar._id === "EMPTY" || frameData.backdropStar.prototypeId === "EMPTY" ){
+        if (frameData.backdropStar._id === "UNDEFINED" || frameData.backdropStar.prototypeId === "UNDEFINED" ){
             newFrameData.backdropStar = {
-                _id: "EMPTY",
-                prototypeId: "EMPTY",
+                _id: "UNDEFINED",
+                prototypeId: "UNDEFINED",
             }
         }
         else {

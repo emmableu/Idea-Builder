@@ -6,11 +6,17 @@ import DragHandleIcon from "../primitives/DragHandleIcon";
 import StoryboardActionDropdown from "./StoryboardActionDropdown";
 import {setSelectedStoryboardId} from "../../redux/features/projectSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {glob} from "konva/lib/Global";
 
 const StoryboardMenuItem = (props) => {
     const {provided, snapshot, item} = props;
     const dispatch = useDispatch();
     const selectedStoryboard = useSelector(state => state.project.value.selectedId.storyboardId);
+    const [hovering, setHovering] = React.useState(false)
+
+    const toggleHover = () => {
+        setHovering(!hovering);
+    }
 
     return (
         <Paper
@@ -20,6 +26,8 @@ const StoryboardMenuItem = (props) => {
             onClick={(e) => {
                 dispatch(setSelectedStoryboardId(item._id));
             }}
+            onMouseEnter={toggleHover}
+            onMouseLeave={toggleHover}
             style={{
                 width: "100%",
                 userSelect: "none",
@@ -28,7 +36,11 @@ const StoryboardMenuItem = (props) => {
                 minHeight: "26px",
                 backgroundColor: selectedStoryboard===item._id
                     ? globalConfig.storyboardMenuColor.menuItemOnClick.background
-                    : globalConfig.storyboardMenuColor.menuItem,
+                    : (
+                        hovering?
+                            globalConfig.storyboardMenuColor.menuItemOnHover:
+                            globalConfig.storyboardMenuColor.menuItem
+                    ),
                 color: selectedStoryboard===item._id
                     ? globalConfig.storyboardMenuColor.menuItemOnClick.text
                     : "white",

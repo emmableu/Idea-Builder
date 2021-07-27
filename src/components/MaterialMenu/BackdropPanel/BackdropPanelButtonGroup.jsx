@@ -32,7 +32,7 @@ const BackdropPanelButtonGroup = props => {
 
             </div>
             <SearchDialog
-                _id="EMPTY"
+                _id="UNDEFINED"
                 type="backdrop"
                 searchDialogOpen={searchDialogOpen}
                 handleClose={handleClose}

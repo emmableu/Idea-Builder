@@ -104,6 +104,7 @@ const globalConfig = {
                background: materialDarkTheme.primary,
                text: materialDarkTheme.darkText
           },
+          menuItemOnHover: "#40a9ff",
           menuBackgroundOnDrag: "#e6f7ff",
           whiteText: "white",
      },

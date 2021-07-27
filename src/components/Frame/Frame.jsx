@@ -29,26 +29,29 @@ const Frame = (props) => {
     const userActionCounter = useSelector((state) => state.frameThumbnailState.value.userActionCounter);
     const frameId = useSelector((state) => state.project.value.selectedId.frameId);
 
-
     React.useEffect(
         () => {
+            console.log("userActionCounter: -----------------", userActionCounter);
             if (storyboardId === "UNDEFINED" || frameId === "UNDEFINED") {
                 return;
             }
+            if (userActionCounter.split("-")[1] === '0') {
+                return;
+            }
             try {
-            frameRef.current.toImage({
-                pixelRatio: 1,
-                callback(img) {
-                    img = img.src;
-                    dispatch(sendFrameImg({
-                        _id: frameId,
-                        img,
-                    }))
-                }
-            });
+                frameRef.current.toImage({
+                    pixelRatio: 1,
+                    callback(img) {
+                        img = img.src;
+                        dispatch(sendFrameImg({
+                            _id: frameId,
+                            img,
+                        }))
+                    }
+                });
             }
             catch (error) {
-                // console.log("failed to save image to remote: ", error);
+                console.log("failed to save image to remote: ", error);
             }
 
 

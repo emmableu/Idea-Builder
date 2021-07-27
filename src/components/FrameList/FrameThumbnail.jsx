@@ -31,7 +31,7 @@ const FrameThumbnail = (props) => {
 
 
     const updateSrc = () => {
-        // console.log( "----------- updating SRC ------------------------------------------------------------------------")
+        console.log( "----------- updating SRC ------------------------------------------------------------------------")
         // console.log(axios.defaults.baseURL + frameId);
         if (urlExists) {
             setImgSrc(axios.defaults.baseURL + frameId+`?fakeRender=${imgUpdated.toString()}`)

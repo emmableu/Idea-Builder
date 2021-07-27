@@ -43,29 +43,36 @@ export const frameThumbnailStateSlice = createSlice({
     name: 'frameThumbnailState',
     initialState: {
         value: {
-            userActionCounter: 0,
-            serverActionCounter: 0,
+            counter: 0,
+            userActionCounter: `${Date.now()}-${0}`,
+            serverActionCounter: `${Date.now()}-${0}`,
         }
     },
     reducers: {
         updateUserActionCounter: (state, action) => {
-            state.value.userActionCounter = state.value.userActionCounter + 1;
+            state.value.counter = state.value.counter + 1;
+            state.value.userActionCounter = `${Date.now()}-${state.value.counter}`;
+        },
+        resetUserActionCounter: (state, action) => {
+            //must have a prefix, otherwise, resetting does not trigger an automatic update.
+            state.value.counter =  0;
+            state.value.userActionCounter = `${Date.now()}-${state.value.counter}`;
         }
     },
     extraReducers: {
         [sendFrameImg.fulfilled]: (state, action) => {
-            state.value.serverActionCounter = state.value.serverActionCounter + 1;
+            state.value.serverActionCounter = state.value.userActionCounter;
         },
         [sendEmptyFrameImg.fulfilled]: (state, action) => {
-            state.value.serverActionCounter = state.value.serverActionCounter + 1;
+            state.value.serverActionCounter = state.value.userActionCounter;
         },
         [copyPreviousFrameImg.fulfilled]: (state, action) => {
-            state.value.serverActionCounter = state.value.serverActionCounter + 1;
+            state.value.serverActionCounter = state.value.userActionCounter;
         },
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { updateUserActionCounter } = frameThumbnailStateSlice.actions
+export const { updateUserActionCounter, resetUserActionCounter} = frameThumbnailStateSlice.actions
 export {sendFrameImg, sendEmptyFrameImg, copyPreviousFrameImg}
 export default frameThumbnailStateSlice.reducer

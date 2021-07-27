@@ -121,6 +121,7 @@ const FrameList = () => {
                                     }}>
 
                                         <FrameThumbnail
+                                            key={frameData._id}
                                             frameId={frameData._id}
                                             frameIndex={i}
                                             handleDelete={handleDeleteFrame}

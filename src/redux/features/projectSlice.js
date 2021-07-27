@@ -7,7 +7,12 @@ import * as UUID from "uuid";
 import {ActorDataHandler} from "../../data/ActorData";
 import {BackdropDataHandler} from "../../data/BackdropData";
 import globalConfig from "../../globalConfig";
-import {copyPreviousFrameImg, sendEmptyFrameImg, updateUserActionCounter} from "./frameThumbnailStateSlice";
+import {
+    copyPreviousFrameImg,
+    resetUserActionCounter,
+    sendEmptyFrameImg,
+    updateUserActionCounter
+} from "./frameThumbnailStateSlice";
 import {FrameDataHandler} from "../../data/FrameData";
 import {SelectedIdDataHandler} from "../../data/SelectedIdData";
 
@@ -28,12 +33,8 @@ const loadProjectFromDatabase = createAsyncThunk(
     async (_id, thunkAPI) => {
         const response = await ProjectAPI.loadProject(_id);
         const {dispatch} = thunkAPI;
-        //below is needed because otherwise the first frame is not updated.
-        dispatch(updateUserActionCounter());
-        setTimeout( () => {
-                dispatch(updateUserActionCounter());
-            }, 2000
-        )
+        dispatch(loadProjectInMemory(response.data));
+        // dispatch(updateUserActionCounter());
         return response.data;
     }
 )
@@ -61,21 +62,12 @@ const setSelectedStoryboardId = createAsyncThunk(
         const project = getState().project.value;
         const storyboardData = ProjectDataHandler.getStoryboard(project, storyboardId);
 
-        // SelectedIdDataHandler.setStoryboardId(project.selectedId, storyboardData);
         dispatch(setSelectedStoryboardIdInMemory(storyboardData));
 
-        //although adding storyboard automatically set frame IDs, we should do it again because sometimes redux does not recognize it being updated.
         if (storyboardData.frameList.length > 0){
             dispatch(setSelectedFrameIdInMemory(storyboardData.frameList[0]._id));
-            // SelectedIdDataHandler.setFrameId(project.selectedId, storyboardData.frameList[0]._id);
         }
-        dispatch(updateUserActionCounter());
-        //this is also because frame thumbnail does not update.
-        setTimeout( () => {
-                dispatch(updateUserActionCounter());
-            }, 500
-        )
-
+        dispatch(resetUserActionCounter());
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
@@ -93,6 +85,7 @@ const setSelectedFrameId = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
         dispatch(setSelectedFrameIdInMemory(frameId));
+        dispatch(resetUserActionCounter());
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
@@ -108,15 +101,20 @@ const setSelectedStarId = createAsyncThunk(
     'project/setSelectedStarId',
     async (starId, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
-        dispatch(setSelectedStarIdInMemory(starId));
-        const project = getState().project.value;
-        const response = await ProjectAPI.updateSelectedIdData(
-            {
-                projectId: project._id,
-                selectedId: project.selectedId
-            }
-        );
-        return response.status;
+        const prevStarId = getState().project.value.selectedId.starId;
+        if (prevStarId !== starId) {
+            dispatch(setSelectedStarIdInMemory(starId));
+            dispatch(updateUserActionCounter());
+            const project = getState().project.value;
+            const response = await ProjectAPI.updateSelectedIdData(
+                {
+                    projectId: project._id,
+                    selectedId: project.selectedId
+                }
+            );
+            return response.status;
+        }
+        return "OK";
     }
 );
 
@@ -304,10 +302,6 @@ const addStar = createAsyncThunk(
         })));
         dispatch(updateUserActionCounter());
 
-        setTimeout(() => {
-            dispatch(updateUserActionCounter());
-        }, 500)
-
         const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
@@ -381,10 +375,6 @@ const addBackdropStar = createAsyncThunk(
             storyboardId, frameId, prototypeId,
         })));
         dispatch(updateUserActionCounter());
-        setTimeout(() => {
-            dispatch(updateUserActionCounter());
-        }, 500)
-
         const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const backdropStar =  frameData.backdropStar;
@@ -415,10 +405,6 @@ const addTemplateStar = createAsyncThunk(
             storyboardId, frameId, templateId,
         })));
         dispatch(updateUserActionCounter());
-        setTimeout(() => {
-            dispatch(updateUserActionCounter());
-        }, 500)
-        //sometimes the first dispatch does not work, because the actor is not yet fully updated on the canvas.
 
         return "OK";
     }
@@ -610,6 +596,14 @@ export const projectSlice = createSlice({
         value: null,
     },
     reducers: {
+
+        loadProjectInMemory: {
+            reducer: (state, action) => {
+                console.log("action payload", action.payload);
+                state.value = ProjectDataHandler.initializeProject(action.payload);
+                console.log("parsed project: ", state.value);
+            },
+        },
 
         updateNameInMemory: {
             reducer: (state, action) => {
@@ -1090,18 +1084,11 @@ export const projectSlice = createSlice({
             }
         }
     },
-    extraReducers: {
-        [loadProjectFromDatabase.fulfilled]: (state, action) => {
-            console.log("action payload", action.payload);
-            state.value = ProjectDataHandler.initializeProject(action.payload);
-            console.log("parsed project: ", state.value);
-        },
-    }
 });
 
 // Action creators are generated for each case reducer function
 export const {
-    updateNameInMemory, setMode,//project
+    loadProjectInMemory, updateNameInMemory, setMode,//project
     setSelectedFrameIdInMemory, setSelectedStoryboardIdInMemory, setSelectedStarIdInMemory, //selectedId
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
     addStarInMemory, updateStarListInMemory, deleteStarInMemory, //star
