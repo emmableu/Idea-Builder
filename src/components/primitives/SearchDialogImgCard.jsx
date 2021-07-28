@@ -7,12 +7,8 @@ import {addBackdrop, addStar, addState, deleteState} from "../../redux/features/
 import {IconButton} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
-import LazyLoad from 'react-lazyload';
 
 const useStyles = makeStyles({
-    root: {
-        maxWidth: 345
-    },
     media: {
         width: '100%',
         position: 'relative',
@@ -98,8 +94,7 @@ const SearchDialogImgCard = (props) =>  {
     return (
         <Card
             variant="outlined"
-            className={classes.root}>
-            <LazyLoad height="100%">
+            >
 
             <CardMedia className={classes.media}
                        onMouseEnter={() => {setOnHover(true)}}
@@ -127,7 +122,6 @@ const SearchDialogImgCard = (props) =>  {
                     </div>
                 </div>
             </CardMedia>
-            </LazyLoad>
             <div style={{
                 display: "flex",
                 alignItems: "center",

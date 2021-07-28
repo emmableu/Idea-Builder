@@ -1,18 +1,19 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
+import TextField from '@material-ui/core/TextField'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import globalConfig from "../../globalConfig";
 import axios from "../../axiosConfig";
 import {Grid} from "@material-ui/core";
 import SearchDialogImgCard from "./SearchDialogImgCard";
 
-
-
 const SearchDialog = (props) => {
-    const {_id, searchDialogOpen, handleClose, type} = props;
+    const {_id, searchDialogOpen, handleClose, type, searchLoading, setSearchLoading} = props;
+    //type can be "state" or "backdrop"
     const dialogLeft =  globalConfig.responsiveSizeData.storyboardDrawerWidth
         + globalConfig.panelTabsWidth
         + globalConfig.responsiveSizeData.actorDrawerWidth;
@@ -20,12 +21,14 @@ const SearchDialog = (props) => {
 
     React.useEffect(
         () => {
+            setSearchLoading(true);
             axios({
                 method: 'get',
                 url: `/sample_${type}_id_list/get`,
             }).then(
                 res => {
                     setImgList(res.data.sort());
+                    setSearchLoading(false);
                 }
             )
         }, [searchDialogOpen]
@@ -46,7 +49,7 @@ const SearchDialog = (props) => {
                 aria-labelledby="draggable-dialog-title"
                 disableBackdropClick
             >
-                {type === "state" && <DialogTitle id="dialog-title">Actors</DialogTitle>}
+                {type === "state" && <DialogTitle id="dialog-title">Actor States</DialogTitle>}
                 {type === "backdrop" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}
                 <DialogContent>
                     <Grid container spacing={1} >
@@ -80,4 +83,5 @@ const SearchDialog = (props) => {
 }
 
 //TODO: currently, searched images may have the same id, which is wrong.
+
 export default SearchDialog
