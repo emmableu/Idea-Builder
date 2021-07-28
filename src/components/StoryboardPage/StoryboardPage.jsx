@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 }));
-const StoryboardPage = () => {
+const StoryboardPage = React.memo(() => {
     const classes = useStyles();
     const lightTheme = createMuiTheme({
         palette: {
@@ -102,7 +102,7 @@ const StoryboardPage = () => {
             </ThemeProvider>
         </>
     )
-};
+});
 
 export default StoryboardPage;
 

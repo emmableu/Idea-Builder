@@ -57,6 +57,7 @@ const ImgTile = (props) =>  {
     const classes = useStyles(props);
     const dispatch  = useDispatch();
     const [onHover, setOnHover] = React.useState();
+    console.log("imgtile rerendering!---------");
 
     return (
         <Card

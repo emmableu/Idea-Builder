@@ -1,7 +1,6 @@
 import React from "react";
 import globalConfig from "../../globalConfig";
-import {Paper, Typography, Grid} from "@material-ui/core";
-import StoryboardActionDropdown from "../StoryboardMenu/StoryboardActionDropdown";
+import {Paper, Grid} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import StoryboardTitleEdiText from "./StoryboardTitleEdiText";
 
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
             padding: "5px 0px 5px 0px",
         }
 }));
-const StoryboardTitleBar = () => {
+const StoryboardTitleBar =  () => {
     const classes = useStyles();
     return (
         <Paper
@@ -43,7 +42,6 @@ const StoryboardTitleBar = () => {
                     </div>
                 </Grid>
                 <Grid item xs={1} align="right">
-
                 </Grid>
             </Grid>
 

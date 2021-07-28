@@ -17,6 +17,7 @@ const ImgCard = React.memo((props) => {
         handleUse,
         type,
     } = props;
+    console.log("------imgcard rerendering!-------");
     /*
     title: the title of the card, can be text or react component
     buttonGroup: usually includes upload and search, for actors it also includes delete and drag
@@ -31,8 +32,6 @@ const ImgCard = React.memo((props) => {
             bordered={false}
             size="small"
             style={{ width: "100%" }}
-            // extra={<BackdropPanelButtonGroup
-            //     {...props}/>}>
             extra={buttonGroup} >
             <Grid container spacing={1} justifyContent="center">
                 {dataList.map(imgData => (

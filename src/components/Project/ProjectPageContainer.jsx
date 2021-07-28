@@ -2,12 +2,8 @@ import React from "react"
 import {useParams} from "react-router-dom"
 import {useDispatch, useSelector} from "react-redux";
 import {loadProjectFromDatabase} from "../../redux/features/projectSlice";
-import { Spin } from 'antd';
 import ProjectDrawer from "./ProjectDrawer";
 import Spinner from "../Spinner";
-import {setSelectedStoryboardId} from "../../redux/features/projectSlice";
-import {setSelectedFrameId} from "../../redux/features/projectSlice";
-import {updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
 
 
 const ProjectPageContainer = () => {

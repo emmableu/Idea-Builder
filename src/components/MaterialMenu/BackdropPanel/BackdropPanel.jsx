@@ -1,41 +1,46 @@
 import BackdropPanelButtonGroup from "./BackdropPanelButtonGroup";
-import React from "react";
+import React, {useCallback} from "react";
 import ImgCard from "../../primitives/ImgCard/ImgCard";
 import {useDispatch, useSelector} from "react-redux";
 import {addBackdropStar, deleteBackdrop, updateBackdropName} from "../../../redux/features/projectSlice";
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect'
 
+
+const getBackdropList = createSelector(
+    state => state.project.value.backdropList,
+    backdropList => backdropList,
+);
 
 const mapStateToProps = (state) => {
     return {
-        backdropList: state.project.value.backdropList
+        backdropList: getBackdropList(state),
     };
 };
 
-const BackdropPanel = (props) => {
+const BackdropPanel = React.memo((props) => {
     const {backdropList} = props;
     const dispatch = useDispatch();
-    // const backdropList = useSelector(state =>{
-    //     return state.project.value.backdropList});
+    console.log("backdroppanel rerendering!-------"); //does not rerender now
 
-    const handleSave = (data) => {
+    const handleSave = React.useCallback((data) => {
         const {_id, name} = data;
         dispatch(
             updateBackdropName({
                 "backdropId": _id,
                 "backdropName": name
             }));
-    };
+    }, [backdropList]);
 
-    const handleDelete = (e, _id) => {
+    const handleDelete = React.useCallback((e, _id) => {
         dispatch(deleteBackdrop(
             _id
         ));
-    };
+    }, [backdropList]);
 
-    const handleUse = (e, _id) => {
+    const handleUse = React.useCallback((e, _id) => {
         dispatch(addBackdropStar(_id));
-    };
+    }, [backdropList]);
 
 
     return (
@@ -50,6 +55,6 @@ const BackdropPanel = (props) => {
             handleUse={handleUse}
         />
     )
-};
+});
 
 export default connect(mapStateToProps)(BackdropPanel);

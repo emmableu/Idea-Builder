@@ -22,12 +22,6 @@ const ProjectTitleBar = () => {
             <ProjectTitleEdiText />
         </Typography>
     )
-    // return (<FormControl fullWidth={true} >
-    //     <InputBase placeholder="Enter storyboard title..."
-    //                className={classes.storyboardTitleInput}
-    //                id="bootstrap-input"
-    //                autoComplete="off" />
-    // </FormControl>)
 }
 
 

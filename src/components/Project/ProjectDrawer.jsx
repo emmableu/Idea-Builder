@@ -100,13 +100,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const ProjectDrawer = () => {
-    const [mobileOpen, setMobileOpen] = React.useState(false);
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
-
-
+const ProjectDrawer = React.memo(() => {
     const classes = useStyles();
 
     return (
@@ -135,7 +129,7 @@ const ProjectDrawer = () => {
                 </main>
             </div>
     );
-};
+});
 
 export default ProjectDrawer;
 

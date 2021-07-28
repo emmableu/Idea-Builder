@@ -85,11 +85,11 @@ export const MaterialMenu = () => {
     };
 
     const tabList = [
-        {
-            label: "Actors",
-            icon: <Face/>,
-            panel: <ActorPanel/>
-        },
+        // {
+        //     label: "Actors",
+        //     icon: <Face/>,
+        //     panel: <ActorPanel/>
+        // },
         {
             label: "Backdrops",
             icon: <Panorama/>,
@@ -105,11 +105,11 @@ export const MaterialMenu = () => {
             icon: <Mouse/>,
             panel: <UserInputPanel />
         },
-        {
-            label: "Speech Bubbles",
-            icon: <Chat/>,
-            panel: <SpeechBubblePanel />
-        },
+        // {
+        //     label: "Speech Bubbles",
+        //     icon: <Chat/>,
+        //     panel: <SpeechBubblePanel />
+        // },
         {
             label: "Resources",
             icon: <ExposurePlus1/>,

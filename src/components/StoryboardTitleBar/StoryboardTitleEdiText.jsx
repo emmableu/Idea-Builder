@@ -5,7 +5,8 @@ import {IconButton, Tooltip} from "@material-ui/core";
 import {Create} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {updateName, updateStoryboardName} from "../../redux/features/projectSlice";
-import {ProjectDataHandler} from "../../data/ProjectData";
+import {createSelector} from "reselect";
+import {connect} from "react-redux";
 
 
 const StyledEdiText = styled(EdiText)`
@@ -36,48 +37,46 @@ const StyledEdiText = styled(EdiText)`
   }
 `
 
-const EditButton = () => (
+const EditButton = React.memo(() => (
     <Tooltip title="Edit storyboard title">
         <IconButton aria-label="display more actions" color="inherit" size="small">
             <Create/>
         </IconButton>
     </Tooltip>
-)
+));
 
-const StoryboardTitleEdiText = () => {
-    const [editing, setEditing] = useState(false);
-    const [value, setValue] = useState("Untitled");
-    const dispatch = useDispatch()
-
-    const selectedStoryboard = useSelector(state => state.project.value.selectedId.storyboardId)
-
-    const titleName = useSelector(state =>
-        {
-            if (selectedStoryboard === "UNDEFINED") return "Untitled";
-            if (selectedStoryboard === null) return "Untitled";
-            if (state.project.value===null) return "Untitled";
-            // undefined can still happen when page reloads.
-            if (ProjectDataHandler.getStoryboard(state.project.value, selectedStoryboard) === undefined) {
-                return "Untitled"
-            }
-            return ProjectDataHandler.getStoryboard(state.project.value, selectedStoryboard).name;
+const getStoryboardTitleData = createSelector(
+    state => state.project.value.selectedId.storyboardId,
+    state => state.project.value.storyboardList,
+    (storyboardId, storyboardList) => {
+        return {
+           storyboardId: storyboardId,
+           storyboardTitle: storyboardList.find(s => s._id === storyboardId).name
         }
-    )
+    }
+);
 
+const mapStateToProps = (state) => {
+    return getStoryboardTitleData(state)
+};
+
+const StoryboardTitleEdiText = (props) => {
+    const {storyboardId, storyboardTitle} = props;
+    const [value, setValue] = useState(storyboardTitle);
+    const dispatch = useDispatch();
 
     React.useEffect(() => {
-        setValue(titleName)
-    }, [titleName])
+        setValue(storyboardTitle);
+    }, [storyboardTitle])
 
-    const handleSave = (value) => {
-        // // console.log(value);
+    const handleSave = React.useCallback((value) => {
         setValue(value);
         dispatch(
             updateStoryboardName({
-                "_id": selectedStoryboard,
+                "_id": storyboardId,
                 "name": value
             }));
-    };
+    }, [storyboardId]);
     return (
                 <StyledEdiText
                     submitOnUnfocus
@@ -87,7 +86,7 @@ const StoryboardTitleEdiText = () => {
                     type="text"
                     onSave={handleSave}
                     editButtonContent={<EditButton/>}
-                    editing={editing}
+                    editing={false}
                     showButtonsOnHover
                     hideIcons={true}
                 />
@@ -95,4 +94,4 @@ const StoryboardTitleEdiText = () => {
 }
 
 
-export default StoryboardTitleEdiText;
+export default connect(mapStateToProps)(StoryboardTitleEdiText);
