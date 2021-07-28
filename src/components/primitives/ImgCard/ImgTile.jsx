@@ -53,12 +53,10 @@ const useStyles = makeStyles({
 });
 
 
-const ImgTile = (props) =>  {
-    const { _id, imgSrc, contentNode, handleDelete, handleUse, type} = props;
+const ImgTile = React.memo((props) =>  {
+    const { _id, actorId, stateId, imgSrc, contentNode, handleDelete, handleUse, type} = props;
     const classes = useStyles(props);
-    const dispatch  = useDispatch();
     const [onHover, setOnHover] = React.useState();
-    console.log("imgtile rerendering!---------");
 
     return (
         <Card
@@ -86,7 +84,15 @@ const ImgTile = (props) =>  {
                                         className={classes.buttonOverlapUse}
                                         color="inherit"
                                         variant="contained"
-                                        onClick={e => {handleUse(e, _id)}}
+                                        onClick={e => {
+                                            console.log("clicking, type: ", type);
+                                            if (type === "backdrop") {
+                                                handleUse(e, _id)
+                                            }
+                                            else if (type === "state") {
+                                                handleUse(e, stateId)
+                                            }
+                                        }}
                                         size="medium">
                                 <ArrowForward style={{color: "white"}} />
                             </IconButton>
@@ -99,7 +105,12 @@ const ImgTile = (props) =>  {
                                         variant="contained"
                                         size="medium"
                                         onClick={e => {
-                                            handleDelete(e, _id)
+                                            if (type === "backdrop") {
+                                                handleDelete(e, _id)
+                                            }
+                                            else if (type === "state") {
+                                                handleDelete(e, actorId)
+                                            }
                                         }}>
                                 <DeleteOutlined style={{color: "white"}}/>
                             </IconButton>
@@ -111,7 +122,7 @@ const ImgTile = (props) =>  {
             {contentNode}
         </Card>
     );
-}
+})
 
 
 export default ImgTile;

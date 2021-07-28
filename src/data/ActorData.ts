@@ -17,7 +17,7 @@ export class ActorDataHandler {
         const {_id, name, order, stateList} = actorData;
         return {
             _id: _id? _id:UUID.v4(),
-            name: name? name: "",
+            name: name? name: "Untitled",
             stateList: stateList?stateList:[]
         };
     }

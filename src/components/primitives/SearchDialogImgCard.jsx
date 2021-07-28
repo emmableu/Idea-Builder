@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import {useDispatch} from "react-redux";
-import {addBackdrop, addStar, addState, deleteState} from "../../redux/features/projectSlice";
+import {addActor, addBackdrop, addStar, addState, deleteState} from "../../redux/features/projectSlice";
 import {IconButton} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -59,7 +59,7 @@ const useStyles = makeStyles({
 });
 
 
-const SearchDialogImgCard = (props) =>  {
+const SearchDialogImgCard = React.memo((props) =>  {
     const {type, _id, imgId, imgSrc } = props;
     const classes = useStyles(props);
     const dispatch  = useDispatch();
@@ -73,13 +73,14 @@ const SearchDialogImgCard = (props) =>  {
         return name;
     }
 
-    const handleAddStar = () => {
-        // dispatch(addStar(stateId));
+    const handleAddItem = () => {
         if (type=== "state") {
-            dispatch(addState(
+            dispatch(addActor(
                 {
-                    actorId: _id,
-                    stateId: imgId
+                    stateList: [{
+                        _id: imgId,
+                        name: "",
+                    }]
                 }
             ))
         }
@@ -113,7 +114,7 @@ const SearchDialogImgCard = (props) =>  {
                                         className={classes.buttonOverlap}
                                         color="inherit"
                                         variant="contained"
-                                        onClick={e => {handleAddStar(e)}}
+                                        onClick={e => {handleAddItem(e)}}
                                         size="medium">
                                 <Add style={{color: "white"}} />
                             </IconButton>
@@ -131,7 +132,7 @@ const SearchDialogImgCard = (props) =>  {
             </div>
         </Card>
     );
-}
+});
 
 
 export default SearchDialogImgCard;

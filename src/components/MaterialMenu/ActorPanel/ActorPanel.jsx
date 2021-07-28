@@ -9,7 +9,7 @@ import {createSelector} from "reselect";
 
 const getActorList = createSelector(
     state => state.project.value.actorList,
-    actorList => actorList.map(a => a.stateList[0]),
+    actorList => actorList,
 );
 
 const mapStateToProps = (state) => {
@@ -26,26 +26,27 @@ const ActorPanel = (props) => {
         const {_id, name} = data;
         dispatch(
             updateActorName({
-                "actorId": _id,
-                "actorName": name
+                "_id": _id,
+                "name": name
             }));
     }, []);
 
-    const handleDelete = React.useCallback((e, _id) => {
+    const handleDelete = React.useCallback((e, actorId) => {
         dispatch(deleteActor(
-            _id
+            actorId
         ));
     }, []);
 
-    const handleUse = React.useCallback((e, _id) => {
-        dispatch(addStar(_id));
+    const handleUse = React.useCallback((e, stateId) => {
+        console.log("in handloing use: ", stateId);
+        dispatch(addStar(stateId));
     }, []);
 
 
     return (
         <ImgCard
             title = "My actors"
-            type= "actor"
+            type= "state"
             buttonGroup={<ActorPanelButtonGroup/>}
             dataList = {actorList}
             imgWidth={10}

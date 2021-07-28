@@ -6,8 +6,7 @@ import ImgTileEdiText from "./ImgTileEdiText";
 import ImgTile from "./ImgTile";
 
 
-
-const ImgCard = React.memo((props) => {
+const ImgCard = (props) => {
     const {title,
         buttonGroup,
         dataList,
@@ -17,7 +16,6 @@ const ImgCard = React.memo((props) => {
         handleUse,
         type,
     } = props;
-    console.log("------imgcard rerendering!-------");
     /*
     title: the title of the card, can be text or react component
     buttonGroup: usually includes upload and search, for actors it also includes delete and drag
@@ -35,30 +33,35 @@ const ImgCard = React.memo((props) => {
             extra={buttonGroup} >
             <Grid container spacing={1} justifyContent="center">
                 {dataList.map(imgData => (
-                    <>
-                        <Grid item xs={imgWidth}>
-                            <ImgTile
-                                type={type}
+                    <Grid item xs={imgWidth}>
+                        <ImgTile
+                            type={type}
+                            _id={imgData._id}
+                            actorId={
+                                type === "state" ? imgData._id:null
+                            }
+                            stateId={type==="state"? imgData.stateList[0]._id:null}
+                            name={imgData.name}
+                            imgSrc={
+                                type==="state"? axios.defaults.baseURL + imgData.stateList[0]._id:
+                                    axios.defaults.baseURL + imgData._id
+                            }
+                            heightToWidthRatio={'75%'}
+                            handleDelete={handleDelete}
+                            handleUse={handleUse}
+                            contentNode={<ImgTileEdiText
                                 _id={imgData._id}
                                 name={imgData.name}
-                                imgSrc={axios.defaults.baseURL + imgData._id}
-                                heightToWidthRatio={'75%'}
-                                handleDelete={handleDelete}
-                                handleUse={handleUse}
-                                contentNode={<ImgTileEdiText
-                                    _id={imgData._id}
-                                    name={imgData.name}
-                                    handleSave={handleSave}
-                                />}
-                            />
-                        </Grid>
-                    </>
+                                handleSave={handleSave}
+                            />}
+                        />
+                    </Grid>
                 ))}
             </Grid>
         </Card>
 
 
     )
-});
+};
 
 export default ImgCard;
