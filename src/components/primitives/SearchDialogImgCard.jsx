@@ -7,6 +7,7 @@ import {addBackdrop, addStar, addState, deleteState} from "../../redux/features/
 import {IconButton} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const useStyles = makeStyles({
     media: {
@@ -95,15 +96,13 @@ const SearchDialogImgCard = (props) =>  {
         <Card
             variant="outlined"
             >
-
             <CardMedia className={classes.media}
                        onMouseEnter={() => {setOnHover(true)}}
                        onMouseLeave={() =>{ setOnHover(false)}}
             >
                 <div className={classes.elementToStretch}
                 >
-                    <img
-                        draggable
+                    <LazyLoadImage
                         className={classes.imgStyle}
                         src={imgSrc}
                         alt="img"

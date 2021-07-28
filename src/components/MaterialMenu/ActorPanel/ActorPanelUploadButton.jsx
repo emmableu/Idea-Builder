@@ -1,5 +1,6 @@
 import React from 'react';
-import { Upload, message, Button, Tooltip } from 'antd';
+import { Upload, Button } from 'antd';
+import {Tooltip} from "@material-ui/core";
 import { UploadOutlined } from '@ant-design/icons';
 import axios from "../../../axiosConfig"
 import {useDispatch} from "react-redux";

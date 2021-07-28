@@ -1,10 +1,8 @@
-import { Button, Tooltip } from 'antd';
+import { Button } from 'antd';
 import {
-    DeleteTwoTone,
-    DragOutlined,
     SearchOutlined,
-    UploadOutlined
 } from '@ant-design/icons';
+import {Tooltip} from "@material-ui/core";
 import React from 'react';
 import ActorPanelUploadButton from './ActorPanelUploadButton';
 import {useDispatch} from "react-redux";

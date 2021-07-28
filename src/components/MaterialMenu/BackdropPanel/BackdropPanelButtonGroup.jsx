@@ -1,13 +1,10 @@
-import { Button, Tooltip } from 'antd';
+import { Button } from 'antd';
 import {
-    DeleteTwoTone,
-    DragOutlined,
     SearchOutlined,
-    UploadOutlined
 } from '@ant-design/icons';
+import {Tooltip} from "@material-ui/core";
 import React from 'react';
 import BackdropPanelUploadButton from './BackdropPanelUploadButton';
-import {useDispatch} from "react-redux";
 import SearchDialog from "../../primitives/SearchDialog";
 
 const BackdropPanelButtonGroup = props => {
@@ -22,7 +19,7 @@ const BackdropPanelButtonGroup = props => {
         <>
             <div  style={{flex: "0 0 100px"}}>
             <BackdropPanelUploadButton/>
-            <Tooltip title="Search for state">
+            <Tooltip title="Search for backdrop">
                 <Button type="link" shape="circle" size="medium"
                         onClick= {handleClickOpen}
                         loading={searchLoading}
