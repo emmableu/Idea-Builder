@@ -1,15 +1,8 @@
-import {Divider, Typography, Grid} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import {Divider} from "@material-ui/core";
 import React from "react";
 import {makeStyles,} from '@material-ui/core/styles';
 import globalConfig from "../../globalConfig";
 import StoryboardMenuListGroup from "./StoryboardMenuListGroup";
-import ArtTrack from "@material-ui/icons/ArtTrack";
-import {ActorData} from "../../data/ActorData";
-import {ProjectData} from "../../data/ProjectData";
 
 const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar

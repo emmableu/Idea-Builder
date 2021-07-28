@@ -1,12 +1,24 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import TemplatePanelImgTile from './TemplatePanelImgTile';
-import {useSelector} from "react-redux";
+import {connect} from "react-redux";
+import {createSelector} from "reselect";
+
+const getTemplateList = createSelector(
+    state => state.project.value.templateList,
+    templateList => templateList,
+);
+
+const mapStateToProps = (state) => {
+    return {
+        templateList: getTemplateList(state),
+    };
+};
+
+
 
 const TemplatePanel = props => {
-    const templateList = useSelector(state =>{
-        return state.project.value.templateList});
-
+    const {templateList} = props;
     return (
         <Grid container spacing={1} justifyContent="center">
             {templateList.map(templateId => (
@@ -21,4 +33,4 @@ const TemplatePanel = props => {
     );
 };
 
-export default TemplatePanel;
+export default connect(mapStateToProps)(TemplatePanel);

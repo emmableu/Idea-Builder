@@ -3,7 +3,7 @@
 // import { UploadOutlined } from '@ant-design/icons';
 // import axios from "../../../axiosConfig"
 // import {useDispatch} from "react-redux";
-// import {addUserInput} from "../../../redux/features/projectSlice";
+// import {addEvent} from "../../../redux/features/projectSlice";
 //
 // const uploadButtonProps = {
 //     name: 'file',
@@ -14,7 +14,7 @@
 //     accept:"image/*",
 // };
 //
-// const UserInputPanelUploadButton = (props) => {
+// const EventPanelUploadButton = (props) => {
 //     const dispatch = useDispatch();
 //
 //     const uploadImage = async options => {
@@ -27,11 +27,11 @@
 //         fmData.append('file', file);
 //         axios({
 //             method: "post",
-//             url: "/userInput/upload",
+//             url: "/event/upload",
 //             data: fmData,
 //             config
 //         }).then(response => {
-//             dispatch(addUserInput(response.data._id));
+//             dispatch(addEvent(response.data._id));
 //                 })
 //         };
 //
@@ -49,4 +49,4 @@
 //     );
 // };
 //
-// export default UserInputPanelUploadButton;
+// export default EventPanelUploadButton;

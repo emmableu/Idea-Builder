@@ -38,7 +38,7 @@ export interface ProjectData {
         operator: string; //can be +, -, =
         value: string;
     }>;
-    userInputList: Array<{ //user inputs are like key pressed, mouse moving, etc
+    eventList: Array<{ //user inputs are like key pressed, mouse moving, etc
         _id: string; //this id is fixed for now because they are given by default
         name: string; //this name is also fixed for now because this is given by default
     }>;
@@ -48,7 +48,7 @@ export class ProjectDataHandler {
     static initializeProject( importedData:any ) : ProjectData
     {
         const {_id, name, mode, storyboardList, actorList, backdropList, storyboardMenu, templateList,
-            selectedId, speechBubbleList, variableList, userInputList,
+            selectedId, speechBubbleList, variableList, eventList,
         } = importedData;
         const projectId = _id? _id:UUID.v4();
         const projectName = name? name:"Untitled";
@@ -90,21 +90,21 @@ export class ProjectDataHandler {
 
         const projectSpeechBubbleList = speechBubbleList?speechBubbleList:[];
 
-        const projectUserInputList = userInputList? userInputList:[
+        const projectEventList = eventList? eventList:[
             {
-                _id: globalConfig.imageServer.sample.userInput + "space-bar-3661045-3095465.png",
+                _id: globalConfig.imageServer.sample.event + "space-bar-3661045-3095465.png",
                 name: "space key pressed",
             },
             {
-                _id: globalConfig.imageServer.sample.userInput + "left-keyboard-arrow-key-direction-30505.png",
+                _id: globalConfig.imageServer.sample.event + "left-keyboard-arrow-key-direction-30505.png",
                 name: "left arrow key pressed",
             },
             {
-                _id: globalConfig.imageServer.sample.userInput + "right-keyboard-arrow-key-direction-30592.png",
+                _id: globalConfig.imageServer.sample.event + "right-keyboard-arrow-key-direction-30592.png",
                 name: "right arrow key pressed",
             },
             {
-                _id: globalConfig.imageServer.sample.userInput + "cursor-3537292-2960010.png",
+                _id: globalConfig.imageServer.sample.event + "cursor-3537292-2960010.png",
                 name: "mouse clicked",
             }
         ];
@@ -124,7 +124,7 @@ export class ProjectDataHandler {
             templateList: projectTemplateList,
             selectedId: projectSelectedId,
             speechBubbleList: projectSpeechBubbleList,
-            userInputList: projectUserInputList,
+            eventList: projectEventList,
             variableList: projectVariableList,
         }
     }

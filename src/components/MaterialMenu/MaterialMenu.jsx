@@ -8,7 +8,7 @@ import {makeStyles} from "@material-ui/core";
 import globalConfig from "../../globalConfig";
 import BackdropPanel from "./BackdropPanel/BackdropPanel";
 import TemplatePanel from "./TemplatePanel/TemplatePanel";
-import UserInputPanel from "./UserInputPanel/UserInputPanel";
+import EventPanel from "./EventPanel/EventPanel";
 import {SpeechBubblePanel} from "./SpeechBubblePanel/SpeechBubblePanel";
 
 
@@ -85,11 +85,11 @@ export const MaterialMenu = () => {
     };
 
     const tabList = [
-        // {
-        //     label: "Actors",
-        //     icon: <Face/>,
-        //     panel: <ActorPanel/>
-        // },
+        {
+            label: "Actors",
+            icon: <Face/>,
+            panel: <ActorPanel/>
+        },
         {
             label: "Backdrops",
             icon: <Panorama/>,
@@ -103,7 +103,7 @@ export const MaterialMenu = () => {
         {
             label: "Keyboard & Mouse",
             icon: <Mouse/>,
-            panel: <UserInputPanel />
+            panel: <EventPanel />
         },
         // {
         //     label: "Speech Bubbles",

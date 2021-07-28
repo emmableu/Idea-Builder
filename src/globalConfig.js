@@ -128,7 +128,7 @@ const globalConfig = {
                "state": "static/student/state/",
                "backdrop": "static/student/backdrop/",
                "frame": "static/student/frame/",
-               "userInput": "static/student/userInput/",
+               "event": "static/student/event/",
                "text": "static/student/text/",
                "resource": "static/student/resource/",
           },
@@ -136,7 +136,7 @@ const globalConfig = {
                "state": "static/sample/state/",
                "backdrop": "static/sample/backdrop/",
                "frame": "static/sample/frame/",
-               "userInput": "static/sample/userInput/",
+               "event": "static/sample/event/",
                "text": "static/sample/text/",
                "resource": "static/sample/resource/",
           }

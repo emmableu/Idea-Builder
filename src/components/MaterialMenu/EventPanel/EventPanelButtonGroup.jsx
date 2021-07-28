@@ -6,11 +6,11 @@ import {
     UploadOutlined
 } from '@ant-design/icons';
 import React from 'react';
-import UserInputPanelUploadButton from './UserInputPanelUploadButton';
+import EventPanelUploadButton from './EventPanelUploadButton';
 import {useDispatch} from "react-redux";
 import SearchDialog from "../../primitives/SearchDialog";
 
-const UserInputPanelButtonGroup = props => {
+const EventPanelButtonGroup = props => {
     const [searchDialogOpen, setSearchDialogOpen] = React.useState(false);
     const [searchLoading, setSearchLoading] = React.useState(false);
     const handleClickOpen = (e) => {setSearchDialogOpen(true)};
@@ -21,10 +21,10 @@ const UserInputPanelButtonGroup = props => {
     return (
         <>
             <div  style={{flex: "0 0 100px"}}>
-            <UserInputPanelUploadButton/>
+            <EventPanelUploadButton/>
             </div>
         </>
     );
 };
 
-export default UserInputPanelButtonGroup;
+export default EventPanelButtonGroup;

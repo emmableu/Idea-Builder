@@ -1,37 +1,45 @@
 import ActorPanelButtonGroup from "./ActorPanelButtonGroup";
 import React from "react";
 import ImgCard from "../../primitives/ImgCard/ImgCard";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, connect} from "react-redux";
 import {addStar, deleteActor, updateActorName} from "../../../redux/features/projectSlice";
+import {createSelector} from "reselect";
 
 
+
+const getActorList = createSelector(
+    state => state.project.value.actorList,
+    actorList => actorList.map(a => a.stateList[0]),
+);
+
+const mapStateToProps = (state) => {
+    return {
+        actorList: getActorList(state),
+    };
+};
 
 const ActorPanel = (props) => {
-    //, buttonGroup, dataList, imgWidth, handleSave, handleUse, handleDelete
+    const {actorList} = props;
     const dispatch = useDispatch();
-    const actorList = useSelector(state =>{
-        console.log("actorList: ", state.project.value.actorList.map(a => a.stateList[0]));
-        return state.project.value.actorList.map(a => a.stateList[0]);
-    });
 
-    const handleSave = (data) => {
+    const handleSave = React.useCallback((data) => {
         const {_id, name} = data;
         dispatch(
             updateActorName({
                 "actorId": _id,
                 "actorName": name
             }));
-    };
+    }, []);
 
-    const handleDelete = (e, _id) => {
+    const handleDelete = React.useCallback((e, _id) => {
         dispatch(deleteActor(
             _id
         ));
-    };
+    }, []);
 
-    const handleUse = (e, _id) => {
+    const handleUse = React.useCallback((e, _id) => {
         dispatch(addStar(_id));
-    };
+    }, []);
 
 
     return (
@@ -48,4 +56,4 @@ const ActorPanel = (props) => {
     )
 };
 
-export default ActorPanel;
+export default connect(mapStateToProps)(ActorPanel);

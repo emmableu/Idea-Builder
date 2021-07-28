@@ -21,7 +21,7 @@ const ImgCard = React.memo((props) => {
     /*
     title: the title of the card, can be text or react component
     buttonGroup: usually includes upload and search, for actors it also includes delete and drag
-    dataList: can be stateList, backdropList, or userInputList
+    dataList: can be stateList, backdropList, or eventList
     imgWidth: the width of an image in the ImgCard
     imgButtonGroup: the buttons on the overlay of an image
     handleSave: what happens when saving an image;

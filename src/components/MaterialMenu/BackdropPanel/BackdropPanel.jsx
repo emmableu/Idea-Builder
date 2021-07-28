@@ -1,9 +1,8 @@
 import BackdropPanelButtonGroup from "./BackdropPanelButtonGroup";
-import React, {useCallback} from "react";
+import React from "react";
 import ImgCard from "../../primitives/ImgCard/ImgCard";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, connect} from "react-redux";
 import {addBackdropStar, deleteBackdrop, updateBackdropName} from "../../../redux/features/projectSlice";
-import { connect } from 'react-redux';
 import { createSelector } from 'reselect'
 
 
@@ -30,17 +29,17 @@ const BackdropPanel = React.memo((props) => {
                 "backdropId": _id,
                 "backdropName": name
             }));
-    }, [backdropList]);
+    }, []);
 
     const handleDelete = React.useCallback((e, _id) => {
         dispatch(deleteBackdrop(
             _id
         ));
-    }, [backdropList]);
+    }, []);
 
     const handleUse = React.useCallback((e, _id) => {
         dispatch(addBackdropStar(_id));
-    }, [backdropList]);
+    }, []);
 
 
     return (
