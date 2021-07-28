@@ -1,15 +1,47 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
-import TextField from '@material-ui/core/TextField'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import globalConfig from "../../globalConfig";
 import axios from "../../axiosConfig";
 import {Grid} from "@material-ui/core";
 import SearchDialogImgCard from "./SearchDialogImgCard";
+import { FixedSizeList } from "react-window";
+
+
+const ImgRow = React.memo(
+    (props) => {
+        console.log("rendering imgRow: ");
+        const {data, index, style} = props;
+        const {_id, type, imgList} = data;
+        const subList = imgList.slice(index*4, index*4+4);
+        return (
+            <Grid
+                style={style}
+                container
+                spacing={1} >
+            {
+                subList.map(imgId => (
+                    <Grid
+                        item xs={3}
+                        key={imgId}
+                    >
+                        <SearchDialogImgCard
+                            type={type}
+                            _id={_id}
+                            imgId={imgId}
+                            imgSrc={axios.defaults.baseURL + imgId}
+                            heightToWidthRatio={'75%'}
+                        />
+                    </Grid>
+                ))
+            }
+            </Grid>
+        )
+    }
+)
 
 const SearchDialog = (props) => {
     const {_id, searchDialogOpen, handleClose, type, searchLoading, setSearchLoading} = props;
@@ -52,24 +84,20 @@ const SearchDialog = (props) => {
                 {type === "state" && <DialogTitle id="dialog-title">Actor States</DialogTitle>}
                 {type === "backdrop" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}
                 <DialogContent>
-                    <Grid container spacing={1} >
-                        {imgList.map(imgId => (
-                            <>
-                                <Grid
-                                    item xs={3}
-                                    key={imgId}
-                                >
-                                    <SearchDialogImgCard
-                                        type={type}
-                                        _id={_id}
-                                        imgId={imgId}
-                                        imgSrc={axios.defaults.baseURL + imgId}
-                                        heightToWidthRatio={'75%'}
-                                    />
-                                </Grid>
-                            </>
-                        ))}
-                    </Grid>
+                    <FixedSizeList
+                        className="List"
+                        height={480}
+                        itemCount={Math.floor(imgList.length/4)}
+                        itemSize={120}
+                        width={480}
+                        itemData = {{
+                            type,
+                            _id,
+                            imgList}
+                        }
+                    >
+                        {ImgRow}
+                    </FixedSizeList>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
