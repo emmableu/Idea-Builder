@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import {IconButton} from "@material-ui/core";
 import {ArrowForward, DeleteOutlined} from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
+import {LazyLoadImage} from "react-lazy-load-image-component";
 
 const useStyles = makeStyles({
     root: {
@@ -69,7 +70,7 @@ const ImgTile = (props) =>  {
             >
                 <div className={classes.elementToStretch}
                 >
-                    <img
+                    <LazyLoadImage
                         draggable
                         className={classes.imgStyle}
                         style={{objectFit: (type === "backdrop")? 'cover':"contain"}}

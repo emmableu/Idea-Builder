@@ -8,6 +8,7 @@ import urlExist from "url-exist"
 import {deleteFrame, deleteState} from "../../redux/features/projectSlice";
 import Card from "@material-ui/core/Card/Card";
 import {updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
+import {LazyLoadImage} from "react-lazy-load-image-component";
 
 const FrameThumbnail = (props) => {
     const {frameId, frameIndex, handleDelete} = props;
@@ -56,8 +57,13 @@ const FrameThumbnail = (props) => {
     return (
         <>
         <Dropdown overlay={menu} trigger={['contextMenu']}>
-        <CardMedia
-            component='img' src={imgSrc}
+        <LazyLoadImage
+            src={imgSrc}
+            style={{
+                width: "100%",
+                height: "100%",
+                objectFit:"cover"
+            }}
         />
         </Dropdown>
         </>

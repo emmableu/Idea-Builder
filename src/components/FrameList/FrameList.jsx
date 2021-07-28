@@ -80,14 +80,7 @@ const FrameList = () => {
     }
 
     const handleDeleteFrame = async (e, frameIndex) => {
-        // // console.log("deleting:: : ", frameId)
-        // dispatch(deleteFrame
-        //     (frameIndex)
-        // );
         await dispatch(deleteFrame(frameIndex));
-        // setTimeout(() => {
-            // const frameList = JSON.parse(frameListString);
-        // console.log("frameIndex, frameList: ", frameIndex, frameList);
         if (frameIndex < frameList.length) {
             dispatch(setSelectedFrameId(frameList[frameIndex]._id));
         }
