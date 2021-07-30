@@ -90,7 +90,7 @@ const ImgTile = React.memo((props) =>  {
                                                 handleUse(e, _id)
                                             }
                                             else if (type === "state") {
-                                                handleUse(e, stateId)
+                                                handleUse(e, actorId, stateId)
                                             }
                                         }}
                                         size="medium">

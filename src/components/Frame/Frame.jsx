@@ -1,11 +1,7 @@
 import {Layer, Stage} from "react-konva";
 import React from "react";
 import {Provider, ReactReduxContext, useDispatch, useSelector} from "react-redux";
-import Paper from "@material-ui/core/Paper/Paper";
 import StarLayer from "./StarLayer";
-import axios from "../../axiosConfig";
-import {addState} from "../../redux/features/projectSlice";
-import {ProjectAPI} from "../../api/ProjectAPI";
 import globalConfig from "../../globalConfig";
 import {setSelectedStarId} from "../../redux/features/projectSlice";
 import {sendFrameImg, updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";

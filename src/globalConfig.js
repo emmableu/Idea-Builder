@@ -148,13 +148,12 @@ globalConfig.responsiveSizeData = responsiveSizeData;
 
 
 const calcFrameWidth = ( windowInnerWidth, windowInnerHeight ) => {
-     const bestFrameHeight = (windowInnerHeight
+     const bestFrameHeight = windowInnerHeight
          - globalConfig.toolBarHeight
          - globalConfig.storyboardToolBarHeight
          - globalConfig.storyboardPageMargin*2
          - globalConfig.responsiveSizeData.frameListHeight
-         - globalConfig.topAndBottomMarginOutsideFrame*2
-     ) - globalConfig.trashToolBarHeight*2;
+         - globalConfig.trashToolBarHeight;
 
      const bestFrameWidth = (windowInnerWidth
          - globalConfig.responsiveSizeData.storyboardDrawerWidth

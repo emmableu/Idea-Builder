@@ -257,6 +257,18 @@ export class ProjectDataHandler {
         stateList.splice(stateIndex, 1);
     }
 
+    static findState (actorList: Array<ActorData>, prototypeId:string) {
+        actorList.forEach(actorData => {
+            actorData.stateList.forEach(
+                stateData  => {
+                    if (prototypeId === stateData._id) {
+                        return actorData;
+                    }
+                }
+            )
+        })
+    }
+
     static download (projectData:ProjectData) {
         fileDownload(JSON.stringify(projectData), 'project.json');
     }

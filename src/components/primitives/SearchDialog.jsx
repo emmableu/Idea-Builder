@@ -86,9 +86,9 @@ const SearchDialog = (props) => {
                 <DialogContent>
                     <FixedSizeList
                         className="List"
-                        height={480}
+                        height={600}
                         itemCount={Math.floor(imgList.length/4)}
-                        itemSize={120}
+                        itemSize={140}
                         width={480}
                         itemData = {{
                             type,

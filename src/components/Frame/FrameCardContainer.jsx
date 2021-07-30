@@ -1,15 +1,25 @@
 import React, { useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
-import {ReactReduxContext, Provider, useSelector, useDispatch} from 'react-redux';
 import { IconButton, makeStyles } from '@material-ui/core';
-import { DeleteOutline } from '@material-ui/icons';
 import globalConfig, { calcFrameWidth } from '../../globalConfig';
-import { Button, Tooltip } from 'antd';
 import Frame from "./Frame.jsx";
-import {deleteStar} from "../../redux/features/projectSlice";
+import FrameToolbar from "./FrameToolbar";
+
+const useStyles = makeStyles((theme) => ({
+        frame: { flex: `0 0 calc(100vh - ${globalConfig.toolBarHeight}px
+                         - ${globalConfig.storyboardToolBarHeight}px
+                         - ${globalConfig.storyboardPageMargin*2}px
+                         - ${globalConfig.responsiveSizeData.frameListHeight}px
+                         - ${globalConfig.trashToolBarHeight}px)`,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+        }
+}));
 
 
 const FrameCardContainer = props => {
+    const classes = useStyles();
     const initialWidth = calcFrameWidth(window.innerWidth, window.innerHeight);
     const initialScale = initialWidth/globalConfig.noScaleWidth;
 
@@ -19,51 +29,25 @@ const FrameCardContainer = props => {
 
     const fitFrameWidth = () => {
         const newFrameWidth = calcFrameWidth(window.innerWidth, window.innerHeight);
-        // console.log("new frame width: ", newFrameWidth, "initial width: ", initialWidth)
         setUpdatedScale(newFrameWidth/initialWidth * initialScale);
         setUpdatedWidth(newFrameWidth);
-        // // console.log("fitting frame width, updated scale: ", updatedScale);
     };
     useEffect(() => {
         window.addEventListener('resize', fitFrameWidth);
         fitFrameWidth();
     }, []);
 
-    const selectedStar = useSelector(state => state.project.value.selectedId.starId);
-    const dispatch = useDispatch();
 
-    const handleDeleteStar = (e) => {
-        if ( selectedStar === null ) return;
-        dispatch(deleteStar(selectedStar));
-    }
 
     return (
-        <div
-            style={{
-                width: updatedWidth,
-                height: (updatedWidth * 3) / 4 + 2 * globalConfig.trashToolBarHeight
-            }}
-        >
+            <>
+                <FrameToolbar/>
             <div
                 style={{
                     width: updatedWidth,
-                    height: globalConfig.trashToolBarHeight,
-                    backgroundColor: globalConfig.color.veryLightGrey,
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    margin:`0 0 ${globalConfig.topAndBottomMarginOutsideFrame}px 0`,
-                }}
+                   }}
+                className={classes.frame}
             >
-                <Tooltip title="Delete Actor">
-                    <IconButton aria-label="delete star"
-                                color="inherit"
-                                size="small"
-                                onClick={handleDeleteStar}
-                    >
-                        <DeleteOutline style={{ color: 'grey' }} />
-                    </IconButton>
-                </Tooltip>
-            </div>
             <Paper
                 style={{
                     width: updatedWidth,
@@ -79,17 +63,8 @@ const FrameCardContainer = props => {
                        updatedScale={updatedScale}
                 />
             </Paper>
-            <div
-                style={{
-                    width: updatedWidth,
-                    height: globalConfig.trashToolBarHeight,
-                    backgroundColor: globalConfig.color.veryLightGrey,
-                    zIndex: -5,
-                    margin:`${globalConfig.topAndBottomMarginOutsideFrame}px 0 0 0`,
-                }}
-            />
-            <div />
         </div>
+        </>
     );
 };
 

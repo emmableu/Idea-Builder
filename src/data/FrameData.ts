@@ -37,9 +37,13 @@ export class FrameDataHandler{
 
     static addStar(
         frameData:FrameData,
+        actorId: string,
         prototypeId:string
     ) {
-        frameData.starList.push(StarDataHandler.initializeStar(prototypeId))
+        frameData.starList.push(StarDataHandler.initializeStar({
+            actorId,
+            prototypeId
+        }))
     }
 
     static deleteStar(
@@ -48,6 +52,24 @@ export class FrameDataHandler{
     {
         const starIndex = frameData.starList.findIndex(s => s._id === starId);
         frameData.starList.splice(starIndex, 1);
+    }
+
+    static copyStar(
+        frameData:FrameData,
+        starData: StarData,
+        newStarId: string,)
+    {
+        const newStar = StarDataHandler.initializeStar({
+            prototypeId: starData.prototypeId,
+            _id: newStarId,
+            x: starData.x+20,
+            y: starData.y+20,
+            width: starData.width,
+            height: starData.height,
+            transform: starData.transform,
+            actorId: starData.actorId,
+        });
+        frameData.starList.push(newStar);
     }
 
     static shallowCopy (frameData: FrameData, newId?:string): FrameData {

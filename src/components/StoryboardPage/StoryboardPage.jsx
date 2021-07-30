@@ -1,11 +1,9 @@
 import React from "react";
-import Box from '@material-ui/core/Box';
 import {createMuiTheme, makeStyles, ThemeProvider, withStyles} from '@material-ui/core/styles';
 import {light} from "@material-ui/core/styles/createPalette";
 import globalConfig from "../../globalConfig";
 import StoryboardTitleBar from "../StoryboardTitleBar/StoryboardTitleBar";
 import {MaterialMenu} from "../MaterialMenu/MaterialMenu";
-import FrameCardContainer from "../Frame/FrameCardContainer";
 import FrameList from "../FrameList/FrameList";
 import NoteBox from "../NoteBox/NoteBox";
 import FrameCardOptions from "../Frame/FrameCardOptions";
@@ -53,9 +51,9 @@ const useStyles = makeStyles((theme) => ({
                          - ${globalConfig.storyboardPageMargin*2}px
                          - ${globalConfig.responsiveSizeData.frameListHeight}px)`,
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         alignItems: "center",
-
+        flexDirection: "column",
     },
     noteDiv: {backgroundColor:  globalConfig.color.veryLightGrey,
         flex:`0 0 ${globalConfig.responsiveSizeData.noteWidth}px`,
@@ -91,7 +89,6 @@ const StoryboardPage = React.memo(() => {
                             className = {classes.frameDiv}
                         >
                             <FrameCardOptions/>
-                            {/*<FrameCardContainer/>*/}
                         </div>
 
                     </div>

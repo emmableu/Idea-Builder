@@ -37,9 +37,8 @@ const ActorPanel = (props) => {
         ));
     }, []);
 
-    const handleUse = React.useCallback((e, stateId) => {
-        console.log("in handloing use: ", stateId);
-        dispatch(addStar(stateId));
+    const handleUse = React.useCallback((e, actorId, stateId) => {
+        dispatch(addStar({actorId, stateId}));
     }, []);
 
 

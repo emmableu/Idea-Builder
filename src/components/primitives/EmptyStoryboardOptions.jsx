@@ -11,23 +11,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import IdeaBuilderIcon from "../primitives/IdeaBuilderIcon";
-import Paper from "@material-ui/core/Paper";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    Redirect,
-    useHistory,
-    useLocation
-} from "react-router-dom";
-import {authContext, useAuth} from "../../hooks/useAuth"
-import {useDispatch} from "react-redux";
-import {loadDashboardFromLoginUserID} from "../../redux/features/dashboardSlice";
-import Cookies from "js-cookie"
-import {createMuiTheme, ThemeProvider} from "@material-ui/core";
-import globalConfig from "../../globalConfig";
+
 
 
 const useStyles = makeStyles((theme) => ({

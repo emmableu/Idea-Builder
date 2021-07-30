@@ -98,7 +98,7 @@ const StarLayer = (props) => {
                              const rects = starList.slice();
                              rects[i] = newAttrs;
                              // setStarList(rects);
-                             // // console.log("on change!==========: ", rects, i, newAttrs);
+                             console.log("on change!==========: ", rects, i, newAttrs);
                              dispatch(updateStarList(JSON.stringify({
                                  storyboardId,
                                  frameId,
