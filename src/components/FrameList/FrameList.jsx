@@ -66,7 +66,6 @@ const FrameList = () => {
 
 
     const storyboardId = useSelector(state => state.project.value.selectedId.storyboardId);
-    const frameId = useSelector(state => state.project.value.selectedId.frameId);
 
 
     // const [frameList, setFrameList] = React.useState([]);
@@ -86,11 +85,8 @@ const FrameList = () => {
     }
 
     const handleDeleteFrame = (e, frameIndex) => {
-        // console.log("frameList: ", JSON.stringify(frameList.map((f) => f._id)));
-        // console.log("frameIndex: ", frameIndex);
-        // console.log("frameId selected: ", frameId);
         e.stopPropagation();
-        if (frameList[frameIndex]._id === frameId) {
+        if (frameList[frameIndex]._id === _id) {
             console.log("to delete id ", frameList[frameIndex]._id, "is the same as ", frameId);
             if (frameIndex < frameList.length - 1) {
                 dispatch(setSelectedFrameIdInMemory(frameList[frameIndex+1]._id));
@@ -104,11 +100,6 @@ const FrameList = () => {
         }
         dispatch(deleteFrame(frameIndex));
     }
-
-    React.useEffect(() => {
-        // console.log("selected frame id updated: ", _id)
-        // console.log("frameList: ", frameList);
-    }, [_id])
 
     return (<>
                     <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3}
