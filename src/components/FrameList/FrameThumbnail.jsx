@@ -1,6 +1,6 @@
 import CardMedia from "@material-ui/core/CardMedia";
 import axios from "../../axiosConfig";
-import CardActionArea from "@material-ui/core/CardActionArea";
+import {MenuItem} from "@material-ui/core";
 import React from "react";
 import { Menu, Dropdown } from 'antd';
 import {useDispatch, useSelector} from "react-redux";
@@ -22,11 +22,13 @@ const FrameThumbnail = (props) => {
 
     const menu = (
         <Menu>
-            <Menu.Item
-                onClick={(e) => {handleDelete(e, frameIndex)}}
+            <MenuItem
+                onClick={(e) =>
+                    handleDelete(e, frameIndex)
+                }
             >
                     Delete
-            </Menu.Item>
+            </MenuItem>
         </Menu>
     );
 

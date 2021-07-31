@@ -12,7 +12,12 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import {useDispatch} from 'react-redux';
 import Box from '@material-ui/core/Box';
 import * as UUID from "uuid"
-import {addFrame, deleteFrame} from "../../redux/features/projectSlice";
+import {
+    addFrame,
+    deleteFrame,
+    setSelectedFrameIdInMemory,
+    updateFrameListInMemory
+} from "../../redux/features/projectSlice";
 import {setSelectedFrameId} from "../../redux/features/projectSlice";
 import globalConfig from "../../globalConfig";
 import FrameThumbnail from "./FrameThumbnail";
@@ -61,6 +66,7 @@ const FrameList = () => {
 
 
     const storyboardId = useSelector(state => state.project.value.selectedId.storyboardId);
+    const frameId = useSelector(state => state.project.value.selectedId.frameId);
 
 
     // const [frameList, setFrameList] = React.useState([]);
@@ -79,18 +85,24 @@ const FrameList = () => {
         dispatch(addFrame());
     }
 
-    const handleDeleteFrame = async (e, frameIndex) => {
-        await dispatch(deleteFrame(frameIndex));
-        if (frameIndex < frameList.length) {
-            dispatch(setSelectedFrameId(frameList[frameIndex]._id));
+    const handleDeleteFrame = (e, frameIndex) => {
+        // console.log("frameList: ", JSON.stringify(frameList.map((f) => f._id)));
+        // console.log("frameIndex: ", frameIndex);
+        // console.log("frameId selected: ", frameId);
+        e.stopPropagation();
+        if (frameList[frameIndex]._id === frameId) {
+            console.log("to delete id ", frameList[frameIndex]._id, "is the same as ", frameId);
+            if (frameIndex < frameList.length - 1) {
+                dispatch(setSelectedFrameIdInMemory(frameList[frameIndex+1]._id));
+            }
+            else if (frameList.length === 1 ) {
+                dispatch(setSelectedFrameIdInMemory(null));
+            }
+            else if (frameIndex === frameList.length - 1) {
+                dispatch(setSelectedFrameIdInMemory(frameList[frameIndex - 1]._id));
+            }
         }
-        else if (frameList.length === 0 ) {
-            dispatch(setSelectedFrameId("UNDEFINED"));
-        }
-        else if (frameIndex === frameList.length) {
-            dispatch(setSelectedFrameId(frameList[frameIndex - 1]._id));
-        }
-        // }, 1000)
+        dispatch(deleteFrame(frameIndex));
     }
 
     React.useEffect(() => {

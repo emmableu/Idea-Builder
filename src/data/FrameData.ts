@@ -5,8 +5,8 @@ import globalConfig from "../globalConfig";
 export interface FrameData {
     _id: string;
     backdropStar: {
-        prototypeId: string,
-        _id: string,
+        prototypeId: string | null,
+        _id: string | null,
     };
     starList: Array<StarData>;
 }
@@ -23,8 +23,8 @@ export class FrameDataHandler{
     {
         const frameId = _id? _id:globalConfig.imageServer.student.frame + UUID.v4() + ".png";
         const frameBackdropStar = backdropStar? backdropStar:{
-            prototypeId: "UNDEFINED",
-            _id: "UNDEFINED",
+            prototypeId: null,
+            _id: null,
         };
         const frameStarList = starList? starList:[];
         return {
@@ -84,10 +84,10 @@ export class FrameDataHandler{
                 globalConfig.imageServer.student.frame + UUID.v4() + ".png"
             );
         }
-        if (frameData.backdropStar._id === "UNDEFINED" || frameData.backdropStar.prototypeId === "UNDEFINED" ){
+        if (frameData.backdropStar._id === null ){
             newFrameData.backdropStar = {
-                _id: "UNDEFINED",
-                prototypeId: "UNDEFINED",
+                _id: null,
+                prototypeId: null,
             }
         }
         else {

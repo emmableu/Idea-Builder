@@ -27,7 +27,7 @@ const StoryboardActionDropdown  = (props) => {
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                dispatch(setSelectedStoryboardId("UNDEFINED"));
+                dispatch(setSelectedStoryboardId(null));
                 dispatch(deleteStoryboard(storyboardId));
             },
             onCancel() {

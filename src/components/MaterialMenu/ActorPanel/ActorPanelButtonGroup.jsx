@@ -30,13 +30,11 @@ const ActorPanelButtonGroup = props => {
 
             </div>
             <SearchDialog
-                _id="UNDEFINED"
                 type="state"
                 searchDialogOpen={searchDialogOpen}
                 handleClose={handleClose}
                 searchLoading={searchLoading}
                 setSearchLoading={setSearchLoading}
-
             />
 
         </>

@@ -60,7 +60,7 @@ const useStyles = makeStyles({
 
 
 const SearchDialogImgCard = React.memo((props) =>  {
-    const {type, _id, imgId, imgSrc } = props;
+    const {type, imgId, imgSrc } = props;
     const classes = useStyles(props);
     const dispatch  = useDispatch();
     const [onHover, setOnHover] = React.useState();

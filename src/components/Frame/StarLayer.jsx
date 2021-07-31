@@ -27,7 +27,7 @@ const StarLayer = (props) => {
          <Layer
          >
              {
-                 backdropStar._id !== "UNDEFINED" && (
+                 backdropStar._id !== null && (
                      <Image
                          image={backdropImg}
                          key={backdropStar._id}
@@ -35,10 +35,10 @@ const StarLayer = (props) => {
                          width={globalConfig.noScaleWidth}
                          height={globalConfig.noScaleWidth*3/4}
                          onClick={(e) => {
-                             selectStar("UNDEFINED");
+                             selectStar("backdrop-general");
                          }}
                          onTap={(e) => {
-                             selectStar("UNDEFINED");
+                             selectStar("backdrop-general");
                          }}
                      />
                  )

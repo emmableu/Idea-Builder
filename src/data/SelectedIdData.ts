@@ -2,9 +2,9 @@ import {StoryboardData} from "./StoryboardData";
 
 
 export interface SelectedIdData {
-    storyboardId: string;
-    frameId: string;
-    starId: string;
+    storyboardId: string | null;
+    frameId: string | null;
+    starId: string | null;
 }
 
 
@@ -16,9 +16,9 @@ export class SelectedIdDataHandler {
     ) : SelectedIdData
     {
         return {
-            storyboardId : storyboardId?storyboardId:"UNDEFINED",
-            frameId : frameId?frameId:"UNDEFINED",
-            starId : starId?starId:"UNDEFINED"
+            storyboardId : storyboardId?storyboardId:null,
+            frameId : frameId?frameId:null,
+            starId : starId?starId:null
         }
     }
 
@@ -26,24 +26,25 @@ export class SelectedIdDataHandler {
         selectedIdData.storyboardId = storyboardData._id;
         // selectedIdData is needed to hard refresh the frameList, otherwise the images were kept as the cached ones.
         selectedIdData.frameId = storyboardData.frameList[0]._id;
-        selectedIdData.starId = "UNDEFINED"
+        selectedIdData.starId = null
     }
 
     static voidStoryboardId (selectedIdData: SelectedIdData) {
-        selectedIdData.storyboardId = "UNDEFINED";
-        selectedIdData.frameId = "UNDEFINED";
-        selectedIdData.starId = "UNDEFINED"
+        selectedIdData.storyboardId = null;
+        selectedIdData.frameId = null;
+        selectedIdData.starId = null
     }
 
     static setFrameId (selectedIdData: SelectedIdData, frameId:string) {
+        console.log("selected Frame ID: ", frameId);
         selectedIdData.frameId = frameId;
-        selectedIdData.starId = "UNDEFINED"
+        selectedIdData.starId = null
     }
 
 
     static voidFrameId (selectedIdData: SelectedIdData) {
-        selectedIdData.frameId = "UNDEFINED";
-        selectedIdData.starId = "UNDEFINED"
+        selectedIdData.frameId = null;
+        selectedIdData.starId = null
     }
 
 

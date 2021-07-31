@@ -27,7 +27,7 @@ const Frame = (props) => {
     React.useEffect(
         () => {
             console.log("userActionCounter: -----------------", userActionCounter);
-            if (storyboardId === "UNDEFINED" || frameId === "UNDEFINED") {
+            if (storyboardId === null || frameId === null) {
                 return;
             }
             if (userActionCounter.split("-")[1] === '0') {
@@ -61,7 +61,7 @@ const Frame = (props) => {
         // console.log("e.target: ", e.target.attrs.id);
         const clickedOnEmpty = e.target === e.target.getStage();
         if (clickedOnEmpty) {
-            dispatch(setSelectedStarId("UNDEFINED"));
+            dispatch(setSelectedStarId(null));
             dispatch(updateUserActionCounter());
         }
     };

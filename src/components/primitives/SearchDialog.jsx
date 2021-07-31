@@ -15,7 +15,7 @@ const ImgRow = React.memo(
     (props) => {
         console.log("rendering imgRow: ");
         const {data, index, style} = props;
-        const {_id, type, imgList} = data;
+        const {type, imgList} = data;
         const subList = imgList.slice(index*4, index*4+4);
         return (
             <Grid
@@ -30,7 +30,6 @@ const ImgRow = React.memo(
                     >
                         <SearchDialogImgCard
                             type={type}
-                            _id={_id}
                             imgId={imgId}
                             imgSrc={axios.defaults.baseURL + imgId}
                             heightToWidthRatio={'75%'}
@@ -44,7 +43,7 @@ const ImgRow = React.memo(
 )
 
 const SearchDialog = (props) => {
-    const {_id, searchDialogOpen, handleClose, type, searchLoading, setSearchLoading} = props;
+    const {searchDialogOpen, handleClose, type, searchLoading, setSearchLoading} = props;
     //type can be "state" or "backdrop"
     const dialogLeft =  globalConfig.responsiveSizeData.storyboardDrawerWidth
         + globalConfig.panelTabsWidth
@@ -92,7 +91,6 @@ const SearchDialog = (props) => {
                         width={480}
                         itemData = {{
                             type,
-                            _id,
                             imgList}
                         }
                     >

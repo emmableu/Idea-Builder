@@ -272,7 +272,7 @@ const addStar = createAsyncThunk(
         console.log("storyboardId: ", storyboardId)
         console.log("frameId: ", frameId)
         if (storyboardId === null || frameId === null) {return;}
-        if (storyboardId === "UNDEFINED" || frameId === "UNDEFINED") {return;}
+        if (storyboardId === undefined || frameId === undefined) {return;}
         dispatch(addStarInMemory({
             storyboardId, frameId, actorId, stateId,
         }));
@@ -322,7 +322,7 @@ const deleteStar = createAsyncThunk(
         const {storyboardId, frameId, starId} = obj;
         const {dispatch, getState} = thunkAPI;
         const state = getState();
-        dispatch(setSelectedStarIdInMemory("UNDEFINED"));
+        dispatch(setSelectedStarIdInMemory(null));
         dispatch(deleteStarInMemory({
             storyboardId, frameId, starId
         }));
@@ -407,7 +407,7 @@ const addBackdropStar = createAsyncThunk(
         const storyboardId = state.project.value.selectedId.storyboardId;
         const frameId = state.project.value.selectedId.frameId
         if (storyboardId === null || frameId === null) {return;}
-        if (storyboardId === "UNDEFINED" || frameId === "UNDEFINED") {return;}
+        if (storyboardId === undefined || frameId === undefined) {return;}
         const backdropStar = {
             "_id": UUID.v4(),
             "prototypeId": prototypeId,
@@ -442,7 +442,7 @@ const addTemplateStar = createAsyncThunk(
         console.log("storyboardId: ", storyboardId)
         console.log("frameId: ", frameId)
         if (storyboardId === null || frameId === null) {return;}
-        if (storyboardId === "UNDEFINED" || frameId === "UNDEFINED") {return;}
+        if (storyboardId === undefined || frameId === undefined) {return;}
         dispatch(addTemplateStarInMemory(JSON.stringify({
             storyboardId, frameId, templateId,
         })));
@@ -768,16 +768,13 @@ export const projectSlice = createSlice({
         updateFrameListInMemory: {
             reducer: (state, action) => {
                 const {storyboardId, frameIndex} = JSON.parse(action.payload);
-                // const storyboard = state.value.getStoryboard(storyboardId);
-                // storyboard.frameList = frameList;
                 const frameList = ProjectDataHandler.getStoryboard(state.value, storyboardId).frameList;
                 const frameId = frameList[frameIndex]._id;
                 const templateIndex = state.value.templateList.indexOf(frameId);
                 state.value.templateList.splice(templateIndex, 1);
-
-                console.log("frameList!!!!!!!!!!!!!!!!!!!!!!: ", frameList);
-
                 frameList.splice(frameIndex, 1);
+                console.log("frameList!!!!!!!!!!!!!!!!!!!!!!: ", JSON.stringify(frameList));
+
             }
         },
 

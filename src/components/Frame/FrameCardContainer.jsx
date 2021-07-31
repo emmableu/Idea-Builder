@@ -29,17 +29,27 @@ const getSelectedStarAndActorData = createSelector(
     state => state.project.value.actorList,
     (storyboardId, storyboardList, frameId, starId, actorList) => {
         const selectedStoryboard = storyboardList.find(s => s._id === storyboardId);
-        const selectedFrame = selectedStoryboard.frameList.find(s => s._id === frameId);
-        const starList = selectedFrame.starList;
-        const backdropStar = selectedFrame.backdropStar;
-        let selectedStar, actorData;
-        if ([null, undefined, "UNDEFINED"].includes(starId)) {
+        let selectedFrame, starList, backdropStar, selectedStar, actorData;
+        if ([null, undefined].includes(frameId)) {
+            selectedFrame = null;
+            starList = null;
+            backdropStar = null;
             selectedStar = null;
             actorData = null;
         }
-        else{
-            selectedStar = selectedFrame.starList.find(s => s._id === starId);
-            actorData = actorList.find(s => s._id === selectedStar.actorId);
+        else {
+            console.log("frameId: ", frameId);
+            selectedFrame = selectedStoryboard.frameList.find(s => s._id === frameId);
+            starList = selectedFrame.starList;
+            backdropStar = selectedFrame.backdropStar;
+            if ([null, undefined].includes(starId)) {
+                selectedStar = null;
+                actorData = null;
+            }
+            else{
+                selectedStar = selectedFrame.starList.find(s => s._id === starId);
+                actorData = actorList.find(s => s._id === selectedStar.actorId);
+            }
         }
 
         return {
@@ -80,10 +90,10 @@ const FrameCardContainer = props => {
 
     return (
             <>
-                {[null, undefined, "UNDEFINED"].includes(props.frameId)
+                {[null, undefined].includes(props.frameId)
                     && <EmptyFrameCardContainer/>}
                 {
-                ![null, undefined, "UNDEFINED"].includes(props.frameId)
+                ![null, undefined].includes(props.frameId)
                   &&
                     <>
                         <FrameToolbar {...props}/>

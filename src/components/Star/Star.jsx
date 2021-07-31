@@ -11,7 +11,7 @@ const Star = (props) => {
     const {storyboardId, frameId, selectedStar, starData} = props;
     const starImageData = JSON.parse(JSON.stringify(starData));
     const dispatch = useDispatch();
-    const selectedStarId = (selectedStar!==undefined && selectedStar!==null)?selectedStar._id:"UNDEFINED";
+    const selectedStarId = (selectedStar!==undefined && selectedStar!==null)?selectedStar._id:null;
 
     const selectStar = async (starId) => {
         dispatch(setSelectedStarId(starId));
