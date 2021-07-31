@@ -376,6 +376,7 @@ const addChildStar = createAsyncThunk(
             childStarPrototypeId,
             type,
         } = obj;
+        console.log("addchildstar: ", starId);
         const {dispatch, getState} = thunkAPI;
         const childStarId = UUID.v4();
         dispatch(addChildStarInMemory({
@@ -795,18 +796,22 @@ export const projectSlice = createSlice({
 
         addChildStarInMemory: {
             reducer: (state, action) => {
-                const {storyboardId, frameId, actorId, starId, childStarId, childStarPrototypeId, type} = action.payload;
+                console.log("inside add child star in memory");
+                const {storyboardId, frameId, starId, childStarId, childStarPrototypeId, type} = action.payload;
                 const storyboardData = ProjectDataHandler.getStoryboard(state.value, storyboardId);
                 const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
-                const starData = frameData.actorList.find(s => s._id === starId);
+                const starData = frameData.starList.find(s => s._id === starId);
                 starData.childStarList.push(
                     StarDataHandler.initializeChildStar({
                       prototypeId: childStarPrototypeId,
                         parentStarId: starId,
                         _id: childStarId,
                         type: type,
+                        width: 300,
                     })
                 )
+                console.log("star data after adding: ", starData);
+                console.log("project data after adding: ", state.value);
             }
         },
 
