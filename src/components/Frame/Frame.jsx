@@ -7,7 +7,8 @@ import {setSelectedStarId} from "../../redux/features/projectSlice";
 import {sendFrameImg, updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
 
 const Frame = (props) => {
-    const {width, updatedWidth, updatedScale} = props;
+    const {storyboardId, frameId, starList,backdropStar,selectedStar,
+        width, updatedWidth, updatedScale} = props;
     const frameRef = React.useRef();
     const dispatch = useDispatch();
     // const [selectedId, setSelectedId] = React.useState(null);
@@ -21,9 +22,7 @@ const Frame = (props) => {
         })
     }, [updatedScale])
 
-    const storyboardId = useSelector(state => state.project.value.selectedId.storyboardId);
     const userActionCounter = useSelector((state) => state.frameThumbnailState.value.userActionCounter);
-    const frameId = useSelector((state) => state.project.value.selectedId.frameId);
 
     React.useEffect(
         () => {
@@ -84,6 +83,9 @@ const Frame = (props) => {
                 <StarLayer
                     storyboardId={storyboardId}
                     frameId={frameId}
+                    starList={starList}
+                    backdropStar={backdropStar}
+                    selectedStar={selectedStar}
                     updatedWidth={updatedWidth}
                 />
             </Provider>

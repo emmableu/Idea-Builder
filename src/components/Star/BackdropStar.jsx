@@ -1,9 +1,7 @@
 import React from 'react';
-import actorImg from './Stars.json';
 import {Transformer, Image} from 'react-konva';
 import useImage from 'use-image';
 import axios from "../../axiosConfig";
-import {useDispatch} from "react-redux";
 import globalConfig from "../../globalConfig";
 
 const BackdropStar = (props) => {

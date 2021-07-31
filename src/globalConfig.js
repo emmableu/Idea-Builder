@@ -82,7 +82,7 @@ const globalConfig = {
      panelTabsWidth: 65,
      // noteWidth: 335,
      // responsiveSizeData.frameListHeight: 200,
-     trashToolBarHeight: 35,
+     trashToolBarHeight: 36,
      innerBoxLeftRightPaddingEach: 20,
      topAndBottomMarginOutsideFrame: 5,
      noScaleWidth: 488,
@@ -131,6 +131,7 @@ const globalConfig = {
                "event": "static/student/event/",
                "text": "static/student/text/",
                "resource": "static/student/resource/",
+               "speech": "static/student/speech/",
           },
           "sample": {
                "state": "static/sample/state/",

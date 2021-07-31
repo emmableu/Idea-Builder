@@ -1,6 +1,4 @@
-import { Modal, Button, Space } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import MenuList from '@material-ui/core/MenuList/MenuList';
+import { Modal } from 'antd';
 import React from 'react';
 import { Input } from 'antd';
 import MenuItem from '@material-ui/core/MenuItem';

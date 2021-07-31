@@ -6,7 +6,7 @@ import StoryboardTitleBar from "../StoryboardTitleBar/StoryboardTitleBar";
 import {MaterialMenu} from "../MaterialMenu/MaterialMenu";
 import FrameList from "../FrameList/FrameList";
 import NoteBox from "../NoteBox/NoteBox";
-import FrameCardOptions from "../Frame/FrameCardOptions";
+import FrameCardContainer from "../Frame/FrameCardContainer";
 
 const useStyles = makeStyles((theme) => ({
     rootContainer: {
@@ -88,7 +88,7 @@ const StoryboardPage = React.memo(() => {
                         <div
                             className = {classes.frameDiv}
                         >
-                            <FrameCardOptions/>
+                            <FrameCardContainer/>
                         </div>
 
                     </div>

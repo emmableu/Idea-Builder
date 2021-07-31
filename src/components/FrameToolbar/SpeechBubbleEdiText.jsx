@@ -3,7 +3,7 @@ import EdiText from "react-editext";
 import styled from 'styled-components';
 import {IconButton, Tooltip} from "@material-ui/core";
 import {Create} from "@material-ui/icons";
-import globalConfig from "../../../globalConfig";
+import globalConfig from "../../globalConfig";
 
 const StyledEdiText = styled(EdiText)`
   button {

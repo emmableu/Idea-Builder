@@ -138,6 +138,22 @@ class ProjectAPI {
         return response;
     }
 
+    /* This is on speech bubble */
+
+    static async sendSpeechBubbleImg(text:any) {
+        // console.log("_id: ", text._id)
+        // console.log("img: ", text.img)
+        const response = await axios({
+            method: 'post',
+            url: `/speech/upload`,
+            data: {
+                _id: text._id,
+                img: text.img
+            },
+        });
+        return response;
+    }
+
 
     /* this section is on actor */
     static async addActor(text:any) {

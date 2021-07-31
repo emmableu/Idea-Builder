@@ -15,6 +15,7 @@ import {
 } from "./frameThumbnailStateSlice";
 import {FrameDataHandler} from "../../data/FrameData";
 import {SelectedIdDataHandler} from "../../data/SelectedIdData";
+import {StarDataHandler} from "../../data/StarData";
 
 
 const insertEmptyProjectToDatabase = createAsyncThunk(
@@ -351,7 +352,39 @@ const copyStar = createAsyncThunk(
             storyboardId, frameId, selectedStar, newStarId,
         }));
         dispatch(setSelectedStarIdInMemory(newStarId));
-        dispatch(updateUserActionCounter());
+        setTimeout(() => {
+            dispatch(updateUserActionCounter());
+        }, 100);
+        const storyboardData = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId);
+        const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+        const starList =  frameData.starList;
+        const response = await ProjectAPI.replaceStarListInDatabase({
+            frameId,
+            starList: starList
+        });
+        return response.status;
+    }
+);
+
+
+const addChildStar = createAsyncThunk(
+    'project/updateStarList',
+    async (obj, thunkAPI) => {
+        const {
+            storyboardId, frameId,
+            starId,
+            childStarPrototypeId,
+            type,
+        } = obj;
+        const {dispatch, getState} = thunkAPI;
+        const childStarId = UUID.v4();
+        dispatch(addChildStarInMemory({
+            ...obj,
+            childStarId
+        }));
+        setTimeout(() => {
+            dispatch(updateUserActionCounter());
+        }, 100);
         const storyboardData = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
@@ -626,16 +659,6 @@ export const projectSlice = createSlice({
             }
         },
 
-        /* The next section is about selected IDs */
-//         // SelectedIdDataHandler.setStoryboardId(project.selectedId, storyboardData);
-//         dispatch(setSelectedFrameId(storyboardData));
-//
-// //although adding storyboard automatically set frame IDs, we should do it again because sometimes redux does not recognize it being updated.
-// if (storyboardData.frameList.length > 0){
-//     dispatch(setSelectedFrameId(storyboardData.frameList[0]._id));
-//     // SelectedIdDataHandler.setFrameId(project.selectedId, storyboardData.frameList[0]._id);
-// }
-
         setSelectedStoryboardIdInMemory: {
             reducer: (state, action) => {
                 SelectedIdDataHandler.setStoryboardId(state.value.selectedId, action.payload);
@@ -769,6 +792,24 @@ export const projectSlice = createSlice({
                 FrameDataHandler.addStar(frameData, actorId, stateId);
             },
         },
+
+        addChildStarInMemory: {
+            reducer: (state, action) => {
+                const {storyboardId, frameId, actorId, starId, childStarId, childStarPrototypeId, type} = action.payload;
+                const storyboardData = ProjectDataHandler.getStoryboard(state.value, storyboardId);
+                const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+                const starData = frameData.actorList.find(s => s._id === starId);
+                starData.childStarList.push(
+                    StarDataHandler.initializeChildStar({
+                      prototypeId: childStarPrototypeId,
+                        parentStarId: starId,
+                        _id: childStarId,
+                        type: type,
+                    })
+                )
+            }
+        },
+
 
 
         updateStarListInMemory: {
@@ -1077,10 +1118,10 @@ export const {
     loadProjectInMemory, updateNameInMemory, setMode,//project
     setSelectedFrameIdInMemory, setSelectedStoryboardIdInMemory, setSelectedStarIdInMemory, //selectedId
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
-    addStarInMemory, updateStarListInMemory, deleteStarInMemory, copyStarInMemory, //star
+    addStarInMemory, updateStarListInMemory, deleteStarInMemory, copyStarInMemory,addChildStarInMemory, //star
     addBackdropStarInMemory, //backdropStar
     addTemplateStarInMemory, //templateStar
-    addSpeechBubbleInMemory, deleteSpeechBubbleInMemory, updateTextNameInMemory, //text
+    addSpeechBubbleInMemory, deleteSpeechBubbleInMemory, updateTextNameInMemory, //text ==> todo: delete these at some point
     addResourceInMemory, deleteResourceInMemory, updateResourceValueInMemory, //resource
     addFrameInMemory, updateFrameListInMemory, //frame
     addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, //actor
@@ -1094,7 +1135,7 @@ export {
     setSelectedStoryboardId, setSelectedFrameId, setSelectedStarId, //selectedId
     addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
     addFrame, deleteFrame, //frame
-    addStar, updateStarList, deleteStar, copyStar, //star
+    addStar, updateStarList, deleteStar, copyStar, addChildStar, //star
     addBackdropStar, //backdropStar
     addTemplateStar, //templateSar,
     addActor, deleteActor, updateActorOrder, updateActorName, //actor

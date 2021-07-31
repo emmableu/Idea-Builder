@@ -9,7 +9,7 @@ import globalConfig from "../../globalConfig";
 import BackdropPanel from "./BackdropPanel/BackdropPanel";
 import TemplatePanel from "./TemplatePanel/TemplatePanel";
 import EventPanel from "./EventPanel/EventPanel";
-import {SpeechBubblePanel} from "./SpeechBubblePanel/SpeechBubblePanel";
+import {SpeechBubbleModal} from "../FrameToolbar/SpeechBubbleModal";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -108,7 +108,7 @@ export const MaterialMenu = () => {
         // {
         //     label: "Speech Bubbles",
         //     icon: <Chat/>,
-        //     panel: <SpeechBubblePanel />
+        //     panel: <SpeechBubbleModal />
         // },
         {
             label: "Resources",
