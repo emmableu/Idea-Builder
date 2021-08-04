@@ -64,6 +64,7 @@ const getSelectedStarAndActorData = createSelector(
                     if (selectedStar !== undefined) {
                         actorData = actorList.find(s => s._id === selectedStar.actorId);
                     } else {
+                        selectedStar = null;
                         actorData = null;
                     }
                 }

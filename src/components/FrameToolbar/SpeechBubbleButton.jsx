@@ -7,7 +7,6 @@ import { Menu, Dropdown } from 'antd';
 import {updateStarList} from "../../redux/features/projectSlice";
 import MenuItem from "@material-ui/core/MenuItem";
 import {useDispatch} from "react-redux";
-import {SpeechBubbleModal} from "./SpeechBubbleModal";
 
 
 const SpeechBubbleButton = (props) => {
