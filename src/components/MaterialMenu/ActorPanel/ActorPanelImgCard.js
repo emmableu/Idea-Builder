@@ -74,6 +74,7 @@ export const ActorPanelImgCard = (props) => {
             type= "state"
             buttonGroup={<ActorPanelImgCardButtonGroup
                 actorId={actorData._id}
+                actorData={actorData}
             />}
             actorId={actorData._id}
             dataList = {actorData.stateList}

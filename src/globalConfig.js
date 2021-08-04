@@ -52,10 +52,14 @@ if (window.innerWidth >= 1380 && window.innerWidth < 1600 ) {
 }
 
 let responsiveSizeData = {
-     actorDrawerWidth: 270,
-     storyboardDrawerWidth: 240,
-     noteWidth: 335,
-     frameListHeight: 200,
+     // actorDrawerWidth: 270,
+     // storyboardDrawerWidth: 240,
+     // noteWidth: 335,
+     // frameListHeight: 200,
+     actorDrawerWidth: 200,
+     storyboardDrawerWidth: 200,
+     noteWidth: 230,
+     frameListHeight: 150,
 }
 
 if (mode === "MEDIUM") {

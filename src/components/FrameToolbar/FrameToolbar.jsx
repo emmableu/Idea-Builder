@@ -8,8 +8,9 @@ import globalConfig from "../../globalConfig";
 import {useDispatch, connect} from "react-redux";
 import {copyStar, deleteStar} from "../../redux/features/projectSlice";
 import axios from "../../axiosConfig";
-import {CopyIcon} from "../primitives/Icon/Icon";
+import {CopyIcon, MotionIcon} from "../primitives/Icon/Icon";
 import SpeechBubbleButton from "./SpeechBubbleButton";
+import Button from "@material-ui/core/Button";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -69,6 +70,21 @@ const FrameToolbar = (props) => {
                        selectedStar={selectedStar}
                         selectedActor={selectedActor}
                    />
+                   <Tooltip title="Create motion">
+                   <Button aria-label="draw motion"
+                               color="inherit"
+                                style={{
+                                    fontColor:"grey"
+                                }}
+                               size="small"
+                                startIcon={<MotionIcon
+                                    style={{fontColor:"#1890ff"}}
+                                />}
+                   >
+                       Motion
+                   </Button>
+                   </Tooltip>
+
                 </div>
                <div>
                    <Tooltip title="Copy Actor">

@@ -20,7 +20,7 @@ const ActorPanelButtonGroup = props => {
         <>
             <>
             <ActorPanelUploadButton/>
-            <Tooltip title="Search for state">
+            <Tooltip title="Search for actors">
                 <Button type="link" shape="circle" size="medium"
                         onClick= {handleClickOpen}
                         loading={searchLoading}

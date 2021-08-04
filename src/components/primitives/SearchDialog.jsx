@@ -80,7 +80,7 @@ const SearchDialog = (props) => {
                 aria-labelledby="draggable-dialog-title"
                 disableBackdropClick
             >
-                {type === "state" && <DialogTitle id="dialog-title">Actor States</DialogTitle>}
+                {type === "state" && <DialogTitle id="dialog-title">Actors</DialogTitle>}
                 {type === "backdrop" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}
                 <DialogContent>
                     <FixedSizeList
