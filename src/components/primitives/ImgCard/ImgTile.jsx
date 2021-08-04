@@ -57,7 +57,7 @@ const ImgTile = React.memo((props) =>  {
     const { _id, actorId, stateId, imgSrc, contentNode, handleDelete, handleUse, type} = props;
     const classes = useStyles(props);
     const [onHover, setOnHover] = React.useState();
-
+    const buttonSize = type==="state"? "small":"medium";
     return (
         <Card
             variant="outlined"
@@ -90,10 +90,10 @@ const ImgTile = React.memo((props) =>  {
                                                 handleUse(e, _id)
                                             }
                                             else if (type === "state") {
-                                                handleUse(e, actorId, stateId)
+                                                handleUse(e, actorId, _id)
                                             }
                                         }}
-                                        size="medium">
+                                        size={buttonSize}>
                                 <ArrowForward style={{color: "white"}} />
                             </IconButton>
                         </Tooltip>
@@ -103,13 +103,13 @@ const ImgTile = React.memo((props) =>  {
                                         className={classes.buttonOverlapDelete}
                                         color="inherit"
                                         variant="contained"
-                                        size="medium"
+                                        size={buttonSize}
                                         onClick={e => {
                                             if (type === "backdrop") {
                                                 handleDelete(e, _id)
                                             }
                                             else if (type === "state") {
-                                                handleDelete(e, actorId)
+                                                handleDelete(e, actorId, _id)
                                             }
                                         }}>
                                 <DeleteOutlined style={{color: "white"}}/>

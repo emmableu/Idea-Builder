@@ -15,6 +15,8 @@ const ImgCard = (props) => {
         handleDelete,
         handleUse,
         type,
+        ratio,
+        actorId,
     } = props;
     /*
     title: the title of the card, can be text or react component
@@ -24,12 +26,12 @@ const ImgCard = (props) => {
     imgButtonGroup: the buttons on the overlay of an image
     handleSave: what happens when saving an image;
      */
+    const heightToWidthRatio = ratio===undefined?"75%":"100%";
     return (
         <Card
             title={title}
-            bordered={false}
+            bordered={type === "state"}
             size="small"
-            style={{ width: "100%" }}
             extra={buttonGroup} >
             <Grid container spacing={1} justifyContent="center">
                 {dataList.map(imgData => (
@@ -37,16 +39,12 @@ const ImgCard = (props) => {
                         <ImgTile
                             type={type}
                             _id={imgData._id}
-                            actorId={
-                                type === "state" ? imgData._id:null
-                            }
-                            stateId={type==="state"? imgData.stateList[0]._id:null}
+                            actorId={actorId!==undefined?actorId:null}
                             name={imgData.name}
                             imgSrc={
-                                type==="state"? axios.defaults.baseURL + imgData.stateList[0]._id:
-                                    axios.defaults.baseURL + imgData._id
+                                axios.defaults.baseURL + imgData._id
                             }
-                            heightToWidthRatio={'75%'}
+                            heightToWidthRatio={heightToWidthRatio}
                             handleDelete={handleDelete}
                             handleUse={handleUse}
                             contentNode={<ImgTileEdiText

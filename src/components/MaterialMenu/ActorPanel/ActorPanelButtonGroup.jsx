@@ -18,7 +18,7 @@ const ActorPanelButtonGroup = props => {
 
     return (
         <>
-            <div  style={{flex: "0 0 100px"}}>
+            <>
             <ActorPanelUploadButton/>
             <Tooltip title="Search for state">
                 <Button type="link" shape="circle" size="medium"
@@ -28,7 +28,7 @@ const ActorPanelButtonGroup = props => {
             </Tooltip>
 
 
-            </div>
+            </>
             <SearchDialog
                 type="state"
                 searchDialogOpen={searchDialogOpen}

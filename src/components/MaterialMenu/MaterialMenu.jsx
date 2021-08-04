@@ -101,7 +101,7 @@ export const MaterialMenu = () => {
             panel: <div />
         },
         {
-            label: "Keyboard & Mouse",
+            label: "Events",
             icon: <Mouse/>,
             panel: <EventPanel />
         },

@@ -59,17 +59,16 @@ const SpeechBubbleEdiText = (props) => {
                 cancelOnEscape
                 style={{width: "100%"}}
                 value={value}
-                type="textarea"
+                type="text"
                 onSave={val => {console.log(val)} }
                 editButtonContent={<EditButton/>}
                 editing={editing}
                 showButtonsOnHover
                 hideIcons={true}
-                inputProps={{
-                    className: "textarea",
-                    placeholder: "Bla bla bla...",
-                    rows: 5,
-                }}
+                // inputProps={{
+                //     className: "text",
+                //     placeholder: "Bla bla bla...",
+                // }}
             />
         </>
     );
