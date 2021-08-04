@@ -21,10 +21,6 @@ const StarLayer = (props) => {
         backdropImg.crossOrigin = "Anonymous";
     }
 
-    // const selectStar = async (starId) => {
-    //     dispatch(setSelectedStarId(starId));
-    // }
-
 
  return (
      <>
