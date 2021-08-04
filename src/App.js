@@ -12,7 +12,6 @@ import {
 import LoginPage from './components/LoginPage/LoginPage'
 import  {authContext, useAuth, ProvideAuth, useProvideAuth, PrivateRoute} from "./hooks/useAuth";
 import globalConfig from "./globalConfig";
-import {ChakraProvider} from "@chakra-ui/react";
 
 const theme = createMuiTheme({
   typography: {
