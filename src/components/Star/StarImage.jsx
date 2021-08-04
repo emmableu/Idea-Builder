@@ -3,12 +3,16 @@ import {Transformer, Image} from 'react-konva';
 import useImage from 'use-image';
 import axios from "../../axiosConfig";
 import {useDispatch} from "react-redux";
+import {setSelectedStarIdInMemory} from "../../redux/features/projectSlice";
 
 const StarImage = (props) => {
-    const {listening, starImageData, isSelected, onSelect, onChange} = props;
-    // // console.log('starImageData: ', starImageData);
+    const {listening, starImageData, isSelected, onSelect, updatePositionAndSize,
+        strokeEnabled, setStrokeEnabled,
+    } = props;
     const [image] = useImage(axios.defaults.baseURL + starImageData.prototypeId);
-    // // console.log("image: ", image);
+    const stroke = listening?"#05AFF2":null;
+    const strokeWidth = listening?1:0;
+    const dispatch = useDispatch();
     if (image !== undefined) {
         starImageData.height = starImageData.width * image.height/image.width;
         image.crossOrigin = "Anonymous";
@@ -16,10 +20,11 @@ const StarImage = (props) => {
     const imageRef = React.useRef(null);
     const transformerRef = React.useRef(null);
     React.useEffect(() => {
+        console.log("listening: ", listening);
         if (imageRef.current) {
             imageRef.current.listening(listening);
         }
-    }, [])
+    }, [listening])
     React.useEffect(() => {
         if (isSelected && starImageData) {
             // we need to attach transformer manually
@@ -27,6 +32,9 @@ const StarImage = (props) => {
             transformerRef.current.getLayer().batchDraw();
         }
     }, [isSelected]);
+    React.useEffect(() => {
+        imageRef.current.strokeEnabled(strokeEnabled);
+    }, [strokeEnabled])
     return (
         <>
             <Image
@@ -38,8 +46,19 @@ const StarImage = (props) => {
                 onTap={onSelect}
                 draggable
                 ref={imageRef}
+                stroke={stroke}
+                strokeWidth={strokeWidth}
+                onMouseOver={() => {
+                    if (!isSelected && listening) {
+                        setStrokeEnabled(true);
+                    }}}
+                onDragStart={(e) => {
+                    dispatch(setSelectedStarIdInMemory(starImageData._id));
+                    setStrokeEnabled(false);
+                }}
+                onMouseOut={() => {setStrokeEnabled(false)}}
                 onDragEnd={(e) => {
-                    onChange({
+                    updatePositionAndSize({
                         ...starImageData,
                         x: e.target.x(),
                         y: e.target.y(),
@@ -59,7 +78,7 @@ const StarImage = (props) => {
                     // we will reset it back
                     node.scaleX(1);
                     node.scaleY(1);
-                    onChange({
+                    updatePositionAndSize({
                         ...starImageData,
                         x: node.x(),
                         y: node.y(),

@@ -7,8 +7,9 @@ import FrameToolbar from "../FrameToolbar/FrameToolbar";
 import {createSelector} from "reselect";
 import {connect, useDispatch} from "react-redux";
 import EmptyFrameCardContainer from "./EmptyFrameCardContainer";
-import {DeleteOutline, Refresh} from "@material-ui/icons";
+import {PaletteOutlined, Refresh} from "@material-ui/icons";
 import {updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
+import {deleteBackdrop, deleteBackdropStar} from "../../redux/features/projectSlice";
 
 const useStyles = makeStyles((theme) => ({
         frame: { flex: `0 0 calc(100vh - ${globalConfig.toolBarHeight}px
@@ -145,6 +146,22 @@ const FrameCardContainer = props => {
                                     margin:`${globalConfig.topAndBottomMarginOutsideFrame}px 0 ${globalConfig.topAndBottomMarginOutsideFrame}px 0`,
                                 }}
                             >
+                                <Tooltip title="Clear backdrop">
+                                    <IconButton aria-label="clear backdrop"
+                                                color="inherit"
+                                                size="small"
+                                                onClick={(e) => {
+                                                    dispatch(deleteBackdropStar({
+                                                        storyboardId: props.storyboardId,
+                                                        frameId: props.frameId,
+                                                    }
+                                                )); // update the state to force render
+                                                }}
+                                    >
+                                        <PaletteOutlined style={{ color: 'grey' }} />
+                                    </IconButton>
+                                </Tooltip>
+
                                 <Tooltip title="Refresh frame">
                                     <IconButton aria-label="refresh frame"
                                                 color="inherit"

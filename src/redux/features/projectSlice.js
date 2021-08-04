@@ -105,7 +105,10 @@ const setSelectedStarId = createAsyncThunk(
         const prevStarId = getState().project.value.selectedId.starId;
         if (prevStarId !== starId) {
             dispatch(setSelectedStarIdInMemory(starId));
-            dispatch(updateUserActionCounter());
+            setTimeout(() => {
+                dispatch(updateUserActionCounter());
+            }, 200);
+            //must wait 200ms, otherwise this update and the other update (when position updated) will fight with each other.
             const project = getState().project.value;
             const response = await ProjectAPI.updateSelectedIdData(
                 {
@@ -303,7 +306,7 @@ const updateStarList = createAsyncThunk(
         // why we need a 100 timeout: konva needs time to render the updated stage. It only make sense for it to send updates when it's done.
         setTimeout(() => {
             dispatch(updateUserActionCounter());
-        }, 100);
+        }, 200);
         const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
@@ -317,7 +320,7 @@ const updateStarList = createAsyncThunk(
 
 
 const deleteStar = createAsyncThunk(
-    'project/updateStarList',
+    'project/deleteStar',
     async (obj, thunkAPI) => {
         const {storyboardId, frameId, starId} = obj;
         const {dispatch, getState} = thunkAPI;
@@ -339,7 +342,7 @@ const deleteStar = createAsyncThunk(
 );
 
 const copyStar = createAsyncThunk(
-    'project/updateStarList',
+    'project/copyStar',
     async (obj, thunkAPI) => {
         const {
             storyboardId,
@@ -368,7 +371,7 @@ const copyStar = createAsyncThunk(
 
 
 const addChildStar = createAsyncThunk(
-    'project/updateStarList',
+    'project/addChildStar',
     async (obj, thunkAPI) => {
         const {
             storyboardId, frameId,
@@ -429,6 +432,32 @@ const addBackdropStar = createAsyncThunk(
         return response.status;
     }
 );
+
+
+const deleteBackdropStar = createAsyncThunk(
+    'project/deleteBackdrop',
+    async (payload, thunkAPI) => {
+        const {storyboardId, frameId} = payload;
+        const {dispatch, getState} = thunkAPI;
+        const backdropStar = {
+            prototypeId: null,
+            _id: null,
+        };
+        dispatch(addBackdropStarInMemory(
+            {
+                storyboardId, frameId,backdropStar
+            })
+        );
+        setTimeout(() => {
+            dispatch(updateUserActionCounter());
+        }, 50);
+        const response = await ProjectAPI.replaceBackdropStarInDatabase({
+            frameId, backdropStar
+        });
+        return response.status;
+    }
+);
+
 
 
 /* The next section are about template stars on on the frame */
@@ -804,7 +833,10 @@ export const projectSlice = createSlice({
                         parentStarId: starId,
                         _id: childStarId,
                         type: type,
-                        width: 300,
+                        width: 150,
+                        height: 80,
+                        x: starData.x + starData.width,
+                        y: starData.y,
                     })
                 )
                 console.log("star data after adding: ", starData);
@@ -821,6 +853,7 @@ export const projectSlice = createSlice({
                 const frame = StoryboardDataHandler.getFrame(storyboardData, frameId);
                 const starIndex = frame.starList.findIndex(s => s._id === starData._id);
                 console.log("starIndex: ", starIndex);
+                console.log("starData: ", starData);
                 if (starIndex !== -1) {
                     frame.starList[starIndex] =  starData;
                 }
@@ -1129,7 +1162,7 @@ export {
     addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
     addFrame, deleteFrame, //frame
     addStar, updateStarList, deleteStar, copyStar, addChildStar, //star
-    addBackdropStar, //backdropStar
+    addBackdropStar,deleteBackdropStar, //backdropStar
     addTemplateStar, //templateSar,
     addActor, deleteActor, updateActorOrder, updateActorName, //actor
     addState, deleteState, updateStateName, //state

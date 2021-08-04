@@ -5,25 +5,30 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {SpeechBubbleModal} from "./SpeechBubbleModal";
 
 const NewSpeechBubbleMenuItem = props => {
-
+    const {storyboardId, frameId, selectedStar, selectedActor, hasSpeechBubble, setHasSpeechBubble} = props
     const [isModalVisible, setIsModalVisible] = React.useState(false);
-    const [newProjectName, setNewProjectName] = React.useState(null);
 
     const showModal = e => {
         setIsModalVisible(true);
-
         setTimeout(() => {}, 500);
     };
 
 
 
+
     return (
         <>
-            <MenuItem onClick={e => showModal(e)}>Add speech bubble</MenuItem>
+            <MenuItem
+                disabled={hasSpeechBubble}
+                onClick={e => showModal(e)}>Add speech bubble</MenuItem>
                 <SpeechBubbleModal
-                    {...props}
+                    storyboardId={storyboardId}
+                    frameId={frameId}
+                    selectedStar={selectedStar}
+                    selectedActor={selectedActor}
                     isModalVisible={isModalVisible}
                     setIsModalVisible={setIsModalVisible}
+                    setHasSpeechBubble={setHasSpeechBubble}
                 />
         </>
     );

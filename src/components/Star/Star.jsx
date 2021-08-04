@@ -13,9 +13,41 @@ const Star = (props) => {
     const dispatch = useDispatch();
     const childStarRef = React.useRef(null);
     const selectedStarId = (selectedStar!==undefined && selectedStar!==null)?selectedStar._id:null;
+    const [strokeEnabled, setStrokeEnabled] = React.useState(false);
+
 
     const selectStar = async (starId) => {
         dispatch(setSelectedStarId(starId));
+        setStrokeEnabled(false);
+    }
+
+    const updatePositionAndSize = (attrs) => {
+        const {x, y, width} = attrs;
+        const newChildStarList = [];
+        for (const childStar of starData.childStarList) {
+            newChildStarList.push(
+                {
+                    ...childStar,
+                    x: x + width,
+                    y: y,
+                }
+            )
+        }
+
+        console.log("starData.childStarLis", starData.childStarList)
+        console.log("newChildStarList", newChildStarList);
+        const newData = {
+            ...starData,
+            ...attrs,
+            childStarList: newChildStarList,
+        };
+
+        dispatch(updateStarList({
+                storyboardId,
+                frameId,
+                starData: newData
+            })
+        )
     }
 
 
@@ -26,17 +58,13 @@ const Star = (props) => {
                     listening={true}
                     key={starImageData._id}
                     starImageData={starImageData}
+                    strokeEnabled={strokeEnabled}
+                    setStrokeEnabled={setStrokeEnabled}
                     isSelected={starImageData._id === selectedStarId}
                     onSelect={() => {
                         selectStar(starImageData._id);
                     }}
-                    onChange={(newAttrs) => {
-                        dispatch(updateStarList({
-                            storyboardId,
-                            frameId,
-                            starData: newAttrs,}
-                        ))
-                    }}
+                    updatePositionAndSize={updatePositionAndSize}
                 />
             }
             {
@@ -50,21 +78,18 @@ const Star = (props) => {
                     onSelect={() => {
                         selectStar(starImageData._id);
                     }}
-                    onChange={(newAttrs) => {
-                        dispatch(updateStarList({
-                            storyboardId,
-                            frameId,
-                            starData: newAttrs})
-                        )
-                    }}
+                    strokeEnabled={strokeEnabled}
+                    setStrokeEnabled={setStrokeEnabled}
+                    updatePositionAndSize={updatePositionAndSize}
                 />
                 {starImageData.childStarList.map((childStar) => (
                         <StarImage
                             listening={false}
                             key={childStar._id}
+                            strokeEnabled={strokeEnabled}
+                            setStrokeEnabled={setStrokeEnabled}
                             ref={childStarRef}
                             starImageData={childStar}
-                            onSelect={() => {console.log("i am selected")}}
                         />
                     )
                 )}

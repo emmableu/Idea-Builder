@@ -40,7 +40,7 @@ const FrameToolbar = (props) => {
         dispatch(deleteStar({
             storyboardId,
             frameId,
-            starId: selectedStar,
+            starId: selectedStar._id,
         }));
     }
     const handleCopyStar = (e) => {
@@ -63,7 +63,12 @@ const FrameToolbar = (props) => {
                <div>
                    { selectedActor !== null && <Avatar src={axios.defaults.baseURL + selectedStar.prototypeId}
                    />}
-                   <SpeechBubbleButton {...props}/>
+                   <SpeechBubbleButton
+                        storyboardId={storyboardId}
+                        frameId={frameId}
+                       selectedStar={selectedStar}
+                        selectedActor={selectedActor}
+                   />
                 </div>
                <div>
                    <Tooltip title="Copy Actor">

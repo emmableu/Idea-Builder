@@ -15,7 +15,7 @@ import globalConfig from "../../globalConfig";
 
 
 export const SpeechBubbleModal = (props) => {
-    const {storyboardId, frameId, selectedStar, selectedActor, isModalVisible, setIsModalVisible} = props;
+    const {storyboardId, frameId, selectedStar, selectedActor, isModalVisible, setIsModalVisible, setHasSpeechBubble} = props;
     const bubbleRef = React.useRef(null);
     const [confirmLoading, setConfirmLoading] = React.useState(false);
     const dispatch = useDispatch();
@@ -40,6 +40,7 @@ export const SpeechBubbleModal = (props) => {
                         }))
                         setConfirmLoading(false);
                         setIsModalVisible(false);
+                        setHasSpeechBubble(true)
                     }
                 )
             })
@@ -54,7 +55,7 @@ export const SpeechBubbleModal = (props) => {
     };
     return (
             <>
-                {selectedStar !== null &&
+                {selectedStar !== null && selectedActor !== undefined && selectedActor !== null &&
                 <Modal
                     title={selectedActor.name + " says..."}
                     visible={isModalVisible}
@@ -64,7 +65,8 @@ export const SpeechBubbleModal = (props) => {
                     okText="Create"
                     cancelText="Cancel"
                 >
-                    <Box style={{
+                    <Box
+                        style={{
                         display: "flex",
                         height: "inherit",
                         padding: "0px 10px",
@@ -72,14 +74,20 @@ export const SpeechBubbleModal = (props) => {
                         justifyContent: "flex-start",
                     }}>
                         <Avatar src={axios.defaults.baseURL + selectedStar.prototypeId}/>
-                        <div className={`bubble-container left`}
-                             ref={bubbleRef}
+                        <Box
+                            ref={bubbleRef}
+                            style={{
+                                padding: "0px 10px",
+                            }}
+                        >
+                             <div className={`bubble-container left`}
                              key={0}>
                             <div className={`bubble me`}>
                                 <SpeechBubbleEdiText/>
 
                             </div>
                         </div>
+                        </Box>
                     </Box>
                 </Modal>
                 }
