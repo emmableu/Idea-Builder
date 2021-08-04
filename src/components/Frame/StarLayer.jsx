@@ -12,19 +12,24 @@ import Star from "../Star/Star";
 const StarLayer = (props) => {
     const {storyboardId, frameId, starList,backdropStar,selectedStar,} = props;
     const dispatch = useDispatch();
+    const backdropLayerRef = React.useRef(null);
+    React.useEffect(() => {
+        backdropLayerRef.current.listening(false);
+    }, [])
     const [backdropImg] = useImage(axios.defaults.baseURL + backdropStar.prototypeId);
     if (backdropImg !== undefined) {
         backdropImg.crossOrigin = "Anonymous";
     }
 
-    const selectStar = async (starId) => {
-        dispatch(setSelectedStarId(starId));
-    }
+    // const selectStar = async (starId) => {
+    //     dispatch(setSelectedStarId(starId));
+    // }
 
 
  return (
      <>
          <Layer
+             ref={backdropLayerRef}
          >
              {
                  backdropStar._id !== null && (
@@ -35,20 +40,23 @@ const StarLayer = (props) => {
                          width={globalConfig.noScaleWidth}
                          height={globalConfig.noScaleWidth*3/4}
                          onClick={(e) => {
-                             selectStar("backdrop-general");
+                             console.log("clicking");
                          }}
                          onTap={(e) => {
-                             selectStar("backdrop-general");
+                             console.log("tapping");
                          }}
                      />
                  )
              }
+         </Layer>
+         <Layer>
              {starList.map((starData, i) => {
                  return (
                      <Star
+                         key={starData._id}
                          storyboardId={storyboardId}
                          frameId={frameId}
-                        selectedStar={selectedStar}
+                         selectedStar={selectedStar}
                          starData={starData}
                      />
                  );

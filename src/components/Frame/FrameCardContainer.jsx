@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
-import { IconButton, makeStyles } from '@material-ui/core';
+import { IconButton, makeStyles, Tooltip } from '@material-ui/core';
 import globalConfig, { calcFrameWidth } from '../../globalConfig';
 import Frame from "./Frame.jsx";
 import FrameToolbar from "../FrameToolbar/FrameToolbar";
 import {createSelector} from "reselect";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
 import EmptyFrameCardContainer from "./EmptyFrameCardContainer";
+import {DeleteOutline, Refresh} from "@material-ui/icons";
+import {updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
 
 const useStyles = makeStyles((theme) => ({
         frame: { flex: `0 0 calc(100vh - ${globalConfig.toolBarHeight}px
@@ -17,8 +19,10 @@ const useStyles = makeStyles((theme) => ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            flexDirection: "column",
         }
 }));
+
 
 
 const getSelectedStarAndActorData = createSelector(
@@ -40,15 +44,28 @@ const getSelectedStarAndActorData = createSelector(
         else {
             console.log("frameId: ", frameId);
             selectedFrame = selectedStoryboard.frameList.find(s => s._id === frameId);
-            starList = selectedFrame.starList;
-            backdropStar = selectedFrame.backdropStar;
-            if ([null, undefined].includes(starId)) {
+            if (selectedFrame === undefined) {
+                frameId = null;
+                selectedFrame = null;
+                starList = null;
+                backdropStar = null;
                 selectedStar = null;
                 actorData = null;
             }
-            else{
-                selectedStar = selectedFrame.starList.find(s => s._id === starId);
-                actorData = actorList.find(s => s._id === selectedStar.actorId);
+            else {
+                starList = selectedFrame.starList;
+                backdropStar = selectedFrame.backdropStar;
+                if ([null, undefined].includes(starId)) {
+                    selectedStar = null;
+                    actorData = null;
+                } else {
+                    selectedStar = selectedFrame.starList.find(s => s._id === starId);
+                    if (selectedStar !== undefined) {
+                        actorData = actorList.find(s => s._id === selectedStar.actorId);
+                    } else {
+                        actorData = null;
+                    }
+                }
             }
         }
 
@@ -71,20 +88,35 @@ const FrameCardContainer = props => {
     const classes = useStyles();
     const initialWidth = calcFrameWidth(window.innerWidth, window.innerHeight);
     const initialScale = initialWidth/globalConfig.noScaleWidth;
+    const dispatch = useDispatch();
 
     const [updatedWidth, setUpdatedWidth] = React.useState(initialWidth);
     const [updatedScale, setUpdatedScale] = React.useState(initialScale);
 
+    const [refresh, setRefresh] = React.useState(0); // integer state
+    let refreshTimeoutId = null;
 
     const fitFrameWidth = () => {
+        // console.log("updatedWidth, updatedScale: --------------------------------------------------- ", updatedWidth, updatedScale)
         const newFrameWidth = calcFrameWidth(window.innerWidth, window.innerHeight);
         setUpdatedScale(newFrameWidth/initialWidth * initialScale);
         setUpdatedWidth(newFrameWidth);
+        clearTimeout(refreshTimeoutId);
+        refreshTimeoutId = setTimeout(() => {
+            setRefresh(refresh => refresh+1); //must use refresh=>refresh+1 here because settimeout is a closure.
+            //https://stackoverflow.com/questions/55198517/react-usestate-why-settimeout-function-does-not-have-latest-state-value
+        }, 500);
     };
+
     useEffect(() => {
         window.addEventListener('resize', fitFrameWidth);
         fitFrameWidth();
     }, []);
+    useEffect(() => {
+        setTimeout(() => {
+            dispatch(updateUserActionCounter());
+        }, 100);
+    }, [refresh]);
 
 
 
@@ -103,6 +135,28 @@ const FrameCardContainer = props => {
                             }}
                             className={classes.frame}
                         >
+                            <div
+                                style={{
+                                    width: updatedWidth,
+                                    height: globalConfig.trashToolBarHeight,
+                                    backgroundColor: globalConfig.color.veryLightGrey,
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                    margin:`${globalConfig.topAndBottomMarginOutsideFrame}px 0 ${globalConfig.topAndBottomMarginOutsideFrame}px 0`,
+                                }}
+                            >
+                                <Tooltip title="Refresh frame">
+                                    <IconButton aria-label="refresh frame"
+                                                color="inherit"
+                                                size="small"
+                                                onClick={(e) => {
+                                                    setRefresh(refresh + 1); // update the state to force render
+                                                }}
+                                    >
+                                        <Refresh style={{ color: 'grey' }} />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
                             <Paper
                                 style={{
                                     width: updatedWidth,
@@ -112,13 +166,24 @@ const FrameCardContainer = props => {
                                 square
                                 elevation={4}
                             >
-                                <Frame width={initialWidth}
-                                       scale={initialScale}
-                                       updatedWidth={updatedWidth}
-                                       updatedScale={updatedScale}
+                                <Frame
+                                        refresh={refresh}
+                                        width={initialWidth}
+                                        scale={initialScale}
+                                        updatedWidth={updatedWidth}
+                                        updatedScale={updatedScale}
                                        {...props}
                                 />
                             </Paper>
+                            <div
+                                style={{
+                                    width: updatedWidth,
+                                    height: globalConfig.trashToolBarHeight,
+                                    backgroundColor: globalConfig.color.veryLightGrey,
+                                    zIndex: -5,
+                                    margin:`${globalConfig.topAndBottomMarginOutsideFrame}px 0 0 0`,
+                                }}
+                            />
                         </div>
                     </>
                 }

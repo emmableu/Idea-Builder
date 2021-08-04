@@ -5,7 +5,7 @@ import axios from "../../axiosConfig";
 import {useDispatch} from "react-redux";
 
 const StarImage = (props) => {
-    const {starImageData, isSelected, onSelect, onChange} = props;
+    const {listening, starImageData, isSelected, onSelect, onChange} = props;
     // // console.log('starImageData: ', starImageData);
     const [image] = useImage(axios.defaults.baseURL + starImageData.prototypeId);
     // // console.log("image: ", image);
@@ -15,6 +15,11 @@ const StarImage = (props) => {
     }
     const imageRef = React.useRef(null);
     const transformerRef = React.useRef(null);
+    React.useEffect(() => {
+        if (imageRef.current) {
+            imageRef.current.listening(listening);
+        }
+    }, [])
     React.useEffect(() => {
         if (isSelected && starImageData) {
             // we need to attach transformer manually
@@ -61,7 +66,7 @@ const StarImage = (props) => {
                         // set minimal value
                         width: Math.max(5, node.width() * scaleX),
                         height: Math.max(5, node.height() * scaleY),
-                        transform: node.getAbsoluteTransform().getMatrix(),
+                        // transform: node.getAbsoluteTransform().getMatrix(),
                     });
                 }}/>
             {isSelected && (

@@ -33,6 +33,7 @@
     "js-file-download": "^0.4.12",
     "jszip": "^3.6.0",
     "konva": "^8.1.0",
+    "lodash": "^4.17.21",
     "material-table": "^1.69.3",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.1.0",

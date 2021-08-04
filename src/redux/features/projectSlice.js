@@ -296,7 +296,7 @@ const addStar = createAsyncThunk(
 const updateStarList = createAsyncThunk(
     'project/updateStarList',
     async (payload, thunkAPI) => {
-        const {storyboardId, frameId, starData} = JSON.parse(payload);
+        const {storyboardId, frameId, starData} = payload;
         const {dispatch, getState} = thunkAPI;
         dispatch(updateStarListInMemory(payload));
         const state = getState();
@@ -816,24 +816,15 @@ export const projectSlice = createSlice({
 
         updateStarListInMemory: {
             reducer: (state, action) => {
-                const storyboardData = ProjectDataHandler.getStoryboard(state.value, action.payload.storyboardId);
-                const frame = StoryboardDataHandler.getFrame(storyboardData, action.payload.frameId);
-                const starIndex = frame.starList.findIndex(s => s._id === action.payload.starData._id);
+                const {storyboardId, frameId, starData} = action.payload;
+                const storyboardData = ProjectDataHandler.getStoryboard(state.value, storyboardId);
+                const frame = StoryboardDataHandler.getFrame(storyboardData, frameId);
+                const starIndex = frame.starList.findIndex(s => s._id === starData._id);
                 console.log("starIndex: ", starIndex);
                 if (starIndex !== -1) {
-                    frame.starList[starIndex] =  action.payload.starData;
+                    frame.starList[starIndex] =  starData;
                 }
-            },
-            prepare: (text) => {
-                const obj = JSON.parse(text);
-                return {
-                    payload: {
-                        "storyboardId": obj.storyboardId,
-                        "frameId": obj.frameId,
-                        "starData": obj.starData,
-                    }
-                }
-            },
+            }
         },
 
 

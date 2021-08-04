@@ -154,7 +154,9 @@ const calcFrameWidth = ( windowInnerWidth, windowInnerHeight ) => {
          - globalConfig.storyboardToolBarHeight
          - globalConfig.storyboardPageMargin*2
          - globalConfig.responsiveSizeData.frameListHeight
-         - globalConfig.trashToolBarHeight;
+         - globalConfig.trashToolBarHeight*3
+         - globalConfig.topAndBottomMarginOutsideFrame*4
+     ; //2 bars right up/beneath and one bar on the very top just below framelist.
 
      const bestFrameWidth = (windowInnerWidth
          - globalConfig.responsiveSizeData.storyboardDrawerWidth

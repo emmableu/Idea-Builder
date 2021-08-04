@@ -87,7 +87,7 @@ const FrameList = () => {
     const handleDeleteFrame = (e, frameIndex) => {
         e.stopPropagation();
         if (frameList[frameIndex]._id === _id) {
-            console.log("to delete id ", frameList[frameIndex]._id, "is the same as ", frameId);
+            // console.log("to delete id ", frameList[frameIndex]._id, "is the same as ", frameId);
             if (frameIndex < frameList.length - 1) {
                 dispatch(setSelectedFrameIdInMemory(frameList[frameIndex+1]._id));
             }
