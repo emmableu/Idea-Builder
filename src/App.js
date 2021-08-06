@@ -5,7 +5,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import Dashboard from './components/Dashboard/Dashboard';
 import { useDispatch } from 'react-redux';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Redirect,
 } from "react-router-dom";
