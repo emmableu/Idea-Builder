@@ -11,6 +11,8 @@ import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import Button from "@material-ui/core/Button";
 import {glob} from "konva/lib/Global";
 import {StarDataHandler} from "../../data/StarData";
+import {updateStarList} from "../../redux/features/projectSlice";
+import {useDispatch} from "react-redux";
 
 const MotionStar = (props) => {
     const {starData} = props;
@@ -27,13 +29,16 @@ const MotionStar = (props) => {
 
 
 export const MotionStage = (props) => {
-    const {backdropStar, starList, selectedStar,tempMotionStarList,setTempMotionStarList, points, setPoints} = props;
+    const {storyboardId, frameId, backdropStar, starList, selectedStar, okPressed, setOkPressed, setIsModalVisible} = props;
     const isDrawing = React.useRef(false);
     const [stopped, setStopped] = React.useState(false);
     const [backdropImg] = useImage(axios.defaults.baseURL + backdropStar.prototypeId);
     const [selectedStarImg, setSelectedStarImg] = React.useState(JSON.parse(JSON.stringify(selectedStar)))
+    const [points, setPoints] = React.useState([]);
+    const [tempMotionStarList,setTempMotionStarList] = React.useState([]);
     const frameRef = React.useRef(null);
     const motionStarRef = React.useRef(null);
+    const dispatch = useDispatch();
     React.useEffect(() => {
         if (frameRef.current !== null) {
             frameRef.current.listening(false);
@@ -42,6 +47,32 @@ export const MotionStage = (props) => {
             motionStarRef.current.listening(false);
         }
     }, [])
+
+    React.useEffect(() => {
+        if (okPressed === false) {
+            return;
+        }
+        const newStarData = {
+            ...selectedStar,
+            ...selectedStarImg,
+            childStar: {
+                speechStar: selectedStar.childStar.speechStar,
+                lineStar: {
+                    _id: UUID.v4(),
+                    points: points,
+                },
+                motionStarList: tempMotionStarList,
+            }
+        }
+        dispatch(updateStarList(
+            {
+                storyboardId, frameId,
+                starData: newStarData
+            }
+        ));
+        setIsModalVisible(false);
+        setOkPressed(false);
+    }, [okPressed])
 
     /*
     opac: 0.1 0.4 0.7 1

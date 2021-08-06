@@ -4,50 +4,18 @@ import {useDispatch} from "react-redux";
 import {MotionStage} from "./MotionStage";
 import {updateStarList} from "../../redux/features/projectSlice";
 import * as UUID from "uuid";
-import useImage from "use-image";
-import axios from "../../axiosConfig";
-import {Image} from "react-konva";
 
-const MotionStar = (props) => {
-    const {starData} = props;
-    const [image] = useImage(axios.defaults.baseURL + starData.prototypeId)
-    return (
-        <Image
-            image={image}
-            key={starData._id}
-            {...starData}
-        />
-    )
-}
 
 export const MotionModal = (props) => {
     const {storyboardId, frameId, selectedStar, selectedActor, backdropStar, isModalVisible, setIsModalVisible,
         setHasMotion, starList,
     } = props;
-    const [tempMotionStarList, setTempMotionStarList] = React.useState([]);
-    const [points, setPoints] = React.useState([]);
     const dispatch = useDispatch();
+    const [okPressed, setOkPressed] = React.useState(false);
 
-    const handleOk = React.useCallback(() => {
-        const newStarData = {
-            ...selectedStar,
-            childStar: {
-                speechStar: selectedStar.childStar.speechStar,
-                lineStar: {
-                    _id: UUID.v4(),
-                    points: points,
-                },
-                motionStarList: tempMotionStarList,
-            }
-        }
-        dispatch(updateStarList(
-            {
-                storyboardId, frameId,
-                starData: newStarData
-            }
-        ));
-        setIsModalVisible(false);
-    }, [])
+    const handleOk = () => {
+        setOkPressed(true);
+    };
 
 
     const handleCancel = () => {
@@ -65,15 +33,15 @@ export const MotionModal = (props) => {
                 cancelText="Cancel"
             >
                 <MotionStage
+                    storyboardId={storyboardId}
                     frameId={frameId}
                     backdropStar={backdropStar}
                     starList={starList}
                     selectedStar={selectedStar}
                     setHasMotion={setHasMotion}
-                    tempMotionStarList={tempMotionStarList}
-                    setTempMotionStarList={setTempMotionStarList}
-                    points={points}
-                    setPoints={setPoints}
+                    okPressed={okPressed}
+                    setOkPressed={setOkPressed}
+                    setIsModalVisible={setIsModalVisible}
                 />
             </Modal>
             }

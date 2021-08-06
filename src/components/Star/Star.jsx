@@ -1,12 +1,34 @@
 import React from "react"
 import StarImage from "../Star/StarImage.jsx";
-import {Image, Layer, Stage, Group} from 'react-konva';
+import {Image, Layer, Stage, Group, Line} from 'react-konva';
 import {useDispatch, useSelector} from 'react-redux';
 import {updateStarList} from "../../redux/features/projectSlice";
 import {setSelectedStarId} from "../../redux/features/projectSlice";
 import {StarDataHandler} from "../../data/StarData";
+import useImage from "use-image";
+import axios from "../../axiosConfig";
 
-
+const StaticMotionStar = (props) => {
+    const {starData} = props;
+    const [image] = useImage(axios.defaults.baseURL + starData.prototypeId)
+    if (image !== undefined) {
+        image.crossOrigin = "Anonymous";
+    }
+    const starRef = React.useRef(null);
+    React.useEffect(() => {
+        if (starRef.current!==null) {
+            starRef.current.listening(false);
+        }
+    }, [])
+    return (
+        <Image
+            ref={starRef}
+            image={image}
+            key={starData._id}
+            {...starData}
+        />
+    )
+}
 
 const Star = (props) => {
     const {storyboardId, frameId, selectedStar, starData} = props;
@@ -24,18 +46,41 @@ const Star = (props) => {
 
     const updatePositionAndSize = (attrs) => {
         const {x, y, width} = attrs;
+        const deltaX = x - starData.x;
+        const deltaY = y - starData.y;
         const newSpeechStar = {
             ...starData.childStar.speechStar,
             x: x + width,
             y: y,
+        }
+        let newLineStar = null;
+        let newMotionStarList = [];
+        if (starData.childStar.motionStarList.length > 0) {
+            const points = starData.childStar.lineStar.points.map(
+                (p, i) => (i%2===0? p+deltaX:p+deltaY)
+            )
+            newLineStar = {
+                ...starData.childStar.lineStar,
+                points,
+            }
+            newMotionStarList = starData.childStar.motionStarList.map(
+                s => (
+                    {
+                        ...s,
+                        x: s.x+deltaX,
+                        y: s.y + deltaY,
+                    }
+                )
+            )
         }
 
         const newData = {
             ...starData,
             ...attrs,
             childStar: {
-                ...starData.childStar,
-                newSpeechStar,
+                speechStar: newSpeechStar,
+                lineStar: newLineStar,
+                motionStarList:newMotionStarList,
             },
         };
 
@@ -67,6 +112,22 @@ const Star = (props) => {
             {
                 StarDataHandler.isChildStarEmpty(starImageData) === false &&
             <Group>
+                {
+                    starData.childStar.motionStarList.length > 0 &&
+                    (
+                        <>
+                        {starData.childStar.motionStarList.map((starData) => {
+                            return (
+                                <StaticMotionStar
+                                    starData={starData}
+                                />
+                            );
+                        })}
+                        </>
+                        )
+                }
+
+
                 <StarImage
                     listening={true}
                     key={starImageData._id}
@@ -79,14 +140,32 @@ const Star = (props) => {
                     setStrokeEnabled={setStrokeEnabled}
                     updatePositionAndSize={updatePositionAndSize}
                 />
-                <StarImage
-                    listening={false}
-                    key={starData.childStar.speechStar._id}
-                    strokeEnabled={strokeEnabled}
-                    setStrokeEnabled={setStrokeEnabled}
-                    ref={childStarRef}
-                    starImageData={starData.childStar.speechStar}
-                />
+                {
+                    starData.childStar.speechStar !== null &&
+                    <StarImage
+                        listening={false}
+                        key={starData.childStar.speechStar._id}
+                        strokeEnabled={strokeEnabled}
+                        setStrokeEnabled={setStrokeEnabled}
+                        ref={childStarRef}
+                        starImageData={starData.childStar.speechStar}
+                    />
+                }
+                {
+                    starData.childStar.lineStar !== null &&
+                    <Line
+                        key={"line"}
+                        points={starData.childStar.lineStar.points}
+                        stroke="black"
+                        strokeWidth={2}
+                        tension={0.5}
+                        lineCap="round"
+                        globalCompositeOperation={
+                            'source-over'
+                        }
+                    />
+                }
+
             </Group>
             }
 
