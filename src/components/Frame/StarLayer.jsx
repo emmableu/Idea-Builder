@@ -57,8 +57,7 @@ const StarLayer = (props) => {
                      />
                  );
              })}
-         </Layer
->
+         </Layer>
      </>
  )
 }

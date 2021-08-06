@@ -10,7 +10,8 @@ import {copyStar, deleteStar} from "../../redux/features/projectSlice";
 import axios from "../../axiosConfig";
 import {CopyIcon, MotionIcon} from "../primitives/Icon/Icon";
 import SpeechBubbleButton from "./SpeechBubbleButton";
-import Button from "@material-ui/core/Button";
+import {Button} from "antd";
+import MotionButton from "./MotionButton";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FrameToolbar = (props) => {
     const classes = useStyles();
-    const {storyboardId, frameId, selectedStar, selectedActor} = props;
+    const {storyboardId, frameId, selectedStar, selectedActor, backdropStar, starList} = props;
     const dispatch = useDispatch();
 
     const handleDeleteStar = (e) => {
@@ -52,6 +53,10 @@ const FrameToolbar = (props) => {
             selectedStar,
         }));
     }
+
+    // const toggleMotion = (e) => {
+    //     setDrawing(!drawing);
+    // }
     return (
        <>
            <Paper
@@ -62,28 +67,24 @@ const FrameToolbar = (props) => {
                {selectedStar !== null &&
                <>
                <div>
-                   { selectedActor !== null && <Avatar src={axios.defaults.baseURL + selectedStar.prototypeId}
+                   { selectedActor !== null
+                   && <Avatar src={axios.defaults.baseURL + selectedStar.prototypeId}
                    />}
+                   {'\u00A0'}{'\u00A0'}
+                   <MotionButton
+                       storyboardId={storyboardId}
+                       frameId={frameId}
+                       selectedStar={selectedStar}
+                       backdropStar={backdropStar}
+                       selectedActor={selectedActor}
+                       starList={starList}
+                   />
                    <SpeechBubbleButton
                         storyboardId={storyboardId}
                         frameId={frameId}
                        selectedStar={selectedStar}
                         selectedActor={selectedActor}
                    />
-                   <Tooltip title="Create motion">
-                   <Button aria-label="draw motion"
-                               color="inherit"
-                                style={{
-                                    fontColor:"grey"
-                                }}
-                               size="small"
-                                startIcon={<MotionIcon
-                                    style={{fontColor:"#1890ff"}}
-                                />}
-                   >
-                       Motion
-                   </Button>
-                   </Tooltip>
 
                 </div>
                <div>
