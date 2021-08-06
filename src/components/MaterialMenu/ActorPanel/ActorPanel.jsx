@@ -50,7 +50,11 @@ const ActorPanel = (props) => {
 
 
     return (
-        <Box>
+        <Box
+            style={{width: "100%",
+                backgroundColor: grey[50]
+            }}
+        >
             <div
                 style={getBoxStyle()}
             >
