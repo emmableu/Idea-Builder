@@ -34,7 +34,7 @@ const App = () => {
 
   return (
       <ProvideAuth>
-      <Router>
+      <Router basename={"idea-builder"}>
         <ThemeProvider theme={theme}>
           <Route path={globalConfig.routes.login} children={<LoginPage/>} />
           <PrivateRoute path={globalConfig.routes.dashboard} children={<Dashboard />} />
