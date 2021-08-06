@@ -52,11 +52,20 @@ export const MotionStage = (props) => {
         if (okPressed === false) {
             return;
         }
+        if (points.length === 0) {
+            return;
+        }
+
         const newStarData = {
             ...selectedStar,
             ...selectedStarImg,
             childStar: {
-                speechStar: selectedStar.childStar.speechStar,
+                speechStar: {
+                    ...selectedStar.childStar.speechStar,
+                    x: selectedStarImg.x + selectedStarImg.width,
+                    y: selectedStarImg.y,
+                },
+
                 lineStar: {
                     _id: UUID.v4(),
                     points: points,

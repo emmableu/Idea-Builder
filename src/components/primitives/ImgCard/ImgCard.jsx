@@ -34,7 +34,7 @@ const ImgCard = (props) => {
             size="small"
             extra={buttonGroup} >
             <Grid container spacing={1} justifyContent="center">
-                {dataList.map(imgData => (
+                {dataList.map((imgData, order) => (
                     <Grid item xs={imgWidth}>
                         <ImgTile
                             type={type}
@@ -52,6 +52,7 @@ const ImgCard = (props) => {
                                 name={imgData.name}
                                 handleSave={handleSave}
                             />}
+                            order={order}
                         />
                     </Grid>
                 ))}

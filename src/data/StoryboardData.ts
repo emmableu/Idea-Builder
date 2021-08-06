@@ -41,7 +41,7 @@ export class StoryboardDataHandler {
         const prevFrame = storyboardData.frameList[prevIndex];
         storyboardData.frameList.splice(prevIndex+1,
             0,
-            FrameDataHandler.shallowCopy(prevFrame, newId),
+            FrameDataHandler.shallowCopy(prevFrame, newId, false),
         )
     }
 

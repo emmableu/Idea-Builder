@@ -2,15 +2,13 @@ import React from "react";
 import {Button, Card, Select, Avatar, Input, Modal} from 'antd';
 import {useDispatch} from "react-redux";
 import {MotionStage} from "./MotionStage";
-import {updateStarList} from "../../redux/features/projectSlice";
-import * as UUID from "uuid";
+import axios from "../../axiosConfig";
 
 
 export const MotionModal = (props) => {
     const {storyboardId, frameId, selectedStar, selectedActor, backdropStar, isModalVisible, setIsModalVisible,
-        setHasMotion, starList,
+         starList,
     } = props;
-    const dispatch = useDispatch();
     const [okPressed, setOkPressed] = React.useState(false);
 
     const handleOk = () => {
@@ -25,7 +23,13 @@ export const MotionModal = (props) => {
         <>
             {selectedStar !== null && selectedActor !== undefined && selectedActor !== null &&
             <Modal
-                title={"Record motion for " + selectedActor.name}
+                title={
+                    <>
+                    <Avatar src={axios.defaults.baseURL + selectedStar.prototypeId}
+                    />
+                    <span>{"   Record motion for " + selectedActor.name }</span>
+                    </>
+                    }
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
@@ -38,7 +42,6 @@ export const MotionModal = (props) => {
                     backdropStar={backdropStar}
                     starList={starList}
                     selectedStar={selectedStar}
-                    setHasMotion={setHasMotion}
                     okPressed={okPressed}
                     setOkPressed={setOkPressed}
                     setIsModalVisible={setIsModalVisible}

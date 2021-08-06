@@ -72,7 +72,8 @@ export class FrameDataHandler{
         frameData.starList.push(newStar);
     }
 
-    static shallowCopy (frameData: FrameData, newId?:string): FrameData {
+    static shallowCopy (frameData: FrameData, newId?:string, copyMotion?:false,
+    ): FrameData {
         let newFrameData;
         if (newId) {
             newFrameData =  FrameDataHandler.initializeFrame(
@@ -97,7 +98,7 @@ export class FrameDataHandler{
             }
         }
 
-        newFrameData.starList = frameData.starList.map((ele:any) => StarDataHandler.shallowCopy(ele));
+        newFrameData.starList = frameData.starList.map((ele:any) => StarDataHandler.shallowCopy(ele, copyMotion));
         return newFrameData;
     }
 

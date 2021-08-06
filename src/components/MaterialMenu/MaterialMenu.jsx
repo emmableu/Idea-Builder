@@ -4,6 +4,7 @@ import React from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import {Panorama, Theaters, Face, Widgets, Mouse, Chat, ExposurePlus1} from "@material-ui/icons";
+import OfflineBoltIcon from '@material-ui/icons/OfflineBolt';
 import {makeStyles} from "@material-ui/core";
 import globalConfig from "../../globalConfig";
 import BackdropPanel from "./BackdropPanel/BackdropPanel";
@@ -102,7 +103,7 @@ export const MaterialMenu = () => {
         },
         {
             label: "Events",
-            icon: <Mouse/>,
+            icon: <OfflineBoltIcon/>,
             panel: <EventPanel />
         },
         // {

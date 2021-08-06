@@ -8,7 +8,7 @@ import {StarDataHandler} from "../../data/StarData";
 import useImage from "use-image";
 import axios from "../../axiosConfig";
 
-const StaticMotionStar = (props) => {
+const StaticStar = (props) => {
     const {starData} = props;
     const [image] = useImage(axios.defaults.baseURL + starData.prototypeId)
     if (image !== undefined) {
@@ -118,7 +118,7 @@ const Star = (props) => {
                         <>
                         {starData.childStar.motionStarList.map((starData) => {
                             return (
-                                <StaticMotionStar
+                                <StaticStar
                                     starData={starData}
                                 />
                             );
@@ -142,13 +142,8 @@ const Star = (props) => {
                 />
                 {
                     starData.childStar.speechStar !== null &&
-                    <StarImage
-                        listening={false}
-                        key={starData.childStar.speechStar._id}
-                        strokeEnabled={strokeEnabled}
-                        setStrokeEnabled={setStrokeEnabled}
-                        ref={childStarRef}
-                        starImageData={starData.childStar.speechStar}
+                    <StaticStar
+                        starData={starData.childStar.speechStar}
                     />
                 }
                 {

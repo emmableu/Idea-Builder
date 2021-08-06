@@ -6,23 +6,29 @@ const instance = axios.create({
     baseURL: process.env.REACT_APP_BACKEND_BASE_URL
 });
 
-instance.interceptors.request.use(request => {
-    console.log(request);
-    // Edit request config
-    return request;
-}, error => {
-    console.log(error);
-    return Promise.reject(error);
-});
+console.log("process.env.DEBUG: ", process.env.REACT_APP_DEBUG);
 
-instance.interceptors.response.use(response => {
-    console.log(response);
-    // Edit response config
-    return response;
-}, error => {
-    console.log(error);
-    return Promise.reject(error);
-});
+if (process.env.DEBUG !== "OFF") {
+    instance.interceptors.request.use(request => {
+        console.log(request);
+        // Edit request config
+        return request;
+    }, error => {
+        console.log(error);
+        return Promise.reject(error);
+    });
+
+    instance.interceptors.response.use(response => {
+        console.log(response);
+        // Edit response config
+        return response;
+    }, error => {
+        console.log(error);
+        return Promise.reject(error);
+    });
+}
+
+
 
 
 export default instance;

@@ -13,13 +13,34 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 const MotionButton = (props) => {
     const {storyboardId, frameId, selectedStar, selectedActor, backdropStar, starList} = props;
-    const dispatch = useDispatch()
-    const [hasMotion, setHasMotion] = React.useState(
-        selectedStar.childStar.lineStar !== null
-    );
+    const [hasMotion, setHasMotion] = React.useState(false);
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+        if (selectedStar.childStar.lineStar!== null) {
+            setHasMotion(true);
+        }
+        else {
+            setHasMotion(false);
+        }
+
+    }, [selectedStar.childStar.lineStar===null])
 
     const deleteMotion = (e) => {
-        setHasMotion(false);
+        const newStarData = {
+            ...selectedStar,
+            childStar: {
+                ...selectedStar.childStar,
+                lineStar: null,
+                motionStarList: []
+            },
+        }
+
+        dispatch(updateStarList(
+            {
+                storyboardId, frameId,
+                starData: newStarData
+            }
+        ));
     }
     const menu = (
         <Menu>
@@ -28,13 +49,12 @@ const MotionButton = (props) => {
                 frameId={frameId}
                 selectedStar={selectedStar}
                 selectedActor={selectedActor}
-                hasMotion={hasMotion}
-                setHasMotion={setHasMotion}
                 backdropStar={backdropStar}
                 starList={starList}
+                hasMotion={hasMotion}
             />
             <MenuItem
-                disabled={hasMotion===false}
+                disabled={!hasMotion}
                 onClick={deleteMotion}>Delete motion</MenuItem>
         </Menu>
     );

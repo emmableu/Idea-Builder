@@ -160,6 +160,7 @@ export const DecorDialog = (props) => {
                         {decorList.map((_id, i) => {
                             return (
                                 <DecorStar
+                                    key={_id}
                                     _id={_id}
                                     x={200-(i+1)*50}
                                 />

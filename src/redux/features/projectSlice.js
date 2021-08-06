@@ -223,15 +223,16 @@ const addFrame = createAsyncThunk(
             )
         }
 
-        console.log("frameId: ", frameId);
         dispatch(addFrameInMemory(JSON.stringify({
             storyboardId,
             prevIndex,
             newId: frameId,
         })));
         dispatch(setSelectedFrameId(frameId));
+        setTimeout(() => {
+            dispatch(updateUserActionCounter());
+        }, 100);
         const newFrameList = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId).frameList;
-        console.log("newFrameList: ", newFrameList);
         const response = await ProjectAPI.insertFrameAndReplaceFrameListInDatabase({
             storyboardId,
             frameId,
@@ -370,8 +371,8 @@ const copyStar = createAsyncThunk(
 );
 
 
-const addChildStar = createAsyncThunk(
-    'project/addChildStar',
+const addSpeechChildStar = createAsyncThunk(
+    'project/addSpeechChildStar',
     async (obj, thunkAPI) => {
         const {
             storyboardId, frameId,
@@ -382,7 +383,7 @@ const addChildStar = createAsyncThunk(
         console.log("addchildstar: ", starId);
         const {dispatch, getState} = thunkAPI;
         const childStarId = UUID.v4();
-        dispatch(addChildStarInMemory({
+        dispatch(addSpeechChildStarInMemory({
             ...obj,
             childStarId
         }));
@@ -833,7 +834,7 @@ export const projectSlice = createSlice({
                         _id: childStarId,
                         type: type,
                         width: 150,
-                        height: 80,
+                        height: 50,
                         x: starData.x + starData.width,
                         y: starData.y,
                     });
@@ -924,7 +925,10 @@ export const projectSlice = createSlice({
                 const actorIndex = state.value.actorList.findIndex(
                     a => a._id === action.payload
                 )
-                state.value.actorList.splice(actorIndex, 1)
+                if (actorIndex === -1) {
+                    return;
+                }
+                state.value.actorList[actorIndex].deleted=true;
             }
         },
 
@@ -1141,7 +1145,7 @@ export const {
     loadProjectInMemory, updateNameInMemory, setMode,//project
     setSelectedFrameIdInMemory, setSelectedStoryboardIdInMemory, setSelectedStarIdInMemory, //selectedId
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
-    addStarInMemory, updateStarListInMemory, deleteStarInMemory, copyStarInMemory,addChildStarInMemory, //star
+    addStarInMemory, updateStarListInMemory, deleteStarInMemory, copyStarInMemory,addSpeechChildStarInMemory, //star
     addBackdropStarInMemory, //backdropStar
     addTemplateStarInMemory, //templateStar
     addSpeechBubbleInMemory, deleteSpeechBubbleInMemory, updateTextNameInMemory, //text ==> todo: delete these at some point
@@ -1158,7 +1162,7 @@ export {
     setSelectedStoryboardId, setSelectedFrameId, setSelectedStarId, //selectedId
     addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
     addFrame, deleteFrame, //frame
-    addStar, updateStarList, deleteStar, copyStar, addChildStar, //star
+    addStar, updateStarList, deleteStar, copyStar, addSpeechChildStar, //star
     addBackdropStar,deleteBackdropStar, //backdropStar
     addTemplateStar, //templateSar,
     addActor, deleteActor, updateActorOrder, updateActorName, //actor

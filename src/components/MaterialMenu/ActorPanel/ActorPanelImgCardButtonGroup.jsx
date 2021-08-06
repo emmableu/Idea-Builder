@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import React from 'react';
 import {useDispatch} from "react-redux";
-import {addChildStar, deleteActor} from "../../../redux/features/projectSlice";
+import {addSpeechChildStar, deleteActor} from "../../../redux/features/projectSlice";
 import {Add} from "@material-ui/icons";
 import PlusOutlined from "@ant-design/icons/lib/icons/PlusOutlined";
 import globalConfig from "../../../globalConfig";

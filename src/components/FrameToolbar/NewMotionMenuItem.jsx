@@ -5,15 +5,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {MotionModal} from "./MotionModal";
 
 const NewMotionMenuItem = props => {
-    const {storyboardId, frameId, selectedStar, selectedActor, hasMotion, setHasMotion, backdropStar, starList} = props
+    const {storyboardId, frameId, selectedStar, selectedActor, backdropStar, starList, hasMotion} = props
     const [isModalVisible, setIsModalVisible] = React.useState(false);
 
     const showModal = e => {
         setIsModalVisible(true);
     };
-
-
-
 
     return (
         <>
@@ -29,7 +26,6 @@ const NewMotionMenuItem = props => {
                 backdropStar={backdropStar}
                 isModalVisible={isModalVisible}
                 setIsModalVisible={setIsModalVisible}
-                setHasMotion={setHasMotion}
             />
         </>
     );

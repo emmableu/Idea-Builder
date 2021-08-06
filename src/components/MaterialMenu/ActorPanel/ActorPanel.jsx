@@ -36,7 +36,7 @@ const getListStyle = () => ({
 
 const getActorList = createSelector(
     state => state.project.value.actorList,
-    actorList => actorList,
+    actorList => actorList.filter(a => (a.deleted===false)),
 );
 
 const mapStateToProps = (state) => {

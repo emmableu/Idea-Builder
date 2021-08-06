@@ -8,7 +8,7 @@ import { toPng } from 'html-to-image';
 import * as UUID from "uuid"
 import {ProjectAPI} from "../../api/ProjectAPI";
 import {useDispatch} from "react-redux";
-import {addChildStar} from "../../redux/features/projectSlice";
+import {addSpeechChildStar} from "../../redux/features/projectSlice";
 import globalConfig from "../../globalConfig";
 
 
@@ -32,7 +32,7 @@ export const SpeechBubbleModal = (props) => {
                     _id: childStarPrototypeId,
                     img: dataUrl}
                 ).then( res => {
-                        dispatch(addChildStar({
+                        dispatch(addSpeechChildStar({
                             storyboardId, frameId,
                             starId: selectedStar._id,
                             childStarPrototypeId,

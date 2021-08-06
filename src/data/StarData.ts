@@ -1,4 +1,5 @@
 import * as UUID from "uuid";
+import globalConfig from "../globalConfig";
 
 export interface StarData {
     _id: string;
@@ -56,15 +57,17 @@ export class StarDataHandler {
     ) : StarData
     {
         const {prototypeId, _id, x, y, width, height, transform, actorId, type, childStar} = obj;
+        const starWidth = width? width: 100;
+        const starHeight = height?height: 100;
         return {
             prototypeId: prototypeId,
             actorId:actorId,
             _id: _id? _id:UUID.v4(),
             type: type?type:"actor",
-            x : x? x:0,
-            y : y? y:0,
-            width : width? width:100,
-            height : height? height:100,
+            x : x? x:globalConfig.noScaleWidth/2 - starWidth/2,
+            y : y? y:(globalConfig.noScaleWidth*3/4)/2 - starHeight/2,
+            width : starWidth,
+            height : starHeight,
             transform:transform?transform:null,
             childStar: childStar? childStar: {
                 speechStar: null,
@@ -122,7 +125,7 @@ export class StarDataHandler {
         }
     }
 
-    static shallowCopyChildStar (childStarData:ChildStarData): ChildStarData {
+    static shallowCopyChildStar (childStarData:ChildStarData, copyMotion?:false): ChildStarData {
         const newChildStar = {speechStar: null,
             lineStar: null,
             motionStarList: []}
@@ -132,6 +135,9 @@ export class StarDataHandler {
                 ...childStarData.speechStar,
                 _id: UUID.v4(),
             }
+        }
+        if (copyMotion === false) {
+            return newChildStar;
         }
         if (childStarData.lineStar !== null){
             // @ts-ignore
@@ -154,7 +160,7 @@ export class StarDataHandler {
         return newChildStar;
 
     }
-    static shallowCopy (starData:StarData): StarData {
+    static shallowCopy (starData:StarData, copyMotion?:false): StarData {
         return StarDataHandler.initializeStar(
             {
                 prototypeId: starData.prototypeId,
@@ -166,7 +172,7 @@ export class StarDataHandler {
                 width: starData.width,
                 height: starData.height,
                 transform: starData.transform,
-                childStar: StarDataHandler.shallowCopyChildStar(starData.childStar),
+                childStar: StarDataHandler.shallowCopyChildStar(starData.childStar, copyMotion),
             }
         );
     }

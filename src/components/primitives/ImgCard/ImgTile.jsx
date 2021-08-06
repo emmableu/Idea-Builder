@@ -55,10 +55,22 @@ const useStyles = makeStyles({
 
 
 const ImgTile = React.memo((props) =>  {
-    const { _id, actorId, stateId, imgSrc, contentNode, handleDelete, handleUse, type} = props;
+    const { _id, actorId, stateId, imgSrc, contentNode, handleDelete, handleUse, type, order} = props;
     const classes = useStyles(props);
     const [onHover, setOnHover] = React.useState();
     const buttonSize = type==="state"? "small":"medium";
+    let hasDelete = true;
+    if (type !== "state"){
+        if (handleDelete === undefined || handleDelete === null) {
+            hasDelete = false;
+        }
+    }
+    else if (type === "state"){
+        if (order === 0) {
+            hasDelete = false;
+        }
+    }
+
     return (
         <Card
             variant="outlined"
@@ -102,7 +114,7 @@ const ImgTile = React.memo((props) =>  {
                                 {type!=="decor"&& <ArrowForward style={{color: "white"}} />}
                             </IconButton>
                         </Tooltip>
-                        { (handleDelete !== undefined && handleDelete !== null) &&
+                        { hasDelete &&
                             <Tooltip title="Delete">
                             <IconButton aria-label="add"
                                         className={classes.buttonOverlapDelete}
