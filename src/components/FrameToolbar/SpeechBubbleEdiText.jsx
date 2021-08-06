@@ -3,7 +3,7 @@ import EdiText from "react-editext";
 import styled from 'styled-components';
 import {IconButton, Tooltip} from "@material-ui/core";
 import {Create} from "@material-ui/icons";
-import globalConfig from "../../globalConfig";
+import globalConfig, {globalLog} from "../../globalConfig";
 
 const StyledEdiText = styled(EdiText)`
   button {
@@ -60,7 +60,7 @@ const SpeechBubbleEdiText = (props) => {
                 style={{width: "100%"}}
                 value={value}
                 type="text"
-                onSave={val => {console.log(val)} }
+                onSave={val => {globalLog(val)} }
                 editButtonContent={<EditButton/>}
                 editing={editing}
                 showButtonsOnHover

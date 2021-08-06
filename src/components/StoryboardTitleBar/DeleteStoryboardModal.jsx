@@ -12,10 +12,10 @@ import React, { useState } from 'react';
 //         okType: 'danger',
 //         cancelText: 'No',
 //         onOk() {
-//             // // console.log('OK');
+//             // // globalLog('OK');
 //         },
 //         onCancel() {
-//             // // console.log('Cancel');
+//             // // globalLog('Cancel');
 //         },
 //     });
 // }

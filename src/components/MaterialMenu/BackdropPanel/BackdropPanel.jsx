@@ -4,7 +4,7 @@ import ImgCard from "../../primitives/ImgCard/ImgCard";
 import {useDispatch, connect} from "react-redux";
 import {addBackdropStar, deleteBackdrop, updateBackdropName} from "../../../redux/features/projectSlice";
 import { createSelector } from 'reselect'
-
+import {globalLog} from "../../../globalConfig";
 
 const getBackdropList = createSelector(
     state => state.project.value.backdropList,
@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
 const BackdropPanel = React.memo((props) => {
     const {backdropList} = props;
     const dispatch = useDispatch();
-    console.log("backdroppanel rerendering!-------"); //does not rerender now
+    globalLog("backdroppanel rerendering!-------"); //does not rerender now
 
     const handleSave = React.useCallback((data) => {
         const {_id, name} = data;

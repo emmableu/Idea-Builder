@@ -12,7 +12,7 @@ import {addStoryboard} from "../../redux/features/projectSlice";
 const NewStoryboardDialogue = props => {
     const {type} = props;
     const [isModalVisible, setIsModalVisible] = React.useState(false);
-    const [newStoryboardName, setNewStoryboardName] = React.useState("null");
+    const [newStoryboardName, setNewStoryboardName] = React.useState("");
     const dispatch = useDispatch();
 
     const showModal = e => {
@@ -37,6 +37,9 @@ const NewStoryboardDialogue = props => {
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
+                okButtonProps={
+                    { disabled: newStoryboardName===""}
+                }
                 okText="Create"
                 cancelText="Cancel"
             >

@@ -9,13 +9,13 @@ import * as UUID from "uuid"
 import {ProjectAPI} from "../../api/ProjectAPI";
 import {useDispatch} from "react-redux";
 import {addSpeechChildStar} from "../../redux/features/projectSlice";
-import globalConfig from "../../globalConfig";
+import globalConfig, {globalLog} from "../../globalConfig";
 
 
 
 
 export const SpeechBubbleModal = (props) => {
-    const {storyboardId, frameId, selectedStar, selectedActor, isModalVisible, setIsModalVisible, setHasSpeechBubble} = props;
+    const {storyboardId, frameId, selectedStar, selectedActor, isModalVisible, setIsModalVisible} = props;
     const bubbleRef = React.useRef(null);
     const [confirmLoading, setConfirmLoading] = React.useState(false);
     const dispatch = useDispatch();
@@ -40,12 +40,11 @@ export const SpeechBubbleModal = (props) => {
                         }))
                         setConfirmLoading(false);
                         setIsModalVisible(false);
-                        setHasSpeechBubble(true)
                     }
                 )
             })
             .catch((err) => {
-                console.log(err)
+                globalLog(err)
             })
         }, [bubbleRef])
 

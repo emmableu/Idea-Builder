@@ -38,7 +38,7 @@ const ProjectTable = (props) => {
                 dispatch(deleteProjectOnDashboard(projectId));
             },
             onCancel() {
-                // // console.log('Cancel');
+                // // globalLog('Cancel');
             },
         });
     }

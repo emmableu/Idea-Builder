@@ -39,7 +39,7 @@ const FrameThumbnail = (props) => {
             return;
         };
         urlExist(axios.defaults.baseURL + frameId).then( exists =>
-            {   // console.log("exists: ", exists);
+            {   // globalLog("exists: ", exists);
                 setUrlExists(exists)}
         )
     }

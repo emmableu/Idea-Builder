@@ -15,7 +15,11 @@ const SpeechBubbleButton = (props) => {
     const [hasSpeechBubble, setHasSpeechBubble] = React.useState(
         selectedStar.childStar.speechStar !== null
     );
-
+    React.useEffect(() => {
+        setHasSpeechBubble(
+            selectedStar.childStar.speechStar !== null
+        )
+    }, [selectedStar.childStar.speechStar !== null])
     const deleteSpeechBubble = (e) => {
         const newStarData = {
             ...selectedStar,
@@ -31,7 +35,6 @@ const SpeechBubbleButton = (props) => {
                 starData: newStarData
             }
         ));
-        setHasSpeechBubble(false);
     }
     const menu = (
         <Menu>
@@ -41,10 +44,9 @@ const SpeechBubbleButton = (props) => {
                 selectedStar={selectedStar}
                 selectedActor={selectedActor}
                 hasSpeechBubble={hasSpeechBubble}
-                setHasSpeechBubble={setHasSpeechBubble}
             />
             <MenuItem
-                disabled={hasSpeechBubble===false}
+                disabled={!hasSpeechBubble}
                 onClick={deleteSpeechBubble}>Delete speech bubble</MenuItem>
         </Menu>
     );

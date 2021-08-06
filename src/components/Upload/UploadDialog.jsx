@@ -40,7 +40,7 @@ const UploadDialog = (props) => {
             stateName,
             imgSrc
         };
-        // // console.log("newStateEntry: ", newStateEntry);
+        // // globalLog("newStateEntry: ", newStateEntry);
         // dispatch(addState(JSON.stringify(newStateEntry)));
         // axios(
         //     {

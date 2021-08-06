@@ -9,6 +9,7 @@ import {Input, Modal} from "antd";
 import {addActor, updateStateName} from "../../../../redux/features/projectSlice";
 import * as UUID from "uuid";
 import {useDispatch} from "react-redux";
+import {globalLog} from "../../../../globalConfig";
 import {sendFrameImg} from "../../../../redux/features/frameThumbnailStateSlice";
 
 const DecorStar = (props) => {
@@ -47,7 +48,7 @@ const SampleDecorList = (props) => {
 
     const handleUse = React.useCallback((e, _id) => {
         setDecorList([...decorList, _id])
-        console.log("decorList: ", decorList)
+        globalLog("decorList: ", decorList)
     }, [decorList]);
 
     return (
@@ -77,7 +78,7 @@ const SampleDecorList = (props) => {
 }
 
 export const DecorDialog = (props) => {
-    const {actorData, okPressed, setOkPressed} = props;
+    const {actorData, okPressed, setOkPressed, setOkEnabled, cancelPressed, setCancelPressed} = props;
     const decorStageRef = React.useRef(null);
     const [decorList, setDecorList] = React.useState([]);
     const [stateName, setStateName] = React.useState("");
@@ -91,6 +92,20 @@ export const DecorDialog = (props) => {
             decorStageRef.current.listening(false);
         }
     }, [])
+
+    React.useEffect(() => {
+        setOkEnabled(decorList.length>0 && stateName!=="");
+    }, [decorList.length>0 && stateName!==""])
+
+    React.useEffect(() => {
+        if (cancelPressed === false) {
+            return;
+        }
+
+        setCancelPressed(false);
+        setStateName("");
+        setDecorList([]);
+    }, [cancelPressed])
 
     React.useEffect(() => {
         if (okPressed === false) {
@@ -117,6 +132,8 @@ export const DecorDialog = (props) => {
         });
 
         setOkPressed(false);
+        setStateName("");
+        setDecorList([]);
     }, [okPressed])
     return (
         <>

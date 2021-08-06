@@ -174,9 +174,14 @@ const calcFrameWidth = ( windowInnerWidth, windowInnerHeight ) => {
 }
 
 
+const globalLog = (...msgs) => {
+     if (process.env.REACT_APP_DEBUG !== 'OFF') console.log(...msgs)
+}
+
 Object.freeze(globalConfig);
 Object.freeze(calcFrameWidth);
+Object.freeze(globalLog);
 
 export default globalConfig;
-export  {calcFrameWidth};
+export  {calcFrameWidth, globalLog};
 

@@ -9,13 +9,13 @@ const BackdropStar = (props) => {
     const [imgSrc, setImgSrc] = React.useState(axios.defaults.baseURL + prototypeId);
     let [image] = useImage(imgSrc);
     React.useEffect( () => {
-            // console.log("img src updated: ", axios.defaults.baseURL + prototypeId)
+            // globalLog("img src updated: ", axios.defaults.baseURL + prototypeId)
             setImgSrc(axios.defaults.baseURL + prototypeId);
         }
         , [_id]
     )
     if (image !== undefined) {
-        // console.log("executing useimage here");
+        // globalLog("executing useimage here");
         image.crossOrigin = "Anonymous";
     }
 

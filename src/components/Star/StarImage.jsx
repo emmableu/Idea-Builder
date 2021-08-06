@@ -4,6 +4,7 @@ import useImage from 'use-image';
 import axios from "../../axiosConfig";
 import {useDispatch} from "react-redux";
 import {setSelectedStarIdInMemory} from "../../redux/features/projectSlice";
+import {globalLog} from "../../globalConfig";
 
 const StarImage = (props) => {
     const {listening, starImageData, isSelected, onSelect, updatePositionAndSize,
@@ -20,7 +21,7 @@ const StarImage = (props) => {
     const imageRef = React.useRef(null);
     const transformerRef = React.useRef(null);
     React.useEffect(() => {
-        console.log("listening: ", listening);
+        globalLog("listening: ", listening);
         if (imageRef.current) {
             imageRef.current.listening(listening);
         }
@@ -70,8 +71,8 @@ const StarImage = (props) => {
                     // but in the store we have only width and height
                     const node = imageRef.current;
                     // to match the data better we will reset scale on transform end
-                    // // // console.log("node.width: ", node.width());
-                    // // // console.log("node.scaleX: ", node.scaleX());
+                    // // // globalLog("node.width: ", node.width());
+                    // // // globalLog("node.scaleX: ", node.scaleX());
                     const scaleX = node.scaleX();
                     const scaleY = node.scaleY();
 

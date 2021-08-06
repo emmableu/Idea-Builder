@@ -1,5 +1,5 @@
 import {StoryboardData} from "./StoryboardData";
-
+import {globalLog} from "../globalConfig";
 
 export interface SelectedIdData {
     storyboardId: string | null;
@@ -36,7 +36,7 @@ export class SelectedIdDataHandler {
     }
 
     static setFrameId (selectedIdData: SelectedIdData, frameId:string) {
-        console.log("selected Frame ID: ", frameId);
+        globalLog("selected Frame ID: ", frameId);
         selectedIdData.frameId = frameId;
         selectedIdData.starId = null
     }

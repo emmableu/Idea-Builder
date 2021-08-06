@@ -85,14 +85,14 @@ const TemplateImgCard = (props) =>  {
 
 
     const updateSrc = () => {
-        // console.log( "----------- updating SRC ------------------------------------------------------------------------")
-        // console.log(axios.defaults.baseURL + templateId);
+        // globalLog( "----------- updating SRC ------------------------------------------------------------------------")
+        // globalLog(axios.defaults.baseURL + templateId);
         if (urlExists) {
             setImgSrc(axios.defaults.baseURL + templateId+`?fakeRender=${imgUpdated.toString()}`)
             return;
         };
         urlExist(axios.defaults.baseURL + templateId).then( exists =>
-            {   // console.log("exists: ", exists);
+            {   // globalLog("exists: ", exists);
                 setUrlExists(exists)}
         )
     }

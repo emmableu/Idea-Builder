@@ -1,11 +1,9 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {DashboardViewData} from "../../data/DashboardData/DashboardViewData";
 import Cookies from "js-cookie"
-import axios from "../../axiosConfig";
+import {globalLog} from "../../globalConfig";
 import {DashboardAPI} from "../../api/DashboardAPI";
 import {DashboardAPIData} from "../../data/DashboardData/DashboardAPIData";
-import {ProjectAPI} from "../../api/ProjectAPI";
-import {deleteActorInMemory} from "./projectSlice";
 
 
 const fetchDashboardByUserID = createAsyncThunk(
@@ -31,7 +29,7 @@ const deleteProjectOnDashboard = createAsyncThunk(
     async (projectId, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         dispatch(deleteProjectOnDashboardInMemory(projectId));
-        console.log("getState().dashboard.value: ", getState().dashboard.value);
+        globalLog("getState().dashboard.value: ", getState().dashboard.value);
         const projectIdList = getState().dashboard.value.projectList.map(p => (p._id));
         const userId = Cookies.get("userId");
         const response = await DashboardAPI.replaceProjectIdListInDatabase({
@@ -52,7 +50,7 @@ export const dashboardSlice = createSlice({
     reducers: {
         deleteProjectOnDashboardInMemory:
             (state, action) => {
-            console.log("state.value.projectList, action: ", state.value.projectList, action);
+            globalLog("state.value.projectList, action: ", state.value.projectList, action);
                 const toRemoveIndex = state.value.projectList.findIndex(p => p._id === action.payload);
                 state.value.projectList.splice(toRemoveIndex, 1);
             }

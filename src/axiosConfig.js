@@ -1,32 +1,30 @@
 // First we need to import axios.js
 import axios from 'axios';
+import {globalLog} from "./globalConfig"
 // Next we make an 'instance' of it
 const instance = axios.create({
 // .. where we make our configurations
     baseURL: process.env.REACT_APP_BACKEND_BASE_URL
 });
 
-console.log("process.env.DEBUG: ", process.env.REACT_APP_DEBUG);
 
-if (process.env.DEBUG !== "OFF") {
-    instance.interceptors.request.use(request => {
-        console.log(request);
-        // Edit request config
-        return request;
-    }, error => {
-        console.log(error);
-        return Promise.reject(error);
-    });
+instance.interceptors.request.use(request => {
+    globalLog(request);
+    // Edit request config
+    return request;
+}, error => {
+    globalLog(error);
+    return Promise.reject(error);
+});
 
-    instance.interceptors.response.use(response => {
-        console.log(response);
-        // Edit response config
-        return response;
-    }, error => {
-        console.log(error);
-        return Promise.reject(error);
-    });
-}
+instance.interceptors.response.use(response => {
+    globalLog(response);
+    // Edit response config
+    return response;
+}, error => {
+    globalLog(error);
+    return Promise.reject(error);
+});
 
 
 

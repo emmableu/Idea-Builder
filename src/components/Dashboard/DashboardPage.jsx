@@ -69,7 +69,7 @@ const DashboardPage = () => {
     const userId = Cookies.get('userId');
     const projectList = useSelector(state =>
     {
-        // // console.log("state.dashboard.value: ", state.dashboard.value);
+        // // globalLog("state.dashboard.value: ", state.dashboard.value);
         return (state.dashboard.value===null? null: state.dashboard.value.projectList)
     });
 

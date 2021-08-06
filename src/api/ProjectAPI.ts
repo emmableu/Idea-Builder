@@ -85,8 +85,8 @@ class ProjectAPI {
     // selectedFrame,
     // img: img,
     static async sendFrameImg(text:any) {
-        // console.log("_id: ", text._id)
-        // console.log("img: ", text.img)
+        // globalLog("_id: ", text._id)
+        // globalLog("img: ", text.img)
         const response = await axios({
             method: 'post',
             url: `/frame/upload`,
@@ -141,8 +141,8 @@ class ProjectAPI {
     /* This is on speech bubble */
 
     static async sendSpeechBubbleImg(text:any) {
-        // console.log("_id: ", text._id)
-        // console.log("img: ", text.img)
+        // globalLog("_id: ", text._id)
+        // globalLog("img: ", text.img)
         const response = await axios({
             method: 'post',
             url: `/speech/upload`,

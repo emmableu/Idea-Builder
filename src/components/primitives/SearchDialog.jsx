@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import globalConfig from "../../globalConfig";
+import globalConfig, {globalLog} from "../../globalConfig";
 import axios from "../../axiosConfig";
 import {Grid} from "@material-ui/core";
 import SearchDialogImgCard from "./SearchDialogImgCard";
@@ -13,7 +13,7 @@ import { FixedSizeList } from "react-window";
 
 const ImgRow = React.memo(
     (props) => {
-        console.log("rendering imgRow: ");
+        globalLog("rendering imgRow: ");
         const {data, index, style} = props;
         const {type, imgList} = data;
         const subList = imgList.slice(index*4, index*4+4);

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { IconButton, makeStyles, Tooltip } from '@material-ui/core';
-import globalConfig, { calcFrameWidth } from '../../globalConfig';
+import globalConfig, { calcFrameWidth, globalLog } from '../../globalConfig';
 import Frame from "./Frame.jsx";
 import FrameToolbar from "../FrameToolbar/FrameToolbar";
 import {createSelector} from "reselect";
@@ -43,7 +43,7 @@ const getSelectedStarAndActorData = createSelector(
             actorData = null;
         }
         else {
-            console.log("frameId: ", frameId);
+            globalLog("frameId: ", frameId);
             selectedFrame = selectedStoryboard.frameList.find(s => s._id === frameId);
             if (selectedFrame === undefined) {
                 frameId = null;
@@ -99,7 +99,7 @@ const FrameCardContainer = props => {
     let refreshTimeoutId = null;
 
     const fitFrameWidth = () => {
-        // console.log("updatedWidth, updatedScale: --------------------------------------------------- ", updatedWidth, updatedScale)
+        // globalLog("updatedWidth, updatedScale: --------------------------------------------------- ", updatedWidth, updatedScale)
         const newFrameWidth = calcFrameWidth(window.innerWidth, window.innerHeight);
         setUpdatedScale(newFrameWidth/initialWidth * initialScale);
         setUpdatedWidth(newFrameWidth);

@@ -10,29 +10,27 @@ import { useDispatch } from 'react-redux';
 const BlankProjectMenuItem = props => {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const [confirmLoading, setConfirmLoading] = React.useState(false);
-    const [newProjectName, setNewProjectName] = React.useState(null);
+    const [newProjectName, setNewProjectName] = React.useState("");
     const match = useRouteMatch();
     const history = useHistory();
     const dispatch = useDispatch();
 
     const showModal = e => {
         setIsModalVisible(true);
-
-        setTimeout(() => {}, 500);
     };
 
     const handleOk = async () => {
         setConfirmLoading(true);
         const newProjectId = UUID.v4();
         try {
-            const originalPromiseResult = await dispatch(
+            await dispatch(
                 insertEmptyProjectToDatabase( { _id: newProjectId, name: newProjectName })
-            ).unwrap();
+            );
             setIsModalVisible(false);
             setConfirmLoading(false);
             history.push(`${match.url}/${newProjectId}`);
         } catch (rejectedValueOrSerializedError) {
-            // // console.log('Error: ', rejectedValueOrSerializedError);
+            // // globalLog('Error: ', rejectedValueOrSerializedError);
         }
     };
 
@@ -49,6 +47,9 @@ const BlankProjectMenuItem = props => {
                 onOk={handleOk}
                 onCancel={handleCancel}
                 okText="Create"
+                okButtonProps={
+                   { disabled: newProjectName===""}
+                }
                 confirmLoading={confirmLoading}
                 cancelText="Cancel"
             >

@@ -4,7 +4,7 @@ import {Image, Layer, Stage} from 'react-konva';
 import useImage from "use-image";
 import {useDispatch, useSelector} from 'react-redux';
 import {setSelectedStarId} from "../../redux/features/projectSlice";
-import globalConfig from "../../globalConfig";
+import globalConfig, {globalLog} from "../../globalConfig";
 import Star from "../Star/Star";
 
 
@@ -36,10 +36,10 @@ const StarLayer = (props) => {
                          width={globalConfig.noScaleWidth}
                          height={globalConfig.noScaleWidth*3/4}
                          onClick={(e) => {
-                             console.log("clicking");
+                             globalLog("clicking");
                          }}
                          onTap={(e) => {
-                             console.log("tapping");
+                             globalLog("tapping");
                          }}
                      />
                  )

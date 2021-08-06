@@ -2,7 +2,7 @@ import {Layer, Stage} from "react-konva";
 import React from "react";
 import {Provider, ReactReduxContext, useDispatch, useSelector} from "react-redux";
 import StarLayer from "./StarLayer";
-import globalConfig from "../../globalConfig";
+import globalConfig, {globalLog} from "../../globalConfig";
 import {setSelectedStarId} from "../../redux/features/projectSlice";
 import {sendFrameImg, updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
 
@@ -25,7 +25,7 @@ const Frame = (props) => {
 
     React.useEffect(
         () => {
-            console.log("userActionCounter: -----------------", userActionCounter);
+            globalLog("userActionCounter: -----------------", userActionCounter);
             if (storyboardId === null || frameId === null) {
                 return;
             }
@@ -45,7 +45,7 @@ const Frame = (props) => {
                 });
             }
             catch (error) {
-                console.log("failed to save image to remote: ", error);
+                globalLog("failed to save image to remote: ", error);
             }
 
 
@@ -56,8 +56,8 @@ const Frame = (props) => {
 
     const checkDeselect = (e) => {
         // deselect when clicked on empty area
-        // console.log("e.target: ", e.target);
-        // console.log("e.target: ", e.target.attrs.id);
+        // globalLog("e.target: ", e.target);
+        // globalLog("e.target: ", e.target.attrs.id);
         const clickedOnEmpty = e.target === e.target.getStage();
         if (clickedOnEmpty) {
             dispatch(setSelectedStarId(null));

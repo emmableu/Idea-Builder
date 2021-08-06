@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import * as UUID from "uuid";
 import {ActorDataHandler} from "../../data/ActorData";
 import {BackdropDataHandler} from "../../data/BackdropData";
-import globalConfig from "../../globalConfig";
+import globalConfig, {globalLog} from "../../globalConfig";
 import {
     copyPreviousFrameImg,
     resetUserActionCounter,
@@ -23,7 +23,7 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
     async (obj, thunkAPI) => {
         const {_id, name} = obj;
         const projectData = ProjectDataHandler.initializeProject({_id, name});
-        console.log('projectData: ', projectData);
+        globalLog('projectData: ', projectData);
         const response = await ProjectAPI.insertProject(Cookies.get("userId"), projectData);
         return response.status;
     }
@@ -142,10 +142,10 @@ const addStoryboard = createAsyncThunk(
             storyboardDataJSON
         };
         const newFrameId = storyboardDataJSON.frameList[0]._id;
-        console.log("newFrameId: ", newFrameId);
+        globalLog("newFrameId: ", newFrameId);
         await dispatch(sendEmptyFrameImg(newFrameId));
         dispatch(addStoryboardInMemory(JSON.stringify(payload)));
-        console.log("storyboardJSON: ", storyboardDataJSON);
+        globalLog("storyboardJSON: ", storyboardDataJSON);
         const response = await ProjectAPI.addStoryboard(payload);
         return response.status;
     }
@@ -154,7 +154,7 @@ const addStoryboard = createAsyncThunk(
 const deleteStoryboard = createAsyncThunk(
     'project/deleteStoryboard',
     async (storyboardId, thunkAPI) => {
-        console.log("storyboardID: ", storyboardId);
+        globalLog("storyboardID: ", storyboardId);
         const {dispatch, getState} = thunkAPI;
         const state = getState();
         const project = state.project.value;
@@ -173,7 +173,7 @@ const updateStoryboardOrder = createAsyncThunk(
     'project/updateStoryboardOrder',
     async (text, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
-        console.log("----------------------text: ", text);
+        globalLog("----------------------text: ", text);
         dispatch(updateStoryboardOrderInMemory(text));
         const state = getState();
         const projectId = state.project.value._id;
@@ -203,11 +203,11 @@ const addFrame = createAsyncThunk(
     async (payload, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
-        console.log("project: ", project);
+        globalLog("project: ", project);
         const storyboardId = project.selectedId.storyboardId;
-        console.log("storyboardId: ", storyboardId);
+        globalLog("storyboardId: ", storyboardId);
         const frameList = ProjectDataHandler.getStoryboard(project, storyboardId).frameList;
-        console.log("frameList: ", frameList);
+        globalLog("frameList: ", frameList);
         let prevIndex = frameList.length - 1
         const frameId = globalConfig.imageServer.student.frame + UUID.v4() + ".png";
         if (prevIndex >= 0) {
@@ -273,8 +273,8 @@ const addStar = createAsyncThunk(
         const state = getState();
         const storyboardId = state.project.value.selectedId.storyboardId;
         const frameId = state.project.value.selectedId.frameId
-        console.log("storyboardId: ", storyboardId)
-        console.log("frameId: ", frameId)
+        globalLog("storyboardId: ", storyboardId)
+        globalLog("frameId: ", frameId)
         if (storyboardId === null || frameId === null) {return;}
         if (storyboardId === undefined || frameId === undefined) {return;}
         dispatch(addStarInMemory({
@@ -380,7 +380,7 @@ const addSpeechChildStar = createAsyncThunk(
             childStarPrototypeId,
             type,
         } = obj;
-        console.log("addchildstar: ", starId);
+        globalLog("addchildstar: ", starId);
         const {dispatch, getState} = thunkAPI;
         const childStarId = UUID.v4();
         dispatch(addSpeechChildStarInMemory({
@@ -469,8 +469,8 @@ const addTemplateStar = createAsyncThunk(
         const state = getState();
         const storyboardId = state.project.value.selectedId.storyboardId;
         const frameId = state.project.value.selectedId.frameId
-        console.log("storyboardId: ", storyboardId)
-        console.log("frameId: ", frameId)
+        globalLog("storyboardId: ", storyboardId)
+        globalLog("frameId: ", frameId)
         if (storyboardId === null || frameId === null) {return;}
         if (storyboardId === undefined || frameId === undefined) {return;}
         dispatch(addTemplateStarInMemory(JSON.stringify({
@@ -492,7 +492,7 @@ const addActor = createAsyncThunk(
         // const {stateList} = obj;
         const {dispatch, getState}  = thunkAPI;
         const actorId = UUID.v4();
-        console.log("actorId: ", actorId);
+        globalLog("actorId: ", actorId);
         const actorDataJSON = ActorDataHandler.initializeActor(obj);
         const state = getState();
         const projectId = state.project.value._id;
@@ -509,7 +509,7 @@ const addActor = createAsyncThunk(
 const deleteActor = createAsyncThunk(
     'project/deleteActor',
     async (actorId, thunkAPI) => {
-        console.log("actorID: ", actorId);
+        globalLog("actorID: ", actorId);
         const {dispatch, getState} = thunkAPI;
         dispatch(deleteActorInMemory(actorId));
         const state = getState();
@@ -672,9 +672,9 @@ export const projectSlice = createSlice({
 
         loadProjectInMemory: {
             reducer: (state, action) => {
-                console.log("action payload", action.payload);
+                globalLog("action payload", action.payload);
                 state.value = ProjectDataHandler.initializeProject(action.payload);
-                console.log("parsed project: ", state.value);
+                globalLog("parsed project: ", state.value);
             },
         },
 
@@ -781,7 +781,7 @@ export const projectSlice = createSlice({
                     action.payload.prevIndex,
                 )
                 state.value.templateList.unshift(action.payload.newId);
-                console.log("storyboard!!!!!!!!!!!!!!!!!!!!!!: ", storyboard);
+                globalLog("storyboard!!!!!!!!!!!!!!!!!!!!!!: ", storyboard);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
@@ -803,7 +803,7 @@ export const projectSlice = createSlice({
                 const templateIndex = state.value.templateList.indexOf(frameId);
                 state.value.templateList.splice(templateIndex, 1);
                 frameList.splice(frameIndex, 1);
-                console.log("frameList!!!!!!!!!!!!!!!!!!!!!!: ", JSON.stringify(frameList));
+                globalLog("frameList!!!!!!!!!!!!!!!!!!!!!!: ", JSON.stringify(frameList));
 
             }
         },
@@ -823,7 +823,7 @@ export const projectSlice = createSlice({
 
         addSpeechChildStarInMemory: {
             reducer: (state, action) => {
-                console.log("inside add child star in memory");
+                globalLog("inside add child star in memory");
                 const {storyboardId, frameId, starId, childStarId, childStarPrototypeId, type} = action.payload;
                 const storyboardData = ProjectDataHandler.getStoryboard(state.value, storyboardId);
                 const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
@@ -838,8 +838,8 @@ export const projectSlice = createSlice({
                         x: starData.x + starData.width,
                         y: starData.y,
                     });
-                console.log("star data after adding: ", starData);
-                console.log("project data after adding: ", state.value);
+                globalLog("star data after adding: ", starData);
+                globalLog("project data after adding: ", state.value);
             }
         },
 
@@ -851,8 +851,8 @@ export const projectSlice = createSlice({
                 const storyboardData = ProjectDataHandler.getStoryboard(state.value, storyboardId);
                 const frame = StoryboardDataHandler.getFrame(storyboardData, frameId);
                 const starIndex = frame.starList.findIndex(s => s._id === starData._id);
-                console.log("starIndex: ", starIndex);
-                console.log("starData: ", starData);
+                globalLog("starIndex: ", starIndex);
+                globalLog("starData: ", starData);
                 if (starIndex !== -1) {
                     frame.starList[starIndex] =  starData;
                 }

@@ -21,7 +21,8 @@ const ActorPanelImgCardButtonGroup = props => {
     const dispatch = useDispatch();
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const [okPressed, setOkPressed] = React.useState(false);
-
+    const [cancelPressed, setCancelPressed] = React.useState(false);
+    const [okEnabled, setOkEnabled] = React.useState(false);
 
     const handleDeleteActor = (e) => {
         dispatch(deleteActor(actorId));
@@ -35,6 +36,7 @@ const ActorPanelImgCardButtonGroup = props => {
 
 
     const handleCancel = () => {
+        setCancelPressed(true);
         setIsModalVisible(false);
     };
     return (
@@ -60,17 +62,23 @@ const ActorPanelImgCardButtonGroup = props => {
                 </Tooltip>
             </div>
             <Modal
-                title={"Add states"}
+                title={"Add state"}
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
                 okText="Create"
                 cancelText="Cancel"
+                okButtonProps={
+                    { disabled: !okEnabled}
+                }
             >
                 <DecorDialog
                     actorData={actorData}
                     okPressed={okPressed}
                     setOkPressed={setOkPressed}
+                    cancelPressed={cancelPressed}
+                    setCancelPressed={setCancelPressed}
+                    setOkEnabled={setOkEnabled}
                 />
             </Modal>
         </>

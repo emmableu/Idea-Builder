@@ -5,7 +5,7 @@ import {SelectedIdData, SelectedIdDataHandler} from "./SelectedIdData";
 import fileDownload from "js-file-download";
 import {FrameData, FrameDataHandler} from "./FrameData";
 import {StoryboardData, StoryboardDataHandler} from "./StoryboardData";
-import globalConfig from "../globalConfig";
+import globalConfig, {globalLog} from "../globalConfig";
 
 export interface ProjectData {
     _id: string;
@@ -169,7 +169,7 @@ export class ProjectDataHandler {
 
     static updateStoryboardOrder(projectData: ProjectData, speechBubble:string) {
         const result = JSON.parse(speechBubble);
-        console.log("result: ", result);
+        globalLog("result: ", result);
         if (!result.destination) return;
         const { source, destination } = result;
 

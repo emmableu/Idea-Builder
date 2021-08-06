@@ -2,7 +2,7 @@ import React from 'react';
 import {Stage, Layer, Line, Text, Image} from 'react-konva';
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import globalConfig from "../../globalConfig";
+import globalConfig, {globalLog} from "../../globalConfig";
 import useImage from "use-image";
 import axios from "../../axiosConfig";
 import * as UUID from "uuid"
@@ -108,8 +108,8 @@ export const MotionStage = (props) => {
             )
         }
         const lastChildPointIndex = 10*(numChild-1);
-        console.log("pointIndex: ", lastChildPointIndex);
-        console.log( points[lastChildPointIndex*2])
+        globalLog("pointIndex: ", lastChildPointIndex);
+        globalLog( points[lastChildPointIndex*2])
         const lastChildMotion = StarDataHandler.initializeMotionChildStar(
             {
                 prototypeId: selectedStarImg.prototypeId,
@@ -123,8 +123,8 @@ export const MotionStage = (props) => {
         )
         newTempMotionStarList.push(lastChildMotion);
         setTempMotionStarList(newTempMotionStarList);
-    //     console.log("len points: ", points.length);
-    //     console.log("tempMotionStarList: ",
+    //     globalLog("len points: ", points.length);
+    //     globalLog("tempMotionStarList: ",
     //         tempMotionStarList.map(m => (
     //            [m.x, m.y]
     //         ))
@@ -238,6 +238,7 @@ export const MotionStage = (props) => {
                     {tempMotionStarList.map((starData, i) => {
                         return (
                             <MotionStar
+                                key={starData._id}
                                 starData={starData}
                             />
                         );
