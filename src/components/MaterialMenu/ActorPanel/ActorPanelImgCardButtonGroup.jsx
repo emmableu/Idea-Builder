@@ -20,6 +20,7 @@ const ActorPanelImgCardButtonGroup = props => {
     const {actorId, actorData} = props;
     const dispatch = useDispatch();
     const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const [okPressed, setOkPressed] = React.useState(false);
 
 
     const handleDeleteActor = (e) => {
@@ -28,6 +29,7 @@ const ActorPanelImgCardButtonGroup = props => {
     }
 
     const handleOk = React.useCallback(() => {
+        setOkPressed(true);
         setIsModalVisible(false);
     }, [])
 
@@ -67,6 +69,8 @@ const ActorPanelImgCardButtonGroup = props => {
             >
                 <DecorDialog
                     actorData={actorData}
+                    okPressed={okPressed}
+                    setOkPressed={setOkPressed}
                 />
             </Modal>
         </>

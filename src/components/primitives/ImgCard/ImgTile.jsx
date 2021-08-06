@@ -4,6 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import {useDispatch} from "react-redux";
 import {IconButton} from "@material-ui/core";
+import {Add} from "@material-ui/icons";
 import {ArrowForward, DeleteOutlined} from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
 import {LazyLoadImage} from "react-lazy-load-image-component";
@@ -92,9 +93,13 @@ const ImgTile = React.memo((props) =>  {
                                             else if (type === "state") {
                                                 handleUse(e, actorId, _id)
                                             }
+                                            else if (type === "decor") {
+                                                handleUse(e, _id)
+                                            }
                                         }}
                                         size={buttonSize}>
-                                <ArrowForward style={{color: "white"}} />
+                                {type==="decor"&& <Add style={{color: "white"}} />}
+                                {type!=="decor"&& <ArrowForward style={{color: "white"}} />}
                             </IconButton>
                         </Tooltip>
                         { (handleDelete !== undefined && handleDelete !== null) &&

@@ -1,32 +1,37 @@
 import React from 'react';
-import { render } from 'react-dom';
 import { Stage, Layer, Image } from 'react-konva';
 import useImage from 'use-image';
 import axios from "../../../../axiosConfig";
 import {Grid} from "@material-ui/core";
 import ImgTile from "../../../primitives/ImgCard/ImgTile";
-import ImgTileEdiText from "../../../primitives/ImgCard/ImgTileEdiText";
-import {Card} from "antd";
 import Paper from "@material-ui/core/Paper/Paper";
-import Frame from "../../../Frame/Frame";
+import {Input, Modal} from "antd";
+import {addActor, updateStateName} from "../../../../redux/features/projectSlice";
+import * as UUID from "uuid";
+import {useDispatch} from "react-redux";
+import {sendFrameImg} from "../../../../redux/features/frameThumbnailStateSlice";
 
-const BaseImage = ({ actorData }) => {
-    const [img] = useImage(axios.defaults.baseURL + actorData.stateList[0]._id);
+const DecorStar = (props) => {
+    const {_id, x} = props;
+    const [image] = useImage(axios.defaults.baseURL + _id);
+    if (image !== undefined) {
+        image.crossOrigin = "Anonymous";
+    }
     return (
         <Image
-            image={img}
-            x={0}
+            image={image}
+            x={x}
             y={0}
-            width={300}
-            height={300}
-            // I will use offset to set origin to the center of the image
+            width={50}
+            height={50}
         />
-    );
-};
+    )
+}
 
+const SampleDecorList = (props) => {
+    const {decorList, setDecorList} = props;
+    const [sampleDecorList, setSampleDecorList] = React.useState([])
 
-const DecorList = (props) => {
-    const [decorList, setDecorList] = React.useState([])
     React.useEffect(
         () => {
             axios({
@@ -34,16 +39,24 @@ const DecorList = (props) => {
                 url: `/sample_decor_id_list/get`,
             }).then(
                 res => {
-                    setDecorList(res.data);
+                    setSampleDecorList(res.data);
                 }
             )
         }, []
     )
+
+    const handleUse = React.useCallback((e, _id) => {
+        setDecorList([...decorList, _id])
+        console.log("decorList: ", decorList)
+    }, [decorList]);
+
     return (
         <>
             <Grid container spacing={1} justifyContent="center">
-                {decorList.map(imgData => (
-                    <Grid item xs={1}>
+                {sampleDecorList.map(imgData => (
+                    <Grid item xs={1}
+                          key={imgData}
+                    >
                         <ImgTile
                             type="decor"
                             _id={imgData}
@@ -53,7 +66,7 @@ const DecorList = (props) => {
                             }
                             heightToWidthRatio="100%"
                             handleDelete={null}
-                            handleUse={null}
+                            handleUse={handleUse}
                             contentNode={null}
                         />
                     </Grid>
@@ -64,32 +77,103 @@ const DecorList = (props) => {
 }
 
 export const DecorDialog = (props) => {
-    const {actorData} = props;
-    const [decor, setDecor] = React.useState(null);
+    const {actorData, okPressed, setOkPressed} = props;
+    const decorStageRef = React.useRef(null);
+    const [decorList, setDecorList] = React.useState([]);
+    const [stateName, setStateName] = React.useState("");
+    const [image] = useImage(axios.defaults.baseURL + actorData.stateList[0]._id)
+    const dispatch = useDispatch()
+    if (image !== undefined) {
+        image.crossOrigin = "Anonymous";
+    }
+    React.useEffect(() => {
+        if (decorStageRef.current!==null) {
+            decorStageRef.current.listening(false);
+        }
+    }, [])
+
+    React.useEffect(() => {
+        if (okPressed === false) {
+            return;
+        }
+        decorStageRef.current.toImage({
+            pixelRatio: 1,
+            callback(img) {
+                img = img.src;
+                axios({
+                    method: "post",
+                    url: "/state/upload/img",
+                    data: {img},
+                }).then(response => {
+                    dispatch(updateStateName(
+                        {
+                            actorId: actorData._id,
+                            stateId: response.data._id,
+                            stateName: stateName,
+                        }
+                    ))
+                })
+            }
+        });
+
+        setOkPressed(false);
+    }, [okPressed])
     return (
         <>
-            <DecorList/>
+            <SampleDecorList
+                decorList={decorList}
+                setDecorList={setDecorList}
+            />
+            <div
+                style={{
+                    width: "100%",
+                    height: 300,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection:"column"
+                }}
+            >
             <Paper
                 style={{
-                    width: 300,
-                    height: 300,
+                    width: 200,
+                    height: 200,
                     backgroundColor: 'white'
                 }}
-                square
-                elevation={4}
+                variant="outlined"
             >
-                {/*<Stage*/}
-                {/*    width={300}*/}
-                {/*    height={300}*/}
-                {/*>*/}
-                {/*    <Layer>*/}
-                {/*         <BaseImage*/}
-                {/*             actorData={actorData}*/}
-                {/*         />;*/}
-                {/*    </Layer>*/}
-                {/*</Stage>*/}
+                <Stage
+                    ref={decorStageRef}
+                    width={200}
+                    height={200}
+                >
+                    <Layer
+                    >
+                        <Image
+                            image={image}
+                            x={0}
+                            y={0}
+                            width={200}
+                            height={200}
+                        />
 
+                        {decorList.map((_id, i) => {
+                            return (
+                                <DecorStar
+                                    _id={_id}
+                                    x={200-(i+1)*50}
+                                />
+                            );
+                        })}
+                    </Layer>
+                </Stage>
             </Paper>
+                <br/>
+                <Input
+                    onChange={e => setStateName(e.target.value)}
+                    placeholder="State Name"
+                />
+            </div>
         </>
 
     );

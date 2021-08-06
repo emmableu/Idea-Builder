@@ -584,7 +584,7 @@ const updateStateName = createAsyncThunk(
     async (payload, thunkAPI) => {
         const {actorId} = payload
         const {dispatch, getState} = thunkAPI;
-        dispatch(updateStateNameInMemory(JSON.stringify(payload)));
+        dispatch(updateStateNameInMemory(payload));
         const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
@@ -999,20 +999,19 @@ export const projectSlice = createSlice({
 
         updateStateNameInMemory: {
             reducer: (state, action) => {
+                const {actorId, stateId, stateName} = action.payload;
                 const actor = state.value.actorList.find(
-                    a => a._id === action.payload.actorId
+                    a => a._id === actorId
                 )
-                const stateIndex = actor.stateList.findIndex(s => s._id === action.payload.stateId);
-                actor.stateList[stateIndex].name = action.payload.stateName;
-            },
-            prepare: (text) => {
-                const obj = JSON.parse(text);
-                return {
-                    payload: {
-                        "actorId": obj.actorId,
-                        "stateId": obj.stateId,
-                        "stateName": obj.stateName
-                    }
+                const stateIndex = actor.stateList.findIndex(s => s._id === stateId);
+                if (stateIndex === -1) {
+                    actor.stateList.push({
+                        _id:  stateId,
+                        name:  stateName
+                    })
+                }
+                else {
+                    actor.stateList[stateIndex].name = stateName;
                 }
             },
         },

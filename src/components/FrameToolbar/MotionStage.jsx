@@ -208,12 +208,6 @@ export const MotionStage = (props) => {
                                 id={backdropStar._id}
                                 width={globalConfig.noScaleWidth}
                                 height={globalConfig.noScaleWidth*3/4}
-                                onClick={(e) => {
-                                    console.log("clicking");
-                                }}
-                                onTap={(e) => {
-                                    console.log("tapping");
-                                }}
                             />
                         )
                     }
