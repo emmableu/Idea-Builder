@@ -13,7 +13,6 @@ import SpeechBubbleButton from "./SpeechBubbleButton";
 import {Button} from "antd";
 import MotionButton from "./MotionButton";
 
-
 const useStyles = makeStyles((theme) => ({
     frameToolbar: {
         width: `calc(100vw  - ${globalConfig.responsiveSizeData.storyboardDrawerWidth}px

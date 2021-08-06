@@ -5,7 +5,6 @@ import {MotionStage} from "./MotionStage";
 
 
 
-
 export const MotionModal = (props) => {
     const {storyboardId, frameId, selectedStar, selectedActor, backdropStar, isModalVisible, setIsModalVisible, setHasMotion, starList} = props;
     const bubbleRef = React.useRef(null);
@@ -24,7 +23,7 @@ export const MotionModal = (props) => {
         <>
             {selectedStar !== null && selectedActor !== undefined && selectedActor !== null &&
             <Modal
-                title={"Add motion for " + selectedActor.name}
+                title={"Record motion for " + selectedActor.name}
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}

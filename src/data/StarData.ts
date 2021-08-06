@@ -25,6 +25,21 @@ export interface ChildStarData {
     parentStarId: string;
 }
 
+
+export interface MotionChildStarData {
+    //motion child star has another property called opacity
+    _id: string;
+    prototypeId: string;
+    type:string; //speech or resource
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    transform: any;
+    parentStarId: string;
+    opacity:number;
+}
+
 //because speechbubble does not have a prototype, for speechbubbles, their child id is the same as their prototype id.
 //childstardata's actor id inherits from its parents.
 
@@ -64,6 +79,24 @@ export class StarDataHandler {
             width : width? width:100,
             height : height? height:100,
             transform:transform?transform:null,
+        }
+    }
+
+    static initializeMotionChildStar (obj:any
+    ) : MotionChildStarData
+    {
+        const {prototypeId, _id, x, y, width, height, transform, type, parentStarId, opacity} = obj;
+        return {
+            prototypeId: prototypeId,
+            parentStarId:parentStarId,
+            _id: _id? _id:UUID.v4(),
+            type: type?type:"actor",
+            x : x? x:0,
+            y : y? y:0,
+            width : width? width:100,
+            height : height? height:100,
+            transform:transform?transform:null,
+            opacity: opacity?opacity:0,
         }
     }
 

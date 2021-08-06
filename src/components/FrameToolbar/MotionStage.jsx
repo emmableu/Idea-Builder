@@ -6,7 +6,11 @@ import globalConfig from "../../globalConfig";
 import useImage from "use-image";
 import axios from "../../axiosConfig";
 import * as UUID from "uuid"
-import Star from "../Star/Star";
+import "./Blink.css";
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+import Button from "@material-ui/core/Button";
+import {glob} from "konva/lib/Global";
+import {StarDataHandler} from "../../data/StarData";
 
 const MotionStar = (props) => {
     const {starData} = props;
@@ -25,58 +29,77 @@ const MotionStar = (props) => {
 export const MotionStage = (props) => {
     const {frameId, backdropStar, starList, selectedStar} = props;
     const isDrawing = React.useRef(false);
-    const [tool, setTool] = React.useState('pen');
-    const [lines, setLines] = React.useState([]);
+    const [stopped, setStopped] = React.useState(false);
+    const [points, setPoints] = React.useState( [] );
+    const [motionChildStarList, setMotionChildStarList] = React.useState([]);
     const [backdropImg] = useImage(axios.defaults.baseURL + backdropStar.prototypeId);
     const [selectedStarImg, setSelectedStarImg] = React.useState(JSON.parse(JSON.stringify(selectedStar)))
     const frameRef = React.useRef(null);
+    const motionStarRef = React.useRef(null);
     React.useEffect(() => {
         if (frameRef.current !== null) {
             frameRef.current.listening(false);
         }
+        if (motionStarRef.current !== null) {
+            motionStarRef.current.listening(false);
+        }
     }, [])
-    // const handleMouseDown = (e) => {
-    //     isDrawing.current = true;
-    //     const pos = e.target.getStage().getPointerPosition();
-    //     console.log("--------mouse down----------")
-    //     console.log("pos: ", pos);
-    // };
-    //
-    // const handleMouseMove = (e) => {
-    //     // no drawing - skipping
-    //     if (!isDrawing.current) {
-    //         return;
-    //     }
-    //     const stage = e.target.getStage();
-    //     const point = stage.getPointerPosition();
-    //     console.log("point: ", point);
-    // };
-    //
-    // const handleMouseOver = () => {
-    //     console.log("--------mouse over----------")
-    //     const pos = e.target.getStage().getPointerPosition();
-    //
-    // };
 
-    // const handleMouseOut = () => {
-    //     console.log("--------mouse out----------")
-    // };
+    /*
+    opac: 0.1 0.4 0.7 1
+    num of child: 3
+    how to calculate:
+    0.1 + 0.9*0/3, 0.1 + 0.9*1/3, 0.1 + 0.9*2/3
+     */
 
-    const handleMouseDown = (e) => {
-        isDrawing.current = true;
-        const pos = e.target.getStage().getPointerPosition();
-
-        setSelectedStarImg(
-            {...selectedStarImg,
-                x: pos.x - selectedStarImg.width/2,
-                y: pos.y - selectedStarImg.height/2,
+    React.useEffect(() => {
+        if (points.length === 0) {
+            return;
+        }
+        const numChild = Math.floor(points.length/20)+1;
+        const unitOpac = 0.9/numChild;
+        const newMotionChildStarList = [];
+        for (let i= 0; i < motionChildStarList.length; i++) {
+            let star = motionChildStarList[i];
+            let opacity = 0.1 + unitOpac*i;
+            newMotionChildStarList.push(
+                {
+                    ...star,
+                    opacity,
+                }
+            )
+        }
+        const lastChildPointIndex = 10*(numChild-1);
+        console.log("pointIndex: ", lastChildPointIndex);
+        console.log( points[lastChildPointIndex*2])
+        const lastChildMotion = StarDataHandler.initializeMotionChildStar(
+            {
+                prototypeId: selectedStarImg.prototypeId,
+                parentStarId:selectedStarImg._id,
+                type: "actor",
+                x : points[lastChildPointIndex*2] - selectedStarImg.width/2,
+                y : points[lastChildPointIndex*2+1] - selectedStarImg.height/2,
+                width : selectedStarImg.width,
+                height : selectedStarImg.height,
+                transform:selectedStarImg.transform,
+                opacity: 0.1 + unitOpac*(numChild-1),
             }
-        );
-        setLines([...lines, { tool, points: [pos.x, pos.y] }]);
-    };
+        )
+        newMotionChildStarList.push(lastChildMotion);
+        setMotionChildStarList(newMotionChildStarList);
+        console.log("len points: ", points.length);
+        console.log("motionChildStarList: ",
+            motionChildStarList.map(m => (
+               [m.x, m.y]
+            ))
+            );
+    }, [points.length%20===2]);
 
     const handleMouseMove = (e) => {
         // no drawing - skipping
+        if (stopped) {
+            return;
+        }
         const stage = e.target.getStage();
         const point = stage.getPointerPosition();
         setSelectedStarImg(
@@ -89,29 +112,52 @@ export const MotionStage = (props) => {
         if (!isDrawing.current) {
             return;
         }
-        let lastLine = lines[lines.length - 1];
-        // add point
-        lastLine.points = lastLine.points.concat([point.x, point.y]);
-
         // replace last
-        lines.splice(lines.length - 1, 1, lastLine);
-        setLines(lines.concat());
+        setPoints(points.concat([point.x, point.y]));
     };
 
-    const handleMouseUp = () => {
-        isDrawing.current = false;
-    };
+
+    const toggleIsDrawing = (e) => {
+        if (points.length>0 && !isDrawing.current) {
+            return;
+        }
+        isDrawing.current = !isDrawing.current
+        if (isDrawing.current) {
+            // const pos = e.target.getStage().getPointerPosition();
+        }
+        else if (isDrawing.current === false) {
+            setStopped(true);
+        }
+    }
+
+    const handleReset = (e) => {
+        setPoints( [] );
+        setStopped(false);
+        isDrawing.current=false;
+        setMotionChildStarList([]);
+    }
+
 
     return (
         <Box
             style={{
                 width: "100%",
-                height: globalConfig.noScaleWidth*3/4 + 50,
+                height: "inherit",
                 display: "flex",
+                flexDirection:"column",
                 alignItems: "center",
                 justifyContent: "center",
             }}
         >
+            <div>
+                    Click inside the stage to start/stop recording.
+                <br/>
+                <RadioButtonCheckedIcon
+                    className={isDrawing.current?
+                        "Blink":"Default"
+                    }
+                />   {'\u00A0'} Recording
+            </div>
         <Paper
             style={{width: globalConfig.noScaleWidth,
                    height: globalConfig.noScaleWidth*3/4}}
@@ -119,11 +165,9 @@ export const MotionStage = (props) => {
             <Stage
                 width={globalConfig.noScaleWidth}
                 height={globalConfig.noScaleWidth*3/4}
-                onMouseDown={handleMouseDown}
                 onMousemove={handleMouseMove}
-                onMouseup={handleMouseUp}
-                // onMouseOver={handleMouseOver}
-                // onMouseOut={handleMouseOut}
+                onClick={toggleIsDrawing}
+                onTap={toggleIsDrawing}
             >
                 <Layer
                     ref={frameRef}
@@ -157,25 +201,43 @@ export const MotionStage = (props) => {
                         );
                     })}
                 </Layer>
-                <Layer>
+                <Layer
+                    ref={motionStarRef}
+                >
+
+                    {motionChildStarList.map((starData, i) => {
+                        return (
+                            <MotionStar
+                                starData={starData}
+                            />
+                        );
+                    })}
                     <MotionStar
                         starData={selectedStarImg}
                     />
-                    {lines.map((line, i) => (
-                        <Line
-                            key={i}
-                            points={line.points}
-                            stroke="#df4b26"
-                            strokeWidth={5}
-                            tension={0.5}
-                            lineCap="round"
-                            globalCompositeOperation={
-                                 'source-over'
-                            }
-                        />))}
+                    <Line
+                        key={"line"}
+                        points={points}
+                        stroke="black"
+                        strokeWidth={2}
+                        tension={0.5}
+                        lineCap="round"
+                        globalCompositeOperation={
+                            'source-over'
+                        }
+                    />
+
+
                 </Layer>
             </Stage>
         </Paper>
+            <br/>
+            <Button
+                variant="contained"
+                onClick={handleReset}
+            >
+                Reset
+            </Button>
         </Box>
     );
 };
