@@ -31,11 +31,10 @@ const theme = createMuiTheme({
 });
 
 const App = () => {
-  const dispatch = useDispatch();
 
   return (
       <ProvideAuth>
-      <Router basename={"idea-builder"}>
+      <Router>
         <ThemeProvider theme={theme}>
           <Route path={globalConfig.routes.login} children={<LoginPage/>} />
           <PrivateRoute path={globalConfig.routes.dashboard} children={<Dashboard />} />
