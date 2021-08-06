@@ -27,11 +27,9 @@ const MotionStar = (props) => {
 
 
 export const MotionStage = (props) => {
-    const {frameId, backdropStar, starList, selectedStar} = props;
+    const {backdropStar, starList, selectedStar,tempMotionStarList,setTempMotionStarList, points, setPoints} = props;
     const isDrawing = React.useRef(false);
     const [stopped, setStopped] = React.useState(false);
-    const [points, setPoints] = React.useState( [] );
-    const [motionChildStarList, setMotionChildStarList] = React.useState([]);
     const [backdropImg] = useImage(axios.defaults.baseURL + backdropStar.prototypeId);
     const [selectedStarImg, setSelectedStarImg] = React.useState(JSON.parse(JSON.stringify(selectedStar)))
     const frameRef = React.useRef(null);
@@ -58,11 +56,11 @@ export const MotionStage = (props) => {
         }
         const numChild = Math.floor(points.length/20)+1;
         const unitOpac = 0.9/numChild;
-        const newMotionChildStarList = [];
-        for (let i= 0; i < motionChildStarList.length; i++) {
-            let star = motionChildStarList[i];
+        const newTempMotionStarList = [];
+        for (let i= 0; i < tempMotionStarList.length; i++) {
+            let star = tempMotionStarList[i];
             let opacity = 0.1 + unitOpac*i;
-            newMotionChildStarList.push(
+            newTempMotionStarList.push(
                 {
                     ...star,
                     opacity,
@@ -75,8 +73,6 @@ export const MotionStage = (props) => {
         const lastChildMotion = StarDataHandler.initializeMotionChildStar(
             {
                 prototypeId: selectedStarImg.prototypeId,
-                parentStarId:selectedStarImg._id,
-                type: "actor",
                 x : points[lastChildPointIndex*2] - selectedStarImg.width/2,
                 y : points[lastChildPointIndex*2+1] - selectedStarImg.height/2,
                 width : selectedStarImg.width,
@@ -85,14 +81,14 @@ export const MotionStage = (props) => {
                 opacity: 0.1 + unitOpac*(numChild-1),
             }
         )
-        newMotionChildStarList.push(lastChildMotion);
-        setMotionChildStarList(newMotionChildStarList);
-        console.log("len points: ", points.length);
-        console.log("motionChildStarList: ",
-            motionChildStarList.map(m => (
-               [m.x, m.y]
-            ))
-            );
+        newTempMotionStarList.push(lastChildMotion);
+        setTempMotionStarList(newTempMotionStarList);
+    //     console.log("len points: ", points.length);
+    //     console.log("tempMotionStarList: ",
+    //         tempMotionStarList.map(m => (
+    //            [m.x, m.y]
+    //         ))
+    //         );
     }, [points.length%20===2]);
 
     const handleMouseMove = (e) => {
@@ -134,7 +130,7 @@ export const MotionStage = (props) => {
         setPoints( [] );
         setStopped(false);
         isDrawing.current=false;
-        setMotionChildStarList([]);
+        setTempMotionStarList([]);
     }
 
 
@@ -205,7 +201,7 @@ export const MotionStage = (props) => {
                     ref={motionStarRef}
                 >
 
-                    {motionChildStarList.map((starData, i) => {
+                    {tempMotionStarList.map((starData, i) => {
                         return (
                             <MotionStar
                                 starData={starData}

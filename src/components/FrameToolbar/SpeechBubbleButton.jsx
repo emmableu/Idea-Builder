@@ -13,23 +13,18 @@ const SpeechBubbleButton = (props) => {
     const {storyboardId, frameId, selectedStar, selectedActor} = props;
     const dispatch = useDispatch()
     const [hasSpeechBubble, setHasSpeechBubble] = React.useState(
-        selectedStar.childStarList.findIndex(s => s.type === "speech") !== -1
+        selectedStar.childStar.speechStar !== null
     );
 
     const deleteSpeechBubble = (e) => {
-        const speechBubbleIndex = selectedStar.childStarList.findIndex(s => s.type === "speech")
-        console.log("speechbubleindex: ", speechBubbleIndex);
-        if (speechBubbleIndex === -1) {
-            return;
-        }
-        const newChildStarList = selectedStar.childStarList.slice();
-        newChildStarList.splice(speechBubbleIndex, 1);
         const newStarData = {
             ...selectedStar,
-            childStarList: newChildStarList,
+            childStar: {
+                ...selectedStar.childStar,
+                speechStar: null
+            },
         }
-        console.log("newChildStarList: ", newChildStarList);
-        console.log("newStarData: ", newStarData);
+
         dispatch(updateStarList(
             {
                 storyboardId, frameId,

@@ -820,25 +820,23 @@ export const projectSlice = createSlice({
             },
         },
 
-        addChildStarInMemory: {
+        addSpeechChildStarInMemory: {
             reducer: (state, action) => {
                 console.log("inside add child star in memory");
                 const {storyboardId, frameId, starId, childStarId, childStarPrototypeId, type} = action.payload;
                 const storyboardData = ProjectDataHandler.getStoryboard(state.value, storyboardId);
                 const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
                 const starData = frameData.starList.find(s => s._id === starId);
-                starData.childStarList.push(
-                    StarDataHandler.initializeChildStar({
+                starData.childStar.speechStar =
+                    StarDataHandler.initializeSpeechChildStar({
                       prototypeId: childStarPrototypeId,
-                        parentStarId: starId,
                         _id: childStarId,
                         type: type,
                         width: 150,
                         height: 80,
                         x: starData.x + starData.width,
                         y: starData.y,
-                    })
-                )
+                    });
                 console.log("star data after adding: ", starData);
                 console.log("project data after adding: ", state.value);
             }

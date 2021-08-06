@@ -4,6 +4,7 @@ import {Image, Layer, Stage, Group} from 'react-konva';
 import {useDispatch, useSelector} from 'react-redux';
 import {updateStarList} from "../../redux/features/projectSlice";
 import {setSelectedStarId} from "../../redux/features/projectSlice";
+import {StarDataHandler} from "../../data/StarData";
 
 
 
@@ -23,23 +24,19 @@ const Star = (props) => {
 
     const updatePositionAndSize = (attrs) => {
         const {x, y, width} = attrs;
-        const newChildStarList = [];
-        for (const childStar of starData.childStarList) {
-            newChildStarList.push(
-                {
-                    ...childStar,
-                    x: x + width,
-                    y: y,
-                }
-            )
+        const newSpeechStar = {
+            ...starData.childStar.speechStar,
+            x: x + width,
+            y: y,
         }
 
-        console.log("starData.childStarLis", starData.childStarList)
-        console.log("newChildStarList", newChildStarList);
         const newData = {
             ...starData,
             ...attrs,
-            childStarList: newChildStarList,
+            childStar: {
+                ...starData.childStar,
+                newSpeechStar,
+            },
         };
 
         dispatch(updateStarList({
@@ -53,7 +50,7 @@ const Star = (props) => {
 
     return (
         <>
-            {starImageData.childStarList.length === 0 &&
+            {StarDataHandler.isChildStarEmpty(starImageData) &&
                 <StarImage
                     listening={true}
                     key={starImageData._id}
@@ -68,7 +65,7 @@ const Star = (props) => {
                 />
             }
             {
-                starImageData.childStarList.length > 0 &&
+                StarDataHandler.isChildStarEmpty(starImageData) === false &&
             <Group>
                 <StarImage
                     listening={true}
@@ -82,17 +79,14 @@ const Star = (props) => {
                     setStrokeEnabled={setStrokeEnabled}
                     updatePositionAndSize={updatePositionAndSize}
                 />
-                {starImageData.childStarList.map((childStar) => (
-                        <StarImage
-                            listening={false}
-                            key={childStar._id}
-                            strokeEnabled={strokeEnabled}
-                            setStrokeEnabled={setStrokeEnabled}
-                            ref={childStarRef}
-                            starImageData={childStar}
-                        />
-                    )
-                )}
+                <StarImage
+                    listening={false}
+                    key={starData.childStar.speechStar._id}
+                    strokeEnabled={strokeEnabled}
+                    setStrokeEnabled={setStrokeEnabled}
+                    ref={childStarRef}
+                    starImageData={starData.childStar.speechStar}
+                />
             </Group>
             }
 

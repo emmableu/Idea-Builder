@@ -15,7 +15,7 @@ const MotionButton = (props) => {
     const {storyboardId, frameId, selectedStar, selectedActor, backdropStar, starList} = props;
     const dispatch = useDispatch()
     const [hasMotion, setHasMotion] = React.useState(
-        selectedStar.childStarList.findIndex(s => s.type === "speech") !== -1
+        selectedStar.childStar.lineStar !== null
     );
 
     const deleteMotion = (e) => {

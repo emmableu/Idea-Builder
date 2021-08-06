@@ -10,19 +10,29 @@ export interface StarData {
     width: number;
     height: number;
     transform: any;
-    childStarList: Array<ChildStarData>;
+    childStar: ChildStarData;
 }
 
 export interface ChildStarData {
+    speechStar: SpeechChildStarData | null;
+    lineStar: LineChildStarData | null;
+    motionStarList: Array<MotionChildStarData>;
+}
+
+export interface SpeechChildStarData {
     _id: string;
     prototypeId: string;
-    type:string; //speech or resource
+    type:string; //speech
     x: number;
     y: number;
     width: number;
     height: number;
     transform: any;
-    parentStarId: string;
+}
+
+export interface LineChildStarData {
+    _id: string;
+    points: Array<number>;
 }
 
 
@@ -30,18 +40,14 @@ export interface MotionChildStarData {
     //motion child star has another property called opacity
     _id: string;
     prototypeId: string;
-    type:string; //speech or resource
+    type:"motion";
     x: number;
     y: number;
     width: number;
     height: number;
     transform: any;
-    parentStarId: string;
     opacity:number;
 }
-
-//because speechbubble does not have a prototype, for speechbubbles, their child id is the same as their prototype id.
-//childstardata's actor id inherits from its parents.
 
 
 export class StarDataHandler {
@@ -49,7 +55,7 @@ export class StarDataHandler {
     static initializeStar (obj:any
     ) : StarData
     {
-        const {prototypeId, _id, x, y, width, height, transform, actorId, type, childStarList} = obj;
+        const {prototypeId, _id, x, y, width, height, transform, actorId, type, childStar} = obj;
         return {
             prototypeId: prototypeId,
             actorId:actorId,
@@ -60,20 +66,37 @@ export class StarDataHandler {
             width : width? width:100,
             height : height? height:100,
             transform:transform?transform:null,
-            childStarList: childStarList?childStarList:[],
+            childStar: childStar? childStar: {
+                speechStar: null,
+                lineStar: null,
+                motionStarList: [],
+            },
         }
     }
 
+    static isChildStarEmpty (starData:StarData):boolean {
+        const {speechStar, lineStar, motionStarList} = starData.childStar;
+        if (speechStar !== null){
+            return false;
+        }
+        if (lineStar !== null) {
+            return false;
+        }
+        if (motionStarList.length !== 0) {
+            return false;
+        }
+        return true;
+    }
 
-    static initializeChildStar (obj:any
-    ) : ChildStarData
+
+    static initializeSpeechChildStar (obj:any
+    ) : SpeechChildStarData
     {
-        const {prototypeId, _id, x, y, width, height, transform, type, parentStarId} = obj;
+        const {prototypeId, _id, x, y, width, height, transform, type} = obj;
         return {
             prototypeId: prototypeId,
-            parentStarId:parentStarId,
             _id: _id? _id:UUID.v4(),
-            type: type?type:"actor",
+            type: type?type:"speech",
             x : x? x:0,
             y : y? y:0,
             width : width? width:100,
@@ -85,10 +108,9 @@ export class StarDataHandler {
     static initializeMotionChildStar (obj:any
     ) : MotionChildStarData
     {
-        const {prototypeId, _id, x, y, width, height, transform, type, parentStarId, opacity} = obj;
+        const {prototypeId, _id, x, y, width, height, transform, type, opacity} = obj;
         return {
             prototypeId: prototypeId,
-            parentStarId:parentStarId,
             _id: _id? _id:UUID.v4(),
             type: type?type:"actor",
             x : x? x:0,
@@ -100,6 +122,38 @@ export class StarDataHandler {
         }
     }
 
+    static shallowCopyChildStar (childStarData:ChildStarData): ChildStarData {
+        const newChildStar = {speechStar: null,
+            lineStar: null,
+            motionStarList: []}
+        if (childStarData.speechStar !== null){
+            // @ts-ignore
+            newChildStar.speechStar = {
+                ...childStarData.speechStar,
+                _id: UUID.v4(),
+            }
+        }
+        if (childStarData.lineStar !== null){
+            // @ts-ignore
+            newChildStar.lineStar = {
+                ...childStarData.lineStar,
+                _id: UUID.v4(),
+            }
+        }
+        if (childStarData.motionStarList.length > 0) {
+            // @ts-ignore
+            newChildStar.motionStarList = childStarData.motionStarList.map(
+                m => (
+                    {
+                        ...m,
+                        _id: UUID.v4(),
+                    }
+                )
+            )
+        }
+        return newChildStar;
+
+    }
     static shallowCopy (starData:StarData): StarData {
         return StarDataHandler.initializeStar(
             {
@@ -112,7 +166,7 @@ export class StarDataHandler {
                 width: starData.width,
                 height: starData.height,
                 transform: starData.transform,
-                childStarList: starData.childStarList,
+                childStar: StarDataHandler.shallowCopyChildStar(starData.childStar),
             }
         );
     }
