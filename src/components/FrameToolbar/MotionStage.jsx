@@ -126,10 +126,12 @@ export const MotionStage = (props) => {
 
 
     React.useEffect(() => {
-        if (points.length === 0) {
+        if (points.length%20 !== 2) {
             return;
         }
         const numChild = Math.floor(points.length/20)+1;
+        // console.log("point length: ", points.length);
+        // console.log("numChild: ", numChild);
         const unitOpac = 0.9/numChild;
         const newTempMotionStarList = [];
         for (let i= 0; i < tempMotionStarList.length; i++) {
@@ -142,13 +144,13 @@ export const MotionStage = (props) => {
                 }
             )
         }
-        const lastChildPointIndex = 10*(numChild-1);
+        const lastChildPointIndex = 20*(numChild-1);
         const {prototypeId, width, height, transform} = selectedStarImg
         const lastChildMotion = StarDataHandler.initializeMotionChildStar(
             {
                 prototypeId: prototypeId,
-                x : points[lastChildPointIndex*2] - width/2,
-                y : points[lastChildPointIndex*2+1] - height/2,
+                x : points[lastChildPointIndex] - width/2,
+                y : points[lastChildPointIndex+1] - height/2,
                 width : width,
                 height : height,
                 transform:transform,
@@ -157,6 +159,9 @@ export const MotionStage = (props) => {
         )
         newTempMotionStarList.push(lastChildMotion);
         setTempMotionStarList(newTempMotionStarList);
+        // console.log('newTempMotionStarList: ', newTempMotionStarList.map(
+        //     t => ([t.x, t.y, t.opacity])
+        // ))
     }, [points.length%20===2]);
 
     const handleMouseMove = (e) => {
