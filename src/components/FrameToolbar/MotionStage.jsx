@@ -1,52 +1,93 @@
-import React from 'react';
-import {Stage, Layer, Line, Text, Image} from 'react-konva';
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import globalConfig, {globalLog} from "../../globalConfig";
+import React from "react";
 import useImage from "use-image";
 import axios from "../../axiosConfig";
-import * as UUID from "uuid"
-import "./Blink.css";
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
-import Button from "@material-ui/core/Button";
-import {glob} from "konva/lib/Global";
-import {StarDataHandler} from "../../data/StarData";
+import {Provider, ReactReduxContext, useDispatch} from "react-redux";
+import * as UUID from "uuid";
 import {updateStarList} from "../../redux/features/projectSlice";
-import {useDispatch} from "react-redux";
-
-const MotionStar = (props) => {
-    const {starData} = props;
-    const [image] = useImage(axios.defaults.baseURL + starData.prototypeId)
-    return (
-        <Image
-            image={image}
-            key={starData._id}
-            {...starData}
-        />
-    )
-}
+import globalConfig, {globalLog} from "../../globalConfig";
+import {StarDataHandler} from "../../data/StarData";
+import Box from "@material-ui/core/Box";
+import Paper from "@material-ui/core/Paper/Paper";
+import {Image, Layer, Line, Stage} from "react-konva";
+import {MotionStar} from "./MotionStar";
 
 
 
-export const MotionStage = (props) => {
-    const {storyboardId, frameId, backdropStar, starList, selectedStar, okPressed, setOkPressed, setIsModalVisible} = props;
-    const isDrawing = React.useRef(false);
-    const [stopped, setStopped] = React.useState(false);
-    const [backdropImg] = useImage(axios.defaults.baseURL + backdropStar.prototypeId);
-    const [selectedStarImg, setSelectedStarImg] = React.useState(JSON.parse(JSON.stringify(selectedStar)))
-    const [points, setPoints] = React.useState([]);
-    const [tempMotionStarList,setTempMotionStarList] = React.useState([]);
+export const StaticLayer = React.memo((props) => {
+    const { backdropStar, starList, selectedStar } = props;
     const frameRef = React.useRef(null);
-    const motionStarRef = React.useRef(null);
-    const dispatch = useDispatch();
+    const [backdropImg] = useImage(axios.defaults.baseURL + backdropStar.prototypeId);
     React.useEffect(() => {
         if (frameRef.current !== null) {
             frameRef.current.listening(false);
         }
-        if (motionStarRef.current !== null) {
-            motionStarRef.current.listening(false);
+    }, [])
+
+    return (
+        <Layer
+            ref={frameRef}
+        >
+
+            {
+                backdropStar._id !== null && (
+                    <Image
+                        image={backdropImg}
+                        key={backdropStar._id}
+                        id={backdropStar._id}
+                        width={globalConfig.noScaleWidth}
+                        height={globalConfig.noScaleWidth*3/4}
+                    />
+                )
+            }
+            {starList.map((starData, i) => {
+                if (starData._id === selectedStar._id) {
+                    return;
+                }
+                return (
+                    <MotionStar
+                        starData={starData}
+                    />
+                );
+            })}
+        </Layer>
+    )
+});
+
+
+
+export const MotionStage = (props) => {
+    const {storyboardId, frameId, backdropStar, starList, selectedStar,
+        okPressed, setOkPressed, setOkEnabled, cancelPressed, setCancelPressed,
+        resetPressed, toggleDrawing, toggleResetPressed, isDrawing
+    } = props;
+    const stopped = React.useRef(false);
+    const [selectedStarImg, setSelectedStarImg] = React.useState(JSON.parse(JSON.stringify(selectedStar)));
+    const [tempMotionStarList, setTempMotionStarList] = React.useState([]);
+    const [points, setPoints] = React.useState([]);
+    const motionLayerRef = React.useRef(null);
+    const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        if (motionLayerRef.current !== null) {
+            motionLayerRef.current.listening(false);
         }
     }, [])
+
+    React.useEffect(() => {
+        setOkEnabled(points.length>0);
+    }, [points.length>0])
+
+
+    React.useEffect(() => {
+        if (cancelPressed === false) {
+            return;
+        }
+        if (points.length === 0) {
+            return;
+        }
+        reset();
+        setCancelPressed(false);
+    }, [cancelPressed])
 
     React.useEffect(() => {
         if (okPressed === false) {
@@ -79,16 +120,10 @@ export const MotionStage = (props) => {
                 starData: newStarData
             }
         ));
-        setIsModalVisible(false);
+        reset();
         setOkPressed(false);
     }, [okPressed])
 
-    /*
-    opac: 0.1 0.4 0.7 1
-    num of child: 3
-    how to calculate:
-    0.1 + 0.9*0/3, 0.1 + 0.9*1/3, 0.1 + 0.9*2/3
-     */
 
     React.useEffect(() => {
         if (points.length === 0) {
@@ -108,48 +143,42 @@ export const MotionStage = (props) => {
             )
         }
         const lastChildPointIndex = 10*(numChild-1);
-        globalLog("pointIndex: ", lastChildPointIndex);
-        globalLog( points[lastChildPointIndex*2])
+        const {prototypeId, width, height, transform} = selectedStarImg
         const lastChildMotion = StarDataHandler.initializeMotionChildStar(
             {
-                prototypeId: selectedStarImg.prototypeId,
-                x : points[lastChildPointIndex*2] - selectedStarImg.width/2,
-                y : points[lastChildPointIndex*2+1] - selectedStarImg.height/2,
-                width : selectedStarImg.width,
-                height : selectedStarImg.height,
-                transform:selectedStarImg.transform,
+                prototypeId: prototypeId,
+                x : points[lastChildPointIndex*2] - width/2,
+                y : points[lastChildPointIndex*2+1] - height/2,
+                width : width,
+                height : height,
+                transform:transform,
                 opacity: 0.1 + unitOpac*(numChild-1),
             }
         )
         newTempMotionStarList.push(lastChildMotion);
-        setTempMotionStarList(newTempMotionStarList);
-    //     globalLog("len points: ", points.length);
-    //     globalLog("tempMotionStarList: ",
-    //         tempMotionStarList.map(m => (
-    //            [m.x, m.y]
-    //         ))
-    //         );
+        tempMotionStarList.current = newTempMotionStarList;
     }, [points.length%20===2]);
 
     const handleMouseMove = (e) => {
         // no drawing - skipping
-        if (stopped) {
+        // console.log("mouse moving");
+        if (stopped.current) {
             return;
         }
+
         const stage = e.target.getStage();
         const point = stage.getPointerPosition();
         setSelectedStarImg(
             {...selectedStarImg,
                 x: point.x - selectedStarImg.width/2,
                 y: point.y - selectedStarImg.height/2,
-            }
-        );
+            });
 
         if (!isDrawing.current) {
             return;
         }
-        // replace last
-        setPoints(points.concat([point.x, point.y]));
+        console.log("points: ", points);
+        setPoints( points.concat([point.x, point.y]));
     };
 
 
@@ -157,118 +186,83 @@ export const MotionStage = (props) => {
         if (points.length>0 && !isDrawing.current) {
             return;
         }
-        isDrawing.current = !isDrawing.current
+        toggleDrawing(!isDrawing.current);
         if (isDrawing.current) {
             // const pos = e.target.getStage().getPointerPosition();
         }
         else if (isDrawing.current === false) {
-            setStopped(true);
+            stopped.current=true;
         }
     }
 
-    const handleReset = (e) => {
+    const reset = () => {
         setPoints( [] );
-        setStopped(false);
+        stopped.current=false;
         isDrawing.current=false;
         setTempMotionStarList([]);
     }
 
 
+    React.useEffect(
+        () => {
+            if (resetPressed === false) {
+                return;
+            }
+            reset();
+            toggleResetPressed(false);
+        }, resetPressed
+    )
+
+
     return (
-        <Box
-            style={{
-                width: "100%",
-                height: "inherit",
-                display: "flex",
-                flexDirection:"column",
-                alignItems: "center",
-                justifyContent: "center",
-            }}
-        >
-            <div>
-                    Click inside the stage to start/stop recording.
-                <br/>
-                <RadioButtonCheckedIcon
-                    className={isDrawing.current?
-                        "Blink":"Default"
-                    }
-                />   {'\u00A0'} Recording
-            </div>
-        <Paper
-            style={{width: globalConfig.noScaleWidth,
-                   height: globalConfig.noScaleWidth*3/4}}
-        >
-            <Stage
-                width={globalConfig.noScaleWidth}
-                height={globalConfig.noScaleWidth*3/4}
-                onMousemove={handleMouseMove}
-                onClick={toggleIsDrawing}
-                onTap={toggleIsDrawing}
-            >
-                <Layer
-                    ref={frameRef}
+        <ReactReduxContext.Consumer>
+            {({ store }) => (
+                <Stage
+                    width={globalConfig.noScaleWidth}
+                    height={globalConfig.noScaleWidth*3/4}
+                    onMousemove={handleMouseMove}
+                    onClick={toggleIsDrawing}
+                    onTap={toggleIsDrawing}
                 >
+                    <StaticLayer
+                        backdropStar={backdropStar}
+                        starList={starList}
+                        selectedStar={selectedStar}
+                />
+                    <Provider store={store}>
+                    <Layer
+                        ref={motionLayerRef}
+                    >
 
-                    {
-                        backdropStar._id !== null && (
-                            <Image
-                                image={backdropImg}
-                                key={backdropStar._id}
-                                id={backdropStar._id}
-                                width={globalConfig.noScaleWidth}
-                                height={globalConfig.noScaleWidth*3/4}
-                            />
-                        )
-                    }
-                    {starList.map((starData, i) => {
-                        if (starData._id === selectedStar._id) {
-                            return;
-                        }
-                        return (
-                            <MotionStar
-                                starData={starData}
-                            />
-                        );
-                    })}
-                </Layer>
-                <Layer
-                    ref={motionStarRef}
-                >
-
-                    {tempMotionStarList.map((starData, i) => {
-                        return (
-                            <MotionStar
-                                key={starData._id}
-                                starData={starData}
-                            />
-                        );
-                    })}
-                    <MotionStar
-                        starData={selectedStarImg}
-                    />
-                    <Line
-                        key={"line"}
-                        points={points}
-                        stroke="black"
-                        strokeWidth={2}
-                        tension={0.5}
-                        lineCap="round"
-                        globalCompositeOperation={
-                            'source-over'
-                        }
-                    />
+                        {tempMotionStarList.map((starData, i) => {
+                            return (
+                                <MotionStar
+                                    key={starData._id}
+                                    starData={starData}
+                                />
+                            );
+                        })}
+                        <MotionStar
+                            starData={selectedStarImg}
+                        />
+                        <Line
+                            key={"line"}
+                            points={points}
+                            stroke="black"
+                            strokeWidth={2}
+                            tension={0.5}
+                            lineCap="round"
+                            globalCompositeOperation={
+                                'source-over'
+                            }
+                        />
 
 
-                </Layer>
-            </Stage>
-        </Paper>
-            <br/>
-            <Button
-                variant="contained"
-                onClick={handleReset}
-            >
-                Reset
-            </Button>
-        </Box>
+                    </Layer>
+
+                    </Provider>
+                </Stage>
+            )}
+        </ReactReduxContext.Consumer>
     );
 };

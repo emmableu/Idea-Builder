@@ -1,8 +1,9 @@
 import React from "react";
 import {Button, Card, Select, Avatar, Input, Modal} from 'antd';
 import {useDispatch} from "react-redux";
-import {MotionStage} from "./MotionStage";
+import {MotionContainer} from "./MotionContainer";
 import axios from "../../axiosConfig";
+import {DecorDialog} from "../MaterialMenu/ActorPanel/DecorDialog/DecorDialog";
 
 
 export const MotionModal = (props) => {
@@ -10,14 +11,18 @@ export const MotionModal = (props) => {
          starList,
     } = props;
     const [okPressed, setOkPressed] = React.useState(false);
+    const [cancelPressed, setCancelPressed] = React.useState(false);
+    const [okEnabled, setOkEnabled] = React.useState(false);
 
     const handleOk = () => {
+        setIsModalVisible(false);
         setOkPressed(true);
     };
 
 
     const handleCancel = () => {
         setIsModalVisible(false);
+        setCancelPressed(true);
     };
     return (
         <>
@@ -35,8 +40,11 @@ export const MotionModal = (props) => {
                 onCancel={handleCancel}
                 okText="Add motion"
                 cancelText="Cancel"
+                okButtonProps={
+                    { disabled: !okEnabled}
+                }
             >
-                <MotionStage
+                <MotionContainer
                     storyboardId={storyboardId}
                     frameId={frameId}
                     backdropStar={backdropStar}
@@ -44,7 +52,9 @@ export const MotionModal = (props) => {
                     selectedStar={selectedStar}
                     okPressed={okPressed}
                     setOkPressed={setOkPressed}
-                    setIsModalVisible={setIsModalVisible}
+                    cancelPressed={cancelPressed}
+                    setCancelPressed={setCancelPressed}
+                    setOkEnabled={setOkEnabled}
                 />
             </Modal>
             }

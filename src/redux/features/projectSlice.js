@@ -684,12 +684,6 @@ export const projectSlice = createSlice({
             }
         },
 
-        setMode: {
-            reducer: (state, action) => {
-                state.value.mode = action.payload;
-            }
-        },
-
         setSelectedStoryboardIdInMemory: {
             reducer: (state, action) => {
                 SelectedIdDataHandler.setStoryboardId(state.value.selectedId, action.payload);

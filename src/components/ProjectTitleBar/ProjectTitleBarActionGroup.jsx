@@ -58,7 +58,7 @@ const ProjectTitleBarActionGroup  = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
-    const mode = useSelector(state => state.project.value.mode);
+    const mode = useSelector(state => state.mode.value);
 
 
     const backToHome = () => {
