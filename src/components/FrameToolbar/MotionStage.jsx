@@ -58,7 +58,7 @@ export const StaticLayer = React.memo((props) => {
 export const MotionStage = (props) => {
     const {storyboardId, frameId, backdropStar, starList, selectedStar,
         okPressed, setOkPressed, setOkEnabled, cancelPressed, setCancelPressed,
-        resetPressed, toggleDrawing, toggleResetPressed, isDrawing
+        resetPressed, setIsDrawing, setResetPressed, isDrawing
     } = props;
     const stopped = React.useRef(false);
     const [selectedStarImg, setSelectedStarImg] = React.useState(JSON.parse(JSON.stringify(selectedStar)));
@@ -156,12 +156,12 @@ export const MotionStage = (props) => {
             }
         )
         newTempMotionStarList.push(lastChildMotion);
-        tempMotionStarList.current = newTempMotionStarList;
+        setTempMotionStarList(newTempMotionStarList);
     }, [points.length%20===2]);
 
     const handleMouseMove = (e) => {
         // no drawing - skipping
-        // console.log("mouse moving");
+
         if (stopped.current) {
             return;
         }
@@ -174,23 +174,22 @@ export const MotionStage = (props) => {
                 y: point.y - selectedStarImg.height/2,
             });
 
-        if (!isDrawing.current) {
+        if (!isDrawing) {
             return;
         }
-        console.log("points: ", points);
         setPoints( points.concat([point.x, point.y]));
     };
 
 
     const toggleIsDrawing = (e) => {
-        if (points.length>0 && !isDrawing.current) {
+        if (points.length>0 && !isDrawing) {
             return;
         }
-        toggleDrawing(!isDrawing.current);
-        if (isDrawing.current) {
-            // const pos = e.target.getStage().getPointerPosition();
+        if (!isDrawing) {
+            setIsDrawing(true);
         }
-        else if (isDrawing.current === false) {
+        else {
+            setIsDrawing(false);
             stopped.current=true;
         }
     }
@@ -198,7 +197,7 @@ export const MotionStage = (props) => {
     const reset = () => {
         setPoints( [] );
         stopped.current=false;
-        isDrawing.current=false;
+        setIsDrawing(false);
         setTempMotionStarList([]);
     }
 
@@ -209,8 +208,8 @@ export const MotionStage = (props) => {
                 return;
             }
             reset();
-            toggleResetPressed(false);
-        }, resetPressed
+            setResetPressed(false);
+        }, [resetPressed]
     )
 
 

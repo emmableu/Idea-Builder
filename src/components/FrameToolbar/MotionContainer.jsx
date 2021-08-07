@@ -3,19 +3,10 @@ import {Stage, Layer, Line, Text, Image} from 'react-konva';
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import globalConfig, {globalLog} from "../../globalConfig";
-import useImage from "use-image";
-import axios from "../../axiosConfig";
-import * as UUID from "uuid"
 import "./Blink.css";
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import Button from "@material-ui/core/Button";
-import {glob} from "konva/lib/Global";
-import {StarDataHandler} from "../../data/StarData";
-import {updateStarList} from "../../redux/features/projectSlice";
-import {useDispatch} from "react-redux";
-import {MotionStar} from "./MotionStar";
 import {MotionStage} from "./MotionStage";
-import { ReactReduxContext, Provider } from "react-redux";
 
 
 
@@ -27,7 +18,7 @@ const Instruction = React.memo(props => {
             Click inside the stage to start/stop recording.
             <br/>
             <RadioButtonCheckedIcon
-                className={isDrawing.current?
+                className={isDrawing?
                     "Blink":"Default"
                 }
             />   {'\u00A0'} Recording
@@ -36,13 +27,13 @@ const Instruction = React.memo(props => {
 })
 
 const ResetButton =  React.memo((props) => {
-    const {toggleResetPressed} = props;
+    const {setResetPressed} = props;
     return (
         <>
             <br/>
             <Button
                 variant="contained"
-                onClick={toggleResetPressed(true)}
+                onClick={(e) => setResetPressed(true)}
             >
                 Reset
             </Button>
@@ -55,19 +46,17 @@ export const MotionContainer = React.memo((props) => {
     const {storyboardId, frameId, backdropStar, starList, selectedStar,
         okPressed, setOkPressed, setOkEnabled, cancelPressed, setCancelPressed
     } = props;
-    const isDrawing = React.useRef(false);
-    const resetPressed = React.useRef(false);
-    const toggleDrawing = React.useCallback((drawing) => {
-        isDrawing.current = drawing;
-    }, [])
-    const toggleResetPressed = React.useCallback((pressed) => {
-        resetPressed.current = pressed;
-    }, [])
-
-
-
-
-
+    // const isDrawing = React.useRef(false);
+    const [isDrawing, setIsDrawing] = React.useState(false);
+    // const resetPressed = React.useRef(false);
+    const [resetPressed, setResetPressed] = React.useState(false);
+    // const setIsDrawing = React.useCallback((drawing) => {
+    //     isDrawing.current = drawing;
+    //     console.log("drawing toggled")
+    // }, [])
+    // const setResetPressed = React.useCallback((pressed) => {
+    //     resetPressed.current = pressed;
+    // }, [])
 
     return (
         <Box
@@ -101,13 +90,13 @@ export const MotionContainer = React.memo((props) => {
                     setCancelPressed={setCancelPressed}
                     setOkEnabled={setOkEnabled}
                     isDrawing={isDrawing}
-                    toggleDrawing={toggleDrawing}
-                    toggleResetPressed={toggleResetPressed}
+                    setIsDrawing={setIsDrawing}
+                    setResetPressed={setResetPressed}
                     resetPressed={resetPressed}
                 />
             </Paper>
             <ResetButton
-                toggleResetPressed={toggleResetPressed}
+                setResetPressed={setResetPressed}
             />
         </Box>
     );
