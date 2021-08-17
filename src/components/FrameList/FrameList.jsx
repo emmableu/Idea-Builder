@@ -109,7 +109,7 @@ const FrameList = () => {
                             frameIndex={i}
                             frameData={frameData}
                             handleDelete={handleDeleteFrame}
-                            id={_id}
+                            _id={_id}
                             />
                         ))}
                         <Grid item xs={2} align="middle">

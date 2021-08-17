@@ -10,6 +10,7 @@ import {ProjectDataHandler} from "../../data/ProjectData";
 import FrameThumbnail from "../FrameList/FrameThumbnail";
 import Typography from '@material-ui/core/Typography';
 import StaticFrame from "../Frame/StaticFrame";
+import StaticFrameContainer from "../Frame/StaticFrameContainer";
 
 
 
@@ -58,39 +59,14 @@ const StaticFrameList = (props) => {
         <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={1}
               className={classes.box}>
             {frameList.map((frameData, i) => (
-                <Grid className={classes.grid} item key={i}>
-                    <Card variant="outlined"
-                          className={classes.paper}
-                          style={{
-                              border:"1px solid #e0e0e0"
-                          }}
-                    >
-                        {
-                            type === "view-mode" && (
-                                <CardMedia>
-                                    <FrameThumbnail
-                                        key={frameData._id}
-                                        frameId={frameData._id}
-                                        frameIndex={i}
-                                        handleDelete={null}
-                                    />
-                                </CardMedia>
-                            )
-                        }
-
-                        {
-                            type === "storyboard-gallery" && (
-                                    <StaticFrame
-                                        key={frameData._id}
-                                        storyboardId={storyboardData._id}
-                                        frameData={frameData}
-                                    />
-                            )
-                        }
-
-
-                    </Card>
-                </Grid>
+                <StaticFrameContainer
+                    key={frameData._id}
+                    storyboardId={storyboardData._id}
+                    frameIndex={i}
+                    frameData={frameData}
+                    handleDelete={null}
+                    id={null}
+                />
             ))}
         </Grid>
     </>);

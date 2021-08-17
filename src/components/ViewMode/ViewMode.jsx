@@ -7,6 +7,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import ProjectTitleBarActionGroup from "../ProjectTitleBar/ProjectTitleBarActionGroup";
 import globalConfig from "../../globalConfig";
 import Container from '@material-ui/core/Container';
+import FrameList from "../FrameList/FrameList";
 
 
 const getStoryboardList = createSelector(
@@ -50,7 +51,6 @@ const ViewMode = (props) => {
            <StaticFrameList
                storyboardData={s}
                key={s._id}
-               type="view-mode"
            />
 
          ))}

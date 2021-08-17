@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setSelectedStarId} from "../../redux/features/projectSlice";
 import globalConfig, {globalLog} from "../../globalConfig";
 import Star from "../Star/Star";
+import StaticStar from "../Star/StaticStar";
 
 
 
@@ -52,17 +53,31 @@ const StarLayer = (props) => {
          <Layer
              ref={allStarLayerRef}
          >
-             {starList.map((starData, i) => {
-                 return (
-                     <Star
-                         key={starData._id}
-                         storyboardId={storyboardId}
-                         frameId={frameId}
-                         selectedStar={selectedStar}
-                         starData={starData}
-                     />
-                 );
-             })}
+             {
+                 disabled === false && starList.map((starData, i) => {
+                         return (
+                             <Star
+                                 key={starData._id}
+                                 storyboardId={storyboardId}
+                                 frameId={frameId}
+                                 selectedStar={selectedStar}
+                                 starData={starData}
+                             />
+                         );
+                     })
+             }
+
+             {
+                 disabled === true && starList.map((starData, i) => {
+                     return (
+                         <StaticStar
+                             key={starData._id}
+                             starData={starData}
+                         />
+                     );
+                 })
+             }
+
          </Layer>
      </>
  )

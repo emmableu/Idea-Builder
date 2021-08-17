@@ -7,28 +7,9 @@ import {setSelectedStarId} from "../../redux/features/projectSlice";
 import {StarDataHandler} from "../../data/StarData";
 import useImage from "use-image";
 import axios from "../../axiosConfig";
+import {StaticStarUnit} from "./StaticStar";
 
-const StaticStar = (props) => {
-    const {starData} = props;
-    const [image] = useImage(axios.defaults.baseURL + starData.prototypeId)
-    if (image !== undefined) {
-        image.crossOrigin = "Anonymous";
-    }
-    const starRef = React.useRef(null);
-    React.useEffect(() => {
-        if (starRef.current!==null) {
-            starRef.current.listening(false);
-        }
-    }, [])
-    return (
-        <Image
-            ref={starRef}
-            image={image}
-            key={starData._id}
-            {...starData}
-        />
-    )
-}
+
 
 const Star = (props) => {
     const {storyboardId, frameId, selectedStar, starData} = props;
@@ -118,7 +99,7 @@ const Star = (props) => {
                         <>
                         {starData.childStar.motionStarList.map((starData) => {
                             return (
-                                <StaticStar
+                                <StaticStarUnit
                                     key={starData._id}
                                     starData={starData}
                                 />
@@ -143,7 +124,7 @@ const Star = (props) => {
                 />
                 {
                     starData.childStar.speechStar !== null &&
-                    <StaticStar
+                    <StaticStarUnit
                         starData={starData.childStar.speechStar}
                     />
                 }
