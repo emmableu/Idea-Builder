@@ -22,7 +22,8 @@ const EventPanel = (props) => {
     const dispatch = useDispatch();
 
     const handleUse = React.useCallback((e, _id) => {
-        dispatch(addStar(_id));
+        dispatch(addStar({actorId: "event-events-are-different-states-under-this-same-actorId",
+                        stateId: _id}));
     }, []);
 
 
@@ -33,7 +34,7 @@ const EventPanel = (props) => {
             // buttonGroup={<EventPanelButtonGroup/>}
             buttonGroup={null}
             dataList = {eventList}
-            imgWidth={5}
+            imgWidth={8}
             handleSave={null}
             handleDelete={null}
             handleUse={handleUse}

@@ -9,6 +9,7 @@ import globalConfig from "../../globalConfig";
 import {ProjectDataHandler} from "../../data/ProjectData";
 import FrameThumbnail from "../FrameList/FrameThumbnail";
 import Typography from '@material-ui/core/Typography';
+import StaticFrame from "../Frame/StaticFrame";
 
 
 
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StaticFrameList = (props) => {
-    const {storyboardData} = props;
+    const {storyboardData, type} = props;
     const classes = useStyles();
     const frameList = storyboardData.frameList;
 
@@ -54,7 +55,7 @@ const StaticFrameList = (props) => {
         }}>
             {storyboardData.name}
         </Typography>
-        <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3}
+        <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={1}
               className={classes.box}>
             {frameList.map((frameData, i) => (
                 <Grid className={classes.grid} item key={i}>
@@ -64,14 +65,31 @@ const StaticFrameList = (props) => {
                               border:"1px solid #e0e0e0"
                           }}
                     >
-                        <CardMedia>
-                            <FrameThumbnail
-                                key={frameData._id}
-                                frameId={frameData._id}
-                                frameIndex={i}
-                                handleDelete={null}
-                            />
-                        </CardMedia>
+                        {
+                            type === "view-mode" && (
+                                <CardMedia>
+                                    <FrameThumbnail
+                                        key={frameData._id}
+                                        frameId={frameData._id}
+                                        frameIndex={i}
+                                        handleDelete={null}
+                                    />
+                                </CardMedia>
+                            )
+                        }
+
+                        {
+                            type === "storyboard-gallery" && (
+                                    <StaticFrame
+                                        key={frameData._id}
+                                        storyboardId={storyboardData._id}
+                                        frameData={frameData}
+                                        width={200}
+                                    />
+                            )
+                        }
+
+
                     </Card>
                 </Grid>
             ))}

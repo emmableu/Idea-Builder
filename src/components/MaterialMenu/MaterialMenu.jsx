@@ -96,11 +96,11 @@ export const MaterialMenu = () => {
             icon: <Panorama/>,
             panel: <BackdropPanel/>
         },
-        {
-            label: "UI Widgets",
-            icon: <Widgets/>,
-            panel: <div />
-        },
+        // {
+        //     label: "UI Widgets",
+        //     icon: <Widgets/>,
+        //     panel: <div />
+        // },
         {
             label: "Events",
             icon: <OfflineBoltIcon/>,

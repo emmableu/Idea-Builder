@@ -50,6 +50,7 @@ const ViewMode = (props) => {
            <StaticFrameList
                storyboardData={s}
                key={s._id}
+               type="view-mode"
            />
 
          ))}

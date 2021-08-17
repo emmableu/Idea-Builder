@@ -57,7 +57,7 @@ const SearchDialog = (props) => {
                 url: `/sample_${type}_id_list/get`,
             }).then(
                 res => {
-                    setImgList(res.data.sort());
+                    setImgList(res.data);
                     setSearchLoading(false);
                 }
             )

@@ -92,20 +92,20 @@ export class ProjectDataHandler {
 
         const projectEventList = eventList? eventList:[
             {
-                _id: globalConfig.imageServer.sample.event + "space-bar-3661045-3095465.png",
-                name: "space key pressed",
+                _id: globalConfig.imageServer.sample.event + "time.png",
+                name: "time goes by",
             },
             {
-                _id: globalConfig.imageServer.sample.event + "left-keyboard-arrow-key-direction-30505.png",
-                name: "left arrow key pressed",
+                _id: globalConfig.imageServer.sample.event + "key-press.png",
+                name: "key pressed",
             },
             {
-                _id: globalConfig.imageServer.sample.event + "right-keyboard-arrow-key-direction-30592.png",
-                name: "right arrow key pressed",
-            },
-            {
-                _id: globalConfig.imageServer.sample.event + "cursor-3537292-2960010.png",
+                _id: globalConfig.imageServer.sample.event + "mouse-click.png",
                 name: "mouse clicked",
+            },
+            {
+                _id: globalConfig.imageServer.sample.event + "mouse-hover.png",
+                name: "mouse hovered",
             }
         ];
 

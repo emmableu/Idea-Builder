@@ -10,6 +10,7 @@ import EmptyFrameCardContainer from "./EmptyFrameCardContainer";
 import {PaletteOutlined, Refresh} from "@material-ui/icons";
 import {updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
 import {deleteBackdrop, deleteBackdropStar} from "../../redux/features/projectSlice";
+import {StateData} from "../../data/StateData";
 
 const useStyles = makeStyles((theme) => ({
         frame: { flex: `0 0 calc(100vh - ${globalConfig.toolBarHeight}px
@@ -32,7 +33,8 @@ const getSelectedStarAndActorData = createSelector(
     state => state.project.value.selectedId.frameId,
     state => state.project.value.selectedId.starId,
     state => state.project.value.actorList,
-    (storyboardId, storyboardList, frameId, starId, actorList) => {
+    state => state.project.value.eventList,
+    (storyboardId, storyboardList, frameId, starId, actorList, eventList) => {
         const selectedStoryboard = storyboardList.find(s => s._id === storyboardId);
         let selectedFrame, starList, backdropStar, selectedStar, actorData;
         if ([null, undefined].includes(frameId)) {
@@ -62,7 +64,16 @@ const getSelectedStarAndActorData = createSelector(
                 } else {
                     selectedStar = selectedFrame.starList.find(s => s._id === starId);
                     if (selectedStar !== undefined) {
-                        actorData = actorList.find(s => s._id === selectedStar.actorId);
+                        if (selectedStar.actorId === "event-events-are-different-states-under-this-same-actorId") {
+                            actorData = {
+                                _id: "event-events-are-different-states-under-this-same-actorId",
+                                name: "event",
+                                stateList: eventList,
+                            }
+                        }
+                        else {
+                            actorData = actorList.find(s => s._id === selectedStar.actorId);
+                        }
                     } else {
                         selectedStar = null;
                         actorData = null;

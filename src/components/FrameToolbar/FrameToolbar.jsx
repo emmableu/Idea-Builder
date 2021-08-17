@@ -69,21 +69,28 @@ const FrameToolbar = (props) => {
                    { selectedActor !== null
                    && <Avatar src={axios.defaults.baseURL + selectedStar.prototypeId}
                    />}
-                   {'\u00A0'}{'\u00A0'}
-                   <MotionButton
-                       storyboardId={storyboardId}
-                       frameId={frameId}
-                       selectedStar={selectedStar}
-                       backdropStar={backdropStar}
-                       selectedActor={selectedActor}
-                       starList={starList}
-                   />
-                   <SpeechBubbleButton
-                        storyboardId={storyboardId}
-                        frameId={frameId}
-                       selectedStar={selectedStar}
-                        selectedActor={selectedActor}
-                   />
+                   {
+                       selectedStar.actorId !== "event-events-are-different-states-under-this-same-actorId"
+                       &&
+                       <>
+                           {'\u00A0'}{'\u00A0'}
+                           <MotionButton
+                               storyboardId={storyboardId}
+                               frameId={frameId}
+                               selectedStar={selectedStar}
+                               backdropStar={backdropStar}
+                               selectedActor={selectedActor}
+                               starList={starList}
+                           />
+                           <SpeechBubbleButton
+                               storyboardId={storyboardId}
+                               frameId={frameId}
+                               selectedStar={selectedStar}
+                               selectedActor={selectedActor}
+                           />
+                       </>
+
+                   }
 
                 </div>
                <div>
