@@ -10,11 +10,15 @@ import Star from "../Star/Star";
 
 
 const StarLayer = (props) => {
-    const {storyboardId, frameId, starList,backdropStar,selectedStar,} = props;
+    const {storyboardId, frameId, starList,backdropStar,selectedStar,disabled} = props;
     const dispatch = useDispatch();
     const backdropLayerRef = React.useRef(null);
+    const allStarLayerRef = React.useRef(null);
     React.useEffect(() => {
         backdropLayerRef.current.listening(false);
+        if (disabled) {
+            allStarLayerRef.current.listening(false)
+        }
     }, [])
     const [backdropImg] = useImage(axios.defaults.baseURL + backdropStar.prototypeId);
     if (backdropImg !== undefined) {
@@ -45,7 +49,9 @@ const StarLayer = (props) => {
                  )
              }
          </Layer>
-         <Layer>
+         <Layer
+             ref={allStarLayerRef}
+         >
              {starList.map((starData, i) => {
                  return (
                      <Star

@@ -23,6 +23,8 @@ import globalConfig from "../../globalConfig";
 import FrameThumbnail from "./FrameThumbnail";
 import {setSelectedStarId} from "../../redux/features/projectSlice";
 import {ProjectDataHandler} from "../../data/ProjectData";
+import StaticFrame from "../Frame/StaticFrame";
+import StaticFrameContainer from "../Frame/StaticFrameContainer";
 
 
 const snapshotHeight = 0.15*window.innerHeight;
@@ -87,7 +89,6 @@ const FrameList = () => {
     const handleDeleteFrame = (e, frameIndex) => {
         e.stopPropagation();
         if (frameList[frameIndex]._id === _id) {
-            // globalLog("to delete id ", frameList[frameIndex]._id, "is the same as ", frameId);
             if (frameIndex < frameList.length - 1) {
                 dispatch(setSelectedFrameIdInMemory(frameList[frameIndex+1]._id));
             }
@@ -116,10 +117,18 @@ const FrameList = () => {
                                         dispatch(setSelectedFrameId(frameData._id));
                                     }}>
 
-                                        <FrameThumbnail
+                                        {/*<FrameThumbnail*/}
+                                        {/*    key={frameData._id}*/}
+                                        {/*    frameId={frameData._id}*/}
+                                        {/*    frameIndex={i}*/}
+                                        {/*    handleDelete={handleDeleteFrame}*/}
+                                        {/*/>*/}
+
+                                        <StaticFrameContainer
                                             key={frameData._id}
-                                            frameId={frameData._id}
+                                            storyboardId={storyboardId}
                                             frameIndex={i}
+                                            frameData={frameData}
                                             handleDelete={handleDeleteFrame}
                                         />
 

@@ -84,7 +84,7 @@ const Frame = (props) => {
                     starList={starList}
                     backdropStar={backdropStar}
                     selectedStar={selectedStar}
-                    updatedWidth={updatedWidth}
+                    disabled={false}
                 />
             </Provider>
         </Stage>)}

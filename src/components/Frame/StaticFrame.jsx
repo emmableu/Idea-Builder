@@ -6,7 +6,7 @@ import globalConfig, {globalLog} from "../../globalConfig";
 import {sendFrameImg} from "../../redux/features/frameThumbnailStateSlice";
 
 const StaticFrame = (props) => {
-    const {storyboardId, frameData,} = props;
+    const {storyboardId, frameData, handleDelete} = props;
     const frameId = frameData._id;
     const starList = frameData.starList;
     const backdropStar = frameData.backdropStar;
@@ -29,6 +29,7 @@ const StaticFrame = (props) => {
 
     React.useEffect(
         () => {
+            //todo: this is too fast, frame is not rendered yet, should wait for a few secs.
             try {
                 frameRef.current.toImage({
                     pixelRatio: 1,
@@ -64,6 +65,7 @@ const StaticFrame = (props) => {
                             starList={starList}
                             backdropStar={backdropStar}
                             selectedStar={null}
+                            disabled={true}
                         />
                     </Provider>
                 </Stage>)}
