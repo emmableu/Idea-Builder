@@ -25,16 +25,13 @@ import {setSelectedStarId} from "../../redux/features/projectSlice";
 import {ProjectDataHandler} from "../../data/ProjectData";
 import StaticFrame from "../Frame/StaticFrame";
 import StaticFrameContainer from "../Frame/StaticFrameContainer";
+import {Dropdown} from "antd";
 
 
 const snapshotHeight = 0.15*window.innerHeight;
 
 const useStyles = makeStyles((theme) => ({
-    // highlighted: {
-    //     backgroundColor: "pink"
-    // },
-    grid: {
-    },
+
     box: {
         overflow: "auto",
         height: "100%",
@@ -106,35 +103,14 @@ const FrameList = () => {
                     <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3}
                           className={classes.box}>
                         {frameList.map((frameData, i) => (
-                            <Grid className={classes.grid} item key={i}>
-                                <Card variant="outlined"
-                                      className={classes.paper}
-                                      style={{
-                                          border: frameData._id===_id? "2px solid orange":"1px solid #e0e0e0"
-                                      }}
-                                >
-                                    <CardActionArea onClick={(e) => {
-                                        dispatch(setSelectedFrameId(frameData._id));
-                                    }}>
-
-                                        {/*<FrameThumbnail*/}
-                                        {/*    key={frameData._id}*/}
-                                        {/*    frameId={frameData._id}*/}
-                                        {/*    frameIndex={i}*/}
-                                        {/*    handleDelete={handleDeleteFrame}*/}
-                                        {/*/>*/}
-
-                                        <StaticFrameContainer
-                                            key={frameData._id}
-                                            storyboardId={storyboardId}
-                                            frameIndex={i}
-                                            frameData={frameData}
-                                            handleDelete={handleDeleteFrame}
-                                        />
-
-                                    </CardActionArea>
-                                </Card>
-                            </Grid>
+                            <StaticFrameContainer
+                            key={frameData._id}
+                            storyboardId={storyboardId}
+                            frameIndex={i}
+                            frameData={frameData}
+                            handleDelete={handleDeleteFrame}
+                            id={_id}
+                            />
                         ))}
                         <Grid item xs={2} align="middle">
                             <Fab color="default" aria-label="add"

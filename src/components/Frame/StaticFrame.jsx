@@ -4,7 +4,7 @@ import {Provider, ReactReduxContext, useDispatch, useSelector} from "react-redux
 import StarLayer from "./StarLayer";
 import globalConfig, {globalLog} from "../../globalConfig";
 
-const StaticFrame = (props) => {
+const StaticFrame = React.memo((props) => {
     const {storyboardId, frameData, handleDelete} = props;
     const frameId = frameData._id;
     const starList = frameData.starList;
@@ -49,7 +49,7 @@ const StaticFrame = (props) => {
                 </Stage>)}
         </ReactReduxContext.Consumer>
     )
-}
+})
 
 
 export default StaticFrame;
