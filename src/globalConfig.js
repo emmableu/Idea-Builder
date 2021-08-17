@@ -59,21 +59,10 @@ let responsiveSizeData = {
      actorDrawerWidth: 200,
      storyboardDrawerWidth: 200,
      noteWidth: 230,
-     frameListHeight: 150,
+     frameListHeight: 130,
+     frameListPaperHeight: 85,
 }
 
-if (mode === "MEDIUM") {
-     responsiveSizeData.frameListHeight = 150
-}
-
-if (mode === "SMALL") {
-     responsiveSizeData = {
-          actorDrawerWidth: 200,
-          storyboardDrawerWidth: 200,
-          noteWidth: 230,
-          frameListHeight: 130
-     }
-}
 
 const globalConfig = {
      // actorDrawerWidth: 270,

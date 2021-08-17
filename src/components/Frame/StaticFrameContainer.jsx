@@ -12,9 +12,9 @@ import {useDispatch, useSelector} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        height: globalConfig.responsiveSizeData.frameListHeight*0.75,
+        height: globalConfig.responsiveSizeData.frameListPaperHeight,
         backgroundColor: "white",
-        width: globalConfig.responsiveSizeData.frameListHeight*0.75*4/3
+        width: globalConfig.responsiveSizeData.frameListPaperHeight*4/3
     },
 
 }));
@@ -44,9 +44,7 @@ const StaticFrameContainer = React.memo((props) => {
                       border: frameData._id===_id? "2px solid orange":"1px solid #e0e0e0"
                   }}
             >
-                <CardActionArea onClick={(e) => {
-                    dispatch(setSelectedFrameId(frameData._id));
-                }}>
+
 
                     {/*<FrameThumbnail*/}
                     {/*    key={frameData._id}*/}
@@ -64,12 +62,16 @@ const StaticFrameContainer = React.memo((props) => {
                     {/*/>*/}
                     <>
                         {handleDelete !== null &&
+                        <CardActionArea onClick={(e) => {
+                            dispatch(setSelectedFrameId(frameData._id));
+                        }}>
                         <Dropdown overlay={menu} trigger={['contextMenu']}>
                             <StaticFrame
                                 key={frameData._id}
                                 frameData={frameData}
                             />
                         </Dropdown>
+                        </CardActionArea>
                         }
                         {handleDelete === null &&
                         <StaticFrame
@@ -80,7 +82,6 @@ const StaticFrameContainer = React.memo((props) => {
 
                     </>
 
-                </CardActionArea>
             </Card>
         </Grid>
 

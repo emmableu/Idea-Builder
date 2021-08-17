@@ -39,9 +39,9 @@ const useStyles = makeStyles((theme) => ({
         "boxSizing": "border-box",
     },
     paper: {
-        height: globalConfig.responsiveSizeData.frameListHeight*0.75,
+        height: globalConfig.responsiveSizeData.frameListPaperHeight,
         backgroundColor: "white",
-        width: globalConfig.responsiveSizeData.frameListHeight*0.75*4/3
+        width: globalConfig.responsiveSizeData.frameListPaperHeight*4/3
     },
 
 }));

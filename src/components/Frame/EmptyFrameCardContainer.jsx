@@ -21,7 +21,7 @@ const EmptyFrameCardContainer = props => {
     return (
         <div className={classes.container}>
             <Typography component="h1" variant="subtitle1" className={classes.instruction}>
-                Your storyboard is currently empty. Please create a new frame.
+                Please create a new frame or select an existing frame.
             </Typography>
         </div>
     );

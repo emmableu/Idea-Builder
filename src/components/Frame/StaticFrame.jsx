@@ -12,9 +12,9 @@ const StaticFrame = React.memo((props) => {
     const frameRef = React.useRef();
 
     React.useEffect(() => {
-        const updatedScale = 128/globalConfig.noScaleWidth;
-        frameRef.current.width(128);
-        frameRef.current.height(128*3/4);
+        const updatedScale = globalConfig.responsiveSizeData.frameListPaperHeight/(globalConfig.noScaleWidth*3/4);
+        frameRef.current.width(globalConfig.responsiveSizeData.frameListPaperHeight*4/3);
+        frameRef.current.height(globalConfig.responsiveSizeData.frameListPaperHeight);
         frameRef.current.scale({
             x: updatedScale,
             y: updatedScale

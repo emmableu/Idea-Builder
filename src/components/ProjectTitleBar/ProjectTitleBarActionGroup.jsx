@@ -1,6 +1,7 @@
 import {Dropdown, Menu} from "antd";
 import {IconButton, makeStyles, Tooltip, withStyles} from "@material-ui/core";
 import {Home, SaveAlt, InsertDriveFile, Visibility, Edit} from "@material-ui/icons";
+import { Switch } from 'antd';
 import React from "react";
 import {CopyOutlined, DeleteOutlined, DownloadOutlined, ImportOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,13 +9,7 @@ import {download} from "../../redux/features/projectSlice"
 import {setViewMode} from "../../redux/features/modeSlice"
 import { useRouteMatch, useHistory } from "react-router-dom"
 import globalConfig from "../../globalConfig";
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -60,7 +55,7 @@ const ProjectTitleBarActionGroup  = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const view = useSelector(state => state.mode.view);
-
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const backToHome = () => {
         history.push(globalConfig.routes.dashboard);
@@ -68,39 +63,52 @@ const ProjectTitleBarActionGroup  = () => {
     const handleClick = () => {
         dispatch(download());
     }
-    const handleChange = (event) => {
-        dispatch(setViewMode(event.target.checked));
+    const handleChange = (checked, event) => {
+        setIsLoading(true)
+        setTimeout(() => {
+            dispatch(setViewMode(checked));
+            setTimeout(() => {
+                setIsLoading(false)
+            }, 2000)
+        }, 200)
     };
 
     return (
         <>
-            <FormControlLabel
-                control={<Switch
-                    focusVisibleClassName={classes.focusVisible}
+            {/*<FormControlLabel*/}
+            {/*    control={<Switch*/}
+            {/*        focusVisibleClassName={classes.focusVisible}*/}
+            {/*        checked={view}*/}
+            {/*        onChange={handleChange}*/}
+            {/*        name="mode"*/}
+            {/*        classes={{*/}
+            {/*            root: classes.root,*/}
+            {/*            switchBase: classes.switchBase,*/}
+            {/*            thumb: classes.thumb,*/}
+            {/*            track: classes.track,*/}
+            {/*            checked: classes.checked,*/}
+            {/*        }}*/}
+            {/*    />}*/}
+            {/*    label="Viewing"*/}
+            {/*/>*/}
+            <Switch loading={isLoading}
                     checked={view}
+                    defaultChecked={true}
                     onChange={handleChange}
-                    name="mode"
-                    classes={{
-                        root: classes.root,
-                        switchBase: classes.switchBase,
-                        thumb: classes.thumb,
-                        track: classes.track,
-                        checked: classes.checked,
-                    }}
-                />}
-                label="Viewing"
-            />
-                    <Tooltip title="Save to computer">
-                        <IconButton
-                            aria-label="files"
-                            size="medium"
-                            onClick={handleClick}
-                            disabled={view}
-                        >
-                            <SaveAlt style={{color:
-                                    view?null:"white"}}/>
-                        </IconButton>
-                    </Tooltip>
+                    checkedChildren="View"
+                    unCheckedChildren="Edit"
+                    />
+            <Tooltip title="Save to computer">
+                <IconButton
+                    aria-label="files"
+                    size="medium"
+                    onClick={handleClick}
+                    disabled={view}
+                >
+                    <SaveAlt style={{color:
+                            view?null:"white"}}/>
+                </IconButton>
+            </Tooltip>
 
 
             <Tooltip title="Back to home">
