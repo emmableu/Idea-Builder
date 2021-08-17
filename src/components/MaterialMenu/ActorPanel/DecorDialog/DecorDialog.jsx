@@ -10,7 +10,6 @@ import {addActor, updateStateName} from "../../../../redux/features/projectSlice
 import * as UUID from "uuid";
 import {useDispatch} from "react-redux";
 import {globalLog} from "../../../../globalConfig";
-import {sendFrameImg} from "../../../../redux/features/frameThumbnailStateSlice";
 
 const DecorStar = (props) => {
     const {_id, x} = props;

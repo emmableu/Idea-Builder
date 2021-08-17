@@ -84,28 +84,7 @@ class ProjectAPI {
     }
     // selectedFrame,
     // img: img,
-    static async sendFrameImg(text:any) {
-        // globalLog("_id: ", text._id)
-        // globalLog("img: ", text.img)
-        const response = await axios({
-            method: 'post',
-            url: `/frame/upload`,
-            data: {
-                _id: text._id,
-                img: text.img
-            },
-        });
-        return response;
-    }
 
-    static async requestCopyFrameImg(text:any) {
-        const response = await axios({
-            method: 'post',
-            url: `/copy_frame`,
-            data: text,
-        });
-        return response;
-    }
 
     static async insertFrameAndReplaceFrameListInDatabase(text: any) {
         const response = await axios({

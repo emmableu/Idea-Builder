@@ -5,9 +5,6 @@ import React from "react";
 import { Menu, Dropdown } from 'antd';
 import {useDispatch, useSelector} from "react-redux";
 import urlExist from "url-exist"
-import {deleteFrame, deleteState} from "../../redux/features/projectSlice";
-import Card from "@material-ui/core/Card/Card";
-import {updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 
 const FrameThumbnail = (props) => {

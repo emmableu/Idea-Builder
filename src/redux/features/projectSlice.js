@@ -7,12 +7,6 @@ import * as UUID from "uuid";
 import {ActorDataHandler} from "../../data/ActorData";
 import {BackdropDataHandler} from "../../data/BackdropData";
 import globalConfig, {globalLog} from "../../globalConfig";
-import {
-    copyPreviousFrameImg,
-    resetUserActionCounter,
-    sendEmptyFrameImg,
-    updateUserActionCounter
-} from "./frameThumbnailStateSlice";
 import {FrameDataHandler} from "../../data/FrameData";
 import {SelectedIdDataHandler} from "../../data/SelectedIdData";
 import {StarDataHandler} from "../../data/StarData";
@@ -77,7 +71,6 @@ const setSelectedStoryboardId = createAsyncThunk(
         if (storyboardData.frameList.length > 0){
             dispatch(setSelectedFrameIdInMemory(storyboardData.frameList[0]._id));
         }
-        dispatch(resetUserActionCounter());
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
@@ -95,7 +88,6 @@ const setSelectedFrameId = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
         dispatch(setSelectedFrameIdInMemory(frameId));
-        dispatch(resetUserActionCounter());
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
@@ -114,10 +106,6 @@ const setSelectedStarId = createAsyncThunk(
         const prevStarId = getState().project.value.selectedId.starId;
         if (prevStarId !== starId) {
             dispatch(setSelectedStarIdInMemory(starId));
-            setTimeout(() => {
-                dispatch(updateUserActionCounter());
-            }, 200);
-            //must wait 200ms, otherwise this update and the other update (when position updated) will fight with each other.
             const project = getState().project.value;
             const response = await ProjectAPI.updateSelectedIdData(
                 {
@@ -152,7 +140,6 @@ const addStoryboard = createAsyncThunk(
         };
         const newFrameId = storyboardDataJSON.frameList[0]._id;
         globalLog("newFrameId: ", newFrameId);
-        await dispatch(sendEmptyFrameImg(newFrameId));
         dispatch(addStoryboardInMemory(JSON.stringify(payload)));
         globalLog("storyboardJSON: ", storyboardDataJSON);
         const response = await ProjectAPI.addStoryboard(payload);
@@ -219,18 +206,6 @@ const addFrame = createAsyncThunk(
         globalLog("frameList: ", frameList);
         let prevIndex = frameList.length - 1
         const frameId = globalConfig.imageServer.student.frame + UUID.v4() + ".png";
-        if (prevIndex >= 0) {
-            await dispatch(copyPreviousFrameImg({
-                prevId: frameList[prevIndex]._id,
-                newId: frameId}));
-        }
-        else {
-            await dispatch(
-                sendEmptyFrameImg(
-                    frameId
-                )
-            )
-        }
 
         dispatch(addFrameInMemory(JSON.stringify({
             storyboardId,
@@ -238,9 +213,6 @@ const addFrame = createAsyncThunk(
             newId: frameId,
         })));
         dispatch(setSelectedFrameId(frameId));
-        setTimeout(() => {
-            dispatch(updateUserActionCounter());
-        }, 100);
         const newFrameList = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId).frameList;
         const response = await ProjectAPI.insertFrameAndReplaceFrameListInDatabase({
             storyboardId,
@@ -289,9 +261,6 @@ const addStar = createAsyncThunk(
         dispatch(addStarInMemory({
             storyboardId, frameId, actorId, stateId,
         }));
-        setTimeout(() => {
-            dispatch(updateUserActionCounter());
-        }, 100);
         const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
@@ -313,10 +282,6 @@ const updateStarList = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(updateStarListInMemory(payload));
         const state = getState();
-        // why we need a 100 timeout: konva needs time to render the updated stage. It only make sense for it to send updates when it's done.
-        setTimeout(() => {
-            dispatch(updateUserActionCounter());
-        }, 200);
         const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
@@ -339,7 +304,6 @@ const deleteStar = createAsyncThunk(
         dispatch(deleteStarInMemory({
             storyboardId, frameId, starId
         }));
-        dispatch(updateUserActionCounter());
         const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
@@ -365,9 +329,6 @@ const copyStar = createAsyncThunk(
             storyboardId, frameId, selectedStar, newStarId,
         }));
         dispatch(setSelectedStarIdInMemory(newStarId));
-        setTimeout(() => {
-            dispatch(updateUserActionCounter());
-        }, 100);
         const storyboardData = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
@@ -396,9 +357,6 @@ const addSpeechChildStar = createAsyncThunk(
             ...obj,
             childStarId
         }));
-        setTimeout(() => {
-            dispatch(updateUserActionCounter());
-        }, 100);
         const storyboardData = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
@@ -428,13 +386,6 @@ const addBackdropStar = createAsyncThunk(
         dispatch(addBackdropStarInMemory({
             storyboardId, frameId, backdropStar,
         }));
-        //the stage needs time to update the frame, so this update user action counter will fire another time to ensure it is triggered after the frame backdrop is updated.
-        setTimeout(() => {
-            dispatch(updateUserActionCounter());
-        }, 100);
-        setTimeout(() => {
-            dispatch(updateUserActionCounter());
-        }, 500);
         const response = await ProjectAPI.replaceBackdropStarInDatabase({
             frameId,
             backdropStar
@@ -458,9 +409,6 @@ const deleteBackdropStar = createAsyncThunk(
                 storyboardId, frameId,backdropStar
             })
         );
-        setTimeout(() => {
-            dispatch(updateUserActionCounter());
-        }, 50);
         const response = await ProjectAPI.replaceBackdropStarInDatabase({
             frameId, backdropStar
         });
@@ -485,8 +433,6 @@ const addTemplateStar = createAsyncThunk(
         dispatch(addTemplateStarInMemory(JSON.stringify({
             storyboardId, frameId, templateId,
         })));
-        dispatch(updateUserActionCounter());
-
         return "OK";
     }
 );

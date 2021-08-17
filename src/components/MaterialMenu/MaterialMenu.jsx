@@ -116,11 +116,11 @@ export const MaterialMenu = () => {
             icon: <ExposurePlus1/>,
             panel: <div />
         },
-        {
-            label: "Templates",
-            icon: <Theaters/>,
-            panel: <TemplatePanel />
-        },
+        // {
+        //     label: "Templates",
+        //     icon: <Theaters/>,
+        //     panel: <TemplatePanel />
+        // },
     ];
 
     return (

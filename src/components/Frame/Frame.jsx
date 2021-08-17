@@ -4,7 +4,6 @@ import {Provider, ReactReduxContext, useDispatch, useSelector} from "react-redux
 import StarLayer from "./StarLayer";
 import globalConfig, {globalLog} from "../../globalConfig";
 import {setSelectedStarId} from "../../redux/features/projectSlice";
-import {sendFrameImg, updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
 
 const Frame = (props) => {
     const {refresh, storyboardId, frameId, starList,backdropStar,selectedStar,
@@ -20,39 +19,6 @@ const Frame = (props) => {
         })
     }, [refresh, updatedScale])
 
-    const userActionCounter = useSelector((state) => state.frameThumbnailState.value.userActionCounter);
-
-    React.useEffect(
-        () => {
-            globalLog("userActionCounter: -----------------", userActionCounter);
-            if (storyboardId === null || frameId === null) {
-                return;
-            }
-            if (userActionCounter.split("-")[1] === '0') {
-                return;
-            }
-            try {
-                frameRef.current.toImage({
-                    pixelRatio: 1,
-                    callback(img) {
-                        img = img.src;
-                        dispatch(sendFrameImg({
-                            _id: frameId,
-                            img,
-                        }))
-                    }
-                });
-            }
-            catch (error) {
-                globalLog("failed to save image to remote: ", error);
-            }
-
-
-        }, [userActionCounter]
-    )
-
-
-
     const checkDeselect = (e) => {
         // deselect when clicked on empty area
         // globalLog("e.target: ", e.target);
@@ -60,7 +26,6 @@ const Frame = (props) => {
         const clickedOnEmpty = e.target === e.target.getStage();
         if (clickedOnEmpty) {
             dispatch(setSelectedStarId(null));
-            dispatch(updateUserActionCounter());
         }
     };
 

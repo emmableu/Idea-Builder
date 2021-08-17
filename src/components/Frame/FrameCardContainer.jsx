@@ -8,7 +8,6 @@ import {createSelector} from "reselect";
 import {connect, useDispatch} from "react-redux";
 import EmptyFrameCardContainer from "./EmptyFrameCardContainer";
 import {PaletteOutlined, Refresh} from "@material-ui/icons";
-import {updateUserActionCounter} from "../../redux/features/frameThumbnailStateSlice";
 import {deleteBackdrop, deleteBackdropStar} from "../../redux/features/projectSlice";
 import {StateData} from "../../data/StateData";
 
@@ -125,11 +124,6 @@ const FrameCardContainer = props => {
         window.addEventListener('resize', fitFrameWidth);
         fitFrameWidth();
     }, []);
-    useEffect(() => {
-        setTimeout(() => {
-            dispatch(updateUserActionCounter());
-        }, 100);
-    }, [refresh]);
 
 
 
