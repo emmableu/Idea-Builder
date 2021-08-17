@@ -7,15 +7,15 @@ const { Step } = Steps;
 
 const steps = [
     {
-        title: 'First',
+        title: 'Choose storyboard',
         content: 'First-content',
     },
     {
-        title: 'Second',
+        title: 'Swap costumes',
         content: 'Second-content',
     },
     {
-        title: 'Last',
+        title: 'Add name',
         content: 'Last-content',
     },
 ];
@@ -50,7 +50,9 @@ const GalleryStepper = () => {
 
     return (
         <>
-            <Steps current={current}>
+            <Steps current={current}
+                   size="small"
+            >
                 {steps.map(item => (
                     <Step key={item.title} title={item.title} />
                 ))}

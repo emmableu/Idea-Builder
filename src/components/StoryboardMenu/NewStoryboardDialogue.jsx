@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import {addStoryboard} from "../../redux/features/projectSlice";
 import StoryboardGallery from "./StoryboardGallery";
 import GalleryStepper from "./GalleryStepper";
+import globalConfig from "../../globalConfig";
 
 const NewStoryboardDialogue = props => {
     const {type} = props;
@@ -35,7 +36,7 @@ const NewStoryboardDialogue = props => {
     return (
         <>
             <Modal
-                width={650}
+                width={globalConfig.storyboardModalWidth}
                 title="New Storyboard"
                 visible={isModalVisible}
                 onOk={handleOk}

@@ -101,8 +101,7 @@ const SearchDialogImgCard = React.memo((props) =>  {
                        onMouseEnter={() => {setOnHover(true)}}
                        onMouseLeave={() =>{ setOnHover(false)}}
             >
-                <div className={classes.elementToStretch}
-                >
+                <div className={classes.elementToStretch}>
                     <LazyLoadImage
                         className={classes.imgStyle}
                         src={imgSrc}

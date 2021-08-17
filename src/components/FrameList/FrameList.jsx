@@ -16,9 +16,6 @@ import AddIcon from '@material-ui/icons/Add';
 
 
 const useStyles = makeStyles((theme) => ({
-
-    grid: {
-    },
     box: {
         overflow: "auto",
         height: "100%",

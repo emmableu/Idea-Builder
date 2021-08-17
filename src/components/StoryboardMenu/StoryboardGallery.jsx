@@ -3,11 +3,51 @@ import Container from '@material-ui/core/Container';
 import axios from "../../axiosConfig";
 import FrameList from "../FrameList/FrameList";
 import Typography from "@material-ui/core/Typography";
+import {IconButton, makeStyles} from "@material-ui/core";
+// import Tooltip from "@material-ui/core/Tooltip/Tooltip";
+import {Button, Tooltip} from "antd"
+import globalConfig, {globalLog} from "../../globalConfig";
+import {Add, ArrowForward, DeleteOutlined} from "@material-ui/icons";
+import CardMedia from "@material-ui/core/CardMedia";
+import ArrowRightOutlined from "@ant-design/icons/lib/icons/ArrowRightOutlined";
 
+const useStyles = makeStyles({
+    baseDiv: {
+        width: '100%',
+        position: 'relative',
+        paddingBottom: `${Math.floor(100*(globalConfig.responsiveSizeData.frameListHeight+20)/globalConfig.storyboardModalWidth)}%`,
+        paddingTop: '0',
+        height: 0,
+    },
+    elementToStretch: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+    },
+    // imgStyle: {
+    //     width: '100%',
+    //     height: '100%',
+    // },
+    divOverlap: {
+        position: "absolute",
+        display: "flex",
+        top: "50%",
+        left: 0,
+        zIndex: 1,
+        width: "100%",
+        height: 0,  //need to save space for the slider bar below
+        cursor: "auto",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+});
 
 
 const StoryboardGallery = (props) => {
     const [storyboardList, setStoryboardList] = React.useState([]);
+
     React.useEffect(
         () => {
             setStoryboardList([
@@ -3238,28 +3278,58 @@ const StoryboardGallery = (props) => {
             <Container maxWidth="lg"
             >
                 {storyboardList.map(s => (
-                    <>
-                        <div
-                            style={{
-                                padding: "10px 10px 5px 10px"
-                            }}
-                        >
-                        <Typography align="center" variant="body">
-                            {s.name}
-                        </Typography>
-                        </div>
-                        <FrameList
-                            frameList={s.frameList}
-                            key={s._id}
-                            _id={null}
-                            handleDelete={null}
-                            handleAdd={null}
-                        />
-                    </>
+                    <FrameListBox
+                        key = {s._id}
+                        storyboardData = {s}
+                    />
                 ))}
             </Container>
         </>
     )
 }
+
+const FrameListBox = React.memo(
+    (props) => {
+        const {storyboardData} = props;
+        const classes = useStyles();
+        const [onHover, setOnHover] = React.useState();
+        return (
+            <>
+                <div
+                    style={{
+                        padding: "10px 10px 5px 10px"
+                    }}
+                >
+                    <Typography align="center" variant="body">
+                        {storyboardData.name}
+                    </Typography>
+                </div>
+                <div className={classes.baseDiv}
+                     onMouseEnter={() => {setOnHover(true)}}
+                     onMouseLeave={() =>{ setOnHover(false)}}
+                >
+                    <div className={classes.elementToStretch}>
+                        <FrameList
+                            frameList={storyboardData.frameList}
+                            _id={null}
+                            handleDelete={null}
+                            handleAdd={null}
+                        />
+                        <div className={classes.divOverlap} style={{display: onHover? "flex":"none" }}
+                        >
+                                <Tooltip title="Use">
+                                    <Button type="primary" shape="circle" icon={ <ArrowRightOutlined /> } size="large" />
+                                </Tooltip>
+                        </div>
+                    </div>
+                </div>
+                </>
+        )
+    }
+)
+
+
+
+
 
 export default StoryboardGallery;

@@ -79,7 +79,7 @@ const globalConfig = {
      innerBoxLeftRightPaddingEach: 20,
      topAndBottomMarginOutsideFrame: 5,
      noScaleWidth: 488,
-
+     storyboardModalWidth: 450,
      color: {
           veryLightGrey: "#fafafa",
      },
