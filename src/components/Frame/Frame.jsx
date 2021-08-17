@@ -11,7 +11,6 @@ const Frame = (props) => {
         width, updatedWidth, updatedScale} = props;
     const frameRef = React.useRef();
     const dispatch = useDispatch();
-    // const [selectedId, setSelectedId] = React.useState(null);
     React.useEffect(() => {
         frameRef.current.width(updatedWidth);
         frameRef.current.height(updatedWidth*3/4);

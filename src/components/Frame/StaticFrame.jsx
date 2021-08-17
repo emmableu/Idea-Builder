@@ -6,12 +6,23 @@ import globalConfig, {globalLog} from "../../globalConfig";
 import {sendFrameImg} from "../../redux/features/frameThumbnailStateSlice";
 
 const StaticFrame = (props) => {
-    const {storyboardId, frameData, width,} = props;
+    const {storyboardId, frameData,} = props;
     const frameId = frameData._id;
     const starList = frameData.starList;
     const backdropStar = frameData.backdropStar;
     const frameRef = React.useRef();
     const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        const updatedScale = 128/globalConfig.noScaleWidth;
+        frameRef.current.width(128);
+        frameRef.current.height(128*3/4);
+        frameRef.current.scale({
+            x: updatedScale,
+            y: updatedScale
+        })
+    }, [])
+
     React.useEffect(() => {
         frameRef.current.listening(false);
     }, [])
@@ -43,8 +54,8 @@ const StaticFrame = (props) => {
             {({ store }) => (
                 <Stage
                     ref={frameRef}
-                    width={width}
-                    height={(width * 3) / 4}>
+                    width={globalConfig.noScaleWidth}
+                    height={(globalConfig.noScaleWidth * 3) / 4}>
 
                     <Provider store={store}>
                         <StarLayer

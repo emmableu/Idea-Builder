@@ -34,6 +34,7 @@ const NewStoryboardDialogue = props => {
     return (
         <>
             <Modal
+                width={650}
                 title="New Storyboard"
                 visible={isModalVisible}
                 onOk={handleOk}

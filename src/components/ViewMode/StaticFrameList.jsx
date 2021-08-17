@@ -5,7 +5,7 @@ import React from "react";
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import { useSelector } from 'react-redux';
-import globalConfig from "../../globalConfig";
+import globalConfig, {calcFrameWidth} from "../../globalConfig";
 import {ProjectDataHandler} from "../../data/ProjectData";
 import FrameThumbnail from "../FrameList/FrameThumbnail";
 import Typography from '@material-ui/core/Typography';
@@ -84,7 +84,6 @@ const StaticFrameList = (props) => {
                                         key={frameData._id}
                                         storyboardId={storyboardData._id}
                                         frameData={frameData}
-                                        width={200}
                                     />
                             )
                         }
