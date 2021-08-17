@@ -5,12 +5,11 @@ import StarLayer from "./StarLayer";
 import globalConfig, {globalLog} from "../../globalConfig";
 
 const StaticFrame = React.memo((props) => {
-    const {storyboardId, frameData, handleDelete} = props;
+    const {frameData, handleDelete} = props;
     const frameId = frameData._id;
     const starList = frameData.starList;
     const backdropStar = frameData.backdropStar;
     const frameRef = React.useRef();
-    const dispatch = useDispatch();
 
     React.useEffect(() => {
         const updatedScale = 128/globalConfig.noScaleWidth;
@@ -38,8 +37,8 @@ const StaticFrame = React.memo((props) => {
 
                     <Provider store={store}>
                         <StarLayer
-                            storyboardId={storyboardId}
-                            frameId={frameId}
+                            storyboardId={null}
+                            frameId={null}
                             starList={starList}
                             backdropStar={backdropStar}
                             selectedStar={null}

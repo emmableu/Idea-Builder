@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 const StaticFrameContainer = React.memo((props) => {
     const classes = useStyles();
-    const {storyboardId, frameData, frameIndex, handleDelete, _id} = props;
+    const {frameData, frameIndex, handleDelete, _id} = props;
     const dispatch = useDispatch();
 
     const menu = (
@@ -67,7 +67,6 @@ const StaticFrameContainer = React.memo((props) => {
                         <Dropdown overlay={menu} trigger={['contextMenu']}>
                             <StaticFrame
                                 key={frameData._id}
-                                storyboardId={storyboardId}
                                 frameData={frameData}
                             />
                         </Dropdown>
@@ -75,7 +74,6 @@ const StaticFrameContainer = React.memo((props) => {
                         {handleDelete === null &&
                         <StaticFrame
                             key={frameData._id}
-                            storyboardId={storyboardId}
                             frameData={frameData}
                         />
                         }

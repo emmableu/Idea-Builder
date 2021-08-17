@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import StaticFrameList from "./StaticFrameList";
+import StaticFrameList from "../FrameList/FrameList";
 import {createSelector} from "reselect";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -48,9 +48,12 @@ const ViewMode = (props) => {
             <Container maxWidth="lg"
             >
          {storyboardList.map(s => (
-           <StaticFrameList
-               storyboardData={s}
+           <FrameList
+               frameList={s.frameList}
                key={s._id}
+               _id={null}
+               handleDelete={null}
+               handleAdd={null}
            />
 
          ))}

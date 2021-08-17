@@ -1,7 +1,8 @@
 import React from "react";
 import Container from '@material-ui/core/Container';
 import axios from "../../axiosConfig";
-import StaticFrameList from "../ViewMode/StaticFrameList";
+import FrameList from "../FrameList/FrameList";
+import Typography from "@material-ui/core/Typography";
 
 
 
@@ -3237,12 +3238,20 @@ const StoryboardGallery = (props) => {
             <Container maxWidth="lg"
             >
                 {storyboardList.map(s => (
-                    <StaticFrameList
-                        storyboardData={s}
-                        key={s._id}
-                        type="storyboard-gallery"
-                    />
-
+                    <>
+                        <Typography align="center" variant="h5" style={{
+                            padding: "10px 10px 5px 10px"
+                        }}>
+                            {s.name}
+                        </Typography>
+                        <FrameList
+                            frameList={s.frameList}
+                            key={s._id}
+                            _id={null}
+                            handleDelete={null}
+                            handleAdd={null}
+                        />
+                    </>
                 ))}
             </Container>
         </>

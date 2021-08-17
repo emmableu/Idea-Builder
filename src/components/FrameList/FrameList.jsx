@@ -4,34 +4,21 @@ import FrameCardContainer from "../Frame/FrameCardContainer";
 import React from "react";
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
-import axios from "../../axiosConfig";
 import { useSelector } from 'react-redux';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import {useDispatch} from 'react-redux';
-import Box from '@material-ui/core/Box';
-import * as UUID from "uuid"
-import {
-    addFrame,
-    deleteFrame,
-    setSelectedFrameIdInMemory,
-    updateFrameListInMemory
-} from "../../redux/features/projectSlice";
-import {setSelectedFrameId} from "../../redux/features/projectSlice";
-import globalConfig from "../../globalConfig";
-import FrameThumbnail from "./FrameThumbnail";
-import {setSelectedStarId} from "../../redux/features/projectSlice";
+import globalConfig, {calcFrameWidth} from "../../globalConfig";
 import {ProjectDataHandler} from "../../data/ProjectData";
+import FrameThumbnail from "./FrameThumbnail";
+import Typography from '@material-ui/core/Typography';
 import StaticFrame from "../Frame/StaticFrame";
 import StaticFrameContainer from "../Frame/StaticFrameContainer";
-import {Dropdown} from "antd";
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
-
-const snapshotHeight = 0.15*window.innerHeight;
 
 const useStyles = makeStyles((theme) => ({
 
+    grid: {
+    },
     box: {
         overflow: "auto",
         height: "100%",
@@ -52,76 +39,43 @@ const useStyles = makeStyles((theme) => ({
         "boxSizing": "border-box",
     },
     paper: {
-      height: globalConfig.responsiveSizeData.frameListHeight*0.75,
+        height: globalConfig.responsiveSizeData.frameListHeight*0.75,
         backgroundColor: "white",
         width: globalConfig.responsiveSizeData.frameListHeight*0.75*4/3
     },
 
 }));
 
-const FrameList = () => {
+const FrameList = (props) => {
+    const {frameList, handleDelete, handleAdd, _id} = props;
     const classes = useStyles();
-    const _id = useSelector((state) => state.project.value.selectedId.frameId);
-
-
-    const storyboardId = useSelector(state => state.project.value.selectedId.storyboardId);
-
-
-    // const [frameList, setFrameList] = React.useState([]);
-    const frameList = useSelector(state =>
-
-        ProjectDataHandler.getStoryboard(
-            state.project.value, storyboardId
-        ).frameList
-
-        );
-
-
-    const dispatch = useDispatch();
-
-    const handleAddFrame = (e) => {
-        dispatch(addFrame());
-    }
-
-    const handleDeleteFrame = (e, frameIndex) => {
-        e.stopPropagation();
-        if (frameList[frameIndex]._id === _id) {
-            if (frameIndex < frameList.length - 1) {
-                dispatch(setSelectedFrameIdInMemory(frameList[frameIndex+1]._id));
-            }
-            else if (frameList.length === 1 ) {
-                dispatch(setSelectedFrameIdInMemory(null));
-            }
-            else if (frameIndex === frameList.length - 1) {
-                dispatch(setSelectedFrameIdInMemory(frameList[frameIndex - 1]._id));
-            }
-        }
-        dispatch(deleteFrame(frameIndex));
-    }
 
     return (<>
-                    <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3}
-                          className={classes.box}>
-                        {frameList.map((frameData, i) => (
-                            <StaticFrameContainer
-                            key={frameData._id}
-                            storyboardId={storyboardId}
-                            frameIndex={i}
-                            frameData={frameData}
-                            handleDelete={handleDeleteFrame}
-                            _id={_id}
-                            />
-                        ))}
-                        <Grid item xs={2} align="middle">
-                            <Fab color="default" aria-label="add"
-                                 onClick={(e) =>{ handleAddFrame(e)}}
-                            >
-                                <AddIcon />
-                            </Fab>
-                        </Grid>
-
+        <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={1}
+              className={classes.box}>
+            {frameList.map((frameData, i) => (
+                <StaticFrameContainer
+                    key={frameData._id}
+                    frameIndex={i}
+                    frameData={frameData}
+                    handleDelete={handleDelete}
+                    _id={_id}
+                />
+            ))}
+            {
+                handleAdd!==null &&
+                (
+                    <Grid item xs={2} align="middle">
+                        <Fab color="default" aria-label="add"
+                             onClick={(e) =>{ handleAdd(e)}}
+                        >
+                            <AddIcon />
+                        </Fab>
                     </Grid>
-            </>);
+                )
+            }
+        </Grid>
+    </>);
 };
 
 export default FrameList

@@ -4,7 +4,7 @@ import {light} from "@material-ui/core/styles/createPalette";
 import globalConfig from "../../globalConfig";
 import StoryboardTitleBar from "../StoryboardTitleBar/StoryboardTitleBar";
 import {MaterialMenu} from "../MaterialMenu/MaterialMenu";
-import FrameList from "../FrameList/FrameList";
+import FrameListFunctionContainer from "../FrameList/FrameListFunctionContainer";
 import NoteBox from "../NoteBox/NoteBox";
 import FrameCardContainer from "../Frame/FrameCardContainer";
 
@@ -83,7 +83,7 @@ const StoryboardPage = React.memo(() => {
                     <div  className={classes.outerFrameSpace}>
                         <div
                             className = {classes.frameList}>
-                            <FrameList/>
+                            <FrameListFunctionContainer/>
                         </div>
                         <div
                             className = {classes.frameDiv}
