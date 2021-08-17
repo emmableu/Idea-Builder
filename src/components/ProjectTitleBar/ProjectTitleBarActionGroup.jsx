@@ -4,7 +4,8 @@ import {Home, SaveAlt, InsertDriveFile, Visibility, Edit} from "@material-ui/ico
 import React from "react";
 import {CopyOutlined, DeleteOutlined, DownloadOutlined, ImportOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
-import {download, setMode} from "../../redux/features/projectSlice"
+import {download} from "../../redux/features/projectSlice"
+import {setViewMode} from "../../redux/features/modeSlice"
 import { useRouteMatch, useHistory } from "react-router-dom"
 import globalConfig from "../../globalConfig";
 import InputLabel from '@material-ui/core/InputLabel';
@@ -58,7 +59,7 @@ const ProjectTitleBarActionGroup  = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
-    const mode = useSelector(state => state.mode.value);
+    const view = useSelector(state => state.mode.view);
 
 
     const backToHome = () => {
@@ -68,22 +69,15 @@ const ProjectTitleBarActionGroup  = () => {
         dispatch(download());
     }
     const handleChange = (event) => {
-        if (event.target.checked === true) {
-            dispatch(setMode("view"));
-        }
-        else {
-            dispatch(setMode("edit"));
-        }
+        dispatch(setViewMode(event.target.checked));
     };
 
     return (
         <>
-
-
             <FormControlLabel
                 control={<Switch
                     focusVisibleClassName={classes.focusVisible}
-                    checked={mode==="view"}
+                    checked={view}
                     onChange={handleChange}
                     name="mode"
                     classes={{
@@ -96,16 +90,20 @@ const ProjectTitleBarActionGroup  = () => {
                 />}
                 label="Viewing"
             />
+            {
+                view === false && (
+                    <Tooltip title="Save to computer">
+                        <IconButton
+                            aria-label="files"
+                            size="medium"
+                            onClick={handleClick}
+                        >
+                            <SaveAlt style={{color: "white"}}/>
+                        </IconButton>
+                    </Tooltip>
+                )
+            }
 
-            <Tooltip title="Save to computer">
-                <IconButton
-                    aria-label="files"
-                    size="medium"
-                    onClick={handleClick}
-                    >
-                    <SaveAlt style={{color: "white"}}/>
-                </IconButton>
-            </Tooltip>
 
             <Tooltip title="Back to home">
                 <IconButton

@@ -2,18 +2,24 @@ import { createSlice} from '@reduxjs/toolkit'
 
 
 
-
 export const modeSlice = createSlice({
     name: 'modeSlice',
     initialState: {
-        value: "edit"
+        view: false,
+        permanentViewMode: false,
     },
     reducers: {
-        updateMode: (state, action) => {
-            state.value = action.payload
+        setViewMode: (state, action) => {
+            if (!state.permanentViewMode) {
+                state.view = action.payload
+            }
+        },
+        setPermanentViewMode: (state, action) => {
+            state.permanentViewMode = action.payload
+            state.view = action.payload
         },
     },
 })
 
-// Action creators are generated for each case reducer function
+export const { setViewMode, setPermanentViewMode } = modeSlice.actions
 export default modeSlice.reducer

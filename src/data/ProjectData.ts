@@ -9,6 +9,7 @@ import globalConfig, {globalLog} from "../globalConfig";
 
 export interface ProjectData {
     _id: string;
+    userId: string;
     name: string;
     storyboardList: Array<StoryboardData>;
     actorList: Array<ActorData>;
@@ -46,7 +47,7 @@ export interface ProjectData {
 export class ProjectDataHandler {
     static initializeProject( importedData:any ) : ProjectData
     {
-        const {_id, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
+        const {_id, userId, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
             selectedId, speechBubbleList, variableList, eventList,
         } = importedData;
         const projectId = _id? _id:UUID.v4();
@@ -114,6 +115,7 @@ export class ProjectDataHandler {
 
         return {
             _id: projectId,
+            userId,
             name: projectName,
             storyboardList: projectStoryboardList,
             actorList: projectActorList,

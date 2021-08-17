@@ -11,15 +11,12 @@ const { confirm } = Modal;
 
 const ProjectTable = (props) => {
     const {projectList} = props;
+    console.log("projectList : ", projectList);
     const dispatch = useDispatch();
     let history = useHistory();
     let match = useRouteMatch();
 
-    const [tableData, setTableData] = React.useState([]);
-
-    React.useEffect(() => {
-        setTableData(projectList);
-    }, [projectList])
+    const tableData = JSON.parse(JSON.stringify(projectList));
 
     const redirectToProjectPage = (rowData) => {
         history.push(`${match.url}/${rowData._id}`)

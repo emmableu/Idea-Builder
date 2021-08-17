@@ -63,7 +63,6 @@ const MotionButton = (props) => {
     return (<Dropdown overlay={menu}
                       overlayStyle={{zIndex:1}}
     >
-        <Tooltip title="Record motion">
             <Button aria-label="draw motion"
                     // size="small"
                     type="text"
@@ -71,7 +70,6 @@ const MotionButton = (props) => {
                     onClick={e => e.preventDefault()}>
                <FiberManualRecordIcon/> Motion {'\u00A0'} <DownOutlined />
             </Button>
-        </Tooltip>
 
     </Dropdown>)
 };

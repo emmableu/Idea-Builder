@@ -1,9 +1,9 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {DashboardViewData} from "../../data/DashboardData/DashboardViewData";
+import {DashboardData, DashboardDataHandler} from "../../data/DashboardData/DashboardData";
 import Cookies from "js-cookie"
 import {globalLog} from "../../globalConfig";
 import {DashboardAPI} from "../../api/DashboardAPI";
-import {DashboardAPIData} from "../../data/DashboardData/DashboardAPIData";
+// import {DashboardAPIData} from "../../data/DashboardData/DashboardAPIData";
 
 
 const fetchDashboardByUserID = createAsyncThunk(
@@ -12,9 +12,10 @@ const fetchDashboardByUserID = createAsyncThunk(
         const response = await DashboardAPI.fetchDashboard(userId);
         let dashboardData;
         if (response.status === 204) {
-            const dashboardAPIData = new DashboardAPIData(userId);
+            // const dashboardAPIData = new DashboardAPIData(userId);
+            const dashboardAPIData = DashboardDataHandler.initializeDashboardAPI({userId});
             await DashboardAPI.insertDashboard(dashboardAPIData);
-            dashboardData = dashboardAPIData.toEmptyDashboardViewData();
+            dashboardData = DashboardDataHandler.initializeDashboard({userId});
             return dashboardData;
         }
         else if (response.status === 200) {
@@ -58,14 +59,13 @@ export const dashboardSlice = createSlice({
     extraReducers:  {
         [fetchDashboardByUserID.fulfilled]:
             (state, action) => {
-                const obj = DashboardViewData.parse(action.payload);
+                const obj = action.payload;
                 state.value = obj;
         },
     }
 })
 
 
-// Action creators are generated for each case reducer function
 export const { deleteProjectOnDashboardInMemory } = dashboardSlice.actions;
 export {fetchDashboardByUserID, deleteProjectOnDashboard};
 export default dashboardSlice.reducer;

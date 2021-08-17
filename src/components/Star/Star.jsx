@@ -117,7 +117,6 @@ const Star = (props) => {
                     (
                         <>
                         {starData.childStar.motionStarList.map((starData) => {
-                            console.log("starData.opacity: ", starData.opacity)
                             return (
                                 <StaticStar
                                     key={starData._id}

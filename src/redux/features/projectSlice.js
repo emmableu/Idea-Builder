@@ -16,15 +16,17 @@ import {
 import {FrameDataHandler} from "../../data/FrameData";
 import {SelectedIdDataHandler} from "../../data/SelectedIdData";
 import {StarDataHandler} from "../../data/StarData";
+import {setPermanentViewMode, setViewMode} from "./modeSlice";
 
 
 const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
     async (obj, thunkAPI) => {
         const {_id, name} = obj;
-        const projectData = ProjectDataHandler.initializeProject({_id, name});
+        const userId =  Cookies.get("userId");
+        const projectData = ProjectDataHandler.initializeProject({_id, userId, name});
         globalLog('projectData: ', projectData);
-        const response = await ProjectAPI.insertProject(Cookies.get("userId"), projectData);
+        const response = await ProjectAPI.insertProject(userId, projectData);
         return response.status;
     }
 )
@@ -35,7 +37,14 @@ const loadProjectFromDatabase = createAsyncThunk(
         const response = await ProjectAPI.loadProject(_id);
         const {dispatch} = thunkAPI;
         dispatch(loadProjectInMemory(response.data));
-        // dispatch(updateUserActionCounter());
+        const authorId = response.data.userId;
+        const userId =  Cookies.get("userId");
+        if (authorId === userId) {
+            dispatch(setPermanentViewMode(false))
+        }
+        else {
+            dispatch(setPermanentViewMode(true))
+        }
         return response.data;
     }
 )
@@ -797,7 +806,7 @@ export const projectSlice = createSlice({
                 const templateIndex = state.value.templateList.indexOf(frameId);
                 state.value.templateList.splice(templateIndex, 1);
                 frameList.splice(frameIndex, 1);
-                globalLog("frameList!!!!!!!!!!!!!!!!!!!!!!: ", JSON.stringify(frameList));
+                // globalLog("frameList!!!!!!!!!!!!!!!!!!!!!!: ", JSON.stringify(frameList));
 
             }
         },
@@ -1136,7 +1145,7 @@ export const projectSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
-    loadProjectInMemory, updateNameInMemory, setMode,//project
+    loadProjectInMemory, updateNameInMemory,//project
     setSelectedFrameIdInMemory, setSelectedStoryboardIdInMemory, setSelectedStarIdInMemory, //selectedId
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
     addStarInMemory, updateStarListInMemory, deleteStarInMemory, copyStarInMemory,addSpeechChildStarInMemory, //star

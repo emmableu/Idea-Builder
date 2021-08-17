@@ -58,16 +58,29 @@ const FrameThumbnail = (props) => {
 
     return (
         <>
-        <Dropdown overlay={menu} trigger={['contextMenu']}>
-        <LazyLoadImage
-            src={imgSrc}
-            style={{
-                width: "100%",
-                height: "100%",
-                objectFit:"cover"
-            }}
-        />
-        </Dropdown>
+            {handleDelete !== null &&
+            <Dropdown overlay={menu} trigger={['contextMenu']}>
+                <LazyLoadImage
+                    src={imgSrc}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit:"cover"
+                    }}
+                />
+            </Dropdown>
+            }
+            {handleDelete === null &&
+                <LazyLoadImage
+                    src={imgSrc}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit:"cover"
+                    }}
+                />
+            }
+
         </>
     )
 }

@@ -13,7 +13,6 @@ import { FixedSizeList } from "react-window";
 
 const ImgRow = React.memo(
     (props) => {
-        globalLog("rendering imgRow: ");
         const {data, index, style} = props;
         const {type, imgList} = data;
         const subList = imgList.slice(index*4, index*4+4);

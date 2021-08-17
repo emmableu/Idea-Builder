@@ -1,5 +1,5 @@
 import axios from "../axiosConfig";
-import {DashboardViewData} from "../data/DashboardData/DashboardViewData";
+import {DashboardData} from "../data/DashboardData/DashboardData";
 import {ProjectData} from "../data/ProjectData";
 
 class ProjectAPI {

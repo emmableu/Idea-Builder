@@ -1,14 +1,13 @@
 import axios from "../axiosConfig";
-import {DashboardViewData} from "../data/DashboardData/DashboardViewData";
-import {DashboardAPIData} from "../data/DashboardData/DashboardAPIData";
+import {DashboardAPIData} from "../data/DashboardData/DashboardData";
 
 class DashboardAPI {
 
-    static async insertDashboard (dashboardData:DashboardAPIData) {
+    static async insertDashboard (dashboardAPIData:DashboardAPIData) {
         const response = await axios({
             method: 'post',
             url: `/dashboard/add`,
-            data: dashboardData.toString()
+            data: dashboardAPIData
         })
         return response;
     }
