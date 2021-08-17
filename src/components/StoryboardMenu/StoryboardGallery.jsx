@@ -3239,11 +3239,15 @@ const StoryboardGallery = (props) => {
             >
                 {storyboardList.map(s => (
                     <>
-                        <Typography align="center" variant="h5" style={{
-                            padding: "10px 10px 5px 10px"
-                        }}>
+                        <div
+                            style={{
+                                padding: "10px 10px 5px 10px"
+                            }}
+                        >
+                        <Typography align="center" variant="body">
                             {s.name}
                         </Typography>
+                        </div>
                         <FrameList
                             frameList={s.frameList}
                             key={s._id}

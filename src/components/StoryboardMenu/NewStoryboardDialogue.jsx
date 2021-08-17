@@ -9,6 +9,7 @@ import { useRouteMatch, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {addStoryboard} from "../../redux/features/projectSlice";
 import StoryboardGallery from "./StoryboardGallery";
+import GalleryStepper from "./GalleryStepper";
 
 const NewStoryboardDialogue = props => {
     const {type} = props;
@@ -49,7 +50,7 @@ const NewStoryboardDialogue = props => {
                     onChange={e => setNewStoryboardName(e.target.value)}
                     placeholder="Storyboard Name"
                 />
-                <StoryboardGallery/>
+                <GalleryStepper/>
             </Modal>
             <Button
                 type="ghost"

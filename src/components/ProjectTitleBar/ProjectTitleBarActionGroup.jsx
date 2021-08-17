@@ -55,6 +55,7 @@ const ProjectTitleBarActionGroup  = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const view = useSelector(state => state.mode.view);
+    const permanentViewMode = useSelector(state => state.mode.permanentViewMode);
     const [isLoading, setIsLoading] = React.useState(false);
 
     const backToHome = () => {
@@ -64,6 +65,9 @@ const ProjectTitleBarActionGroup  = () => {
         dispatch(download());
     }
     const handleChange = (checked, event) => {
+        if (permanentViewMode) {
+            return;
+        }
         setIsLoading(true)
         setTimeout(() => {
             dispatch(setViewMode(checked));
@@ -75,22 +79,6 @@ const ProjectTitleBarActionGroup  = () => {
 
     return (
         <>
-            {/*<FormControlLabel*/}
-            {/*    control={<Switch*/}
-            {/*        focusVisibleClassName={classes.focusVisible}*/}
-            {/*        checked={view}*/}
-            {/*        onChange={handleChange}*/}
-            {/*        name="mode"*/}
-            {/*        classes={{*/}
-            {/*            root: classes.root,*/}
-            {/*            switchBase: classes.switchBase,*/}
-            {/*            thumb: classes.thumb,*/}
-            {/*            track: classes.track,*/}
-            {/*            checked: classes.checked,*/}
-            {/*        }}*/}
-            {/*    />}*/}
-            {/*    label="Viewing"*/}
-            {/*/>*/}
             <Switch loading={isLoading}
                     checked={view}
                     defaultChecked={true}
