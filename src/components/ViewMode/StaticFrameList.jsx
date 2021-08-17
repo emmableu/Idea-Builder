@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import globalConfig from "../../globalConfig";
 import {ProjectDataHandler} from "../../data/ProjectData";
 import FrameThumbnail from "../FrameList/FrameThumbnail";
+import Typography from '@material-ui/core/Typography';
 
 
 
@@ -48,6 +49,11 @@ const StaticFrameList = (props) => {
     const frameList = storyboardData.frameList;
 
     return (<>
+        <Typography align="center" variant="h5" style={{
+            padding: "10px 10px 5px 10px"
+        }}>
+            {storyboardData.name}
+        </Typography>
         <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={3}
               className={classes.box}>
             {frameList.map((frameData, i) => (
@@ -65,7 +71,6 @@ const StaticFrameList = (props) => {
                                 frameIndex={i}
                                 handleDelete={null}
                             />
-
                         </CardMedia>
                     </Card>
                 </Grid>

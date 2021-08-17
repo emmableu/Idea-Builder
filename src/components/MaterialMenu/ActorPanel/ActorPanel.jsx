@@ -65,7 +65,10 @@ const ActorPanel = (props) => {
             >
         {
             actorList.map(actorData => (
-                <ActorPanelImgCard actorData={actorData}/>
+                <ActorPanelImgCard
+                    actorData={actorData}
+                    key={actorData._id}
+                />
 
             ))
         }
@@ -75,13 +78,4 @@ const ActorPanel = (props) => {
 };
 
 export default connect(mapStateToProps)(ActorPanel);
-{/*<ImgCard*/}
-// title = "My actors"
-// type= "state"
-// buttonGroup={<ActorPanelButtonGroup/>}
-// dataList = {actorList}
-// imgWidth={5}
-// handleSave={handleSave}
-// handleDelete={handleDelete}
-// handleUse={handleUse}
-{/*/>*/}
+

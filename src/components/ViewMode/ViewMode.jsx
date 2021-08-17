@@ -4,9 +4,9 @@ import StaticFrameList from "./StaticFrameList";
 import {createSelector} from "reselect";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import ProjectTitleBar from "../ProjectTitleBar/ProjectTitleBar";
 import ProjectTitleBarActionGroup from "../ProjectTitleBar/ProjectTitleBarActionGroup";
 import globalConfig from "../../globalConfig";
+import Container from '@material-ui/core/Container';
 
 
 const getStoryboardList = createSelector(
@@ -38,11 +38,22 @@ const ViewMode = (props) => {
                     <ProjectTitleBarActionGroup />
                 </Toolbar>
             </AppBar>
+            <div
+                style={{
+                    height:globalConfig.toolBarHeight
+                }}>
+
+            </div>
+            <Container maxWidth="lg"
+            >
          {storyboardList.map(s => (
            <StaticFrameList
                storyboardData={s}
+               key={s._id}
            />
+
          ))}
+            </Container>
         </>
     )
 }

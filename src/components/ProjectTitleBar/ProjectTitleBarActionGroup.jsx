@@ -90,19 +90,17 @@ const ProjectTitleBarActionGroup  = () => {
                 />}
                 label="Viewing"
             />
-            {
-                view === false && (
                     <Tooltip title="Save to computer">
                         <IconButton
                             aria-label="files"
                             size="medium"
                             onClick={handleClick}
+                            disabled={view}
                         >
-                            <SaveAlt style={{color: "white"}}/>
+                            <SaveAlt style={{color:
+                                    view?null:"white"}}/>
                         </IconButton>
                     </Tooltip>
-                )
-            }
 
 
             <Tooltip title="Back to home">

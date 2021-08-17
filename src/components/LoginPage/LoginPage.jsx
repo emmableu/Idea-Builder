@@ -93,7 +93,7 @@ const LoginPage = () => {
                 </Typography>
                 <br />
                 <Typography component="h1" variant="subtitle2" className={classes.instruction}>
-                        Sign in using your assigned city name
+                        Sign in using your unity ID
                 </Typography>
                 <form className={classes.form} noValidate>
                     <TextField
@@ -102,7 +102,7 @@ const LoginPage = () => {
                         required
                         fullWidth
                         id="userId"
-                        label="City Name"
+                        label="Unity ID"
                         name="userId"
                         autoComplete="userId"
                         autoFocus
