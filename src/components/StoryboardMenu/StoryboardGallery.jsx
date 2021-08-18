@@ -1672,8 +1672,9 @@ const StoryboardGallery = (props) => {
             //         dispatch(setRecommend(res.data))
             //     }
             // )
-            for (const projectName of ["35-Green%20Your%20City"]) {
+            for (const rawName of ["25-Snowball Fight", "27-Flappy Parrot", "35-Green Your City", "02-Boat Race", "03-Taco Defence"]) {
             // for (const projectName of ["35-Green%20Your%20City", "25-Snowball%20Fight", "27-Flappy%20Parrot"]) {
+                const projectName = rawName.split(" ").join("%20");
                 const url = `/static/project/${projectName}/recommend.json`;
                 const res = await axios({
                         method: 'get',
