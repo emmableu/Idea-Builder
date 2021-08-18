@@ -7,15 +7,15 @@ const { Step } = Steps;
 
 const steps = [
     {
-        title: 'Choose storyboard',
+        title: 'choose storyboard',
         content: 'First-content',
     },
     {
-        title: 'Swap costumes',
+        title: 'swap costumes',
         content: 'Second-content',
     },
     {
-        title: 'Add name',
+        title: 'add name',
         content: 'Last-content',
     },
 ];
@@ -57,9 +57,11 @@ const GalleryStepper = () => {
                     <Step key={item.title} title={item.title} />
                 ))}
             </Steps>
-            <div className={classes.stepsContent}>{steps[current].content}
+            <div className={classes.stepsContent}>{steps[current].title}
                 {current === 0 &&
-                    <StoryboardGallery/>
+                    <StoryboardGallery
+                        setCurrent={setCurrent}
+                    />
                 }
 
             </div>

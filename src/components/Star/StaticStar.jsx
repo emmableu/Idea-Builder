@@ -6,6 +6,7 @@ import {StarDataHandler} from "../../data/StarData";
 
 export const StaticStarUnit = (props) => {
     const {starData} = props;
+    // console.log("starData: ", starData)
     const [image] = useImage(axios.defaults.baseURL + starData.prototypeId)
     if (image !== undefined) {
         image.crossOrigin = "Anonymous";

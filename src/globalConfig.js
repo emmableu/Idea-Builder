@@ -59,8 +59,8 @@ let responsiveSizeData = {
      actorDrawerWidth: 200,
      storyboardDrawerWidth: 200,
      noteWidth: 230,
-     frameListHeight: 130,
-     frameListPaperHeight: 85,
+     frameListHeight: 185,
+     frameListPaperHeight: 140,
 }
 
 
@@ -78,8 +78,8 @@ const globalConfig = {
      trashToolBarHeight: 36,
      innerBoxLeftRightPaddingEach: 20,
      topAndBottomMarginOutsideFrame: 5,
-     noScaleWidth: 488,
-     storyboardModalWidth: 450,
+     noScaleWidth: 480, //to make it the same as scratch
+     storyboardModalWidth: 900,
      color: {
           veryLightGrey: "#fafafa",
      },
