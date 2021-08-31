@@ -1,7 +1,7 @@
 import './App.less';
 import React, { useContext, createContext, useState, useEffect } from "react";
 import { hot } from 'react-hot-loader';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { createTheme, ThemeProvider } from '@material-ui/core';
 import Dashboard from './components/Dashboard/Dashboard';
 import { useDispatch } from 'react-redux';
 import {
@@ -13,7 +13,7 @@ import LoginPage from './components/LoginPage/LoginPage'
 import  {authContext, useAuth, ProvideAuth, useProvideAuth, PrivateRoute} from "./hooks/useAuth";
 import globalConfig from "./globalConfig";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontFamily: [
       '-apple-system',

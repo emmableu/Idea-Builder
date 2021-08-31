@@ -1,4 +1,4 @@
-import {createMuiTheme} from "@material-ui/core";
+import {createTheme} from "@material-ui/core";
 
 const materialDarkTheme = {
      darkText: "#131A20",
@@ -101,7 +101,7 @@ const globalConfig = {
           menuBackgroundOnDrag: "#e6f7ff",
           whiteText: "white",
      },
-     dashboardTheme: ()=> createMuiTheme({
+     dashboardTheme: ()=> createTheme({
           palette: {
                secondary: {
                     main: "#1890ff",

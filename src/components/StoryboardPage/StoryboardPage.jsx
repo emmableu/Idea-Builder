@@ -1,5 +1,5 @@
 import React from "react";
-import {createMuiTheme, makeStyles, ThemeProvider, withStyles} from '@material-ui/core/styles';
+import {createTheme, makeStyles, ThemeProvider, withStyles} from '@material-ui/core/styles';
 import {light} from "@material-ui/core/styles/createPalette";
 import globalConfig from "../../globalConfig";
 import StoryboardTitleBar from "../StoryboardTitleBar/StoryboardTitleBar";
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const StoryboardPage = React.memo(() => {
     const classes = useStyles();
-    const lightTheme = createMuiTheme({
+    const lightTheme = createTheme({
         palette: {
             type: 'light',
         },

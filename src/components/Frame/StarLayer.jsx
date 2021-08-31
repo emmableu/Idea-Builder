@@ -3,7 +3,6 @@ import axios from '../../axiosConfig'
 import {Image, Layer, Stage} from 'react-konva';
 import useImage from "use-image";
 import {useDispatch, useSelector} from 'react-redux';
-import {setSelectedStarId} from "../../redux/features/projectSlice";
 import globalConfig, {globalLog} from "../../globalConfig";
 import Star from "../Star/Star";
 import StaticStar from "../Star/StaticStar";

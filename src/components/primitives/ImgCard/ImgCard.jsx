@@ -39,6 +39,7 @@ const ImgCard = (props) => {
                         <ImgTile
                             type={type}
                             _id={imgData._id}
+                            key={imgData._id}
                             actorId={actorId!==undefined?actorId:null}
                             name={imgData.name}
                             imgSrc={

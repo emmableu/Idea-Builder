@@ -1,7 +1,6 @@
 import {Dropdown, Menu} from "antd";
 import {makeStyles, MenuItem} from "@material-ui/core";
 import React from "react";
-import {LazyLoadImage} from "react-lazy-load-image-component";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import StaticFrame from "./StaticFrame";
 import Grid from "@material-ui/core/Grid";
@@ -44,25 +43,10 @@ const StaticFrameContainer = React.memo((props) => {
                       border: frameData._id===_id? "2px solid orange":"1px solid #e0e0e0"
                   }}
             >
-
-
-                    {/*<FrameThumbnail*/}
-                    {/*    key={frameData._id}*/}
-                    {/*    frameId={frameData._id}*/}
-                    {/*    frameIndex={i}*/}
-                    {/*    handleDelete={handleDeleteFrame}*/}
-                    {/*/>*/}
-
-                    {/*<StaticFrameContainer*/}
-                    {/*    key={frameData._id}*/}
-                    {/*    storyboardId={storyboardId}*/}
-                    {/*    frameIndex={i}*/}
-                    {/*    frameData={frameData}*/}
-                    {/*    handleDelete={handleDeleteFrame}*/}
-                    {/*/>*/}
                     <>
                         {handleDelete !== null &&
-                        <CardActionArea onClick={(e) => {
+                        <CardActionArea
+                            onClick={(e) => {
                             dispatch(setSelectedFrameId(frameData._id));
                         }}>
                         <Dropdown overlay={menu} trigger={['contextMenu']}>

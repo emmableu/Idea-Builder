@@ -9,7 +9,6 @@ import {connect, useDispatch} from "react-redux";
 import EmptyFrameCardContainer from "./EmptyFrameCardContainer";
 import {PaletteOutlined, Refresh} from "@material-ui/icons";
 import {deleteBackdrop, deleteBackdropStar} from "../../redux/features/projectSlice";
-import {StateData} from "../../data/StateData";
 
 const useStyles = makeStyles((theme) => ({
         frame: { flex: `0 0 calc(100vh - ${globalConfig.toolBarHeight}px

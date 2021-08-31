@@ -135,7 +135,11 @@ export const MaterialMenu = () => {
             >
                 {tabList.map(
                     (tabData, index) =>
-                        (<Tab icon={tabData.icon} label={tabData.label} {...a11yProps(index)}/>)
+                        (<Tab
+                            icon={tabData.icon}
+                            label={tabData.label}
+                            key={index}
+                            {...a11yProps(index)}/>)
                             )
                     }
             </Tabs>
@@ -144,6 +148,7 @@ export const MaterialMenu = () => {
                                 value={value}
                                 index={i}
                                 tabData={tabData}
+                                key={i}
                 >
                 </TabPanel>)
             )}

@@ -53,7 +53,6 @@ const ProjectTitleEdiText = () => {
     }, [titleName]);
 
     const handleSave = (value) => {
-        // // globalLog(value);
         setValue(value);
         dispatch(
             updateName(value));

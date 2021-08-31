@@ -26,7 +26,7 @@ import {authContext, useAuth} from "../../hooks/useAuth"
 import {useDispatch} from "react-redux";
 import {loadDashboardFromLoginUserID} from "../../redux/features/dashboardSlice";
 import Cookies from "js-cookie"
-import {createMuiTheme, ThemeProvider} from "@material-ui/core";
+import {createTheme, ThemeProvider} from "@material-ui/core";
 import globalConfig from "../../globalConfig";
 
 

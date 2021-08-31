@@ -51,7 +51,7 @@ function StoryboardMenuListGroup() {
                         <StoryboardSubMenu
                             columnId={columnId}
                             column={column}
-
+                            key={columnId}
                         />
                     );
                 })}

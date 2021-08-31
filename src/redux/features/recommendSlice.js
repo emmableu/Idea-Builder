@@ -7,6 +7,7 @@ export const recommendSlice = createSlice({
     initialState: {
         value: {
             initial: [],
+            selected: null,
         },
     },
     reducers: {
@@ -15,6 +16,7 @@ export const recommendSlice = createSlice({
         },
 
         setCacheValue: (state, action) => {
+            state.value.selected = action.payload
         },
     },
 })

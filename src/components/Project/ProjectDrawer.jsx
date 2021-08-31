@@ -21,7 +21,7 @@ import {
     withStyles,
     makeStyles,
     useTheme,
-    createMuiTheme,
+    createTheme,
 } from '@material-ui/core/styles';
 
 import Paper from '@material-ui/core/Paper';

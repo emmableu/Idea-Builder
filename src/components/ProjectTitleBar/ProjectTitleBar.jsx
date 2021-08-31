@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 const ProjectTitleBar = () => {
     const classes = useStyles();
     return (
-        <Typography className={classes.storyboardTitleInput}>
+        <Typography component="div" className={classes.storyboardTitleInput}>
             <ProjectTitleEdiText />
         </Typography>
     )

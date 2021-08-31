@@ -31,28 +31,27 @@ const Frame = (props) => {
 
 
     return (
-
         <ReactReduxContext.Consumer>
             {({ store }) => (
-        <Stage
-            ref={frameRef}
-            width={width}
-            height={(width * 3) / 4}
-            backgroundColor={globalConfig.color.veryLightGrey}
-            onMouseDown={checkDeselect}
-            onTouchStart={checkDeselect} >
+            <Stage
+                ref={frameRef}
+                width={width}
+                height={(width * 3) / 4}
+                backgroundColor={globalConfig.color.veryLightGrey}
+                onMouseDown={checkDeselect}
+                onTouchStart={checkDeselect} >
 
-            <Provider store={store}>
-                <StarLayer
-                    storyboardId={storyboardId}
-                    frameId={frameId}
-                    starList={starList}
-                    backdropStar={backdropStar}
-                    selectedStar={selectedStar}
-                    disabled={false}
-                />
-            </Provider>
-        </Stage>)}
+                <Provider store={store}>
+                    <StarLayer
+                        storyboardId={storyboardId}
+                        frameId={frameId}
+                        starList={starList}
+                        backdropStar={backdropStar}
+                        selectedStar={selectedStar}
+                        disabled={false}
+                    />
+                </Provider>
+            </Stage>)}
         </ReactReduxContext.Consumer>
     )
 }
