@@ -102,7 +102,7 @@ const ImgTile = React.memo((props) =>  {
                                             if (type === "state" || type === "swap-costume") {
                                                 handleUse(e, actorId, _id)
                                             }
-                                            else if (type === "decor" || type === "backdrop" || type === "event") {
+                                            else if (type === "decor" || type === "backdrop" || type === "event"|| type === "swap-costume-backdrop") {
                                                 handleUse(e, _id)
                                             }
                                         }}

@@ -285,6 +285,24 @@ export class ProjectDataHandler {
         console.log("projectDATA: ", JSON.stringify(projectData))
     }
 
+    static swapBackdrop (projectData:ProjectData, stateId: string, newStateId:string) {
+        const backdropIndex = projectData.backdropList.findIndex(s => s._id === stateId);
+        projectData.backdropList.splice(backdropIndex, 1);
+        for (const storyboardData of projectData.storyboardList) {
+            for (const frameData of storyboardData.frameList) {
+                console.log(JSON.stringify(frameData.backdropStar._id))
+                console.log(JSON.stringify(frameData.backdropStar.prototypeId))
+                console.log(JSON.stringify(stateId))
+                if (frameData.backdropStar.prototypeId === stateId) {
+                        console.log("frameDATA backdropstar - before: ", JSON.stringify(frameData.backdropStar))
+                        frameData.backdropStar.prototypeId = newStateId;
+                        console.log("frameDATA backdropstar - after: ", JSON.stringify(frameData.backdropStar))
+                    }
+            }
+        }
+        console.log("projectDATA: ", JSON.stringify(projectData))
+    }
+
     static findState (actorList: Array<ActorData>, prototypeId:string) {
         actorList.forEach(actorData => {
             actorData.stateList.forEach(

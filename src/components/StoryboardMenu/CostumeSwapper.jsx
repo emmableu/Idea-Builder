@@ -12,7 +12,7 @@ import {LazyLoadImage} from "react-lazy-load-image-component";
 import CardMedia from "@material-ui/core/CardMedia";
 import ImgTile from "../primitives/ImgCard/ImgTile";
 import FrameList from "../FrameList/FrameList";
-import {modifyRecommend} from "../../redux/features/recommendSlice";
+import {modifyRecommend, modifyRecommendBackdrop} from "../../redux/features/recommendSlice";
 const { Step } = Steps;
 
 const useStyles = makeStyles({
@@ -66,8 +66,9 @@ const useStyles = makeStyles({
 
 const getSelectedRecommend = createSelector(
     state => state.project.value.actorList,
+    state => state.project.value.backdropList,
     state => state.recommend.value.selected,
-    (actorList, selected) => {
+    (actorList,backdropList, selected) => {
         const selectedCostumes = [];
         for (const actor of selected.actorList) {
             for (const state of actor.stateList) {
@@ -80,6 +81,7 @@ const getSelectedRecommend = createSelector(
             }
         }
 
+        const selectedBackdrops = selected.backdropList;
 
         const userCostumes = [];
         for (const actor of actorList) {
@@ -92,7 +94,9 @@ const getSelectedRecommend = createSelector(
                 )
             }
         }
-        return {selectedCostumes, userCostumes, selected}
+        return {selectedCostumes, userCostumes,
+        userBackdrops: backdropList, selectedBackdrops,
+        }
     }
 )
 
@@ -104,20 +108,39 @@ const mapStateToProps = (state) => {
 
 const CostumeSwapper = (props) => {
     const classes = useStyles();
-    const {userCostumes, selectedCostumes} = props;
+    const {
+        userCostumes, userBackdrops,
+        selectedCostumes, selectedBackdrops} = props;
     const [currentCostumeStep, setCurrentCostumeStep] = React.useState(0);
     const dispatch = useDispatch();
 
 
     const handleUse = (e, actorId, _id) => {
         // globalLog("handleUse")
+        if (currentCostumeStep === selectedCostumes.length) {
+            return;
+        }
         dispatch(modifyRecommend(
                 {
-                    actorId: selectedCostumes[currentCostumeStep].actorId,
-                    stateId: selectedCostumes[currentCostumeStep]._id,
+                    actorId: selectedCostumes[currentCostumeStep - selectedBackdrops.length].actorId,
+                    stateId: selectedCostumes[currentCostumeStep - selectedBackdrops.length]._id,
                     newActorId: actorId,
                     newStateId: _id,
                 }
+        ));
+        setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
+    };
+
+    const handleUseBackdrop = (e, _id) => {
+        // globalLog("handleUse")
+        if (currentCostumeStep === selectedCostumes.length + selectedBackdrops.length) {
+            return;
+        }
+        dispatch(modifyRecommendBackdrop(
+            {
+                stateId: selectedBackdrops[currentCostumeStep]._id,
+                newStateId: _id,
+            }
         ));
         setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
     };
@@ -135,7 +158,7 @@ const CostumeSwapper = (props) => {
                     progressDot
                     style={{width:150}}
                     current={currentCostumeStep}>
-                    {selectedCostumes.map(
+                    {selectedBackdrops.map(
                         (c, i) => (
                             <Step
                                 key={c._id} title={<CostumeTitle
@@ -144,28 +167,66 @@ const CostumeSwapper = (props) => {
                             />}/>
                         )
                     )}
+                    {selectedCostumes.map(
+                        (c, i) => (
+                            <Step
+                                key={c._id} title={<CostumeTitle
+                                costume={c}
+                                isCurrent={currentCostumeStep !== i+selectedBackdrops.length}
+                            />}/>
+                        )
+                    )}
                 </Steps>
                 <div className={classes.stepsContent}>
                     <Grid container spacing={1} justifyContent="center">
-                        {userCostumes.map(imgData => (
-                            <Grid item xs={3}
-                                  key={imgData._id}
-                            >
-                                <ImgTile
-                                    type="swap-costume"
-                                    actorId={imgData.actorId}
-                                    _id={imgData._id}
-                                    name={imgData.name}
-                                    imgSrc={
-                                        axios.defaults.baseURL + imgData._id
-                                    }
-                                    heightToWidthRatio="100%"
-                                    handleDelete={null}
-                                    handleUse={handleUse}
-                                    contentNode={null}
-                                />
-                            </Grid>
-                        ))}
+                        {
+                            currentCostumeStep < selectedBackdrops.length &&
+                            (
+                                userBackdrops.map(imgData => (
+                                    <Grid item xs={2}
+                                          key={imgData._id}
+                                    >
+                                        <ImgTile
+                                            type="swap-costume-backdrop"
+                                            _id={imgData._id}
+                                            name={imgData.name}
+                                            imgSrc={
+                                                axios.defaults.baseURL + imgData._id
+                                            }
+                                            heightToWidthRatio="100%"
+                                            handleDelete={null}
+                                            handleUse={handleUseBackdrop}
+                                            contentNode={null}
+                                        />
+                                    </Grid>
+                                ))
+                            )
+                        }
+                        {
+                            currentCostumeStep >= selectedBackdrops.length &&
+                            (
+                                userCostumes.map(imgData => (
+                                        <Grid item xs={2}
+                                              key={imgData._id}
+                                        >
+                                            <ImgTile
+                                                type="swap-costume"
+                                                actorId={imgData.actorId}
+                                                _id={imgData._id}
+                                                name={imgData.name}
+                                                imgSrc={
+                                                    axios.defaults.baseURL + imgData._id
+                                                }
+                                                heightToWidthRatio="100%"
+                                                handleDelete={null}
+                                                handleUse={handleUse}
+                                                contentNode={null}
+                                            />
+                                        </Grid>
+                                    ))
+                            )
+                        }
+
                     </Grid>
                 </div>
             </div>

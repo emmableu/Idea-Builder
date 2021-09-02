@@ -35,9 +35,14 @@ export const recommendSlice = createSlice({
             const {actorId, stateId, newActorId, newStateId} = action.payload;
             ProjectDataHandler.swapCostume(state.value.modified, actorId, stateId, newActorId, newStateId);
             console.log("modified: ", state.value.modified);
+        },
+        modifyRecommendBackdrop: (state, action) => {
+            const {stateId, newStateId} = action.payload;
+            ProjectDataHandler.swapBackdrop(state.value.modified, stateId, newStateId);
+            console.log("modified: ", state.value.modified);
         }
     },
 })
 
-export const { resetRecommend, addRecommend, setSelectedRecommend, setModifiedRecommend, modifyRecommend } = recommendSlice.actions
+export const { resetRecommend, addRecommend, setSelectedRecommend, setModifiedRecommend, modifyRecommend, modifyRecommendBackdrop } = recommendSlice.actions
 export default recommendSlice.reducer
