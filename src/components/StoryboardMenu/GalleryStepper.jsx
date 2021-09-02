@@ -2,6 +2,7 @@ import React from "react";
 import { Steps, Button, message } from 'antd';
 import StoryboardGallery from "./StoryboardGallery";
 import {makeStyles} from "@material-ui/core";
+import CostumeSwapper from "./CostumeSwapper";
 
 const { Step } = Steps;
 
@@ -29,6 +30,7 @@ const useStyles = makeStyles( theme => ({
         backgroundColor: "#fafafa",
         border: "1px dashed #e9e9e9",
         borderRadius: 2,
+        display: "flex",
     },
     stepsAction: {
         marginTop: 24,
@@ -57,9 +59,14 @@ const GalleryStepper = () => {
                     <Step key={item.title} title={item.title} />
                 ))}
             </Steps>
-            <div className={classes.stepsContent}>{steps[current].title}
+            <div className={classes.stepsContent}>
                 {current === 0 &&
                     <StoryboardGallery
+                        setCurrent={setCurrent}
+                    />
+                }
+                {current === 1 &&
+                    <CostumeSwapper
                         setCurrent={setCurrent}
                     />
                 }

@@ -4,14 +4,12 @@ import axios from "../../axiosConfig";
 import FrameList from "../FrameList/FrameList";
 import Typography from "@material-ui/core/Typography";
 import {IconButton, makeStyles} from "@material-ui/core";
-// import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import {Button, Tooltip} from "antd"
 import globalConfig, {globalLog} from "../../globalConfig";
-import {Add, ArrowForward, DeleteOutlined} from "@material-ui/icons";
-import CardMedia from "@material-ui/core/CardMedia";
 import ArrowRightOutlined from "@ant-design/icons/lib/icons/ArrowRightOutlined";
-import {addRecommend, setCacheValue, setRecommend} from "../../redux/features/recommendSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {addRecommend, resetRecommend, setSelectedRecommend, setRecommend} from "../../redux/features/recommendSlice";
+import { useDispatch, useSelector, connect } from "react-redux";
+import {createSelector} from "reselect"
 
 const useStyles = makeStyles({
     baseDiv: {
@@ -46,26 +44,39 @@ const useStyles = makeStyles({
     },
 });
 
+const getRecommendProjectList = createSelector(
+    state => state.recommend.value.initial,
+    (projectList) => {
+        return {projectList}
+    }
+)
+
+const mapStateToProps = (state) => {
+    return getRecommendProjectList(state);
+}
+
+
 
 const StoryboardGallery = (props) => {
-    const {setCurrent} = props;
-    const storyboardList = useSelector( state =>  state.recommend.value.initial !== null?state.recommend.value.initial.map(
-        p => p.storyboardList[0]
-    ):[])
+    const {setCurrent, projectList} = props;
     const dispatch = useDispatch();
 
     React.useEffect(
-        async () => {
+         () => {
+             if (projectList.length > 0) {
+                 return;
+             }
             // for (const rawName of ["25-Snowball Fight"]) {
             for (const rawName of ["25-Snowball Fight", "27-Flappy Parrot"]) {
             // for (const projectName of ["35-Green%20Your%20City", "25-Snowball%20Fight", "27-Flappy%20Parrot"]) {
                 const projectName = rawName.split(" ").join("%20");
                 const url = `/static/project/${projectName}/recommend.json`;
-                const res = await axios({
+                axios({
                         method: 'get',
                         url: url,
-                    })
-                dispatch(addRecommend(res.data));
+                    }).then( res =>
+                    dispatch(addRecommend(res.data))
+            )
             }
 
         }, []
@@ -74,10 +85,10 @@ const StoryboardGallery = (props) => {
         <>
             <Container maxWidth="lg"
             >
-                {storyboardList.map(s => (
+                {projectList.map(p => (
                     <FrameListBox
-                        key = {s._id}
-                        storyboardData = {s}
+                        key = {p._id}
+                        projectData = {p}
                         setCurrent={setCurrent}
                     />
                 ))}
@@ -88,14 +99,15 @@ const StoryboardGallery = (props) => {
 
 const FrameListBox = React.memo(
     (props) => {
-        const {storyboardData, setCurrent} = props;
+        const {projectData, setCurrent} = props;
+        const storyboardData = projectData.storyboardList[0];
         const classes = useStyles();
         const [onHover, setOnHover] = React.useState();
         const dispatch = useDispatch();
 
         const handleClick = (e) => {
-            dispatch(setCacheValue(storyboardData));
-            setCurrent(1)
+            dispatch(setSelectedRecommend(projectData));
+            setCurrent(current => current + 1)
         }
 
         return (
@@ -105,7 +117,7 @@ const FrameListBox = React.memo(
                         padding: "10px 10px 5px 10px"
                     }}
                 >
-                    <Typography align="center" variant="body">
+                    <Typography align="center" variant="body2">
                         {storyboardData.name}
                     </Typography>
                 </div>
@@ -140,4 +152,4 @@ const FrameListBox = React.memo(
 
 
 
-export default StoryboardGallery;
+export default connect(mapStateToProps)(StoryboardGallery);

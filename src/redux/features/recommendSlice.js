@@ -11,15 +11,23 @@ export const recommendSlice = createSlice({
         },
     },
     reducers: {
+        resetRecommend: (state) => {
+            state.value.initial = []
+        },
+
         addRecommend: (state, action) => {
             state.value.initial.push(action.payload);
         },
 
-        setCacheValue: (state, action) => {
+        setSelectedRecommend: (state, action) => {
+            state.value.selected = action.payload
+        },
+
+        setModifiedRecommend: (state, action) => {
             state.value.selected = action.payload
         },
     },
 })
 
-export const { addRecommend, setCacheValue } = recommendSlice.actions
+export const { resetRecommend, addRecommend, setSelectedRecommend, setModifiedRecommend } = recommendSlice.actions
 export default recommendSlice.reducer
