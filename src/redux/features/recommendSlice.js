@@ -1,4 +1,5 @@
 import { createSlice} from '@reduxjs/toolkit'
+import {ProjectDataHandler} from "../../data/ProjectData";
 
 
 
@@ -8,6 +9,7 @@ export const recommendSlice = createSlice({
         value: {
             initial: [],
             selected: null,
+            modified: null,
         },
     },
     reducers: {
@@ -20,14 +22,22 @@ export const recommendSlice = createSlice({
         },
 
         setSelectedRecommend: (state, action) => {
-            state.value.selected = action.payload
+            const selected = action.payload;
+            state.value.selected = selected;
+            state.value.modified = JSON.parse(JSON.stringify(selected));
         },
 
         setModifiedRecommend: (state, action) => {
-            state.value.selected = action.payload
+            state.value.modified = action.payload
         },
+
+        modifyRecommend: (state, action) => {
+            const {actorId, stateId, newActorId, newStateId} = action.payload;
+            ProjectDataHandler.swapCostume(state.value.modified, actorId, stateId, newActorId, newStateId);
+            console.log("modified: ", state.value.modified);
+        }
     },
 })
 
-export const { resetRecommend, addRecommend, setSelectedRecommend, setModifiedRecommend } = recommendSlice.actions
+export const { resetRecommend, addRecommend, setSelectedRecommend, setModifiedRecommend, modifyRecommend } = recommendSlice.actions
 export default recommendSlice.reducer

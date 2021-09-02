@@ -257,6 +257,33 @@ export class ProjectDataHandler {
         stateList.splice(stateIndex, 1);
     }
 
+    static swapCostume (projectData:ProjectData, actorId:string, stateId: string, newActorId:string, newStateId:string) {
+        const actorIndex = projectData.actorList.findIndex(a => a._id === actorId)
+        const actorData = projectData.actorList[actorIndex];
+        if (actorData.stateList.length === 1) {
+            projectData.actorList.splice(actorIndex, 1);
+        }
+        else {
+            const stateIndex = actorData.stateList.findIndex(s => s._id === stateId);
+            actorData.stateList.splice(stateIndex, 1);
+        }
+        for (const storyboardData of projectData.storyboardList) {
+            for (const frameData of storyboardData.frameList) {
+                for (const starData of frameData.starList) {
+                    if (starData.prototypeId === stateId) {
+                        starData.actorId = newActorId;
+                        starData.prototypeId = newStateId;
+                        if (starData.childStar.motionStarList.length > 0) {
+                            for (const motionStar of starData.childStar.motionStarList) {
+                                motionStar.prototypeId = newStateId;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     static findState (actorList: Array<ActorData>, prototypeId:string) {
         actorList.forEach(actorData => {
             actorData.stateList.forEach(

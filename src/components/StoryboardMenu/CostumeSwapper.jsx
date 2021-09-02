@@ -11,6 +11,8 @@ import {Add, ArrowForward, DeleteOutlined} from "@material-ui/icons";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import CardMedia from "@material-ui/core/CardMedia";
 import ImgTile from "../primitives/ImgCard/ImgTile";
+import FrameList from "../FrameList/FrameList";
+import {modifyRecommend} from "../../redux/features/recommendSlice";
 const { Step } = Steps;
 
 const useStyles = makeStyles({
@@ -66,11 +68,31 @@ const getSelectedRecommend = createSelector(
     state => state.project.value.actorList,
     state => state.recommend.value.selected,
     (actorList, selected) => {
+        const selectedCostumes = [];
+        for (const actor of selected.actorList) {
+            for (const state of actor.stateList) {
+                selectedCostumes.push(
+                    {
+                        actorId: actor._id,
+                        ...state,
+                    }
+                )
+            }
+        }
+
+
         const userCostumes = [];
         for (const actor of actorList) {
-            userCostumes.push(...actor.stateList)
+            for (const state of actor.stateList) {
+                userCostumes.push(
+                    {
+                        actorId: actor._id,
+                        ...state,
+                    }
+                )
+            }
         }
-        return {userCostumes, selected}
+        return {selectedCostumes, userCostumes, selected}
     }
 )
 
@@ -82,58 +104,69 @@ const mapStateToProps = (state) => {
 
 const CostumeSwapper = (props) => {
     const classes = useStyles();
-    const {selected, userCostumes} = props;
+    const {selected, userCostumes, selectedCostumes} = props;
     const [currentCostumeStep, setCurrentCostumeStep] = React.useState(0);
-    const modified = JSON.parse(JSON.stringify(selected));
-    const costumes = [];
-    for (const actor of modified.actorList) {
-        costumes.push(...actor.stateList)
-    }
+    const dispatch = useDispatch();
 
 
-    const handleUse = React.useCallback((e, _id) => {
-        globalLog("handleUse")
+    const handleUse = React.useCallback((e, actorId, _id) => {
+        // globalLog("handleUse")
+        dispatch(modifyRecommend(
+                {
+                    actorId: selectedCostumes[currentCostumeStep].actorId,
+                    stateId: selectedCostumes[currentCostumeStep]._id,
+                    newActorId: actorId,
+                    newStateId: _id,
+                }
+        ))
     }, []);
 
 
     return (
         <>
-            <Steps
-                direction="vertical"
-                progressDot
-                style={{width:150}}
-                current={currentCostumeStep}>
-                {costumes.map(
-                    (c, i) => (
-                        <Step
-                            key={c._id} title={<CostumeTitle
-                            costume={c}
-                            isCurrent={currentCostumeStep !== i}
-                        />}/>
-                    )
-                )}
-            </Steps>
-            <div className={classes.stepsContent}>
-                <Grid container spacing={1} justifyContent="center">
-                    {userCostumes.map(imgData => (
-                        <Grid item xs={3}
-                              key={imgData._id}
-                        >
-                            <ImgTile
-                                type="swap-costume"
-                                _id={imgData._id}
-                                name={imgData.name}
-                                imgSrc={
-                                    axios.defaults.baseURL + imgData._id
-                                }
-                                heightToWidthRatio="100%"
-                                handleDelete={null}
-                                handleUse={handleUse}
-                                contentNode={null}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
+            <div
+                style={{
+                    display:"flex",
+                    flexDirection:"row"}}
+            >
+                <Steps
+                    direction="vertical"
+                    progressDot
+                    style={{width:150}}
+                    current={currentCostumeStep}>
+                    {selectedCostumes.map(
+                        (c, i) => (
+                            <Step
+                                key={c._id} title={<CostumeTitle
+                                costume={c}
+                                isCurrent={currentCostumeStep !== i}
+                            />}/>
+                        )
+                    )}
+                </Steps>
+                <div className={classes.stepsContent}>
+                    <Grid container spacing={1} justifyContent="center">
+                        {userCostumes.map(imgData => (
+                            <Grid item xs={3}
+                                  key={imgData._id}
+                            >
+                                <ImgTile
+                                    type="swap-costume"
+                                    actorId={imgData.actorId}
+                                    _id={imgData._id}
+                                    name={imgData.name}
+                                    imgSrc={
+                                        axios.defaults.baseURL + imgData._id
+                                    }
+                                    heightToWidthRatio="100%"
+                                    handleDelete={null}
+                                    handleUse={handleUse}
+                                    contentNode={null}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </div>
             </div>
         </>
     )
@@ -142,6 +175,7 @@ const CostumeSwapper = (props) => {
 const CostumeTitle = React.memo((props) => {
     const classes = useStyles();
     const {costume, isCurrent} = props;
+
     return (
         <>
             <div

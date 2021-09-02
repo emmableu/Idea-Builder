@@ -3,6 +3,7 @@ import { Steps, Button, message } from 'antd';
 import StoryboardGallery from "./StoryboardGallery";
 import {makeStyles} from "@material-ui/core";
 import CostumeSwapper from "./CostumeSwapper";
+import ModifyingFrameList from "./ModifiedFrameList";
 
 const { Step } = Steps;
 
@@ -31,6 +32,7 @@ const useStyles = makeStyles( theme => ({
         border: "1px dashed #e9e9e9",
         borderRadius: 2,
         display: "flex",
+        flexDirection: "column",
     },
     stepsAction: {
         marginTop: 24,
@@ -66,9 +68,12 @@ const GalleryStepper = () => {
                     />
                 }
                 {current === 1 &&
-                    <CostumeSwapper
-                        setCurrent={setCurrent}
-                    />
+                    <>
+                        <ModifyingFrameList/>
+                        <CostumeSwapper
+                            setCurrent={setCurrent}
+                        />
+                    </>
                 }
 
             </div>
