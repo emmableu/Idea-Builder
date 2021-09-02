@@ -118,7 +118,8 @@ const CostumeSwapper = (props) => {
                     newActorId: actorId,
                     newStateId: _id,
                 }
-        ))
+        ));
+        setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
     }, []);
 
 

@@ -99,7 +99,7 @@ const ImgTile = React.memo((props) =>  {
                                         variant="contained"
                                         onClick={e => {
                                             globalLog("clicking, type: ", type);
-                                            if (type === "state") {
+                                            if (type === "state" || type === "swap-costume") {
                                                 handleUse(e, actorId, _id)
                                             }
                                             else if (type === "decor" || type === "backdrop" || type === "event") {

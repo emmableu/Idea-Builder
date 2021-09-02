@@ -282,6 +282,7 @@ export class ProjectDataHandler {
                 }
             }
         }
+        console.log("projectDATA: ", JSON.stringify(projectData))
     }
 
     static findState (actorList: Array<ActorData>, prototypeId:string) {
