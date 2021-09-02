@@ -9,60 +9,23 @@ import axios from "../../axiosConfig";
 import {Grid} from "@material-ui/core";
 import SearchDialogImgCard from "./SearchDialogImgCard";
 import { FixedSizeList } from "react-window";
+import AssetGallery from "./AssetGallery";
+import {useSelector} from "react-redux";
 
 
-const ImgRow = React.memo(
-    (props) => {
-        const {data, index, style} = props;
-        const {type, imgList} = data;
-        const subList = imgList.slice(index*4, index*4+4);
-        return (
-            <Grid
-                style={style}
-                container
-                spacing={1} >
-            {
-                subList.map(imgId => (
-                    <Grid
-                        item xs={3}
-                        key={imgId}
-                    >
-                        <SearchDialogImgCard
-                            type={type}
-                            imgId={imgId}
-                            imgSrc={axios.defaults.baseURL + imgId}
-                            heightToWidthRatio={'75%'}
-                        />
-                    </Grid>
-                ))
-            }
-            </Grid>
-        )
-    }
-)
+// const getImgList = createSelector(
+//     state => state.asset.value,
+//     (asset) => ({asset})
+// )
 
 const SearchDialog = (props) => {
-    const {searchDialogOpen, handleClose, type, searchLoading, setSearchLoading} = props;
+    const {searchDialogOpen, handleClose, type} = props;
     //type can be "state" or "backdrop"
     const dialogLeft =  globalConfig.responsiveSizeData.storyboardDrawerWidth
         + globalConfig.panelTabsWidth
         + globalConfig.responsiveSizeData.actorDrawerWidth;
-    const [imgList ,setImgList] = React.useState([]);
 
-    React.useEffect(
-        () => {
-            setSearchLoading(true);
-            axios({
-                method: 'get',
-                url: `/sample_${type}_id_list/get`,
-            }).then(
-                res => {
-                    setImgList(res.data);
-                    setSearchLoading(false);
-                }
-            )
-        }, [searchDialogOpen]
-    )
+    const imgList = useSelector(state => state.asset.value[type]);
 
     return (
         <div>
@@ -82,19 +45,10 @@ const SearchDialog = (props) => {
                 {type === "state" && <DialogTitle id="dialog-title">Actors</DialogTitle>}
                 {type === "backdrop" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}
                 <DialogContent>
-                    <FixedSizeList
-                        className="List"
-                        height={600}
-                        itemCount={Math.floor(imgList.length/4)}
-                        itemSize={140}
-                        width={480}
-                        itemData = {{
-                            type,
-                            imgList}
-                        }
-                    >
-                        {ImgRow}
-                    </FixedSizeList>
+                    <AssetGallery
+                        type={type}
+                        imgList={imgList}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">

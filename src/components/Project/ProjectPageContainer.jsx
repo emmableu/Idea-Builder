@@ -5,6 +5,7 @@ import {loadProjectFromDatabase} from "../../redux/features/projectSlice";
 import ProjectDrawer from "./ProjectDrawer";
 import Spinner from "../Spinner";
 import ViewMode from "../ViewMode/ViewMode";
+import {loadAssets} from "../../redux/features/assetSlice";
 
 
 const ProjectPageContainer = () => {
@@ -20,6 +21,7 @@ const ProjectPageContainer = () => {
 
     React.useEffect(() => {
             dispatch(loadProjectFromDatabase(_id))
+            dispatch(loadAssets());
         }, [])
 
     return (

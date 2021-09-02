@@ -1,4 +1,4 @@
-import React from "react";
+import React, {createRef} from "react";
 import {createSelector} from "reselect";
 import { useDispatch, connect } from "react-redux";
 import {Steps, Button, message, Avatar} from 'antd';
@@ -16,6 +16,17 @@ import {modifyRecommend, modifyRecommendBackdrop} from "../../redux/features/rec
 const { Step } = Steps;
 
 const useStyles = makeStyles({
+    root: {
+        display:"flex",
+        flexDirection:"row",
+        padding: "20px 20px",
+        height: 500,
+    },
+    steps: {
+        width: 150,
+        height: 500,
+        overflow: "scroll"
+    },
     paper: {
         width: '100%',
         position: 'relative',
@@ -52,7 +63,7 @@ const useStyles = makeStyles({
     stepsContent: {
         width: "60%",
         minHeight: 200,
-        marginTop: 16,
+        // marginTop: 16,
         padding: "8px 8px",
         textAlign: "center",
         backgroundColor: "#fafafa",
@@ -149,31 +160,29 @@ const CostumeSwapper = (props) => {
     return (
         <>
             <div
-                style={{
-                    display:"flex",
-                    flexDirection:"row"}}
+             className={classes.root}
             >
                 <Steps
                     direction="vertical"
                     progressDot
-                    style={{width:150}}
+                    className={classes.steps}
                     current={currentCostumeStep}>
                     {selectedBackdrops.map(
                         (c, i) => (
-                            <Step
-                                key={c._id} title={<CostumeTitle
-                                costume={c}
-                                isCurrent={currentCostumeStep !== i}
-                            />}/>
+                                <Step
+                                    key={c._id} title={<CostumeTitle
+                                    costume={c}
+                                    isCurrent={currentCostumeStep === i}
+                                />}/>
                         )
                     )}
                     {selectedCostumes.map(
                         (c, i) => (
-                            <Step
-                                key={c._id} title={<CostumeTitle
-                                costume={c}
-                                isCurrent={currentCostumeStep !== i+selectedBackdrops.length}
-                            />}/>
+                                <Step
+                                    key={c._id} title={<CostumeTitle
+                                    costume={c}
+                                    isCurrent={currentCostumeStep === i+selectedBackdrops.length}
+                                />}/>
                         )
                     )}
                 </Steps>
@@ -237,13 +246,32 @@ const CostumeSwapper = (props) => {
 const CostumeTitle = React.memo((props) => {
     const classes = useStyles();
     const {costume, isCurrent} = props;
+    const stepEndRef = React.useRef(null);
+    const scrollToMe = () => {
+        if (stepEndRef.current) {
+            stepEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+    React.useEffect(() => {
+        console.log("iscURRENT: ", isCurrent);
+        if (isCurrent === true) {
+            scrollToMe()
+        }
+    }, [isCurrent]);
+
 
     return (
         <>
             <div
                 style={{width: 100}}
             >
+                {isCurrent &&
+                (
+                    <div
+                        ref={stepEndRef}/>
+                )}
                 <Paper
+
                     variant="outlined"
                     className={classes.paper}
                 >
@@ -253,12 +281,13 @@ const CostumeTitle = React.memo((props) => {
                              className={classes.imgStyle}
                              src={axios.defaults.baseURL + costume._id}
                         />
-                        <div className={classes.divOverlap} style={{display: isCurrent? "flex":"none"}}
+                        <div className={classes.divOverlap} style={{display: isCurrent? "none":"flex"}}
                         />
                     </div>
                 </Paper>
+                {costume.name}
             </div>
-        {costume.name}
+
         </>
 
 )

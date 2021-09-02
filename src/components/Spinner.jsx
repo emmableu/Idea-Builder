@@ -14,7 +14,7 @@ function Spinner(loading) {
 
     return (
         <div className="sweet-loading" style={{height: "100vh"}}>
-            <MoonLoader color={color} loading={loading} css={override} size={160} />
+            <MoonLoader color={color} loading={loading} css={override} size={70} />
         </div>
     );
 }
