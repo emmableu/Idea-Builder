@@ -104,12 +104,12 @@ const mapStateToProps = (state) => {
 
 const CostumeSwapper = (props) => {
     const classes = useStyles();
-    const {selected, userCostumes, selectedCostumes} = props;
+    const {userCostumes, selectedCostumes} = props;
     const [currentCostumeStep, setCurrentCostumeStep] = React.useState(0);
     const dispatch = useDispatch();
 
 
-    const handleUse = React.useCallback((e, actorId, _id) => {
+    const handleUse = (e, actorId, _id) => {
         // globalLog("handleUse")
         dispatch(modifyRecommend(
                 {
@@ -120,7 +120,7 @@ const CostumeSwapper = (props) => {
                 }
         ));
         setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
-    }, []);
+    };
 
 
     return (
