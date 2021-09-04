@@ -12,6 +12,7 @@ import { FixedSizeList } from "react-window";
 import AssetGallery from "./AssetGallery";
 import {useSelector} from "react-redux";
 import NewActorDialogue from "./NewActorDialogue";
+import {Input, Modal} from "antd";
 
 
 // const getImgList = createSelector(
@@ -20,7 +21,7 @@ import NewActorDialogue from "./NewActorDialogue";
 // )
 
 const SearchDialog = (props) => {
-    const {searchDialogOpen, handleClose, type} = props;
+    const {searchDialogOpen, setSearchDialogOpen, handleClose, type} = props;
     //type can be "state" or "backdrop"
     const dialogLeft =  globalConfig.responsiveSizeData.storyboardDrawerWidth
         + globalConfig.panelTabsWidth
@@ -30,33 +31,49 @@ const SearchDialog = (props) => {
 
     return (
         <div>
-            <Dialog
-                hideBackdrop
-                disableEnforceFocus
-                style={{
-                    top: 0,
-                    left: dialogLeft - 8,
-                    width: 600
-                }}
-                open={searchDialogOpen}
-                onClose={handleClose}
-                aria-labelledby="draggable-dialog-title"
-                // disableBackdropClick
+            {/*<Dialog*/}
+            {/*    hideBackdrop*/}
+            {/*    disableEnforceFocus*/}
+            {/*    style={{*/}
+            {/*        top: 0,*/}
+            {/*        left: dialogLeft - 8,*/}
+            {/*        width: 600*/}
+            {/*    }}*/}
+            {/*    open={searchDialogOpen}*/}
+            {/*    onClose={handleClose}*/}
+            {/*    aria-labelledby="draggable-dialog-title"*/}
+            {/*    // disableBackdropClick*/}
+            {/*>*/}
+            {/*    {type === "state" && <DialogTitle id="dialog-title">Actors</DialogTitle>}*/}
+            {/*    {type === "backdrop" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}*/}
+            {/*    <DialogContent>*/}
+            {/*        <AssetGallery*/}
+            {/*            type={type}*/}
+            {/*            imgList={imgList}*/}
+            {/*        />*/}
+            {/*    </DialogContent>*/}
+            {/*    <DialogActions>*/}
+            {/*        <Button onClick={handleClose} color="primary">*/}
+            {/*            Ok*/}
+            {/*        </Button>*/}
+            {/*    </DialogActions>*/}
+            {/*</Dialog>*/}
+
+            <Modal
+                width={600}
+                title={type==="state"? "Actors":"Backdrops"}
+                visible={searchDialogOpen}
+                onOk={handleClose}
+                onCancel={handleClose}
+                cancelText="Cancel"
             >
-                {type === "state" && <DialogTitle id="dialog-title">Actors</DialogTitle>}
-                {type === "backdrop" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}
-                <DialogContent>
-                    <AssetGallery
-                        type={type}
-                        imgList={imgList}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Ok
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                <AssetGallery
+                    type={type}
+                    imgList={imgList}
+                />
+            </Modal>
+
+
         </div>
     )
 

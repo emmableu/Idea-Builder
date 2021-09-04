@@ -1,9 +1,8 @@
 import React from 'react'
 import axios from "../../axiosConfig";
-import {Grid} from "@material-ui/core";
+import {Grid, makeStyles} from "@material-ui/core";
 import SearchDialogImgCard from "./SearchDialogImgCard";
 import { FixedSizeList } from "react-window";
-
 
 const ImgRow = React.memo(
     (props) => {
@@ -12,7 +11,9 @@ const ImgRow = React.memo(
         const subList = imgList.slice(index*4, index*4+4);
         return (
             <Grid
-                style={style}
+                style={{...style,
+                    padding: "10px 20px"
+                }}
                 container
                 spacing={1} >
                 {
@@ -44,7 +45,7 @@ const AssetGallery = React.memo((props) => {
                 height={600}
                 itemCount={Math.floor(imgList.length/4)}
                 itemSize={140}
-                width={480}
+                width="100%"
                 itemData = {{
                     type,
                     imgList}

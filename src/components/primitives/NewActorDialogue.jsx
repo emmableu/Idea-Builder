@@ -3,6 +3,9 @@ import React from 'react';
 import { Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import {addActor, addStoryboard} from "../../redux/features/projectSlice";
+import Paper from "@material-ui/core/Paper";
+import globalConfig from "../../globalConfig";
+import axios from "../../axiosConfig";
 
 const NewActorDialogue = props => {
     const {isModalVisible, setIsModalVisible, imgId} = props;
@@ -33,7 +36,6 @@ const NewActorDialogue = props => {
             <Modal
                 width={300}
                 title="New Actor"
-                style={{zIndex: 20}}
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
@@ -43,12 +45,33 @@ const NewActorDialogue = props => {
                 okText="Create"
                 cancelText="Cancel"
             >
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                }}>
+                <Paper
+                    style={{width: 100, height: 100, margin:"20px 20px"}}
+                    variant="outlined"
+                >
+                    <img
+                        draggable
+                        style={{objectFit: "contain",
+                            width: '100%',
+                            height: '100%',
+                        }}
+                        src={axios.defaults.baseURL + imgId}
+                        alt="img"
+                    />
+                </Paper>
                 <Input
                     onChange={e => setNewActorName(e.target.value)}
                     placeholder="Actor Name"
                 />
+                </div>
             </Modal>
-
         </>
     );
 };
