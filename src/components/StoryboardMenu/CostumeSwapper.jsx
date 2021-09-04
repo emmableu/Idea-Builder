@@ -1,17 +1,11 @@
-import React, {createRef} from "react";
+import React from "react";
 import {createSelector} from "reselect";
 import { useDispatch, connect } from "react-redux";
-import {Steps, Button, message, Avatar} from 'antd';
+import {Steps} from 'antd';
 import axios from "../../axiosConfig";
 import Paper from "@material-ui/core/Paper";
-import Tooltip from "@material-ui/core/Tooltip/Tooltip";
-import {Grid, IconButton, makeStyles} from "@material-ui/core";
-import {globalLog} from "../../globalConfig";
-import {Add, ArrowForward, DeleteOutlined} from "@material-ui/icons";
-import {LazyLoadImage} from "react-lazy-load-image-component";
-import CardMedia from "@material-ui/core/CardMedia";
+import {Grid, makeStyles} from "@material-ui/core";
 import ImgTile from "../primitives/ImgCard/ImgTile";
-import FrameList from "../FrameList/FrameList";
 import {modifyRecommend, modifyRecommendBackdrop} from "../../redux/features/recommendSlice";
 const { Step } = Steps;
 
@@ -199,9 +193,7 @@ const CostumeSwapper = (props) => {
                                             type="swap-costume-backdrop"
                                             _id={imgData._id}
                                             name={imgData.name}
-                                            imgSrc={
-                                                axios.defaults.baseURL + imgData._id
-                                            }
+                                            imgSrc={axios.defaults.baseURL + imgData._id}
                                             heightToWidthRatio="100%"
                                             handleDelete={null}
                                             handleUse={handleUseBackdrop}
@@ -223,9 +215,7 @@ const CostumeSwapper = (props) => {
                                                 actorId={imgData.actorId}
                                                 _id={imgData._id}
                                                 name={imgData.name}
-                                                imgSrc={
-                                                    axios.defaults.baseURL + imgData._id
-                                                }
+                                                imgSrc={axios.defaults.baseURL + imgData._id}
                                                 heightToWidthRatio="100%"
                                                 handleDelete={null}
                                                 handleUse={handleUse}
@@ -235,7 +225,6 @@ const CostumeSwapper = (props) => {
                                     ))
                             )
                         }
-
                     </Grid>
                 </div>
             </div>

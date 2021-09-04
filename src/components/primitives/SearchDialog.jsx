@@ -11,6 +11,7 @@ import SearchDialogImgCard from "./SearchDialogImgCard";
 import { FixedSizeList } from "react-window";
 import AssetGallery from "./AssetGallery";
 import {useSelector} from "react-redux";
+import NewActorDialogue from "./NewActorDialogue";
 
 
 // const getImgList = createSelector(
@@ -32,7 +33,7 @@ const SearchDialog = (props) => {
             <Dialog
                 hideBackdrop
                 disableEnforceFocus
-                style={{ position: 'fixed',
+                style={{
                     top: 0,
                     left: dialogLeft - 8,
                     width: 600
@@ -40,7 +41,7 @@ const SearchDialog = (props) => {
                 open={searchDialogOpen}
                 onClose={handleClose}
                 aria-labelledby="draggable-dialog-title"
-                disableBackdropClick
+                // disableBackdropClick
             >
                 {type === "state" && <DialogTitle id="dialog-title">Actors</DialogTitle>}
                 {type === "backdrop" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}

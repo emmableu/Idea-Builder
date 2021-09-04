@@ -8,6 +8,7 @@ import {IconButton} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import NewActorDialogue from "./NewActorDialogue";
 
 const useStyles = makeStyles({
     media: {
@@ -64,6 +65,8 @@ const SearchDialogImgCard = React.memo((props) =>  {
     const classes = useStyles(props);
     const dispatch  = useDispatch();
     const [onHover, setOnHover] = React.useState();
+    const [isModalVisible, setIsModalVisible] = React.useState(false);
+
 
     const getName = () => {
         const namePrefix = imgId.split("____")[0].split("/")
@@ -75,14 +78,15 @@ const SearchDialogImgCard = React.memo((props) =>  {
 
     const handleAddItem = () => {
         if (type=== "state") {
-            dispatch(addActor(
-                {
-                    stateList: [{
-                        _id: imgId,
-                        name: "",
-                    }]
-                }
-            ))
+            // dispatch(addActor(
+            //     {
+            //         stateList: [{
+            //             _id: imgId,
+            //             name: "",
+            //         }]
+            //     }
+            // ))
+            setIsModalVisible(true);
         }
         else if (type=== "backdrop") {
             dispatch(addBackdrop(
@@ -94,6 +98,7 @@ const SearchDialogImgCard = React.memo((props) =>  {
 
 
     return (
+        <>
         <Card
             variant="outlined"
             >
@@ -108,7 +113,7 @@ const SearchDialogImgCard = React.memo((props) =>  {
                         alt="img"
                     />
                     <div className={classes.divOverlap} style={{display: onHover? "block":"none" }}>
-                        <Tooltip title={`Add to my ${type}s`}>
+                        <Tooltip title={`Add to my ${type==="state"?"actor":type}s`}>
                             <IconButton aria-label="add"
                                         className={classes.buttonOverlap}
                                         color="inherit"
@@ -130,6 +135,15 @@ const SearchDialogImgCard = React.memo((props) =>  {
                 <span>{getName()}</span>
             </div>
         </Card>
+            {
+                isModalVisible &&
+                <NewActorDialogue
+                    isModalVisible={isModalVisible}
+                    setIsModalVisible={setIsModalVisible}
+                    imgId={imgId}
+                />
+            }
+        </>
     );
 });
 
