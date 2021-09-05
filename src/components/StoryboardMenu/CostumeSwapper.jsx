@@ -1,12 +1,14 @@
 import React from "react";
 import {createSelector} from "reselect";
 import { useDispatch, connect } from "react-redux";
-import {Steps} from 'antd';
+import {Modal, Steps} from 'antd';
 import axios from "../../axiosConfig";
 import Paper from "@material-ui/core/Paper";
 import {Grid, makeStyles} from "@material-ui/core";
 import ImgTile from "../primitives/ImgCard/ImgTile";
 import {modifyRecommend, modifyRecommendBackdrop} from "../../redux/features/recommendSlice";
+import AssetGallery from "../primitives/AssetGallery";
+import Divider from "@material-ui/core/Divider";
 const { Step } = Steps;
 
 const useStyles = makeStyles({
@@ -181,32 +183,41 @@ const CostumeSwapper = (props) => {
                     )}
                 </Steps>
                 <div className={classes.stepsContent}>
-                    <Grid container spacing={1} justifyContent="center">
                         {
                             currentCostumeStep < selectedBackdrops.length &&
                             (
-                                userBackdrops.map(imgData => (
-                                    <Grid item xs={2}
-                                          key={imgData._id}
-                                    >
-                                        <ImgTile
-                                            type="swap-costume-backdrop"
-                                            _id={imgData._id}
-                                            name={imgData.name}
-                                            imgSrc={axios.defaults.baseURL + imgData._id}
-                                            heightToWidthRatio="100%"
-                                            handleDelete={null}
-                                            handleUse={handleUseBackdrop}
-                                            contentNode={null}
-                                        />
-                                    </Grid>
-                                ))
+                                <>
+                                <Grid container spacing={1} justifyContent="center">
+                                    {userBackdrops.map(imgData => (
+                                        <Grid item xs={2}
+                                              key={imgData._id}
+                                        >
+                                            <ImgTile
+                                                type="swap-costume-backdrop"
+                                                _id={imgData._id}
+                                                name={imgData.name}
+                                                imgSrc={axios.defaults.baseURL + imgData._id}
+                                                heightToWidthRatio="100%"
+                                                handleDelete={null}
+                                                handleUse={handleUseBackdrop}
+                                                contentNode={null}
+                                            />
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                                    <Divider/>
+                                    <AssetGallery
+                                        height={300}
+                                        type="backdrop"/>
+                                </>
                             )
                         }
                         {
                             currentCostumeStep >= selectedBackdrops.length &&
                             (
-                                userCostumes.map(imgData => (
+                                <>
+                                <Grid container spacing={1} justifyContent="center">
+                                {userCostumes.map(imgData => (
                                         <Grid item xs={2}
                                               key={imgData._id}
                                         >
@@ -222,10 +233,15 @@ const CostumeSwapper = (props) => {
                                                 contentNode={null}
                                             />
                                         </Grid>
-                                    ))
+                                    ))}
+                                </Grid>
+                                    <Divider/>
+                                    <AssetGallery
+                                        height={300}
+                                        type="state"/>
+                                </>
                             )
                         }
-                    </Grid>
                 </div>
             </div>
         </>

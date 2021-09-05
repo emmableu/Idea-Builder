@@ -31,7 +31,6 @@ const BackdropPanelButtonGroup = props => {
             <SearchDialog
                 type="backdrop"
                 searchDialogOpen={searchDialogOpen}
-                setSearchDialogOpen={setSearchDialogOpen}
                 handleClose={handleClose}
                 searchLoading={searchLoading}
                 setSearchLoading={setSearchLoading}

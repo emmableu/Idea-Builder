@@ -3,7 +3,6 @@ import projectReducer from './features/projectSlice'
 import dashboardReducer from './features/dashboardSlice'
 import modeReducer from "./features/modeSlice"
 import recommendReducer from "./features/recommendSlice"
-import assetReducer from "./features/assetSlice";
 
 export default configureStore({
     reducer: {
@@ -11,6 +10,5 @@ export default configureStore({
         dashboard: dashboardReducer,
         mode: modeReducer,
         recommend: recommendReducer,
-        asset: assetReducer
     },
 })

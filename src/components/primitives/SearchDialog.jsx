@@ -21,44 +21,11 @@ import {Input, Modal} from "antd";
 // )
 
 const SearchDialog = (props) => {
-    const {searchDialogOpen, setSearchDialogOpen, handleClose, type} = props;
+    const {searchDialogOpen, handleClose, type} = props;
     //type can be "state" or "backdrop"
-    const dialogLeft =  globalConfig.responsiveSizeData.storyboardDrawerWidth
-        + globalConfig.panelTabsWidth
-        + globalConfig.responsiveSizeData.actorDrawerWidth;
-
-    const imgList = useSelector(state => state.asset.value[type]);
 
     return (
         <div>
-            {/*<Dialog*/}
-            {/*    hideBackdrop*/}
-            {/*    disableEnforceFocus*/}
-            {/*    style={{*/}
-            {/*        top: 0,*/}
-            {/*        left: dialogLeft - 8,*/}
-            {/*        width: 600*/}
-            {/*    }}*/}
-            {/*    open={searchDialogOpen}*/}
-            {/*    onClose={handleClose}*/}
-            {/*    aria-labelledby="draggable-dialog-title"*/}
-            {/*    // disableBackdropClick*/}
-            {/*>*/}
-            {/*    {type === "state" && <DialogTitle id="dialog-title">Actors</DialogTitle>}*/}
-            {/*    {type === "backdrop" && <DialogTitle id="dialog-title">Backdrops</DialogTitle>}*/}
-            {/*    <DialogContent>*/}
-            {/*        <AssetGallery*/}
-            {/*            type={type}*/}
-            {/*            imgList={imgList}*/}
-            {/*        />*/}
-            {/*    </DialogContent>*/}
-            {/*    <DialogActions>*/}
-            {/*        <Button onClick={handleClose} color="primary">*/}
-            {/*            Ok*/}
-            {/*        </Button>*/}
-            {/*    </DialogActions>*/}
-            {/*</Dialog>*/}
-
             <Modal
                 width={600}
                 title={type==="state"? "Actors":"Backdrops"}
@@ -68,8 +35,8 @@ const SearchDialog = (props) => {
                 cancelText="Cancel"
             >
                 <AssetGallery
+                    height={600}
                     type={type}
-                    imgList={imgList}
                 />
             </Modal>
 

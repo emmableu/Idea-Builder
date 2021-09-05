@@ -313,6 +313,7 @@ export class ProjectDataHandler {
                 }
             )
         })
+        return null;
     }
 
     static download (projectData:ProjectData) {

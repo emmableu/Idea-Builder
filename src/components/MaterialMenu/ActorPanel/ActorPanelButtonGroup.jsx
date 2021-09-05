@@ -32,7 +32,6 @@ const ActorPanelButtonGroup = props => {
             <SearchDialog
                 type="state"
                 searchDialogOpen={searchDialogOpen}
-                setSearchDialogOpen={setSearchDialogOpen}
                 handleClose={handleClose}
                 searchLoading={searchLoading}
                 setSearchLoading={setSearchLoading}

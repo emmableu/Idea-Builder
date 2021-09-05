@@ -21,7 +21,7 @@ const ProjectPageContainer = () => {
 
     React.useEffect(() => {
             dispatch(loadProjectFromDatabase(_id))
-            dispatch(loadAssets());
+            // dispatch(loadAssets());
         }, [])
 
     return (

@@ -1,13 +1,13 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import {useDispatch} from "react-redux";
-import {addActor, addBackdrop, addStar, addState, deleteState} from "../../redux/features/projectSlice";
+import {addBackdrop} from "../../redux/features/projectSlice";
 import {IconButton} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+import {LazyLoadImage} from 'react-lazy-load-image-component';
 import NewActorDialogue from "./NewActorDialogue";
 
 const useStyles = makeStyles({
@@ -32,6 +32,7 @@ const useStyles = makeStyles({
     },
     divOverlap: {
         position: "absolute",
+        display: "flex",
         top: 0,
         left: 0,
         zIndex: 1,
@@ -40,41 +41,33 @@ const useStyles = makeStyles({
         background: "rgba(0,0,0,0.6)",
         opacity: 1,
         cursor: "auto",
+        justifyContent: "center",
+        alignItems: "center",
     },
     buttonOverlap: {
-        position: "relative",
         zIndex: 2,
-        left: "35%",
-        top: "30%",
-        width: "35px",
-        height: "35px",
     },
     buttonOverlapDelete: {
-        position: "relative",
         zIndex: 2,
-        left: "20%",
-        top: "30%",
-        width: "35px",
-        height: "35px",
     },
 });
 
 
 const SearchDialogImgCard = React.memo((props) =>  {
-    const {type, imgId, imgSrc } = props;
+    const {type, imgId, imgSrc} = props;
     const classes = useStyles(props);
     const dispatch  = useDispatch();
     const [onHover, setOnHover] = React.useState();
     const [isModalVisible, setIsModalVisible] = React.useState(false);
 
 
+
     const getName = () => {
-        const namePrefix = imgId.split("____")[0].split("/")
-        const nameString = namePrefix[namePrefix.length - 1]
-        const nameArray = nameString.split("-")
-        const name = nameArray.join(" ")
-        return name;
-    }
+        const namePrefix = imgId.split("____")[0].split("/");
+        const nameString = namePrefix[namePrefix.length - 1];
+        const nameArray = nameString.split("-");
+        return nameArray.join(" ");
+    };
 
     const handleAddItem = () => {
         if (type=== "state") {
@@ -93,7 +86,6 @@ const SearchDialogImgCard = React.memo((props) =>  {
                     imgId
             ))
         }
-
     }
 
 
@@ -112,7 +104,7 @@ const SearchDialogImgCard = React.memo((props) =>  {
                         src={imgSrc}
                         alt="img"
                     />
-                    <div className={classes.divOverlap} style={{display: onHover? "block":"none" }}>
+                    <div className={classes.divOverlap} style={{display: onHover? "flex":"none" }}>
                         <Tooltip title={`Add to my ${type==="state"?"actor":type}s`}>
                             <IconButton aria-label="add"
                                         className={classes.buttonOverlap}
@@ -136,7 +128,7 @@ const SearchDialogImgCard = React.memo((props) =>  {
             </div>
         </Card>
             {
-                isModalVisible &&
+                 isModalVisible &&
                 <NewActorDialogue
                     isModalVisible={isModalVisible}
                     setIsModalVisible={setIsModalVisible}
