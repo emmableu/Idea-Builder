@@ -1,6 +1,6 @@
 import React from "react";
 import {createSelector} from "reselect";
-import { useDispatch, connect } from "react-redux";
+import {useDispatch, connect, useSelector} from "react-redux";
 import {Modal, Steps} from 'antd';
 import axios from "../../axiosConfig";
 import Paper from "@material-ui/core/Paper";
@@ -19,7 +19,7 @@ const useStyles = makeStyles({
         height: 500,
     },
     steps: {
-        width: 150,
+        width: 120,
         height: 500,
         overflow: "scroll"
     },
@@ -188,7 +188,11 @@ const CostumeSwapper = (props) => {
                         )
                     )}
                 </Steps>
-                <div className={classes.stepsContent}>
+                <SwappedAvatarList
+                    selectedBackdrops={selectedBackdrops}
+                    selectedCostumes={selectedCostumes}
+                />
+                <div className={classes.stepsContent}>'
                         {
                             currentCostumeStep < selectedBackdrops.length &&
                             (
@@ -290,28 +294,37 @@ const CostumeTitle = React.memo((props) => {
     return (
         <>
             <div
-                style={{width: 100}}
+                style={{width: 100,
+                    display: 'flex',
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "flex-start"
+                }}
             >
-                {isCurrent &&
-                (
-                    <div
-                        ref={stepEndRef}/>
-                )}
-                <Paper
-
-                    variant="outlined"
-                    className={classes.paper}
+                <div
+                    style={{width: 60}}
                 >
-                    <div className={classes.elementToStretch}
+                    {isCurrent &&
+                    (
+                        <div
+                            ref={stepEndRef}/>
+                    )}
+                    <Paper
+
+                        variant="outlined"
+                        className={classes.paper}
                     >
-                        <img alt="img"
-                             className={classes.imgStyle}
-                             src={axios.defaults.baseURL + costume._id}
-                        />
-                        <div className={classes.divOverlap} style={{display: isCurrent? "none":"flex"}}
-                        />
-                    </div>
-                </Paper>
+                        <div className={classes.elementToStretch}
+                        >
+                            <img alt="img"
+                                 className={classes.imgStyle}
+                                 src={axios.defaults.baseURL + costume._id}
+                            />
+                            <div className={classes.divOverlap} style={{display: isCurrent? "none":"flex"}}
+                            />
+                        </div>
+                    </Paper>
+                </div>
                 {costume.name}
             </div>
 
@@ -319,5 +332,84 @@ const CostumeTitle = React.memo((props) => {
 
 )
 })
+
+
+
+const SwappedAvatarList = (props) => {
+    const {selectedBackdrops, selectedCostumes} = props;
+    const modifiedCostumes = useSelector(state => {
+        const actorList = state.recommend.value.modified.actorList;
+        const modifiedCostumes = [];
+        for (const actor of actorList) {
+            for (const state of actor.stateList) {
+                modifiedCostumes.push(
+                    {
+                        actorId: actor._id,
+                        actorName: actor.name,
+                        ...state,
+                    }
+                )
+            }
+        }
+        return modifiedCostumes;
+        }
+    );
+    const backdropList = useSelector(state => state.recommend.value.modified.backdropList);
+    const oldSrc = [];
+    const newSrc = [];
+    for (let i = 0; i < selectedBackdrops.length; i++) {
+        oldSrc.push(axios.defaults.baseURL + selectedBackdrops[i]._id);
+        newSrc.push(axios.defaults.baseURL + backdropList[i]._id);
+    };
+    for (let i = 0; i < selectedCostumes.length; i++) {
+        oldSrc.push(axios.defaults.baseURL + selectedCostumes[i]._id);
+        if (modifiedCostumes.length > 0){
+            newSrc.push(axios.defaults.baseURL + modifiedCostumes[i]._id);
+        }
+    };
+
+    return (
+        <> {
+            oldSrc.map((src, index) => (
+                <SwappedAvatar
+                    oldSrc={src}
+                    newSrc={newSrc[index]}
+                />
+            ))
+        }
+        </>
+    )
+}
+
+
+const SwappedAvatar = (props) => {
+    const {oldSrc, newSrc} = props;
+
+    return (
+        <div
+            style={{width: 50, height: 50}}
+        >
+            <img
+                alt="img"
+                src={oldSrc}
+                style={{
+                    objectFit: "contain",
+                    width: '50%',
+                    height: '100%',
+                }}
+            />
+            <img
+                alt="img"
+                src={newSrc}
+                style={{
+                    objectFit: "contain",
+                    width: '50%',
+                    height: '100%',
+                }}
+            />
+        </div>
+    )
+}
+
 
 export default connect(mapStateToProps)(CostumeSwapper);
