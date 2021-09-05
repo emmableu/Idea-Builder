@@ -10,6 +10,8 @@ export const recommendSlice = createSlice({
             initial: [],
             selected: null,
             modified: null,
+            modifiedCostumes: [],
+            modifiedBackdrops: [],
         },
     },
     reducers: {
@@ -24,6 +26,8 @@ export const recommendSlice = createSlice({
         setSelectedRecommend: (state, action) => {
             const selected = action.payload;
             state.value.selected = selected;
+            state.value.modifiedCostumes = [];
+            state.value.modifiedBackdrops = [];
             state.value.modified = JSON.parse(JSON.stringify(selected));
         },
 
@@ -33,11 +37,13 @@ export const recommendSlice = createSlice({
 
         modifyRecommend: (state, action) => {
             const {actorId, stateId, newActorId, newStateId} = action.payload;
+            state.value.modifiedCostumes.push(newStateId);
             ProjectDataHandler.swapCostume(state.value.modified, actorId, stateId, newActorId, newStateId);
             console.log("modified: ", state.value.modified);
         },
         modifyRecommendBackdrop: (state, action) => {
             const {stateId, newStateId} = action.payload;
+            state.value.modifiedBackdrops.push(newStateId);
             ProjectDataHandler.swapBackdrop(state.value.modified, stateId, newStateId);
             console.log("modified: ", state.value.modified);
         }

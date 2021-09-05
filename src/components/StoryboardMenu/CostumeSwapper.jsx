@@ -337,36 +337,27 @@ const CostumeTitle = React.memo((props) => {
 
 const SwappedAvatarList = (props) => {
     const {selectedBackdrops, selectedCostumes} = props;
-    const modifiedCostumes = useSelector(state => {
-        const actorList = state.recommend.value.modified.actorList;
-        const modifiedCostumes = [];
-        for (const actor of actorList) {
-            for (const state of actor.stateList) {
-                modifiedCostumes.push(
-                    {
-                        actorId: actor._id,
-                        actorName: actor.name,
-                        ...state,
-                    }
-                )
-            }
-        }
-        return modifiedCostumes;
-        }
+    const modifiedCostumes = useSelector(state =>
+        (state.recommend.value.modifiedCostumes)
     );
-    const backdropList = useSelector(state => state.recommend.value.modified.backdropList);
+    const modifiedBackdrops = useSelector(state =>
+        (state.recommend.value.modifiedBackdrops)
+    );
     const oldSrc = [];
     const newSrc = [];
     for (let i = 0; i < selectedBackdrops.length; i++) {
         oldSrc.push(axios.defaults.baseURL + selectedBackdrops[i]._id);
-        newSrc.push(axios.defaults.baseURL + backdropList[i]._id);
-    };
+        if (i < modifiedBackdrops.length) {
+            newSrc.push(axios.defaults.baseURL + modifiedBackdrops[i]);
+        }
+    }
+
     for (let i = 0; i < selectedCostumes.length; i++) {
         oldSrc.push(axios.defaults.baseURL + selectedCostumes[i]._id);
-        if (modifiedCostumes.length > 0){
-            newSrc.push(axios.defaults.baseURL + modifiedCostumes[i]._id);
+        if (i < modifiedCostumes.length){
+            newSrc.push(axios.defaults.baseURL + modifiedCostumes[i]);
         }
-    };
+    }
 
     return (
         <> {
