@@ -27,15 +27,17 @@ const SearchDialog = (props) => {
     return (
         <div>
             <Modal
-                width={600}
+                width={900}
                 title={type==="state"? "Actors":"Backdrops"}
                 visible={searchDialogOpen}
                 onOk={handleClose}
                 onCancel={handleClose}
                 cancelText="Cancel"
+                centered
             >
                 <AssetGallery
                     height={600}
+                    xs={type==="state"? 2:3}
                     type={type}
                 />
             </Modal>

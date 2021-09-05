@@ -7,7 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import globalConfig from "../../globalConfig";
 import axios from "../../axiosConfig";
 
-const NewActorDialogue = props => {
+const NewActorDialogue = React.memo(props => {
     const {isModalVisible, setIsModalVisible, imgId} = props;
     const [newActorName, setNewActorName] = React.useState("");
     const dispatch = useDispatch();
@@ -35,6 +35,7 @@ const NewActorDialogue = props => {
         <>
             <Modal
                 width={300}
+                centered
                 title="New Actor"
                 visible={isModalVisible}
                 onOk={handleOk}
@@ -74,6 +75,6 @@ const NewActorDialogue = props => {
             </Modal>
         </>
     );
-};
+});
 
 export default NewActorDialogue;

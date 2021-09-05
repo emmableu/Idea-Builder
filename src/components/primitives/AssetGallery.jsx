@@ -9,8 +9,8 @@ import {setAsset} from "../../redux/features/assetSlice";
 const ImgRow = React.memo(
     (props) => {
         const {data, index, style} = props;
-        const {type, imgList} = data;
-        const subList = imgList.slice(index*6, index*6+6);
+        const {type, imgList, xs} = data;
+        const subList = imgList.slice(index*(12/xs), index*(12/xs)+(12/xs));
         return (
             <Grid
                 style={{...style,
@@ -21,7 +21,7 @@ const ImgRow = React.memo(
                 {
                     subList.map(imgId => (
                         <Grid
-                            item xs={2}
+                            item xs={xs}
                             key={imgId}
                         >
                             <SearchDialogImgCard
@@ -39,7 +39,7 @@ const ImgRow = React.memo(
 )
 
 const AssetGallery = React.memo((props) => {
-    const {type, height} = props;
+    const {type, height, xs} = props;
     // const imgList = useSelector(state => state.asset.value[type]);
     const [imgList, setImgList] = React.useState([]);
     React.useEffect(
@@ -57,19 +57,26 @@ const AssetGallery = React.memo((props) => {
     )
 
     return (
+        <div
+            style={{
+                margin: "20px 0",
+            }}
+        >
             <FixedSizeList
                 className="List"
                 height={height}
-                itemCount={Math.floor(imgList.length/6)}
-                itemSize={140}
+                itemCount={Math.floor(imgList.length/(12/xs))}
+                itemSize={xs===2? 150:200}
                 width="100%"
                 itemData = {{
                     type,
-                    imgList}
-                }
+                    imgList,
+                    xs
+                }}
             >
                 {ImgRow}
             </FixedSizeList>
+        </div>
     )
 });
 

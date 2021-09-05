@@ -58,7 +58,7 @@ const useStyles = makeStyles({
     },
     stepsContent: {
         width: "60%",
-        minHeight: 200,
+        height: 500,
         // marginTop: 16,
         padding: "8px 8px",
         textAlign: "center",
@@ -67,6 +67,9 @@ const useStyles = makeStyles({
         borderRadius: 2,
         display: "flex",
         flexGrow:1,
+        flexDirection: "column",
+        // justifyContent: "space-between",
+        // alignItems: "center",
     },
 });
 
@@ -82,6 +85,7 @@ const getSelectedRecommend = createSelector(
                 selectedCostumes.push(
                     {
                         actorId: actor._id,
+                        actorName: actor.name,
                         ...state,
                     }
                 )
@@ -97,11 +101,13 @@ const getSelectedRecommend = createSelector(
                     {
                         actorId: actor._id,
                         ...state,
+                        actorName: actor.name
                     }
                 )
             }
         }
-        return {selectedCostumes, userCostumes,
+        return {
+            selectedCostumes, userCostumes,
         userBackdrops: backdropList, selectedBackdrops,
         }
     }
@@ -187,7 +193,13 @@ const CostumeSwapper = (props) => {
                             currentCostumeStep < selectedBackdrops.length &&
                             (
                                 <>
-                                <Grid container spacing={1} justifyContent="center">
+                                <Grid container spacing={1} justifyContent="center"
+                                      style={{
+                                             height: 300,
+                                             overflow: "scroll",
+                                             margin: "10px 10px"
+                                          }}
+                                >
                                     {userBackdrops.map(imgData => (
                                         <Grid item xs={2}
                                               key={imgData._id}
@@ -197,16 +209,18 @@ const CostumeSwapper = (props) => {
                                                 _id={imgData._id}
                                                 name={imgData.name}
                                                 imgSrc={axios.defaults.baseURL + imgData._id}
-                                                heightToWidthRatio="100%"
+                                                heightToWidthRatio="75%"
                                                 handleDelete={null}
                                                 handleUse={handleUseBackdrop}
-                                                contentNode={null}
+                                                contentNode={imgData.name}
                                             />
                                         </Grid>
                                     ))}
                                 </Grid>
                                     <Divider/>
+                                    {"Search for a new backdrop"}
                                     <AssetGallery
+                                        xs={3}
                                         height={300}
                                         type="backdrop"/>
                                 </>
@@ -216,7 +230,13 @@ const CostumeSwapper = (props) => {
                             currentCostumeStep >= selectedBackdrops.length &&
                             (
                                 <>
-                                <Grid container spacing={1} justifyContent="center">
+                                <Grid container spacing={1} justifyContent="center"
+                                      style={{
+                                          height: 300,
+                                          overflow: "scroll",
+                                          padding: "10px 10px"
+                                      }}
+                                >
                                 {userCostumes.map(imgData => (
                                         <Grid item xs={2}
                                               key={imgData._id}
@@ -227,16 +247,18 @@ const CostumeSwapper = (props) => {
                                                 _id={imgData._id}
                                                 name={imgData.name}
                                                 imgSrc={axios.defaults.baseURL + imgData._id}
-                                                heightToWidthRatio="100%"
+                                                heightToWidthRatio="75%"
                                                 handleDelete={null}
                                                 handleUse={handleUse}
-                                                contentNode={null}
+                                                contentNode={imgData.actorName}
                                             />
                                         </Grid>
                                     ))}
                                 </Grid>
                                     <Divider/>
+                                    {"Search for a new actor"}
                                     <AssetGallery
+                                        xs={2}
                                         height={300}
                                         type="state"/>
                                 </>
