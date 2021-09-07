@@ -23,14 +23,14 @@ const useStyles = makeStyles((theme) => ({
     },
     stepsContainer: {
         display:"flex",
-        flexDirection:"column",
+        flexDirection:"row",
         // padding: "20px 20px",
-        height: globalConfig.responsiveSizeData.newStoryboardHeight - (56 + 24 + 28 + 8 + 148 + 21 + 21 + 56 + 56),
+        height: globalConfig.costumeSwapperHeight,
         width: "100%",
     },
     steps: {
         width: 120,
-        height: globalConfig.responsiveSizeData.newStoryboardHeight - (56 + 24 + 28 + 8 + 148 + 21 + 21 + 56 + 56),
+        height: globalConfig.costumeSwapperHeight,
         overflow: "scroll"
     },
     paper: {
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     },
     stepsContent: {
         width: "60%",
-        height: "inherit",
+        height: globalConfig.costumeSwapperHeight,
         // marginTop: 16,
         padding: "8px 8px",
         textAlign: "center",
@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 2,
         display: "flex",
         flexGrow:1,
-        flexDirection: "column",
+        flexDirection: "row",
         // justifyContent: "space-between",
         // alignItems: "center",
     },
@@ -95,10 +95,17 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     userCostumes: {
-        width: "100%",
-        height: 240,
+        width: "50%",
+        height: globalConfig.costumeSwapperHeight,
         overflow: "scroll",
         padding: "10px 10px",
+    },
+    assetGallery: {
+        width: "50%",
+        height: globalConfig.costumeSwapperHeight,
+        overflow: "scroll",
+        padding: "10px 10px",
+        border: "1px dashed #e9e9e9",
     },
 }));
 
@@ -247,7 +254,7 @@ const CostumeSwapper = (props) => {
                                     {"My backdrops"}
                                     </div>
                                     <Grid container spacing={1} justifyContent="center">
-                                        <Grid item xs={2}
+                                        <Grid item xs={4}
                                               key={"skip"}
                                               style={{display: "flex", justifyContent: "center", alignItems: "center"}}
                                         >
@@ -259,7 +266,7 @@ const CostumeSwapper = (props) => {
                                         </Grid>
 
                                         {userBackdrops.map(imgData => (
-                                            <Grid item xs={2}
+                                            <Grid item xs={4}
                                                   key={imgData._id}
                                             >
                                                 <ImgTile
@@ -276,12 +283,13 @@ const CostumeSwapper = (props) => {
                                         ))}
                                     </Grid>
                                     </div>
-                                    <Divider/>
-                                    <div>
+                                    <div
+                                        className={classes.assetGallery}
+                                    >
                                         {"Search for a new backdrop"}
                                         <AssetGallery
-                                            xs={2}
-                                            height={300}
+                                            xs={4}
+                                            height={globalConfig.costumeSwapperHeight-50}
                                             type="backdrop"
                                             itemSize={120}
                                         />
@@ -299,7 +307,7 @@ const CostumeSwapper = (props) => {
                                 </div>
                                 <Grid container spacing={1} justifyContent="center"
                                 >
-                                    <Grid item xs={2}
+                                    <Grid item xs={4}
                                           key={"skip"}
                                           style={{display: "flex", justifyContent: "center", alignItems: "center"}}
                                     ><Button
@@ -310,7 +318,7 @@ const CostumeSwapper = (props) => {
                                     </Grid>
 
                                     {userCostumes.map(imgData => (
-                                        <Grid item xs={2}
+                                        <Grid item xs={4}
                                               key={imgData._id}
                                         >
                                             <ImgTile
@@ -330,11 +338,12 @@ const CostumeSwapper = (props) => {
                                 </div>
                                     <Divider/>
                                     <div
+                                        className={classes.assetGallery}
                                     >
                                         {"Search for a new actor"}
                                         <AssetGallery
-                                        xs={2}
-                                        height={300}
+                                        xs={4}
+                                        height={globalConfig.costumeSwapperHeight-50}
                                         type="state"
                                         itemSize={120}
                                     />
@@ -450,7 +459,9 @@ const SwappedAvatarList = (props) => {
                 <div className={classes.avatarList}>
                     {"Original "}
                     {oldSrc.map((src) => (
-                        <Avatar src={src} alt="avatar" className={classes.avatar}>
+                        <Avatar src={src} alt="avatar" className={classes.avatar}
+                                style={{width:36, height: 36, margin: "3px 3px 3px 3px"}}
+                        >
                             {src===null && <HelpOutlineIcon/>}
                         </Avatar>
                     ))}
@@ -458,7 +469,9 @@ const SwappedAvatarList = (props) => {
                 <div className={classes.avatarList}>
                     {   "New \u00a0\u00a0\u00a0\u00a0"}
                     {newSrc.map((src) => (
-                        <Avatar src={src} alt="avatar" className={classes.avatar}>
+                        <Avatar src={src} alt="avatar" className={classes.avatar}
+                                style={{width:36, height: 36, margin: "3px 3px 3px 3px"}}
+                        >
                             {src===null && <HelpOutlineIcon/>}
                         </Avatar>
                     ))}
