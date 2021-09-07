@@ -975,7 +975,7 @@ export const projectSlice = createSlice({
 
         addBackdropInMemory: {
             reducer: (state, action) => {
-                state.value.backdropList.push(BackdropDataHandler.initializeBackdrop(action.payload))
+                state.value.backdropList.unshift(BackdropDataHandler.initializeBackdrop(action.payload))
             }
         },
 

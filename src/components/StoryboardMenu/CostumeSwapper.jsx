@@ -1,26 +1,36 @@
 import React from "react";
 import {createSelector} from "reselect";
 import {useDispatch, connect, useSelector} from "react-redux";
-import {Modal, Steps} from 'antd';
+import {Modal, Steps,Button} from 'antd';
 import axios from "../../axiosConfig";
 import Paper from "@material-ui/core/Paper";
 import {Grid, makeStyles} from "@material-ui/core";
 import ImgTile from "../primitives/ImgCard/ImgTile";
-import {modifyRecommend, modifyRecommendBackdrop} from "../../redux/features/recommendSlice";
+import {justModifyStateId, modifyRecommend, modifyRecommendBackdrop} from "../../redux/features/recommendSlice";
 import AssetGallery from "../primitives/AssetGallery";
 import Divider from "@material-ui/core/Divider";
+import Avatar from "@material-ui/core/Avatar";
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import globalConfig from "../../globalConfig";
 const { Step } = Steps;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     root: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    stepsContainer: {
         display:"flex",
-        flexDirection:"row",
-        padding: "20px 20px",
-        height: 500,
+        flexDirection:"column",
+        // padding: "20px 20px",
+        height: globalConfig.responsiveSizeData.newStoryboardHeight - (56 + 24 + 28 + 8 + 148 + 21 + 21 + 56 + 56),
+        width: "100%",
     },
     steps: {
         width: 120,
-        height: 500,
+        height: globalConfig.responsiveSizeData.newStoryboardHeight - (56 + 24 + 28 + 8 + 148 + 21 + 21 + 56 + 56),
         overflow: "scroll"
     },
     paper: {
@@ -58,7 +68,7 @@ const useStyles = makeStyles({
     },
     stepsContent: {
         width: "60%",
-        height: 500,
+        height: "inherit",
         // marginTop: 16,
         padding: "8px 8px",
         textAlign: "center",
@@ -71,7 +81,26 @@ const useStyles = makeStyles({
         // justifyContent: "space-between",
         // alignItems: "center",
     },
-});
+    avatarList: {
+        display: 'flex',
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    avatar: {
+        '& img': {
+            objectFit: "contain",
+        }
+    },
+    userCostumes: {
+        width: "100%",
+        height: 240,
+        overflow: "scroll",
+        padding: "10px 10px",
+    },
+}));
 
 
 const getSelectedRecommend = createSelector(
@@ -144,6 +173,20 @@ const CostumeSwapper = (props) => {
         setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
     };
 
+    const useOriginal = (e) => {
+        if (currentCostumeStep >= selectedBackdrops.length) {
+            dispatch(justModifyStateId({
+                newStateId: selectedCostumes[currentCostumeStep - selectedBackdrops.length]._id,
+                type: "state"}));
+        }
+        else {
+            dispatch(justModifyStateId({
+                newStateId: selectedBackdrops[currentCostumeStep]._id,
+                type: "backdrop"}));
+        }
+        setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
+    }
+
     const handleUseBackdrop = (e, _id) => {
         // globalLog("handleUse")
         if (currentCostumeStep === selectedCostumes.length + selectedBackdrops.length) {
@@ -161,8 +204,13 @@ const CostumeSwapper = (props) => {
 
     return (
         <>
+            <div className={classes.root}>
+                <SwappedAvatarList
+                    selectedBackdrops={selectedBackdrops}
+                    selectedCostumes={selectedCostumes}
+                />
             <div
-             className={classes.root}
+             className={classes.stepsContainer}
             >
                 <Steps
                     direction="vertical"
@@ -188,45 +236,56 @@ const CostumeSwapper = (props) => {
                         )
                     )}
                 </Steps>
-                <SwappedAvatarList
-                    selectedBackdrops={selectedBackdrops}
-                    selectedCostumes={selectedCostumes}
-                />
-                <div className={classes.stepsContent}>'
+
+                <div className={classes.stepsContent}>
                         {
                             currentCostumeStep < selectedBackdrops.length &&
                             (
                                 <>
-                                <Grid container spacing={1} justifyContent="center"
-                                      style={{
-                                             height: 300,
-                                             overflow: "scroll",
-                                             margin: "10px 10px"
-                                          }}
-                                >
-                                    {userBackdrops.map(imgData => (
+                                    <div  className={classes.userCostumes}>
+                                    <div>
+                                    {"My backdrops"}
+                                    </div>
+                                    <Grid container spacing={1} justifyContent="center">
                                         <Grid item xs={2}
-                                              key={imgData._id}
+                                              key={"skip"}
+                                              style={{display: "flex", justifyContent: "center", alignItems: "center"}}
                                         >
-                                            <ImgTile
-                                                type="swap-costume-backdrop"
-                                                _id={imgData._id}
-                                                name={imgData.name}
-                                                imgSrc={axios.defaults.baseURL + imgData._id}
-                                                heightToWidthRatio="75%"
-                                                handleDelete={null}
-                                                handleUse={handleUseBackdrop}
-                                                contentNode={imgData.name}
-                                            />
+                                            <Button
+                                                type="dashed"
+                                                variant="contained"
+                                                onClick={useOriginal}
+                                            >Use original</Button>
                                         </Grid>
-                                    ))}
-                                </Grid>
+
+                                        {userBackdrops.map(imgData => (
+                                            <Grid item xs={2}
+                                                  key={imgData._id}
+                                            >
+                                                <ImgTile
+                                                    type="swap-costume-backdrop"
+                                                    _id={imgData._id}
+                                                    name={imgData.name}
+                                                    imgSrc={axios.defaults.baseURL + imgData._id}
+                                                    heightToWidthRatio="70%"
+                                                    handleDelete={null}
+                                                    handleUse={handleUseBackdrop}
+                                                    contentNode={imgData.name}
+                                                />
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                    </div>
                                     <Divider/>
-                                    {"Search for a new backdrop"}
-                                    <AssetGallery
-                                        xs={3}
-                                        height={300}
-                                        type="backdrop"/>
+                                    <div>
+                                        {"Search for a new backdrop"}
+                                        <AssetGallery
+                                            xs={2}
+                                            height={300}
+                                            type="backdrop"
+                                            itemSize={120}
+                                        />
+                                    </div>
                                 </>
                             )
                         }
@@ -234,14 +293,23 @@ const CostumeSwapper = (props) => {
                             currentCostumeStep >= selectedBackdrops.length &&
                             (
                                 <>
+                                <div  className={classes.userCostumes}>
+                                <div>
+                                    {"My actors"}
+                                </div>
                                 <Grid container spacing={1} justifyContent="center"
-                                      style={{
-                                          height: 300,
-                                          overflow: "scroll",
-                                          padding: "10px 10px"
-                                      }}
                                 >
-                                {userCostumes.map(imgData => (
+                                    <Grid item xs={2}
+                                          key={"skip"}
+                                          style={{display: "flex", justifyContent: "center", alignItems: "center"}}
+                                    ><Button
+                                        type="dashed"
+                                        variant="contained"
+                                        onClick={useOriginal}
+                                        >Use original</Button>
+                                    </Grid>
+
+                                    {userCostumes.map(imgData => (
                                         <Grid item xs={2}
                                               key={imgData._id}
                                         >
@@ -259,16 +327,23 @@ const CostumeSwapper = (props) => {
                                         </Grid>
                                     ))}
                                 </Grid>
+                                </div>
                                     <Divider/>
-                                    {"Search for a new actor"}
-                                    <AssetGallery
+                                    <div
+                                    >
+                                        {"Search for a new actor"}
+                                        <AssetGallery
                                         xs={2}
                                         height={300}
-                                        type="state"/>
+                                        type="state"
+                                        itemSize={120}
+                                    />
+                                    </div>
                                 </>
                             )
                         }
                 </div>
+            </div>
             </div>
         </>
     )
@@ -336,6 +411,7 @@ const CostumeTitle = React.memo((props) => {
 
 
 const SwappedAvatarList = (props) => {
+    const classes = useStyles();
     const {selectedBackdrops, selectedCostumes} = props;
     const modifiedCostumes = useSelector(state =>
         (state.recommend.value.modifiedCostumes)
@@ -345,10 +421,14 @@ const SwappedAvatarList = (props) => {
     );
     const oldSrc = [];
     const newSrc = [];
+
     for (let i = 0; i < selectedBackdrops.length; i++) {
         oldSrc.push(axios.defaults.baseURL + selectedBackdrops[i]._id);
         if (i < modifiedBackdrops.length) {
             newSrc.push(axios.defaults.baseURL + modifiedBackdrops[i]);
+        }
+        else {
+            newSrc.push(null)
         }
     }
 
@@ -357,48 +437,34 @@ const SwappedAvatarList = (props) => {
         if (i < modifiedCostumes.length){
             newSrc.push(axios.defaults.baseURL + modifiedCostumes[i]);
         }
+        else {
+            newSrc.push(null)
+        }
     }
 
     return (
-        <> {
-            oldSrc.map((src, index) => (
-                <SwappedAvatar
-                    oldSrc={src}
-                    newSrc={newSrc[index]}
-                />
-            ))
-        }
+        <>
+            <div
+                style={{minHeight: 80}}
+            >
+                <div className={classes.avatarList}>
+                    {"Original "}
+                    {oldSrc.map((src) => (
+                        <Avatar src={src} alt="avatar" className={classes.avatar}>
+                            {src===null && <HelpOutlineIcon/>}
+                        </Avatar>
+                    ))}
+                </div>
+                <div className={classes.avatarList}>
+                    {   "New \u00a0\u00a0\u00a0\u00a0"}
+                    {newSrc.map((src) => (
+                        <Avatar src={src} alt="avatar" className={classes.avatar}>
+                            {src===null && <HelpOutlineIcon/>}
+                        </Avatar>
+                    ))}
+                </div>
+            </div>
         </>
-    )
-}
-
-
-const SwappedAvatar = (props) => {
-    const {oldSrc, newSrc} = props;
-
-    return (
-        <div
-            style={{width: 50, height: 50}}
-        >
-            <img
-                alt="img"
-                src={oldSrc}
-                style={{
-                    objectFit: "contain",
-                    width: '50%',
-                    height: '100%',
-                }}
-            />
-            <img
-                alt="img"
-                src={newSrc}
-                style={{
-                    objectFit: "contain",
-                    width: '50%',
-                    height: '100%',
-                }}
-            />
-        </div>
     )
 }
 

@@ -46,6 +46,7 @@ const NewStoryboardDialogue = props => {
                 }
                 okText="Create"
                 cancelText="Cancel"
+                style={{top: globalConfig.storyboardTop}}
             >
                 <Input
                     onChange={e => setNewStoryboardName(e.target.value)}

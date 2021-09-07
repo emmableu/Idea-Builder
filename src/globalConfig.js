@@ -40,6 +40,7 @@ const draftTheme = {
 console.log(window.innerWidth);
 console.log(window.innerHeight);
 
+const storyboardTop = 60;
 
 let mode = "LARGE"
 
@@ -73,6 +74,8 @@ const globalConfig = {
      addNewActorBoxHeight: 50,
      projectDrawerWidth: 270,
      panelTabsWidth: 65,
+     storyboardTop: storyboardTop,
+     costumeSwapperContentHeight: window.innerHeight - storyboardTop*2 - (56 + 24 + 28 + 8 + 148 + 21 + 21 + 56 + 56),
      // noteWidth: 335,
      // responsiveSizeData.frameListHeight: 200,
      trashToolBarHeight: 36,

@@ -4,6 +4,7 @@ import StoryboardGallery from "./StoryboardGallery";
 import {makeStyles} from "@material-ui/core";
 import CostumeSwapper from "./CostumeSwapper";
 import ModifyingFrameList from "./ModifiedFrameList";
+import globalConfig from "../../globalConfig";
 
 const { Step } = Steps;
 
@@ -33,6 +34,8 @@ const useStyles = makeStyles( theme => ({
         borderRadius: 2,
         display: "flex",
         flexDirection: "column",
+        maxHeight: globalConfig.responsiveSizeData.newStoryboardHeight,
+        overflow: "scroll",
     },
     stepsAction: {
         marginTop: 24,
@@ -69,7 +72,9 @@ const GalleryStepper = () => {
                 }
                 {current === 1 &&
                     <>
+                        <div style={{height: 200}}>
                         <ModifyingFrameList/>
+                        </div>
                         <CostumeSwapper
                             setCurrent={setCurrent}
                         />

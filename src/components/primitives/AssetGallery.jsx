@@ -40,6 +40,10 @@ const ImgRow = React.memo(
 
 const AssetGallery = React.memo((props) => {
     const {type, height, xs} = props;
+    let {itemSize} = props;
+    if (itemSize === undefined) {
+        itemSize = xs===2? 150:200;
+    }
     // const imgList = useSelector(state => state.asset.value[type]);
     const [imgList, setImgList] = React.useState([]);
     React.useEffect(
@@ -66,7 +70,7 @@ const AssetGallery = React.memo((props) => {
                 className="List"
                 height={height}
                 itemCount={Math.floor(imgList.length/(12/xs))}
-                itemSize={xs===2? 150:200}
+                itemSize={itemSize}
                 width="100%"
                 itemData = {{
                     type,
