@@ -38,7 +38,7 @@ const useStyles = makeStyles( theme => ({
         overflow: "scroll",
     },
     stepsAction: {
-        marginTop: 24,
+        marginTop: 12,
     }
 
 }))
@@ -83,11 +83,6 @@ const GalleryStepper = () => {
 
             </div>
             <div className={classes.stepsAction}>
-                {current < steps.length - 1 && (
-                    <Button type="primary" onClick={() => next()}>
-                        Next
-                    </Button>
-                )}
                 {current === steps.length - 1 && (
                     <Button type="primary" onClick={() => message.success('Processing complete!')}>
                         Done

@@ -64,7 +64,7 @@ let responsiveSizeData = {
      frameListPaperHeight: 140,
 }
 
-const costumeSwapperHeight = Math.max(window.innerHeight - storyboardTop*2 - (56 + 24 + 28 + 8 + 148 + 21 + 21 + 56 + 56 + 32 + 48 + 52), 200);
+const costumeSwapperHeight = Math.max(window.innerHeight - storyboardTop*2 - (56 + 24 + 28 + 8 + 148 + 21 + 21 + 42 + 42 + 32 + 12 + 24 + 52), 200);
 
 const globalConfig = {
      // actorDrawerWidth: 270,
