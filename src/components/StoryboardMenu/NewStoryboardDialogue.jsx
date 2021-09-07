@@ -48,11 +48,9 @@ const NewStoryboardDialogue = props => {
                 cancelText="Cancel"
                 style={{top: globalConfig.storyboardTop}}
             >
-                <Input
-                    onChange={e => setNewStoryboardName(e.target.value)}
-                    placeholder="Storyboard Name"
+                <GalleryStepper
+                    setNewStoryboardName={setNewStoryboardName}
                 />
-                <GalleryStepper/>
             </Modal>
             <Button
                 type="ghost"

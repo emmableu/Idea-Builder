@@ -7,6 +7,7 @@ import ModifyingFrameList from "./ModifiedFrameList";
 import globalConfig from "../../globalConfig";
 import {resetModifiedRecommend} from "../../redux/features/recommendSlice";
 import {useDispatch} from "react-redux";
+import NewStoryboardNameInput from "./NewStoryboardNameInput";
 
 const { Step } = Steps;
 
@@ -45,7 +46,8 @@ const useStyles = makeStyles( theme => ({
 
 }))
 
-const GalleryStepper = () => {
+const GalleryStepper = (props) => {
+    const {setNewStoryboardName} = props;
     const [current, setCurrent] = React.useState(0);
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -81,6 +83,12 @@ const GalleryStepper = () => {
                             setCurrent={setCurrent}
                         />
                     </>
+                }
+                {
+                    current === 2 &&
+                        <NewStoryboardNameInput
+                            setNewStoryboardName={setNewStoryboardName}
+                        />
                 }
 
             </div>
