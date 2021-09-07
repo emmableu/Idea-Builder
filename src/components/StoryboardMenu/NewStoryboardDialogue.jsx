@@ -16,16 +16,20 @@ const NewStoryboardDialogue = props => {
     const {type} = props;
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const [newStoryboardName, setNewStoryboardName] = React.useState("");
+    const [current, setCurrent] = React.useState(0);
     const dispatch = useDispatch();
+
 
     const showModal = e => {
         setIsModalVisible(true);
     };
 
-    const handleOk = async () => {
+    const handleOk = () => {
         dispatch(addStoryboard({
             type,
             storyboardName: newStoryboardName}))
+        setNewStoryboardName("");
+        setCurrent(0);
         setIsModalVisible(false);
     };
 
@@ -50,6 +54,8 @@ const NewStoryboardDialogue = props => {
             >
                 <GalleryStepper
                     setNewStoryboardName={setNewStoryboardName}
+                    current={current}
+                    setCurrent={setCurrent}
                 />
             </Modal>
             <Button

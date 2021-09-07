@@ -47,8 +47,7 @@ const useStyles = makeStyles( theme => ({
 }))
 
 const GalleryStepper = (props) => {
-    const {setNewStoryboardName} = props;
-    const [current, setCurrent] = React.useState(0);
+    const {setNewStoryboardName, current, setCurrent} = props;
     const classes = useStyles();
     const dispatch = useDispatch();
 
