@@ -8,6 +8,7 @@ import {ArrowForward, DeleteOutlined} from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import {globalLog} from "../../../globalConfig";
+import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 
 const useStyles = makeStyles({
     root: {
@@ -108,7 +109,8 @@ const ImgTile = React.memo((props) =>  {
                                         }}
                                         size={buttonSize}>
                                 {type==="decor"&& <Add style={{color: "white"}} />}
-                                {type!=="decor"&& <ArrowForward style={{color: "white"}} />}
+                                {type.startsWith("swap-costume") && <SwapHorizIcon style={{color: "white"}} />}
+                                {!type.startsWith("swap-costume") && type!=="decor" && <ArrowForward style={{color: "white"}} />}
                             </IconButton>
                         </Tooltip>
                         { hasDelete &&

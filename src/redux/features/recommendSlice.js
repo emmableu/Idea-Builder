@@ -31,6 +31,12 @@ export const recommendSlice = createSlice({
             state.value.modified = JSON.parse(JSON.stringify(selected));
         },
 
+        resetModifiedRecommend: (state) => {
+            state.value.modifiedCostumes = [];
+            state.value.modifiedBackdrops = [];
+            state.value.modified = JSON.parse(JSON.stringify(state.value.selected));
+        },
+
         setModifiedRecommend: (state, action) => {
             state.value.modified = action.payload
         },
@@ -60,6 +66,6 @@ export const recommendSlice = createSlice({
     },
 })
 
-export const { resetRecommend, addRecommend, setSelectedRecommend, setModifiedRecommend, modifyRecommend,
+export const { resetRecommend, addRecommend, setSelectedRecommend, setModifiedRecommend,resetModifiedRecommend, modifyRecommend,
     modifyRecommendBackdrop, justModifyStateId } = recommendSlice.actions
 export default recommendSlice.reducer

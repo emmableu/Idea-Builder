@@ -1,12 +1,17 @@
 import React from "react";
 import {createSelector} from "reselect";
 import {useDispatch, connect, useSelector} from "react-redux";
-import {Modal, Steps,Button} from 'antd';
+import {Modal, Steps,Button, Progress} from 'antd';
 import axios from "../../axiosConfig";
 import Paper from "@material-ui/core/Paper";
 import {Grid, makeStyles} from "@material-ui/core";
 import ImgTile from "../primitives/ImgCard/ImgTile";
-import {justModifyStateId, modifyRecommend, modifyRecommendBackdrop} from "../../redux/features/recommendSlice";
+import {
+    justModifyStateId,
+    modifyRecommend,
+    modifyRecommendBackdrop,
+    resetModifiedRecommend
+} from "../../redux/features/recommendSlice";
 import AssetGallery from "../primitives/AssetGallery";
 import Divider from "@material-ui/core/Divider";
 import Avatar from "@material-ui/core/Avatar";
@@ -159,26 +164,34 @@ const mapStateToProps = (state) => {
 const CostumeSwapper = (props) => {
     const classes = useStyles();
     const {
+        setCurrent,
         userCostumes, userBackdrops,
-        selectedCostumes, selectedBackdrops} = props;
+        selectedCostumes, selectedBackdrops
+    } = props;
     const [currentCostumeStep, setCurrentCostumeStep] = React.useState(0);
+    const [isComplete, setIsComplete] = React.useState(false);
     const dispatch = useDispatch();
 
+    const reset = (e) => {
+        dispatch(resetModifiedRecommend());
+    };
 
     const handleUse = (e, actorId, _id) => {
-        // globalLog("handleUse")
-        if (currentCostumeStep === selectedCostumes.length) {
-            return;
-        }
+        console.log("handleUse", currentCostumeStep, selectedCostumes.length, selectedBackdrops.length)
         dispatch(modifyRecommend(
-                {
-                    actorId: selectedCostumes[currentCostumeStep - selectedBackdrops.length].actorId,
-                    stateId: selectedCostumes[currentCostumeStep - selectedBackdrops.length]._id,
-                    newActorId: actorId,
-                    newStateId: _id,
-                }
+            {
+                actorId: selectedCostumes[currentCostumeStep - selectedBackdrops.length].actorId,
+                stateId: selectedCostumes[currentCostumeStep - selectedBackdrops.length]._id,
+                newActorId: actorId,
+                newStateId: _id,
+            }
         ));
-        setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
+        if (currentCostumeStep === selectedCostumes.length + selectedBackdrops.length - 1) {
+            setIsComplete(true);
+        }
+        else {
+            setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
+        }
     };
 
     const useOriginal = (e) => {
@@ -192,21 +205,28 @@ const CostumeSwapper = (props) => {
                 newStateId: selectedBackdrops[currentCostumeStep]._id,
                 type: "backdrop"}));
         }
-        setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
+        if (currentCostumeStep === selectedCostumes.length + selectedBackdrops.length - 1) {
+            setIsComplete(true);
+        }
+        else {
+            setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
+        }
     }
 
     const handleUseBackdrop = (e, _id) => {
         // globalLog("handleUse")
-        if (currentCostumeStep === selectedCostumes.length + selectedBackdrops.length) {
-            return;
-        }
         dispatch(modifyRecommendBackdrop(
             {
                 stateId: selectedBackdrops[currentCostumeStep]._id,
                 newStateId: _id,
             }
         ));
-        setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
+        if (currentCostumeStep === selectedCostumes.length + selectedBackdrops.length - 1) {
+            setIsComplete(true);
+        }
+        else {
+            setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
+        }
     };
 
 
@@ -220,6 +240,43 @@ const CostumeSwapper = (props) => {
             <div
              className={classes.stepsContainer}
             >
+                {
+                    isComplete &&
+                        <div
+                            style={{
+                                width: "100%",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "center",
+                                alignItems: "center"
+                            }}
+                        >
+                            <Progress
+                                type="circle"
+                                strokeColor={{
+                                    '0%': '#108ee9',
+                                    '100%': '#87d068',
+                                }}
+                                percent={100}
+                            />
+                            <p>Completed</p>
+                            <div>
+                                <Button onClick={reset}>
+                                    Reset
+                                </Button>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <Button
+                                    type="primary"
+                                    onClick={e => setCurrent(2)}>
+                                    Next
+                                </Button>
+                            </div>
+                        </div>
+                }
+
+                {
+                    !isComplete &&
+                    <>
                 <Steps
                     direction="vertical"
                     progressDot
@@ -244,7 +301,6 @@ const CostumeSwapper = (props) => {
                         )
                     )}
                 </Steps>
-
                 <div className={classes.stepsContent}>
                         {
                             currentCostumeStep < selectedBackdrops.length &&
@@ -353,6 +409,7 @@ const CostumeSwapper = (props) => {
                             )
                         }
                 </div>
+                </>}
             </div>
             </div>
         </>

@@ -5,6 +5,8 @@ import {makeStyles} from "@material-ui/core";
 import CostumeSwapper from "./CostumeSwapper";
 import ModifyingFrameList from "./ModifiedFrameList";
 import globalConfig from "../../globalConfig";
+import {resetModifiedRecommend} from "../../redux/features/recommendSlice";
+import {useDispatch} from "react-redux";
 
 const { Step } = Steps;
 
@@ -45,13 +47,13 @@ const useStyles = makeStyles( theme => ({
 
 const GalleryStepper = () => {
     const [current, setCurrent] = React.useState(0);
-    const classes = useStyles()
-
-    const next = () => {
-        setCurrent(current + 1);
-    };
+    const classes = useStyles();
+    const dispatch = useDispatch();
 
     const prev = () => {
+        if (current === 2) {
+            dispatch(resetModifiedRecommend());
+        }
         setCurrent(current - 1);
     };
 
@@ -73,7 +75,7 @@ const GalleryStepper = () => {
                 {current === 1 &&
                     <>
                         <div style={{height: 200}}>
-                        <ModifyingFrameList/>
+                            <ModifyingFrameList/>
                         </div>
                         <CostumeSwapper
                             setCurrent={setCurrent}
@@ -90,7 +92,7 @@ const GalleryStepper = () => {
                 )}
                 {current > 0 && (
                     <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
-                        Previous
+                        Back
                     </Button>
                 )}
             </div>
