@@ -482,7 +482,7 @@ const deleteActor = createAsyncThunk(
         dispatch(deleteActorInMemory(actorId));
         const state = getState();
         const projectId = state.project.value._id;
-        const actorIdList = state.project.value.actorList.map(a=>a._id);
+        const actorIdList = state.project.value.actorList.filter(e => !e.deleted).map(a=>a._id);
         const response = await ProjectAPI.replaceActorIdListInDatabase({
             projectId, actorIdList
         });

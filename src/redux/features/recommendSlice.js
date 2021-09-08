@@ -40,6 +40,13 @@ export const recommendSlice = createSlice({
             state.value.modified._id = UUID.v4();
         },
 
+        clearModifiedRecommend: (state) => {
+            state.value.selected = null;
+            state.value.modified = null;
+            state.value.modifiedCostumes = [];
+            state.value.modifiedBackdrops = [];
+        },
+
         setModifiedRecommend: (state, action) => {
             state.value.modified = action.payload
         },
@@ -69,6 +76,6 @@ export const recommendSlice = createSlice({
     },
 })
 
-export const { resetRecommend, addRecommend, setSelectedRecommend, setModifiedRecommend,resetModifiedRecommend, modifyRecommend,
+export const { resetRecommend, addRecommend, setSelectedRecommend, setModifiedRecommend,resetModifiedRecommend, clearModifiedRecommend,  modifyRecommend,
     modifyRecommendBackdrop, justModifyStateId } = recommendSlice.actions
 export default recommendSlice.reducer

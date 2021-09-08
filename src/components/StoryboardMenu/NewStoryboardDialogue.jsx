@@ -11,6 +11,7 @@ import {addStoryboard} from "../../redux/features/projectSlice";
 import StoryboardGallery from "./StoryboardGallery";
 import GalleryStepper from "./GalleryStepper";
 import globalConfig from "../../globalConfig";
+import {clearModifiedRecommend} from "../../redux/features/recommendSlice";
 
 const NewStoryboardDialogue = props => {
     const {type} = props;
@@ -28,9 +29,9 @@ const NewStoryboardDialogue = props => {
         dispatch(addStoryboard({
             type,
             storyboardName: newStoryboardName,
-
         }))
         setNewStoryboardName("");
+        dispatch(clearModifiedRecommend());
         setCurrent(0);
         setIsModalVisible(false);
     };

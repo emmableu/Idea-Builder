@@ -5,7 +5,7 @@ import {makeStyles} from "@material-ui/core";
 import CostumeSwapper from "./CostumeSwapper";
 import ModifyingFrameList from "./ModifiedFrameList";
 import globalConfig from "../../globalConfig";
-import {resetModifiedRecommend} from "../../redux/features/recommendSlice";
+import {clearModifiedRecommend, resetModifiedRecommend} from "../../redux/features/recommendSlice";
 import {useDispatch} from "react-redux";
 import NewStoryboardNameInput from "./NewStoryboardNameInput";
 
@@ -58,6 +58,11 @@ const GalleryStepper = (props) => {
         setCurrent(current - 1);
     };
 
+    const createEmptyStoryboard = () => {
+        dispatch(clearModifiedRecommend());
+        setCurrent(2)
+    }
+
     return (
         <>
             <Steps current={current}
@@ -92,9 +97,9 @@ const GalleryStepper = (props) => {
 
             </div>
             <div className={classes.stepsAction}>
-                {current === steps.length - 1 && (
-                    <Button type="primary" onClick={() => message.success('Processing complete!')}>
-                        Done
+                {current === 0 && (
+                    <Button  onClick={createEmptyStoryboard}>
+                        Create empty storyboard
                     </Button>
                 )}
                 {current > 0 && (
