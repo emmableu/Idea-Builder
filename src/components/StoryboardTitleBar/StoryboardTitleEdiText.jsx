@@ -49,6 +49,12 @@ const getStoryboardTitleData = createSelector(
     state => state.project.value.selectedId.storyboardId,
     state => state.project.value.storyboardList,
     (storyboardId, storyboardList) => {
+        if (storyboardId === null) {
+            return {
+                storyboardId: null,
+                storyboardTitle: "",
+            }
+        }
         return {
            storyboardId: storyboardId,
            storyboardTitle: storyboardList.find(s => s._id === storyboardId).name

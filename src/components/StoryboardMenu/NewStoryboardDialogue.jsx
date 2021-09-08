@@ -27,7 +27,9 @@ const NewStoryboardDialogue = props => {
     const handleOk = () => {
         dispatch(addStoryboard({
             type,
-            storyboardName: newStoryboardName}))
+            storyboardName: newStoryboardName,
+
+        }))
         setNewStoryboardName("");
         setCurrent(0);
         setIsModalVisible(false);

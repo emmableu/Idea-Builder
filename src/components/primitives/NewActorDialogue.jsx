@@ -2,9 +2,9 @@ import {Modal, Button, Space, Dropdown} from 'antd';
 import React from 'react';
 import { Input } from 'antd';
 import { useDispatch } from 'react-redux';
-import {addActor, addStoryboard} from "../../redux/features/projectSlice";
+import {addActor} from "../../redux/features/projectSlice";
 import Paper from "@material-ui/core/Paper";
-import globalConfig from "../../globalConfig";
+import * as UUID from "uuid";
 import axios from "../../axiosConfig";
 
 const NewActorDialogue = React.memo(props => {
@@ -18,7 +18,7 @@ const NewActorDialogue = React.memo(props => {
         dispatch(addActor(
             {
                 stateList: [{
-                    _id: imgId,
+                    _id: imgId + "?" + UUID.v4(),
                     name: "",
                 }],
                 name: newActorName,

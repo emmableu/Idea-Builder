@@ -13,5 +13,13 @@ export class StateDataHandler{
             name: name? name:"Untitled"
         }
     }
+    static deepCopy(stateData: StateData):StateData  {
+        const {_id, name} = stateData;
+        const newId = _id.split("?")[0] + "?" + UUID.v4();
+        return {
+            _id: newId,
+            name: name,
+        }
+    }
 }
 

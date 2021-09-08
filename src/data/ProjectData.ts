@@ -1,6 +1,6 @@
 import {ActorData, ActorDataHandler} from "./ActorData";
 import * as UUID from "uuid";
-import {BackdropData} from "./BackdropData";
+import {BackdropData, BackdropDataHandler} from "./BackdropData";
 import {SelectedIdData, SelectedIdDataHandler} from "./SelectedIdData";
 import fileDownload from "js-file-download";
 import {FrameData, FrameDataHandler} from "./FrameData";
@@ -108,6 +108,72 @@ export class ProjectDataHandler {
                 name: "mouse hovered",
             }
         ];
+
+        const projectVariableList = variableList? variableList: [];
+
+        //variable changes to resources (e.g., should have icons, should have big speechBubble and character limit.
+
+        return {
+            _id: projectId,
+            userId,
+            name: projectName,
+            storyboardList: projectStoryboardList,
+            actorList: projectActorList,
+            backdropList: projectBackdropList,
+            storyboardMenu: projectStoryboardMenu,
+            templateList: projectTemplateList,
+            selectedId: projectSelectedId,
+            speechBubbleList: projectSpeechBubbleList,
+            eventList: projectEventList,
+            variableList: projectVariableList,
+        }
+    }
+
+    static deepCopy(projectData: ProjectData) : ProjectData {
+        const {_id, userId, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
+            selectedId, speechBubbleList, variableList, eventList,
+        } = projectData;
+        const projectId = UUID.v4();
+        const projectName = name;
+        const projectStoryboardList = [];
+        for (const storyboard of storyboardList) {
+            projectStoryboardList.push(StoryboardDataHandler.deepCopy(storyboard));
+        }
+        const projectActorList = [];
+        for (const actor of actorList) {
+            projectActorList.push(ActorDataHandler.deepCopy(actor));
+        }
+
+        const projectBackdropList = [];
+        for (const backdrop of backdropList) {
+            projectBackdropList.push(BackdropDataHandler.deepCopy(backdrop));
+        }
+
+        const projectTemplateList = [projectStoryboardList[0].frameList[0]._id]
+
+
+        const projectStoryboardMenu =  {
+                "final": {
+                    "name": "My storyboards",
+                    "items": [
+                        {   "_id": projectStoryboardList[0]._id,
+                            "name": projectStoryboardList[0].name,}
+                    ]
+                },
+                "draft":  {
+                    "name": "Drafts",
+                    "items": []
+                }
+            };
+
+        const projectSelectedId = selectedId?selectedId: SelectedIdDataHandler.initializeSelectedId(
+            projectStoryboardList[0]._id,
+            projectStoryboardList[0].frameList[0]._id,
+        )
+
+        const projectSpeechBubbleList = speechBubbleList?speechBubbleList:[];
+
+        const projectEventList = eventList;
 
         const projectVariableList = variableList? variableList: [];
 

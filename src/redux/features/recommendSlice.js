@@ -1,5 +1,6 @@
 import { createSlice} from '@reduxjs/toolkit'
 import {ProjectDataHandler} from "../../data/ProjectData";
+import * as UUID from "uuid";
 
 
 
@@ -29,12 +30,14 @@ export const recommendSlice = createSlice({
             state.value.modifiedCostumes = [];
             state.value.modifiedBackdrops = [];
             state.value.modified = JSON.parse(JSON.stringify(selected));
+            state.value.modified._id = UUID.v4();
         },
 
         resetModifiedRecommend: (state) => {
             state.value.modifiedCostumes = [];
             state.value.modifiedBackdrops = [];
             state.value.modified = JSON.parse(JSON.stringify(state.value.selected));
+            state.value.modified._id = UUID.v4();
         },
 
         setModifiedRecommend: (state, action) => {

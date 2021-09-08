@@ -30,10 +30,18 @@ const calcBoxHeight = (windowInnerHeight) => {
 const getStoryboardNoteData = createSelector(
     state => state.project.value.selectedId.storyboardId,
     state => state.project.value.storyboardList,
-    (storyboardId, storyboardList) => ({
-        storyboardId: storyboardId,
-        note: storyboardList.find(s => s._id === storyboardId).note
-    })
+    (storyboardId, storyboardList) => {
+        if (storyboardId === null) {
+            return {
+                storyboardId: null,
+                note: ""
+            }
+        }
+        return {
+            storyboardId: storyboardId,
+            note: storyboardList.find(s => s._id === storyboardId).note
+        }
+    }
 );
 
 const mapStateToProps = (state) => {

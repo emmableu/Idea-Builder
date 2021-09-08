@@ -24,6 +24,20 @@ export class ActorDataHandler {
         };
     }
 
+    static deepCopy(actorData:ActorData) {
+        const { name, stateList, deleted,} = actorData;
+        const newStateList = []
+        for (const state of stateList) {
+            newStateList.push(StateDataHandler.deepCopy(state))
+        }
+        return {
+            _id: UUID.v4(),
+            name,
+            stateList: newStateList,
+            deleted,
+        };
+    }
+
     static addState(actorData:ActorData, stateId:string) {
         actorData.stateList.push(StateDataHandler.initializeState(stateId))
     }

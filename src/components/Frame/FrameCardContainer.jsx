@@ -33,6 +33,16 @@ const getSelectedStarAndActorData = createSelector(
     state => state.project.value.actorList,
     state => state.project.value.eventList,
     (storyboardId, storyboardList, frameId, starId, actorList, eventList) => {
+        if (storyboardId === null) {
+            return {
+                storyboardId: null,
+                frameId: null,
+                starList: [],
+                backdropStar: null,
+                selectedStar: null,
+                selectedActor: null,
+            }
+        }
         const selectedStoryboard = storyboardList.find(s => s._id === storyboardId);
         let selectedFrame, starList, backdropStar, selectedStar, actorData;
         if ([null, undefined].includes(frameId)) {

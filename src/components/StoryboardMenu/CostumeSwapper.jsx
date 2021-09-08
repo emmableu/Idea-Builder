@@ -138,14 +138,16 @@ const getSelectedRecommend = createSelector(
 
         const userCostumes = [];
         for (const actor of actorList) {
-            for (const state of actor.stateList) {
-                userCostumes.push(
-                    {
-                        actorId: actor._id,
-                        ...state,
-                        actorName: actor.name
-                    }
-                )
+            if (actor.deleted !== true ) {
+                for (const state of actor.stateList) {
+                    userCostumes.push(
+                        {
+                            actorId: actor._id,
+                            ...state,
+                            actorName: actor.name
+                        }
+                    )
+                }
             }
         }
         return {

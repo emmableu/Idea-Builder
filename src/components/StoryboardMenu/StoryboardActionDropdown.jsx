@@ -18,7 +18,7 @@ const StoryboardActionDropdown  = (props) => {
     const dispatch = useDispatch();
 
 
-    const showDeleteConfirm = (e, storyboardId) => {
+    const showDeleteConfirm = async (e, storyboardId) => {
         confirm({
             title: 'Are you sure you want to delete this storyboard?',
             icon: <ExclamationCircleOutlined />,
@@ -26,8 +26,8 @@ const StoryboardActionDropdown  = (props) => {
             okText: 'Yes',
             okType: 'danger',
             cancelText: 'No',
-            onOk() {
-                dispatch(setSelectedStoryboardId(null));
+            async onOk() {
+                await dispatch(setSelectedStoryboardId(null));
                 dispatch(deleteStoryboard(storyboardId));
             },
             onCancel() {

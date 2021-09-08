@@ -72,7 +72,7 @@ export class FrameDataHandler{
         frameData.starList.push(newStar);
     }
 
-    static shallowCopy (frameData: FrameData, newId?:string, copyMotion?:false,
+    static deepCopy (frameData: FrameData, newId?:string, copyMotion?:false,
     ): FrameData {
         let newFrameData;
         if (newId) {
@@ -98,7 +98,7 @@ export class FrameDataHandler{
             }
         }
 
-        newFrameData.starList = frameData.starList.map((ele:any) => StarDataHandler.shallowCopy(ele, copyMotion));
+        newFrameData.starList = frameData.starList.map((ele:any) => StarDataHandler.deepCopy(ele, copyMotion));
         return newFrameData;
     }
 
@@ -107,7 +107,7 @@ export class FrameDataHandler{
             _id: globalConfig.imageServer.student.backdrop + UUID.v4() + ".png",
             prototypeId: templateFrame.backdropStar.prototypeId,
         }
-        const newStarList = templateFrame.starList.map((ele:any) => StarDataHandler.shallowCopy(ele));
+        const newStarList = templateFrame.starList.map((ele:any) => StarDataHandler.deepCopy(ele));
         selectedFrame.starList.push(...newStarList);
     }
 

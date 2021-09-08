@@ -125,7 +125,7 @@ export class StarDataHandler {
         }
     }
 
-    static shallowCopyChildStar (childStarData:ChildStarData, copyMotion?:false): ChildStarData {
+    static deepCopyChildStar (childStarData:ChildStarData, copyMotion?:false): ChildStarData {
         const newChildStar = {speechStar: null,
             lineStar: null,
             motionStarList: []}
@@ -160,7 +160,7 @@ export class StarDataHandler {
         return newChildStar;
 
     }
-    static shallowCopy (starData:StarData, copyMotion?:false): StarData {
+    static deepCopy (starData:StarData, copyMotion?:false): StarData {
         return StarDataHandler.initializeStar(
             {
                 prototypeId: starData.prototypeId,
@@ -172,7 +172,7 @@ export class StarDataHandler {
                 width: starData.width,
                 height: starData.height,
                 transform: starData.transform,
-                childStar: StarDataHandler.shallowCopyChildStar(starData.childStar, copyMotion),
+                childStar: StarDataHandler.deepCopyChildStar(starData.childStar, copyMotion),
             }
         );
     }

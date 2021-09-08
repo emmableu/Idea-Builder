@@ -31,6 +31,24 @@ export class StoryboardDataHandler {
         }
     }
 
+
+    static deepCopy(storyboardData: StoryboardData) {
+        const {name, frameList, note} = storyboardData;
+        const storyboardId = UUID.v4();
+        const storyboardName = name;
+        const storyboardNote = note;
+        const storyboardFrameList = [];
+        for (const frame of frameList) {
+            storyboardFrameList.push(FrameDataHandler.deepCopy(frame))
+        }
+        return {
+            _id: storyboardId,
+            name: storyboardName,
+            frameList: storyboardFrameList,
+            note: storyboardNote,
+        }
+    }
+
     static addFrame(storyboardData:StoryboardData, newId:string, prevIndex:number) {
         if (prevIndex === -1) {
             storyboardData.frameList.splice(
@@ -41,7 +59,7 @@ export class StoryboardDataHandler {
         const prevFrame = storyboardData.frameList[prevIndex];
         storyboardData.frameList.splice(prevIndex+1,
             0,
-            FrameDataHandler.shallowCopy(prevFrame, newId, false),
+            FrameDataHandler.deepCopy(prevFrame, newId, false),
         )
     }
 

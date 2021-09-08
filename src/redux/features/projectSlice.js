@@ -64,12 +64,15 @@ const setSelectedStoryboardId = createAsyncThunk(
     async (storyboardId, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
-        const storyboardData = ProjectDataHandler.getStoryboard(project, storyboardId);
-
-        dispatch(setSelectedStoryboardIdInMemory(storyboardData));
-
-        if (storyboardData.frameList.length > 0){
-            dispatch(setSelectedFrameIdInMemory(storyboardData.frameList[0]._id));
+        if (storyboardId !== null) {
+            const storyboardData = ProjectDataHandler.getStoryboard(project, storyboardId);
+            dispatch(setSelectedStoryboardIdInMemory(storyboardData));
+            if (storyboardData.frameList.length > 0){
+                dispatch(setSelectedFrameIdInMemory(storyboardData.frameList[0]._id));
+            }
+        }
+        else {
+            dispatch(voidSelectedStoryboardIdInMemory())
         }
         const response = await ProjectAPI.updateSelectedIdData(
             {
@@ -129,19 +132,30 @@ const addStoryboard = createAsyncThunk(
         const {storyboardName, type} = text;
         const {dispatch, getState}  = thunkAPI;
         const storyboardId = UUID.v4();
-        const storyboardDataJSON = StoryboardDataHandler.initializeStoryboard(storyboardId, storyboardName);
         const state = getState();
-        const project = state.project.value;
-        const projectId = project._id;
+        const modified = state.recommend.value.modified;
+        const projectId = state.project.value._id;
+        let storyboardDataJSON, modifiedProject;
+        if (modified === null) {
+            modifiedProject = null;
+            storyboardDataJSON = StoryboardDataHandler.initializeStoryboard(storyboardId, storyboardName);
+        }
+        else {
+            modifiedProject = ProjectDataHandler.deepCopy(modified);
+            storyboardDataJSON = modifiedProject.storyboardList[0];
+            storyboardDataJSON.name = storyboardName
+        }
         const payload =  {
             projectId,
             type,
             storyboardDataJSON
         };
-        const newFrameId = storyboardDataJSON.frameList[0]._id;
-        globalLog("newFrameId: ", newFrameId);
         dispatch(addStoryboardInMemory(JSON.stringify(payload)));
-        globalLog("storyboardJSON: ", storyboardDataJSON);
+        if (modifiedProject !== null && modifiedProject.actorList.length > 0) {
+            for (const actorData of modifiedProject.actorList) {
+                dispatch(addActor(actorData));
+            }
+        }
         const response = await ProjectAPI.addStoryboard(payload);
         return response.status;
     }
@@ -156,7 +170,6 @@ const deleteStoryboard = createAsyncThunk(
         const project = state.project.value;
         const projectId = project._id;
         const storyboardMenu = state.project.value.storyboardMenu;
-        project.selectedId.voidStoryboardId();
         dispatch(deleteStoryboardInMemory(storyboardId));
         const response = await ProjectAPI.replaceStoryboardIdMenuInDatabase({
             projectId, storyboardMenu
@@ -645,6 +658,12 @@ export const projectSlice = createSlice({
             }
         },
 
+        voidSelectedStoryboardIdInMemory: {
+            reducer: (state) => {
+                SelectedIdDataHandler.voidStoryboardId(state.value.selectedId);
+            }
+        },
+
         setSelectedFrameIdInMemory : {
             reducer: (state, action) => {
                 SelectedIdDataHandler.setFrameId(state.value.selectedId, action.payload);
@@ -683,13 +702,13 @@ export const projectSlice = createSlice({
                 const storyboardIndex = state.value.storyboardList.findIndex(
                     a => a._id === action.payload
                 )
-                const storyboardData = state.value.storyboardList[storyboardIndex];
-                for (const frameId of storyboardData.frameList) {
-                    const templateIndex = state.value.templateList.indexOf(frameId);
-                    if (templateIndex !== -1) {
-                        state.value.templateList.splice(templateIndex, 1);
-                    }
-                }
+                // const storyboardData = state.value.storyboardList[storyboardIndex];
+                // for (const frameId of storyboardData.frameList) {
+                //     const templateIndex = state.value.templateList.indexOf(frameId);
+                //     if (templateIndex !== -1) {
+                //         state.value.templateList.splice(templateIndex, 1);
+                //     }
+                // }
                 state.value.storyboardList.splice(storyboardIndex, 1);
             }
         },
@@ -918,10 +937,11 @@ export const projectSlice = createSlice({
 
         addStateInMemory: {
             reducer: (state, action) => {
+                const stateId = action.payload.stateId.split("?")[0];
                 const actor = state.value.actorList.find(a => a._id === action.payload.actorId);
                 ActorDataHandler.addState(
                     actor,
-                    action.payload.stateId
+                    stateId+ "?" + UUID.v4()
                 )
             },
             prepare: (text) => {
@@ -1092,7 +1112,7 @@ export const projectSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
     loadProjectInMemory, updateNameInMemory,//project
-    setSelectedFrameIdInMemory, setSelectedStoryboardIdInMemory, setSelectedStarIdInMemory, //selectedId
+    setSelectedFrameIdInMemory, setSelectedStoryboardIdInMemory, voidSelectedStoryboardIdInMemory, setSelectedStarIdInMemory, //selectedId
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
     addStarInMemory, updateStarListInMemory, deleteStarInMemory, copyStarInMemory,addSpeechChildStarInMemory, //star
     addBackdropStarInMemory, //backdropStar
