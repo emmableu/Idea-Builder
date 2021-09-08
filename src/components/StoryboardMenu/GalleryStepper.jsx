@@ -37,7 +37,7 @@ const useStyles = makeStyles( theme => ({
         borderRadius: 2,
         display: "flex",
         flexDirection: "column",
-        maxHeight: globalConfig.responsiveSizeData.newStoryboardHeight,
+        maxHeight: globalConfig.galleryStepperMaxHeight,
         overflow: "scroll",
     },
     stepsAction: {

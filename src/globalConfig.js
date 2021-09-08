@@ -61,7 +61,7 @@ let responsiveSizeData = {
      storyboardDrawerWidth: 200,
      noteWidth: 230,
      frameListHeight: 185,
-     frameListPaperHeight: 140,
+     frameListPaperHeight: 120,
 }
 
 const costumeSwapperHeight = Math.max(window.innerHeight - storyboardTop*2 - (56 + 24 + 28 + 8 + 148 + 21 + 21 + 42 + 42 + 32 + 12 + 24 + 52), 200);
@@ -76,6 +76,7 @@ const globalConfig = {
      projectDrawerWidth: 270,
      panelTabsWidth: 65,
      storyboardTop: storyboardTop,
+     galleryStepperMaxHeight: window.innerHeight - storyboardTop*2,
      costumeSwapperHeight: costumeSwapperHeight,
      // noteWidth: 335,
      // responsiveSizeData.frameListHeight: 200,

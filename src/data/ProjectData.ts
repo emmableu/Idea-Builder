@@ -96,6 +96,10 @@ export class ProjectDataHandler {
                 name: "time goes by",
             },
             {
+                _id: globalConfig.imageServer.sample.event + "green-flag.png",
+                name: "green flag clicked",
+            },
+            {
                 _id: globalConfig.imageServer.sample.event + "key-press.png",
                 name: "key pressed",
             },

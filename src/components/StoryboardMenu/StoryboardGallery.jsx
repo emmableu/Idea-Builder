@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 import Container from '@material-ui/core/Container';
-import axios from "../../axiosConfig";
-import FrameList from "../FrameList/FrameList";
-import Typography from "@material-ui/core/Typography";
-import {IconButton, makeStyles} from "@material-ui/core";
-import {Button, Tooltip} from "antd"
-import globalConfig, {globalLog} from "../../globalConfig";
-import ArrowRightOutlined from "@ant-design/icons/lib/icons/ArrowRightOutlined";
-import {addRecommend, resetRecommend, setSelectedRecommend, setRecommend} from "../../redux/features/recommendSlice";
-import { useDispatch, useSelector, connect } from "react-redux";
-import {createSelector} from "reselect"
+import axios from '../../axiosConfig';
+import FrameList from '../FrameList/FrameList';
+import Typography from '@material-ui/core/Typography';
+import {IconButton, makeStyles} from '@material-ui/core';
+import {Button, Tooltip} from 'antd'
+import globalConfig, {globalLog} from '../../globalConfig';
+import ArrowRightOutlined from '@ant-design/icons/lib/icons/ArrowRightOutlined';
+import {addRecommend, resetRecommend, setSelectedRecommend, setRecommend} from '../../redux/features/recommendSlice';
+import { useDispatch, useSelector, connect } from 'react-redux';
+import {createSelector} from 'reselect'
 
 const useStyles = makeStyles({
     baseDiv: {
@@ -31,16 +31,16 @@ const useStyles = makeStyles({
     //     height: '100%',
     // },
     divOverlap: {
-        position: "absolute",
-        display: "flex",
-        top: "50%",
+        position: 'absolute',
+        display: 'flex',
+        top: '50%',
         left: 0,
         zIndex: 1,
-        width: "100%",
+        width: '100%',
         height: 0,  //need to save space for the slider bar below
-        cursor: "auto",
-        justifyContent: "center",
-        alignItems: "center",
+        cursor: 'auto',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 
@@ -66,10 +66,38 @@ const StoryboardGallery = (props) => {
              if (projectList.length > 0) {
                  return;
              }
-            // for (const rawName of ["25-Snowball Fight"]) {
-            for (const rawName of ["25-Snowball Fight", "27-Flappy Parrot"]) {
-            // for (const projectName of ["35-Green%20Your%20City", "25-Snowball%20Fight", "27-Flappy%20Parrot"]) {
-                const projectName = rawName.split(" ").join("%20");
+            // for (const rawName of ['25-Snowball Fight']) {
+            for (const rawName of [
+                // 'acceleration',
+                'asteroid_alien_move',
+                'bullet_wrap',
+                'button_select',
+                'carousel',
+                'checkout_list',
+                'click_show_calendar',
+                'collision_change_score',
+                'collision_explosion',
+                'hit_remove',
+                'inertia',
+                'initialize_fish_property',
+                'initialize_to_random',
+                // 'jump',
+                'key_trigger_bounce',
+                'keymove',
+                'move_between_points',
+                'move_free',
+                'move_with_mouse',
+                'multiple_choice_question',
+                'paddle',
+                'radio_options',
+                'shoot_bullets',
+                'show_hide_calendar',
+                'spawn_enemies',
+                'start_button',
+                'timer',
+                'turn_smaller']) {
+            // for (const projectName of ['35-Green%20Your%20City', '25-Snowball%20Fight', '27-Flappy%20Parrot']) {
+                const projectName = rawName.split(' ').join('%20');
                 const url = `/static/project/${projectName}/recommend.json`;
                 axios({
                         method: 'get',
@@ -83,7 +111,7 @@ const StoryboardGallery = (props) => {
     )
     return (
         <>
-            <Container maxWidth="lg"
+            <Container maxWidth='lg'
             >
                 {projectList.map(p => (
                     <FrameListBox
@@ -114,10 +142,10 @@ const FrameListBox = React.memo(
             <>
                 <div
                     style={{
-                        padding: "10px 10px 5px 10px"
+                        padding: '10px 10px 5px 10px'
                     }}
                 >
-                    <Typography align="center" variant="body2">
+                    <Typography align='center' variant='body2'>
                         {storyboardData.name}
                     </Typography>
                 </div>
@@ -132,13 +160,13 @@ const FrameListBox = React.memo(
                             handleDelete={null}
                             handleAdd={null}
                         />
-                        <div className={classes.divOverlap} style={{display: onHover? "flex":"none" }}
+                        <div className={classes.divOverlap} style={{display: onHover? 'flex':'none' }}
                         >
-                                <Tooltip title="Use">
-                                    <Button type="primary"
-                                            shape="circle"
+                                <Tooltip title='Use'>
+                                    <Button type='primary'
+                                            shape='circle'
                                             onClick={handleClick}
-                                            icon={ <ArrowRightOutlined /> } size="large" />
+                                            icon={ <ArrowRightOutlined /> } size='large' />
                                 </Tooltip>
                         </div>
                     </div>
