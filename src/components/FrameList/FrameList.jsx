@@ -5,6 +5,7 @@ import globalConfig, {calcFrameWidth} from "../../globalConfig";
 import StaticFrameContainer from "../Frame/StaticFrameContainer";
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import StaticFrameContainerWithAction from "../Frame/StaticFrameContainerWithAction";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "white",
         width: globalConfig.responsiveSizeData.frameListPaperHeight*4/3
     },
-
 }));
 
 const FrameList = (props) => {
@@ -40,28 +40,52 @@ const FrameList = (props) => {
     const classes = useStyles();
 
     return (<>
-        <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={1}
+        <Grid container wrap="nowrap" justify="flex-start" alignItems="center" spacing={2}
               className={classes.box}>
-            {frameList.map((frameData, i) => (
-                <StaticFrameContainer
-                    key={frameData._id}
-                    frameIndex={i}
-                    frameData={frameData}
-                    handleDelete={handleDelete}
-                    _id={_id}
-                />
-            ))}
             {
-                handleAdd!==null &&
+                <>
+                {handleAdd !== null &&
                 (
-                    <Grid item xs={2} align="middle">
-                        <Fab color="default" aria-label="add"
-                             onClick={(e) =>{ handleAdd(e)}}
-                        >
-                            <AddIcon />
-                        </Fab>
-                    </Grid>
-                )
+                    <>
+                        {frameList.map((frameData, i) => (
+                            <StaticFrameContainerWithAction
+                                key={frameData._id}
+                                frameIndex={i}
+                                frameData={frameData}
+                                handleDelete={handleDelete}
+                                _id={_id}
+                            />
+                        ))}
+                        <Grid item xs={2} align="middle">
+                            <Fab color="default" aria-label="add"
+                                 onClick={(e) =>{ handleAdd(e)}}
+                            >
+                                <AddIcon />
+                            </Fab>
+                        </Grid>
+                    </>
+                )}
+                {handleAdd===null &&
+                (
+                    <>
+                        {frameList.map((frameData, i) => (
+                            <StaticFrameContainer
+                                key={frameData._id}
+                                frameIndex={i}
+                                frameData={frameData}
+                                _id={_id}
+                            />
+                        ))}
+                        <Grid item xs={2} align="middle">
+                            <Fab color="default" aria-label="add"
+                                 onClick={(e) =>{ handleAdd(e)}}
+                            >
+                                <AddIcon />
+                            </Fab>
+                        </Grid>
+                    </>
+                )}
+                </>
             }
         </Grid>
     </>);

@@ -21,51 +21,17 @@ const useStyles = makeStyles((theme) => ({
 
 const StaticFrameContainer = React.memo((props) => {
     const classes = useStyles();
-    const {frameData, frameIndex, handleDelete, _id} = props;
-    const dispatch = useDispatch();
+    const {frameData, frameIndex, _id} = props;
 
-    const menu = (
-        <Menu>
-            <MenuItem
-                onClick={(e) =>
-                    handleDelete(e, frameIndex)
-                }
-            >
-                Delete
-            </MenuItem>
-        </Menu>
-    );
     return (
         <Grid  item key={frameIndex}>
             <Card variant="outlined"
                   className={classes.paper}
-                  style={{
-                      border: frameData._id===_id? "2px solid orange":"1px solid #e0e0e0"
-                  }}
             >
-                    <>
-                        {handleDelete !== null &&
-                        <CardActionArea
-                            onClick={(e) => {
-                            dispatch(setSelectedFrameId(frameData._id));
-                        }}>
-                        <Dropdown overlay={menu} trigger={['contextMenu']}>
-                            <StaticFrame
-                                key={frameData._id}
-                                frameData={frameData}
-                            />
-                        </Dropdown>
-                        </CardActionArea>
-                        }
-                        {handleDelete === null &&
-                        <StaticFrame
-                            key={frameData._id}
-                            frameData={frameData}
-                        />
-                        }
-
-                    </>
-
+                <StaticFrame
+                    key={frameData._id}
+                    frameData={frameData}
+                />
             </Card>
         </Grid>
 
