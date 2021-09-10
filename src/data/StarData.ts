@@ -10,6 +10,7 @@ export interface StarData {
     y: number;
     width: number;
     height: number;
+    rotation: number;
     transform: any;
     childStar: ChildStarData;
 }
@@ -28,6 +29,7 @@ export interface SpeechChildStarData {
     y: number;
     width: number;
     height: number;
+    rotation: number;
     transform: any;
 }
 
@@ -46,6 +48,7 @@ export interface MotionChildStarData {
     y: number;
     width: number;
     height: number;
+    rotation: number;
     transform: any;
     opacity:number;
 }
@@ -56,7 +59,7 @@ export class StarDataHandler {
     static initializeStar (obj:any
     ) : StarData
     {
-        const {prototypeId, _id, x, y, width, height, transform, actorId, type, childStar} = obj;
+        const {prototypeId, _id, x, y, width, height, rotation, transform, actorId, type, childStar} = obj;
         const starWidth = width? width: 100;
         const starHeight = height?height: 100;
         return {
@@ -68,6 +71,7 @@ export class StarDataHandler {
             y : y? y:(globalConfig.noScaleWidth*3/4)/2 - starHeight/2,
             width : starWidth,
             height : starHeight,
+            rotation: rotation?rotation: 0,
             transform:transform?transform:null,
             childStar: childStar? childStar: {
                 speechStar: null,
@@ -95,7 +99,7 @@ export class StarDataHandler {
     static initializeSpeechChildStar (obj:any
     ) : SpeechChildStarData
     {
-        const {prototypeId, _id, x, y, width, height, transform, type} = obj;
+        const {prototypeId, _id, x, y, width, height, rotation, transform, type} = obj;
         return {
             prototypeId: prototypeId,
             _id: _id? _id:UUID.v4(),
@@ -104,6 +108,7 @@ export class StarDataHandler {
             y : y? y:0,
             width : width? width:100,
             height : height? height:100,
+            rotation : rotation? rotation:0,
             transform:transform?transform:null,
         }
     }
@@ -111,7 +116,7 @@ export class StarDataHandler {
     static initializeMotionChildStar (obj:any
     ) : MotionChildStarData
     {
-        const {prototypeId, _id, x, y, width, height, transform, type, opacity} = obj;
+        const {prototypeId, _id, x, y, width, height, rotation, transform, type, opacity} = obj;
         return {
             prototypeId: prototypeId,
             _id: _id? _id:UUID.v4(),
@@ -120,6 +125,7 @@ export class StarDataHandler {
             y : y? y:0,
             width : width? width:100,
             height : height? height:100,
+            rotation : rotation? rotation: 0,
             transform:transform?transform:null,
             opacity: opacity?opacity:0,
         }

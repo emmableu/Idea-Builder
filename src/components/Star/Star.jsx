@@ -48,7 +48,7 @@ const Star = (props) => {
                 s => (
                     {
                         ...s,
-                        x: s.x+deltaX,
+                        x: s.x + deltaX,
                         y: s.y + deltaY,
                     }
                 )

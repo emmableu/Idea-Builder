@@ -79,6 +79,7 @@ const StarImage = (props) => {
                     // we will reset it back
                     node.scaleX(1);
                     node.scaleY(1);
+                    console.log("rotation: ", node.rotation);
                     updatePositionAndSize({
                         ...starImageData,
                         x: node.x(),
@@ -86,6 +87,7 @@ const StarImage = (props) => {
                         // set minimal value
                         width: Math.max(5, node.width() * scaleX),
                         height: Math.max(5, node.height() * scaleY),
+                        rotation: node.rotation(),
                         // transform: node.getAbsoluteTransform().getMatrix(),
                     });
                 }}/>
