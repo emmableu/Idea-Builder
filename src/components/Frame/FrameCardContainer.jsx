@@ -201,15 +201,15 @@ const FrameCardContainer = props => {
                                 {/*    </IconButton>*/}
                                 {/*</Tooltip>*/}
 
-                                <Tooltip title="Clear frame">
-                                    <IconButton aria-label="clear frame"
-                                                color="inherit"
-                                                size="small"
-                                                onClick={clearFrame}
-                                    >
-                                        <Refresh style={{ color: 'grey' }} />
-                                    </IconButton>
-                                </Tooltip>
+                                {/*<Tooltip title="Clear frame">*/}
+                                {/*    <IconButton aria-label="clear frame"*/}
+                                {/*                color="inherit"*/}
+                                {/*                size="small"*/}
+                                {/*                onClick={clearFrame}*/}
+                                {/*    >*/}
+                                {/*        <Refresh style={{ color: 'grey' }} />*/}
+                                {/*    </IconButton>*/}
+                                {/*</Tooltip>*/}
                             </div>
                             <Paper
                                 style={{

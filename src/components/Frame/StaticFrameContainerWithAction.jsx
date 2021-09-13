@@ -103,18 +103,6 @@ const StaticFrameContainerWithAction = React.memo((props) => {
                     </Dropdown>,
                 ]}
             >
-            {/*    */}
-            {/*<Card variant="outlined"*/}
-            {/*>*/}
-            {/*        <CardActionArea*/}
-            {/*            onClick={(e) => {*/}
-            {/*                dispatch(setSelectedFrameId(frameData._id));*/}
-            {/*            }}>*/}
-            {/*            <Dropdown overlay={menu} trigger={['contextMenu']}>*/}
-
-            {/*            </Dropdown>*/}
-            {/*        </CardActionArea>*/}
-
             </Card>
         </Grid>
 
