@@ -7,10 +7,12 @@ import Grid from "@material-ui/core/Grid";
 // import Card from "@material-ui/core/Card/Card";
 import { Card, Avatar } from 'antd';
 import {DeleteTwoTone, EditOutlined, EllipsisOutlined, SettingOutlined} from '@ant-design/icons';
-import {setSelectedFrameId} from "../../redux/features/projectSlice";
+import {addFrame, setSelectedFrameId} from "../../redux/features/projectSlice";
 import globalConfig from "../../globalConfig";
 import {useDispatch, useSelector} from "react-redux";
 import DragHandleIcon from "../primitives/DragHandleIcon";
+import NewMotionMenuItem from "../FrameToolbar/NewMotionMenuItem";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -26,10 +28,23 @@ const useStyles = makeStyles((theme) => ({
 
 const StaticFrameContainerWithAction = React.memo((props) => {
     const classes = useStyles();
-    const {frameData, frameIndex, handleDelete, _id} = props;
+    const {frameData, frameIndex, handleDelete, _id, idx} = props;
     const dispatch = useDispatch();
     const deleteFrame = (e) =>
         handleDelete(e, frameIndex)
+
+    const addFrameHere = (e, _id) =>
+        dispatch(addFrame({prevIndex: idx}));
+
+    const menu = (
+        <Menu>
+            <MenuItem
+                onClick={addFrameHere}>New frame</MenuItem>
+            <MenuItem
+                onClick={deleteFrame}>Delete</MenuItem>
+        </Menu>
+    );
+
     return (
         <Grid  item key={frameIndex}>
             <Card
@@ -44,6 +59,8 @@ const StaticFrameContainerWithAction = React.memo((props) => {
                 }}
                 cover={
                     <div
+                        {...props}
+                        style={{cursor:"default"}}
                         onClick={(e) => {dispatch(setSelectedFrameId(frameData._id))}}
                     >
                     <StaticFrame
@@ -61,24 +78,29 @@ const StaticFrameContainerWithAction = React.memo((props) => {
                             type="link"
                             size="small"
                             onClick={(e) => {dispatch(setSelectedFrameId(frameData._id))}}
+                            // icon={<EditOutlined/>}
                             key="edit" />
                     </Tooltip> ,
-                    <Button
+                    <Tooltip title="Move frame">
+                    <DragHandleIcon
                         type="link"
                         shape="circle"
+                        style={{cursor:"grab"}}
                         size="small"
-                        icon={<DragHandleIcon {...props}
-                        />}
-                    />,
-                    <Tooltip title="Delete frame">
-                        <Button
+                        {...props}
+                        />
+                    </Tooltip>,
+
+                    <Dropdown overlay={menu}
+                              overlayStyle={{zIndex:1}}
+                    >
+                        <EllipsisOutlined
                             type="link"
                             shape="circle"
                             size="small"
-                            onClick={deleteFrame}
-                            icon={<DeleteTwoTone twoToneColor="#eb2f96" />}
+                            // icon={<DeleteTwoTone twoToneColor="#eb2f96" />}
                         />
-                    </Tooltip>,
+                    </Dropdown>,
                 ]}
             >
             {/*    */}

@@ -44,7 +44,7 @@ const FrameListFunctionContainer = () => {
     const dispatch = useDispatch();
 
     const handleAddFrame = (e) => {
-        dispatch(addFrame());
+        dispatch(addFrame({}));
     }
 
     const handleDeleteFrame = (e, frameIndex) => {

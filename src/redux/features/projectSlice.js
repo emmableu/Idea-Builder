@@ -211,13 +211,16 @@ const addFrame = createAsyncThunk(
     'project/addFrame',
     async (payload, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
+        let {prevIndex} = payload;
         const project = getState().project.value;
-        globalLog("project: ", project);
+        // globalLog("project: ", project);
         const storyboardId = project.selectedId.storyboardId;
-        globalLog("storyboardId: ", storyboardId);
+        // globalLog("storyboardId: ", storyboardId);
         const frameList = ProjectDataHandler.getStoryboard(project, storyboardId).frameList;
-        globalLog("frameList: ", frameList);
-        let prevIndex = frameList.length - 1
+        // globalLog("frameList: ", frameList);
+        if (prevIndex === undefined) {
+            prevIndex = frameList.length - 1
+        }
         const frameId = globalConfig.imageServer.student.frame + UUID.v4() + ".png";
 
         dispatch(addFrameInMemory(JSON.stringify({
@@ -765,8 +768,8 @@ export const projectSlice = createSlice({
                     action.payload.newId,
                     action.payload.prevIndex,
                 )
-                state.value.templateList.unshift(action.payload.newId);
-                globalLog("storyboard!!!!!!!!!!!!!!!!!!!!!!: ", storyboard);
+                // state.value.templateList.unshift(action.payload.newId);
+                // globalLog("storyboard!!!!!!!!!!!!!!!!!!!!!!: ", storyboard);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);

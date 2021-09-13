@@ -16,7 +16,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as UUID from "uuid"
 import StaticFrameContainerWithAction from "../Frame/StaticFrameContainerWithAction";
 import {makeStyles} from "@material-ui/core";
-import AddIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import AddIcon from '@material-ui/icons/Add';
 import {updateFrameOrder} from "../../redux/features/projectSlice";
 
 
@@ -127,6 +127,7 @@ const DroppableContainer = (props) => {
                                                 frameData={frameData}
                                                 handleDelete={handleDelete}
                                                 _id={_id}
+                                                idx={i}
                                                 {...provided.dragHandleProps}
                                             />
                                         </div>
@@ -135,16 +136,17 @@ const DroppableContainer = (props) => {
                             </>
                         ))}
                         {provided.placeholder}
+                            <Grid item xs={1} align="middle">
+                                <Fab color="default" aria-label="add"
+                                     onClick={(e) =>{ handleAdd(e)}}
+                                >
+                                    <AddIcon
+                                    />
+                                </Fab>
+                            </Grid>
                         </Grid>
                 )}
             </Droppable>
-            <Grid item xs={2} align="middle">
-                <Fab color="default" aria-label="add"
-                     onClick={(e) =>{ handleAdd(e)}}
-                >
-                    <AddIcon />
-                </Fab>
-            </Grid>
         </DragDropContext>
     );
 
