@@ -258,6 +258,23 @@ const deleteFrame = createAsyncThunk(
     }
 );
 
+
+const updateFrameOrder = createAsyncThunk(
+    'project/updateFrameOrder',
+    async (text, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        const {storyboardId} = text;
+        dispatch(updateFrameOrderInMemory(text));
+        const state = getState();
+        const frameIdList = ProjectDataHandler.frameList(state.project.value, storyboardId).map(a=>a._id);
+        const response = await ProjectAPI.replaceFrameIdListInDatabase({
+            storyboardId,
+            frameIdList,
+        });
+        return response.status;
+    }
+);
+
 /* The next section are about stars on the frame */
 const addStar = createAsyncThunk(
     'project/addStar',
@@ -763,6 +780,14 @@ export const projectSlice = createSlice({
             },
         },
 
+
+        updateFrameOrderInMemory: {
+            reducer: (state, action) => {
+                const {storyboardId, beginOrder, endOrder} = action.payload;
+                ProjectDataHandler.updateFrameOrder(state.value, storyboardId, beginOrder, endOrder);
+            },
+        },
+
         updateFrameListInMemory: {
             reducer: (state, action) => {
                 const {storyboardId, frameIndex} = JSON.parse(action.payload);
@@ -1119,7 +1144,7 @@ export const {
     addTemplateStarInMemory, //templateStar
     addSpeechBubbleInMemory, deleteSpeechBubbleInMemory, updateTextNameInMemory, //text ==> todo: delete these at some point
     addResourceInMemory, deleteResourceInMemory, updateResourceValueInMemory, //resource
-    addFrameInMemory, updateFrameListInMemory, //frame
+    addFrameInMemory, updateFrameListInMemory, updateFrameOrderInMemory,//frame
     addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, //actor
     addStateInMemory, deleteStateInMemory, updateStateNameInMemory, //state
     addBackdropInMemory, deleteBackdropInMemory, updateBackdropNameInMemory, //backdrop
@@ -1130,7 +1155,7 @@ export {
     insertEmptyProjectToDatabase, loadProjectFromDatabase, updateName, //project
     setSelectedStoryboardId, setSelectedFrameId, setSelectedStarId, //selectedId
     addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
-    addFrame, deleteFrame, //frame
+    addFrame, deleteFrame, updateFrameOrder, //frame
     addStar, updateStarList, deleteStar, copyStar, addSpeechChildStar, //star
     addBackdropStar,deleteBackdropStar, //backdropStar
     addTemplateStar, //templateSar,

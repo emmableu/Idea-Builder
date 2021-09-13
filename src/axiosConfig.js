@@ -9,20 +9,20 @@ const instance = axios.create({
 
 
 instance.interceptors.request.use(request => {
-    globalLog(request);
+    console.log(request);
     // Edit request config
     return request;
 }, error => {
-    globalLog(error);
+    console.log(error);
     return Promise.reject(error);
 });
 
 instance.interceptors.response.use(response => {
-    globalLog(response);
+    console.log(response);
     // Edit response config
     return response;
 }, error => {
-    globalLog(error);
+    console.log(error);
     return Promise.reject(error);
 });
 

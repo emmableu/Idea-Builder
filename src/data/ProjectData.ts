@@ -300,6 +300,12 @@ export class ProjectDataHandler {
     }
 
 
+    static updateFrameOrder(projectData:ProjectData, storyboardId:string, beginOrder:number, endOrder:number) {
+        const frameList = ProjectDataHandler.frameList(projectData, storyboardId);
+        const [removed] = frameList.splice(beginOrder, 1);
+        frameList.splice(endOrder, 0, removed);
+    }
+
     /* below are about actors */
 
     static addActor(projectData:ProjectData, actorData:ActorData) {

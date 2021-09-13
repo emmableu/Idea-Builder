@@ -76,13 +76,6 @@ const FrameList = (props) => {
                                 _id={_id}
                             />
                         ))}
-                        <Grid item xs={2} align="middle">
-                            <Fab color="default" aria-label="add"
-                                 onClick={(e) =>{ handleAdd(e)}}
-                            >
-                                <AddIcon />
-                            </Fab>
-                        </Grid>
                     </>
                 )}
                 </>

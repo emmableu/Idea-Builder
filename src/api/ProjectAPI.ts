@@ -75,6 +75,7 @@ class ProjectAPI {
 
     /* this section is on frame */
     static async replaceFrameIdListInDatabase(text:any) {
+        console.log("text: ", text);
         const response = await axios({
             method: 'post',
             url: `/frame_list/replace`,

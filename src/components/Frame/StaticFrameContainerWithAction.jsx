@@ -1,5 +1,5 @@
 import {Button, Dropdown, Menu} from "antd";
-import {makeStyles, Tooltip} from "@material-ui/core";
+import {makeStyles, Paper, Tooltip} from "@material-ui/core";
 import React from "react";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import StaticFrame from "./StaticFrame";
@@ -10,12 +10,14 @@ import {DeleteTwoTone, EditOutlined, EllipsisOutlined, SettingOutlined} from '@a
 import {setSelectedFrameId} from "../../redux/features/projectSlice";
 import globalConfig from "../../globalConfig";
 import {useDispatch, useSelector} from "react-redux";
+import DragHandleIcon from "../primitives/DragHandleIcon";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
         height: globalConfig.responsiveSizeData.frameListPaperHeight + 32 + 2,
         backgroundColor: "white",
         width: globalConfig.responsiveSizeData.frameListPaperHeight*4/3 + 2,
+        borderRadius: "2px",
         "& li": {margin: "2px 0",}
     },
 
@@ -61,9 +63,13 @@ const StaticFrameContainerWithAction = React.memo((props) => {
                             onClick={(e) => {dispatch(setSelectedFrameId(frameData._id))}}
                             key="edit" />
                     </Tooltip> ,
-                    <SettingOutlined
+                    <Button
+                        type="link"
+                        shape="circle"
                         size="small"
-                        key="setting" />,
+                        icon={<DragHandleIcon {...props}
+                        />}
+                    />,
                     <Tooltip title="Delete frame">
                         <Button
                             type="link"

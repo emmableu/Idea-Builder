@@ -27,6 +27,7 @@ import StaticFrame from "../Frame/StaticFrame";
 import StaticFrameContainer from "../Frame/StaticFrameContainer";
 import {Dropdown} from "antd";
 import FrameList from "./FrameList";
+import DroppableContainer from "./DroppableContainer";
 
 
 const FrameListFunctionContainer = () => {
@@ -62,7 +63,8 @@ const FrameListFunctionContainer = () => {
         dispatch(deleteFrame(frameIndex));
     }
 
-    return (<FrameList
+    return (<DroppableContainer
+        storyboardId={storyboardId}
         _id={_id}
         frameList={frameList}
         handleAdd={handleAddFrame}

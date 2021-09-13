@@ -61,7 +61,7 @@ let responsiveSizeData = {
      storyboardDrawerWidth: 200,
      noteWidth: 230,
      frameListHeight: 185,
-     frameListPaperHeight: 90,
+     frameListPaperHeight: 105,
 }
 
 const costumeSwapperHeight = Math.max(window.innerHeight - storyboardTop*2 - (56 + 24 + 28 + 8 + 148 + 21 + 21 + 42 + 42 + 32 + 12 + 24 + 52), 200);
@@ -171,7 +171,8 @@ const calcFrameWidth = ( windowInnerWidth, windowInnerHeight ) => {
 
 
 const globalLog = (...msgs) => {
-     if (process.env.REACT_APP_DEBUG !== 'OFF') console.log(...msgs)
+     // if (process.env.REACT_APP_DEBUG !== 'OFF') console.log(...msgs)
+      console.log(...msgs)
 }
 
 Object.freeze(globalConfig);
