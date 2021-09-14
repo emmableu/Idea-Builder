@@ -25,6 +25,15 @@ class ProjectAPI {
         return response;
     }
 
+    static async updateAuthorIdList(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/project/update_author_id_list`,
+            data: text
+        })
+        return response;
+    }
+
     static async updateName(text:any) {
         const response = await axios({
             method: 'post',

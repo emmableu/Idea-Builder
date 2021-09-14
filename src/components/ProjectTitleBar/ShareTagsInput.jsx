@@ -4,13 +4,17 @@ import 'react-tagsinput/react-tagsinput.css'
 import React from "react"; // If using WebPack and style-loader.
 
  const ShareTagsInput = (props) => {
-    const [tags, setTags] = React.useState([])
+     const {tags, setTags} = props;
 
      const handleChange = (tags) => {
             setTags(tags);
      }
 
-    return <TagsInput value={tags} onChange={handleChange}/>
+    return <TagsInput
+        value={tags}
+        maxTags={1}
+        addOnBlur={true}
+        onChange={handleChange}/>
 }
 
 

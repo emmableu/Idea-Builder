@@ -43,6 +43,21 @@ const loadProjectFromDatabase = createAsyncThunk(
     }
 )
 
+const shareProject = createAsyncThunk(
+    'project/shareProject',
+    async (obj, thunkAPI) => {
+        const {authorIdList} = obj;
+        const {dispatch, getState} = thunkAPI;
+        dispatch(setAuthorIdListInMemory(obj));
+        const projectId = getState().project.value._id;
+        const response = await ProjectAPI.updateAuthorIdList({
+            projectId, authorIdList
+        });
+        return response.status;
+    }
+)
+
+
 const updateName = createAsyncThunk(
     'project/updateName',
     async (name, thunkAPI) => {
@@ -672,6 +687,12 @@ export const projectSlice = createSlice({
             }
         },
 
+        setAuthorIdListInMemory: {
+            reducer: (state, action) => {
+                state.value.authorIdList = action.payload.authorIdList
+            }
+        },
+
         setSelectedStoryboardIdInMemory: {
             reducer: (state, action) => {
                 SelectedIdDataHandler.setStoryboardId(state.value.selectedId, action.payload);
@@ -1139,7 +1160,7 @@ export const projectSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
-    loadProjectInMemory, updateNameInMemory,//project
+    loadProjectInMemory, updateNameInMemory, setAuthorIdListInMemory, //project
     setSelectedFrameIdInMemory, setSelectedStoryboardIdInMemory, voidSelectedStoryboardIdInMemory, setSelectedStarIdInMemory, //selectedId
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
     addStarInMemory, updateStarListInMemory, deleteStarInMemory, copyStarInMemory,addSpeechChildStarInMemory, //star
@@ -1155,7 +1176,7 @@ export const {
     download,
 } = projectSlice.actions;
 export {
-    insertEmptyProjectToDatabase, loadProjectFromDatabase, updateName, //project
+    insertEmptyProjectToDatabase, loadProjectFromDatabase, updateName,  shareProject,//project
     setSelectedStoryboardId, setSelectedFrameId, setSelectedStarId, //selectedId
     addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
     addFrame, deleteFrame, updateFrameOrder, //frame
