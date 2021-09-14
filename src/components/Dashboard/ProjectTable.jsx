@@ -1,5 +1,4 @@
 import React from "react";
-import MaterialTable from "material-table";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import {useDispatch, useSelector} from "react-redux";
@@ -7,7 +6,38 @@ import {Modal} from "antd";
 import {ExclamationCircleOutlined} from "@ant-design/icons";
 import {deleteProjectOnDashboard} from "../../redux/features/dashboardSlice";
 import {useRouteMatch, useHistory} from "react-router-dom"
+import MaterialTable, { MaterialTableProps } from 'material-table';
+import { TablePagination, TablePaginationProps } from '@material-ui/core';
 const { confirm } = Modal;
+
+
+function PatchedPagination(props) {
+    const {
+        ActionsComponent,
+        onChangePage,
+        onChangeRowsPerPage,
+        ...tablePaginationProps
+    } = props;
+
+    return (
+        <TablePagination
+            {...tablePaginationProps}
+            // @ts-expect-error onChangePage was renamed to onPageChange
+            onPageChange={onChangePage}
+            onRowsPerPageChange={onChangeRowsPerPage}
+            ActionsComponent={(subprops) => {
+                const {onPageChange, ...actionsComponentProps} = subprops;
+                return (
+                    // @ts-expect-error ActionsComponent is provided by material-table
+                    <ActionsComponent
+                        {...actionsComponentProps}
+                        onChangePage={onPageChange}
+                    />
+                );
+            }}
+        />
+    );
+}
 
 const ProjectTable = (props) => {
     const {projectList} = props;
@@ -44,7 +74,8 @@ const ProjectTable = (props) => {
     return (
         <MaterialTable
             components={{
-                Container: props => <Paper {...props} elevation={0}/>
+                Container: props => <Paper {...props} elevation={0}/>,
+                Pagination: PatchedPagination,
             }}
             style={{backgroundColor: "inherit"}}
             title={null}

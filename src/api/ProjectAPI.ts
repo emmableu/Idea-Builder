@@ -5,16 +5,24 @@ import {ProjectData} from "../data/ProjectData";
 class ProjectAPI {
 
     /* this section is on project */
-    static async insertProject (authorIdList:Array<string>, projectData:ProjectData) {
+    static async insertProject (authorId:string, projectData:ProjectData) {
         const response = await axios({
             method: 'post',
             url: `/project/add`,
             data: {
-                authorIdList,
+                authorId,
                 projectData,
             }
         })
         return response;
+    }
+    static async addEntryToDashboard (obj:any) {
+            const response = await axios({
+                method: 'post',
+                url: `/dashboard/add_entry`,
+                data: obj,
+            })
+            return response;
     }
 
     static async loadProject (_id:string) {

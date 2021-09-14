@@ -14,7 +14,12 @@ import React from "react"; // If using WebPack and style-loader.
         value={tags}
         maxTags={1}
         addOnBlur={true}
-        onChange={handleChange}/>
+        onChange={handleChange}
+        inputProps={{
+            className: 'react-tagsinput-input',
+            placeholder:  `Unity ID`,
+        }}
+    />
 }
 
 

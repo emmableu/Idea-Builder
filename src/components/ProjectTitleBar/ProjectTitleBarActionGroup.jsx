@@ -43,11 +43,6 @@ const ProjectTitleBarActionGroup  = () => {
         dispatch(download());
     }
 
-    const handleShare = () => {
-        console.log("share")
-    }
-
-
     const handleChange = (checked, event) => {
         if (permanentViewMode) {
             return;
@@ -94,19 +89,19 @@ const ProjectTitleBarActionGroup  = () => {
                 </IconButton>
             </Tooltip>
             </Box>
-            {/*<Box m={0.5}>*/}
-            {/*    <Tooltip title="Save to computer">*/}
-            {/*        <IconButton*/}
-            {/*            aria-label="files"*/}
-            {/*            size="medium"*/}
-            {/*            onClick={handleClick}*/}
-            {/*            disabled={view}*/}
-            {/*        >*/}
-            {/*            <CloudUpload style={{color:*/}
-            {/*                    view?null:"white"}}/>*/}
-            {/*        </IconButton>*/}
-            {/*    </Tooltip>*/}
-            {/*</Box>*/}
+            <Box m={0.5}>
+                <Tooltip title="Save to computer">
+                    <IconButton
+                        aria-label="files"
+                        size="medium"
+                        onClick={handleClick}
+                        disabled={view}
+                    >
+                        <CloudUpload style={{color:
+                                view?null:"white"}}/>
+                    </IconButton>
+                </Tooltip>
+            </Box>
 
             {/*FileUploadIcon*/}
             <Box m={0.5}>

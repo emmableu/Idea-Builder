@@ -7,7 +7,9 @@ import {Share} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import Cookies from "js-cookie";
 import {shareProject} from "../../redux/features/projectSlice";
-
+import { useClipboard } from 'use-clipboard-copy';
+import { Input, Select, Space, Cascader } from 'antd';
+import {CopyOutlined}  from '@ant-design/icons';
 
 
 const ShareProjectButton = () => {
@@ -19,6 +21,8 @@ const ShareProjectButton = () => {
     const dispatch = useDispatch();
     const [confirmLoading, setConfirmLoading] = React.useState(false);
     const [tags, setTags] = React.useState(tagsData)
+
+
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -32,11 +36,29 @@ const ShareProjectButton = () => {
         console.log("newAuthorList: ", newAuthorList);
         setConfirmLoading(false);
         setIsModalVisible(false);
+        success();
     };
 
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+
+    const successConfig = {
+        title: 'Share project success!',
+        content: (
+            <>
+                <p>
+                    {`Only your team member can edit the project using the URL link of this page.\n
+                    They should also see the project in their own dashboard.`}
+                </p>
+            </>
+        ),
+    };
+
+
+    const success = () => {
+        Modal.success(successConfig);
+    }
 
     return (
         <>
@@ -57,6 +79,8 @@ const ShareProjectButton = () => {
                    confirmLoading={confirmLoading}
                    onOk={handleOk}
                    onCancel={handleCancel}>
+                <p>Anyone with the URL link of this page can view your project.</p>
+                <p>To give your project team member edit access, enter their unity ID below: </p>
                 <ShareTagsInput
                     tags={tags}
                     setTags={setTags}

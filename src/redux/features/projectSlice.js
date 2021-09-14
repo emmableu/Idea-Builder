@@ -27,7 +27,7 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
         const projectData = ProjectDataHandler.initializeProject({_id, authorIdList, name});
         const authorData = AuthorDataHandler.initializeAuthor({_id});
         globalLog('projectData: ', projectData);
-        const response = await ProjectAPI.insertProject(authorIdList, projectData);
+        const response = await ProjectAPI.insertProject(Cookies.get("userId"), projectData);
         const response2 = await AuthorAPI.insertAuthorData(authorData);
         return response.status;
     }
@@ -67,6 +67,12 @@ const shareProject = createAsyncThunk(
         const response = await ProjectAPI.updateAuthorIdList({
             projectId, authorIdList
         });
+        for (const authorId of authorIdList) {
+            if (authorId !==  Cookies.get("userId")) {
+                const response2 = await ProjectAPI.addEntryToDashboard({authorId,
+                    projectId});
+            }
+        }
         await dispatch(updateLastModified());
         return response.status;
     }
