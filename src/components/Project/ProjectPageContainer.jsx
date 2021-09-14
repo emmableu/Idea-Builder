@@ -6,6 +6,7 @@ import ProjectDrawer from "./ProjectDrawer";
 import Spinner from "../Spinner";
 import ViewMode from "../ViewMode/ViewMode";
 import {loadAssets} from "../../redux/features/assetSlice";
+import FrozenMode from "./FrozenMode";
 
 
 const ProjectPageContainer = () => {
@@ -18,7 +19,11 @@ const ProjectPageContainer = () => {
     const view = useSelector(
         state => state.mode.view
     )
-
+    const frozenMode = useSelector(
+        state => {
+            console.log("frozenmode: ", state.author.value.frozenMode)
+            return state.author.value.frozenMode}
+    )
     React.useEffect(() => {
             dispatch(loadProjectFromDatabase(_id))
             // dispatch(loadAssets());
@@ -26,9 +31,10 @@ const ProjectPageContainer = () => {
 
     return (
         <>
-        {projectData===null && <Spinner loading={true}/>}
-        {projectData!==null && view === false && <ProjectDrawer />}
-        {projectData!==null && view === true && <ViewMode />}
+            {frozenMode && <FrozenMode/>}
+        {!frozenMode && projectData===null && <Spinner loading={true}/>}
+        {!frozenMode &&  projectData!==null && view === false && <ProjectDrawer />}
+        {!frozenMode &&  projectData!==null && view === true && <ViewMode />}
         </>
 
     )

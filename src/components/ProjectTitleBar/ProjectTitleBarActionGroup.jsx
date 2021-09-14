@@ -1,6 +1,6 @@
 import {Dropdown, Menu} from "antd";
 import {IconButton, makeStyles, Tooltip, withStyles} from "@material-ui/core";
-import {Home, SaveAlt, InsertDriveFile, Visibility, Edit} from "@material-ui/icons";
+import {Home, SaveAlt, InsertDriveFile, Visibility, Edit, CloudUpload} from "@material-ui/icons";
 import { Switch } from 'antd';
 import React from "react";
 import {CopyOutlined, DeleteOutlined, DownloadOutlined, ImportOutlined} from "@ant-design/icons";
@@ -94,6 +94,21 @@ const ProjectTitleBarActionGroup  = () => {
                 </IconButton>
             </Tooltip>
             </Box>
+            {/*<Box m={0.5}>*/}
+            {/*    <Tooltip title="Save to computer">*/}
+            {/*        <IconButton*/}
+            {/*            aria-label="files"*/}
+            {/*            size="medium"*/}
+            {/*            onClick={handleClick}*/}
+            {/*            disabled={view}*/}
+            {/*        >*/}
+            {/*            <CloudUpload style={{color:*/}
+            {/*                    view?null:"white"}}/>*/}
+            {/*        </IconButton>*/}
+            {/*    </Tooltip>*/}
+            {/*</Box>*/}
+
+            {/*FileUploadIcon*/}
             <Box m={0.5}>
             <Tooltip title="Back to home">
                 <IconButton

@@ -13,7 +13,7 @@ import {StarDataHandler} from "../../data/StarData";
 import {setPermanentViewMode, setViewMode} from "./modeSlice";
 import {AuthorDataHandler} from "../../data/AuthorData";
 import {AuthorAPI} from "../../api/AuthorAPI";
-import {loadAuthorData, setLastLoaded, updateLastModified} from "./authorSlice";
+import {loadAuthorData, setFrozenMode, setLastLoaded, updateLastModified} from "./authorSlice";
 
 
 
@@ -61,7 +61,9 @@ const shareProject = createAsyncThunk(
         dispatch(setAuthorIdListInMemory(obj));
         const projectId = getState().project.value._id;
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.updateAuthorIdList({
             projectId, authorIdList
         });
@@ -79,7 +81,9 @@ const updateName = createAsyncThunk(
         const projectId = getState().project.value._id;
         const isLegalUpdate = await dispatch(loadAuthorData());
         console.log("isLegalUpdate: ", isLegalUpdate);
-        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.updateName({
             projectId, name
         });
@@ -107,7 +111,9 @@ const setSelectedStoryboardId = createAsyncThunk(
             dispatch(voidSelectedStoryboardIdInMemory())
         }
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
@@ -127,7 +133,9 @@ const setSelectedFrameId = createAsyncThunk(
         const project = getState().project.value;
         dispatch(setSelectedFrameIdInMemory(frameId));
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
@@ -149,7 +157,9 @@ const setSelectedStarId = createAsyncThunk(
             dispatch(setSelectedStarIdInMemory(starId));
             const project = getState().project.value;
             const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.updateSelectedIdData(
                 {
                     projectId: project._id,
@@ -198,7 +208,9 @@ const addStoryboard = createAsyncThunk(
             }
         }
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.addStoryboard(payload);
         await dispatch(updateLastModified());
         return response.status;
@@ -216,7 +228,9 @@ const deleteStoryboard = createAsyncThunk(
         const storyboardMenu = state.project.value.storyboardMenu;
         dispatch(deleteStoryboardInMemory(storyboardId));
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceStoryboardIdMenuInDatabase({
             projectId, storyboardMenu
         });
@@ -234,7 +248,9 @@ const updateStoryboardOrder = createAsyncThunk(
         const projectId = state.project.value._id;
         const storyboardMenu = state.project.value.storyboardMenu;
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceStoryboardIdMenuInDatabase({
             projectId, storyboardMenu
         });
@@ -249,7 +265,9 @@ const updateStoryboardName = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(updateStoryboardNameInMemory(JSON.stringify(payload)));
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.updateStoryboardName(payload);
         await dispatch(updateLastModified());
         return response.status;
@@ -283,7 +301,9 @@ const addFrame = createAsyncThunk(
         dispatch(setSelectedFrameId(frameId));
         const newFrameList = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId).frameList;
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.insertFrameAndReplaceFrameListInDatabase({
             storyboardId,
             frameId,
@@ -309,7 +329,9 @@ const deleteFrame = createAsyncThunk(
         )));
 
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceFrameIdListInDatabase({
             storyboardId,
             frameIdList: ProjectDataHandler.getStoryboard(project, storyboardId).frameList.map(f => f._id)
@@ -329,7 +351,9 @@ const updateFrameOrder = createAsyncThunk(
         const state = getState();
         const frameIdList = ProjectDataHandler.frameList(state.project.value, storyboardId).map(a=>a._id);
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceFrameIdListInDatabase({
             storyboardId,
             frameIdList,
@@ -361,7 +385,9 @@ const addStar = createAsyncThunk(
 
         //sometimes the first dispatch does not work, because the actor is not yet fully updated on the canvas.
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList
@@ -383,7 +409,9 @@ const updateStarList = createAsyncThunk(
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList: starList
@@ -408,7 +436,9 @@ const deleteStar = createAsyncThunk(
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList: starList
@@ -436,7 +466,9 @@ const copyStar = createAsyncThunk(
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList: starList
@@ -467,7 +499,9 @@ const addSpeechChildStar = createAsyncThunk(
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList: starList
@@ -496,7 +530,9 @@ const addBackdropStar = createAsyncThunk(
             storyboardId, frameId, backdropStar,
         }));
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceBackdropStarInDatabase({
             frameId,
             backdropStar
@@ -522,7 +558,9 @@ const deleteBackdropStar = createAsyncThunk(
             })
         );
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceBackdropStarInDatabase({
             frameId, backdropStar
         });
@@ -573,7 +611,9 @@ const addActor = createAsyncThunk(
         });
         dispatch(addActorInMemory(payload));
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.addActor(payload);
         await dispatch(updateLastModified());
         return response.status;
@@ -590,7 +630,9 @@ const deleteActor = createAsyncThunk(
         const projectId = state.project.value._id;
         const actorIdList = state.project.value.actorList.filter(e => !e.deleted).map(a=>a._id);
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceActorIdListInDatabase({
             projectId, actorIdList
         });
@@ -608,7 +650,9 @@ const updateActorOrder = createAsyncThunk(
         const projectId = state.project.value._id;
         const actorIdList = state.project.value.actorList.map(a=>a._id);
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceActorIdListInDatabase({
             projectId, actorIdList
         });
@@ -623,7 +667,9 @@ const updateActorName = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(updateActorNameInMemory(JSON.stringify(payload)));
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.updateActorName(payload);
         await dispatch(updateLastModified());
         return response.status;
@@ -641,7 +687,9 @@ const addState = createAsyncThunk(
         dispatch(addStateInMemory(JSON.stringify(payload)));
         const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
@@ -659,7 +707,9 @@ const deleteState = createAsyncThunk(
         dispatch(deleteStateInMemory(JSON.stringify(payload)));
         const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
@@ -677,7 +727,9 @@ const updateStateName = createAsyncThunk(
         dispatch(updateStateNameInMemory(payload));
         const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
@@ -700,7 +752,9 @@ const addBackdrop = createAsyncThunk(
         );
         const backdropList = getState().project.value.backdropList;
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
@@ -719,7 +773,9 @@ const deleteBackdrop = createAsyncThunk(
         );
         const backdropList = getState().project.value.backdropList;
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
@@ -739,7 +795,9 @@ const updateBackdropName = createAsyncThunk(
         })));
         const backdropList = getState().project.value.backdropList;
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
@@ -755,7 +813,9 @@ const saveNote = createAsyncThunk(
         dispatch(saveNoteInMemory(text));
         const storyboardId = getState().project.value.selectedId.storyboardId;
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
         const response = await ProjectAPI.saveNote({
             storyboardId,
            text

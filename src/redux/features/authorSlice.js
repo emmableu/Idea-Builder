@@ -55,7 +55,7 @@ export const authorSlice = createSlice({
     initialState: {
         value: {
             lastLoaded: null,
-            needReload: false,
+            frozenMode: false,
         },
     },
     reducers: {
@@ -63,15 +63,15 @@ export const authorSlice = createSlice({
             (state, action) => {
                     state.value.lastLoaded = moment().format();
             },
-        setNeedReload:
+        setFrozenMode:
             (state, action) => {
-                    state.value.lastLoaded = action.payload;
+                    state.value.frozenMode = action.payload;
             },
     },
 
 })
 
 
-export const { setLastLoaded } = authorSlice.actions;
+export const { setLastLoaded, setFrozenMode } = authorSlice.actions;
 export {loadAuthorData, updateLastModified};
 export default authorSlice.reducer;
