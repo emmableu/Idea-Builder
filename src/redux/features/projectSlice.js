@@ -11,6 +11,12 @@ import {FrameDataHandler} from "../../data/FrameData";
 import {SelectedIdDataHandler} from "../../data/SelectedIdData";
 import {StarDataHandler} from "../../data/StarData";
 import {setPermanentViewMode, setViewMode} from "./modeSlice";
+import {AuthorDataHandler} from "../../data/AuthorData";
+import {AuthorAPI} from "../../api/AuthorAPI";
+import {loadAuthorData} from "./authorSlice";
+
+
+
 
 
 const insertEmptyProjectToDatabase = createAsyncThunk(
@@ -19,8 +25,10 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
         const {_id, name} = obj;
         const authorIdList =  [Cookies.get("userId")];
         const projectData = ProjectDataHandler.initializeProject({_id, authorIdList, name});
+        const authorData = AuthorDataHandler.initializeAuthor({_id});
         globalLog('projectData: ', projectData);
         const response = await ProjectAPI.insertProject(authorIdList, projectData);
+        const response2 = await AuthorAPI.insertAuthorData(AuthorDataHandler.format(authorData));
         return response.status;
     }
 )
@@ -39,6 +47,7 @@ const loadProjectFromDatabase = createAsyncThunk(
         else {
             dispatch(setPermanentViewMode(true))
         }
+
         return response.data;
     }
 )
@@ -50,6 +59,8 @@ const shareProject = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(setAuthorIdListInMemory(obj));
         const projectId = getState().project.value._id;
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.updateAuthorIdList({
             projectId, authorIdList
         });
@@ -64,6 +75,8 @@ const updateName = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(updateNameInMemory(name));
         const projectId = getState().project.value._id;
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.updateName({
             projectId, name
         });
@@ -89,6 +102,8 @@ const setSelectedStoryboardId = createAsyncThunk(
         else {
             dispatch(voidSelectedStoryboardIdInMemory())
         }
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
@@ -106,6 +121,8 @@ const setSelectedFrameId = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
         dispatch(setSelectedFrameIdInMemory(frameId));
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
@@ -125,7 +142,9 @@ const setSelectedStarId = createAsyncThunk(
         if (prevStarId !== starId) {
             dispatch(setSelectedStarIdInMemory(starId));
             const project = getState().project.value;
-            const response = await ProjectAPI.updateSelectedIdData(
+            const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
+        const response = await ProjectAPI.updateSelectedIdData(
                 {
                     projectId: project._id,
                     selectedId: project.selectedId
@@ -171,6 +190,8 @@ const addStoryboard = createAsyncThunk(
                 dispatch(addActor(actorData));
             }
         }
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.addStoryboard(payload);
         return response.status;
     }
@@ -186,6 +207,8 @@ const deleteStoryboard = createAsyncThunk(
         const projectId = project._id;
         const storyboardMenu = state.project.value.storyboardMenu;
         dispatch(deleteStoryboardInMemory(storyboardId));
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceStoryboardIdMenuInDatabase({
             projectId, storyboardMenu
         });
@@ -202,6 +225,8 @@ const updateStoryboardOrder = createAsyncThunk(
         const state = getState();
         const projectId = state.project.value._id;
         const storyboardMenu = state.project.value.storyboardMenu;
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceStoryboardIdMenuInDatabase({
             projectId, storyboardMenu
         });
@@ -214,6 +239,8 @@ const updateStoryboardName = createAsyncThunk(
     async (payload, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         dispatch(updateStoryboardNameInMemory(JSON.stringify(payload)));
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.updateStoryboardName(payload);
         return response.status;
     }
@@ -245,6 +272,8 @@ const addFrame = createAsyncThunk(
         })));
         dispatch(setSelectedFrameId(frameId));
         const newFrameList = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId).frameList;
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.insertFrameAndReplaceFrameListInDatabase({
             storyboardId,
             frameId,
@@ -268,6 +297,8 @@ const deleteFrame = createAsyncThunk(
             }
         )));
 
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceFrameIdListInDatabase({
             storyboardId,
             frameIdList: ProjectDataHandler.getStoryboard(project, storyboardId).frameList.map(f => f._id)
@@ -285,6 +316,8 @@ const updateFrameOrder = createAsyncThunk(
         dispatch(updateFrameOrderInMemory(text));
         const state = getState();
         const frameIdList = ProjectDataHandler.frameList(state.project.value, storyboardId).map(a=>a._id);
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceFrameIdListInDatabase({
             storyboardId,
             frameIdList,
@@ -314,6 +347,8 @@ const addStar = createAsyncThunk(
         const starList =  frameData.starList;
 
         //sometimes the first dispatch does not work, because the actor is not yet fully updated on the canvas.
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList
@@ -333,6 +368,8 @@ const updateStarList = createAsyncThunk(
         const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList: starList
@@ -355,6 +392,8 @@ const deleteStar = createAsyncThunk(
         const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList: starList
@@ -380,6 +419,8 @@ const copyStar = createAsyncThunk(
         const storyboardData = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList: starList
@@ -408,6 +449,8 @@ const addSpeechChildStar = createAsyncThunk(
         const storyboardData = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList: starList
@@ -434,6 +477,8 @@ const addBackdropStar = createAsyncThunk(
         dispatch(addBackdropStarInMemory({
             storyboardId, frameId, backdropStar,
         }));
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceBackdropStarInDatabase({
             frameId,
             backdropStar
@@ -457,6 +502,8 @@ const deleteBackdropStar = createAsyncThunk(
                 storyboardId, frameId,backdropStar
             })
         );
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceBackdropStarInDatabase({
             frameId, backdropStar
         });
@@ -504,6 +551,8 @@ const addActor = createAsyncThunk(
             actorDataJSON
         });
         dispatch(addActorInMemory(payload));
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.addActor(payload);
         return response.status;
     }
@@ -518,6 +567,8 @@ const deleteActor = createAsyncThunk(
         const state = getState();
         const projectId = state.project.value._id;
         const actorIdList = state.project.value.actorList.filter(e => !e.deleted).map(a=>a._id);
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceActorIdListInDatabase({
             projectId, actorIdList
         });
@@ -533,6 +584,8 @@ const updateActorOrder = createAsyncThunk(
         const state = getState();
         const projectId = state.project.value._id;
         const actorIdList = state.project.value.actorList.map(a=>a._id);
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceActorIdListInDatabase({
             projectId, actorIdList
         });
@@ -545,6 +598,8 @@ const updateActorName = createAsyncThunk(
     async (payload, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         dispatch(updateActorNameInMemory(JSON.stringify(payload)));
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.updateActorName(payload);
         return response.status;
     }
@@ -560,6 +615,8 @@ const addState = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(addStateInMemory(JSON.stringify(payload)));
         const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
@@ -575,6 +632,8 @@ const deleteState = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(deleteStateInMemory(JSON.stringify(payload)));
         const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
@@ -590,6 +649,8 @@ const updateStateName = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(updateStateNameInMemory(payload));
         const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
@@ -610,6 +671,8 @@ const addBackdrop = createAsyncThunk(
                 backdropId)
         );
         const backdropList = getState().project.value.backdropList;
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
@@ -626,6 +689,8 @@ const deleteBackdrop = createAsyncThunk(
             backdropId)
         );
         const backdropList = getState().project.value.backdropList;
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
@@ -643,6 +708,8 @@ const updateBackdropName = createAsyncThunk(
             backdropId, backdropName
         })));
         const backdropList = getState().project.value.backdropList;
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
@@ -656,6 +723,8 @@ const saveNote = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(saveNoteInMemory(text));
         const storyboardId = getState().project.value.selectedId.storyboardId;
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.saveNote({
             storyboardId,
            text
