@@ -13,6 +13,16 @@ class AuthorAPI {
         return response;
     }
 
+    static async updateLastModified (authorData:AuthorData) {
+        const response = await axios({
+            method: 'post',
+            url: `/author_data/update_last_modified`,
+            data: authorData
+        })
+        return response;
+    }
+
+
     static async loadAuthorData (projectId:string) {
         const response = await axios({
             method: 'get',

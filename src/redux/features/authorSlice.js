@@ -32,6 +32,22 @@ const loadAuthorData = createAsyncThunk(
 )
 
 
+const updateLastModified = createAsyncThunk(
+    'author/updateLastModified',
+    async (payload, thunkAPI) => {
+        const {getState, dispatch, rejectWithValue} = thunkAPI;
+        const state = getState();
+        const _id = state.project.value._id;
+        const lastModified = moment().format();
+        const lastModifiedBy = Cookies.get("userId");
+        const response = await AuthorAPI.updateLastModified({
+            _id, lastModified, lastModifiedBy
+        })
+        return "OK";
+    }
+)
+
+
 
 
 export const authorSlice = createSlice({
@@ -39,17 +55,23 @@ export const authorSlice = createSlice({
     initialState: {
         value: {
             lastLoaded: null,
+            needReload: false,
         },
     },
     reducers: {
         setLastLoaded:
             (state, action) => {
-                    state.value.lastLoaded = moment();
-            }
+                    state.value.lastLoaded = moment().format();
+            },
+        setNeedReload:
+            (state, action) => {
+                    state.value.lastLoaded = action.payload;
+            },
     },
+
 })
 
 
 export const { setLastLoaded } = authorSlice.actions;
-export {loadAuthorData};
+export {loadAuthorData, updateLastModified};
 export default authorSlice.reducer;

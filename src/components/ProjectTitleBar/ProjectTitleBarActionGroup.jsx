@@ -11,45 +11,21 @@ import { useRouteMatch, useHistory } from "react-router-dom"
 import globalConfig from "../../globalConfig";
 import ShareIcon from '@material-ui/icons/Share';
 import ShareProjectButton from "./ShareProjectButton";
+import UserButton from "../Dashboard/UserButton";
+import Toolbar from "@material-ui/core/Toolbar";
+import Cookies from "js-cookie";
+import Box from "@material-ui/core/Box";
+
 
 
 
 const useStyles = makeStyles(theme => ({
     root: {
-        width: 42,
+        width: 100,
         height: 26,
         padding: 0,
         margin: theme.spacing(1),
     },
-    switchBase: {
-        padding: 1,
-        '&$checked': {
-            transform: 'translateX(16px)',
-            color: theme.palette.common.white,
-            '& + $track': {
-                backgroundColor: globalConfig.storyboardMenuColor.titleBar.background,
-                opacity: 1,
-                border: 'none',
-            },
-        },
-        '&$focusVisible $thumb': {
-            color: globalConfig.storyboardMenuColor.titleBar.background,
-            border: '6px solid #fff',
-        },
-    },
-    thumb: {
-        width: 24,
-        height: 24,
-    },
-    track: {
-        borderRadius: 26 / 2,
-        border: `1px solid ${theme.palette.grey[400]}`,
-        backgroundColor: theme.palette.grey[50],
-        opacity: 1,
-        transition: theme.transitions.create(['background-color', 'border']),
-    },
-    checked: {},
-    focusVisible: {},
 }))
 
 const ProjectTitleBarActionGroup  = () => {
@@ -86,19 +62,26 @@ const ProjectTitleBarActionGroup  = () => {
     };
 
     return (
-        <>
-            <Switch loading={isLoading}
-                    checked={view}
-                    defaultChecked={true}
-                    onChange={handleChange}
-                    checkedChildren="View"
-                    unCheckedChildren="Edit"
-                    />
-
-
+        <div
+            style={{width: 300,
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+            }}
+        >
+            <Box m={0.5}>
+                <Switch loading={isLoading}
+                        checked={view}
+                        defaultChecked={true}
+                        onChange={handleChange}
+                        checkedChildren="View"
+                        unCheckedChildren="Edit"
+                        />
+            </Box>
+            <Box m={0.5}>
             <ShareProjectButton/>
-
-
+            </Box>
+            <Box m={0.5}>
             <Tooltip title="Save to computer">
                 <IconButton
                     aria-label="files"
@@ -110,8 +93,8 @@ const ProjectTitleBarActionGroup  = () => {
                             view?null:"white"}}/>
                 </IconButton>
             </Tooltip>
-
-
+            </Box>
+            <Box m={0.5}>
             <Tooltip title="Back to home">
                 <IconButton
                     aria-label="display more actions"
@@ -121,7 +104,11 @@ const ProjectTitleBarActionGroup  = () => {
                     <Home/>
                 </IconButton>
             </Tooltip>
-        </>
+            </Box>
+            <Box m={0.5}>
+            <UserButton userId={Cookies.get("userId")}/>
+            </Box>
+        </div>
     )
 };
 

@@ -13,7 +13,7 @@ import {StarDataHandler} from "../../data/StarData";
 import {setPermanentViewMode, setViewMode} from "./modeSlice";
 import {AuthorDataHandler} from "../../data/AuthorData";
 import {AuthorAPI} from "../../api/AuthorAPI";
-import {loadAuthorData} from "./authorSlice";
+import {loadAuthorData, setLastLoaded, updateLastModified} from "./authorSlice";
 
 
 
@@ -28,7 +28,7 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
         const authorData = AuthorDataHandler.initializeAuthor({_id});
         globalLog('projectData: ', projectData);
         const response = await ProjectAPI.insertProject(authorIdList, projectData);
-        const response2 = await AuthorAPI.insertAuthorData(AuthorDataHandler.format(authorData));
+        const response2 = await AuthorAPI.insertAuthorData(authorData);
         return response.status;
     }
 )
@@ -47,6 +47,7 @@ const loadProjectFromDatabase = createAsyncThunk(
         else {
             dispatch(setPermanentViewMode(true))
         }
+        dispatch(setLastLoaded());
 
         return response.data;
     }
@@ -64,6 +65,7 @@ const shareProject = createAsyncThunk(
         const response = await ProjectAPI.updateAuthorIdList({
             projectId, authorIdList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 )
@@ -76,10 +78,12 @@ const updateName = createAsyncThunk(
         dispatch(updateNameInMemory(name));
         const projectId = getState().project.value._id;
         const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.rejected) {return;}
+        console.log("isLegalUpdate: ", isLegalUpdate);
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {return;}
         const response = await ProjectAPI.updateName({
             projectId, name
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -110,6 +114,7 @@ const setSelectedStoryboardId = createAsyncThunk(
                 selectedId: project.selectedId
                 }
             );
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -129,6 +134,7 @@ const setSelectedFrameId = createAsyncThunk(
                 selectedId: project.selectedId
             }
         );
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -152,6 +158,7 @@ const setSelectedStarId = createAsyncThunk(
             );
             return response.status;
         }
+        await dispatch(updateLastModified());
         return "OK";
     }
 );
@@ -193,6 +200,7 @@ const addStoryboard = createAsyncThunk(
         const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.addStoryboard(payload);
+        await dispatch(updateLastModified());
         return response.status;
     }
 )
@@ -230,6 +238,7 @@ const updateStoryboardOrder = createAsyncThunk(
         const response = await ProjectAPI.replaceStoryboardIdMenuInDatabase({
             projectId, storyboardMenu
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -242,6 +251,7 @@ const updateStoryboardName = createAsyncThunk(
         const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.updateStoryboardName(payload);
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -279,6 +289,7 @@ const addFrame = createAsyncThunk(
             frameId,
             frameList: newFrameList,
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -303,6 +314,7 @@ const deleteFrame = createAsyncThunk(
             storyboardId,
             frameIdList: ProjectDataHandler.getStoryboard(project, storyboardId).frameList.map(f => f._id)
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -322,6 +334,7 @@ const updateFrameOrder = createAsyncThunk(
             storyboardId,
             frameIdList,
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -353,6 +366,7 @@ const addStar = createAsyncThunk(
             frameId,
             starList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -374,6 +388,7 @@ const updateStarList = createAsyncThunk(
             frameId,
             starList: starList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -398,6 +413,7 @@ const deleteStar = createAsyncThunk(
             frameId,
             starList: starList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -425,6 +441,7 @@ const copyStar = createAsyncThunk(
             frameId,
             starList: starList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -455,6 +472,7 @@ const addSpeechChildStar = createAsyncThunk(
             frameId,
             starList: starList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -483,6 +501,7 @@ const addBackdropStar = createAsyncThunk(
             frameId,
             backdropStar
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -507,6 +526,7 @@ const deleteBackdropStar = createAsyncThunk(
         const response = await ProjectAPI.replaceBackdropStarInDatabase({
             frameId, backdropStar
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -528,6 +548,7 @@ const addTemplateStar = createAsyncThunk(
         dispatch(addTemplateStarInMemory(JSON.stringify({
             storyboardId, frameId, templateId,
         })));
+        await dispatch(updateLastModified());
         return "OK";
     }
 );
@@ -554,6 +575,7 @@ const addActor = createAsyncThunk(
         const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.addActor(payload);
+        await dispatch(updateLastModified());
         return response.status;
     }
 )
@@ -572,6 +594,7 @@ const deleteActor = createAsyncThunk(
         const response = await ProjectAPI.replaceActorIdListInDatabase({
             projectId, actorIdList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -589,6 +612,7 @@ const updateActorOrder = createAsyncThunk(
         const response = await ProjectAPI.replaceActorIdListInDatabase({
             projectId, actorIdList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -601,6 +625,7 @@ const updateActorName = createAsyncThunk(
         const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.rejected) {return;}
         const response = await ProjectAPI.updateActorName(payload);
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -621,6 +646,7 @@ const addState = createAsyncThunk(
             actorId,
             stateList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -638,6 +664,7 @@ const deleteState = createAsyncThunk(
             actorId,
             stateList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -655,6 +682,7 @@ const updateStateName = createAsyncThunk(
             actorId,
             stateList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -676,6 +704,7 @@ const addBackdrop = createAsyncThunk(
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -694,6 +723,7 @@ const deleteBackdrop = createAsyncThunk(
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -713,6 +743,7 @@ const updateBackdropName = createAsyncThunk(
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -730,6 +761,7 @@ const saveNote = createAsyncThunk(
            text
         });
 
+        await dispatch(updateLastModified());
         return response.status;
     }
 );
