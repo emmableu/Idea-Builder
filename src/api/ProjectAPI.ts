@@ -5,13 +5,13 @@ import {ProjectData} from "../data/ProjectData";
 class ProjectAPI {
 
     /* this section is on project */
-    static async insertProject (userId:string, projectData:ProjectData) {
+    static async insertProject (authorIdList:Array<string>, projectData:ProjectData) {
         const response = await axios({
             method: 'post',
             url: `/project/add`,
             data: {
-                userId: userId,
-                projectData: projectData
+                authorIdList,
+                projectData,
             }
         })
         return response;

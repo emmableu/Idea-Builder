@@ -9,7 +9,7 @@ import globalConfig, {globalLog} from "../globalConfig";
 
 export interface ProjectData {
     _id: string;
-    userId: string;
+    authorIdList: Array<string>;
     name: string;
     storyboardList: Array<StoryboardData>;
     actorList: Array<ActorData>;
@@ -47,7 +47,7 @@ export interface ProjectData {
 export class ProjectDataHandler {
     static initializeProject( importedData:any ) : ProjectData
     {
-        const {_id, userId, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
+        const {_id, authorIdList, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
             selectedId, speechBubbleList, variableList, eventList,
         } = importedData;
         const projectId = _id? _id:UUID.v4();
@@ -119,7 +119,7 @@ export class ProjectDataHandler {
 
         return {
             _id: projectId,
-            userId,
+            authorIdList,
             name: projectName,
             storyboardList: projectStoryboardList,
             actorList: projectActorList,
@@ -134,7 +134,7 @@ export class ProjectDataHandler {
     }
 
     static deepCopy(projectData: ProjectData) : ProjectData {
-        const {_id, userId, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
+        const {_id, authorIdList, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
             selectedId, speechBubbleList, variableList, eventList,
         } = projectData;
         const projectId = UUID.v4();
@@ -185,7 +185,7 @@ export class ProjectDataHandler {
 
         return {
             _id: projectId,
-            userId,
+            authorIdList,
             name: projectName,
             storyboardList: projectStoryboardList,
             actorList: projectActorList,

@@ -1,10 +1,10 @@
 export interface DashboardAPIData {
-    userId: string;
+    authorId: string;
     projectIdList: Array<string>;
 }
 
 export interface DashboardData {
-    userId: string;
+    authorId: string;
     projectList: Array<{ _id: string; name: string }>;
 }
 
@@ -12,20 +12,19 @@ export interface DashboardData {
 
 export class DashboardDataHandler {
     static initializeDashboard (obj:{
-                            userId:string,
+                            authorId:string,
                             projectList?: Array<{ _id: string; name: string }>
                                 }) {
-        return {
-         userId: obj.userId,
+        return {authorId: obj.authorId,
          projectList: obj.projectList ? obj.projectList : []}
     }
 
     static initializeDashboardAPI (obj:{
-        userId:string,
+        authorId:string,
         projectIdList?: Array< string >
     }) {
         return {
-            userId: obj.userId,
+            authorId: obj.authorId,
             projectIdList: obj.projectIdList ? obj.projectIdList:[]
         }
     }

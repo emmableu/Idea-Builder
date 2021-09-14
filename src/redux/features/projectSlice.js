@@ -17,10 +17,10 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
     async (obj, thunkAPI) => {
         const {_id, name} = obj;
-        const userId =  Cookies.get("userId");
-        const projectData = ProjectDataHandler.initializeProject({_id, userId, name});
+        const authorIdList =  [Cookies.get("userId")];
+        const projectData = ProjectDataHandler.initializeProject({_id, authorIdList, name});
         globalLog('projectData: ', projectData);
-        const response = await ProjectAPI.insertProject(userId, projectData);
+        const response = await ProjectAPI.insertProject(authorIdList, projectData);
         return response.status;
     }
 )
@@ -31,9 +31,9 @@ const loadProjectFromDatabase = createAsyncThunk(
         const response = await ProjectAPI.loadProject(_id);
         const {dispatch} = thunkAPI;
         dispatch(loadProjectInMemory(response.data));
-        const authorId = response.data.userId;
+        const authorIdList = response.data.authorIdList;
         const userId =  Cookies.get("userId");
-        if (authorId === userId) {
+        if (authorIdList.includes(userId)) {
             dispatch(setPermanentViewMode(false))
         }
         else {

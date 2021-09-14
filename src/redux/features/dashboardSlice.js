@@ -8,14 +8,14 @@ import {DashboardAPI} from "../../api/DashboardAPI";
 
 const fetchDashboardByUserID = createAsyncThunk(
     'dashboard/fetchById',
-    async (userId, thunkAPI) => {
-        const response = await DashboardAPI.fetchDashboard(userId);
+    async (authorId, thunkAPI) => {
+        const response = await DashboardAPI.fetchDashboard(authorId);
         let dashboardData;
         if (response.status === 204) {
             // const dashboardAPIData = new DashboardAPIData(userId);
-            const dashboardAPIData = DashboardDataHandler.initializeDashboardAPI({userId});
+            const dashboardAPIData = DashboardDataHandler.initializeDashboardAPI({authorId});
             await DashboardAPI.insertDashboard(dashboardAPIData);
-            dashboardData = DashboardDataHandler.initializeDashboard({userId});
+            dashboardData = DashboardDataHandler.initializeDashboard({authorId});
             return dashboardData;
         }
         else if (response.status === 200) {
@@ -30,11 +30,10 @@ const deleteProjectOnDashboard = createAsyncThunk(
     async (projectId, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         dispatch(deleteProjectOnDashboardInMemory(projectId));
-        globalLog("getState().dashboard.value: ", getState().dashboard.value);
         const projectIdList = getState().dashboard.value.projectList.map(p => (p._id));
-        const userId = Cookies.get("userId");
+        const authorId = Cookies.get("userId");
         const response = await DashboardAPI.replaceProjectIdListInDatabase({
-            userId, projectIdList
+            authorId, projectIdList
         });
         return response.status;
     }

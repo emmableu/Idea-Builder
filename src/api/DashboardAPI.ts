@@ -12,10 +12,10 @@ class DashboardAPI {
         return response;
     }
 
-    static async fetchDashboard (userId:string) {
+    static async fetchDashboard (authorId:string) {
         const response = await axios({
                                         method: 'get',
-                                        url: `/dashboard/${userId}`,
+                                        url: `/dashboard/${authorId}`,
                                         });
         return response;
     }
