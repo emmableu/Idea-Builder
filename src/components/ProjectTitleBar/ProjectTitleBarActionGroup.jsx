@@ -9,6 +9,8 @@ import {download} from "../../redux/features/projectSlice"
 import {setViewMode} from "../../redux/features/modeSlice"
 import { useRouteMatch, useHistory } from "react-router-dom"
 import globalConfig from "../../globalConfig";
+import ShareIcon from '@material-ui/icons/Share';
+import ShareProjectButton from "./ShareProjectButton";
 
 
 
@@ -64,6 +66,12 @@ const ProjectTitleBarActionGroup  = () => {
     const handleClick = () => {
         dispatch(download());
     }
+
+    const handleShare = () => {
+        console.log("share")
+    }
+
+
     const handleChange = (checked, event) => {
         if (permanentViewMode) {
             return;
@@ -86,6 +94,11 @@ const ProjectTitleBarActionGroup  = () => {
                     checkedChildren="View"
                     unCheckedChildren="Edit"
                     />
+
+
+            <ShareProjectButton/>
+
+
             <Tooltip title="Save to computer">
                 <IconButton
                     aria-label="files"
