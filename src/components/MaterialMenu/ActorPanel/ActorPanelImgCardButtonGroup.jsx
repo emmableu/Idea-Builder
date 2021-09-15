@@ -15,6 +15,7 @@ import * as UUID from "uuid";
 import {toPng} from "html-to-image";
 import {ProjectAPI} from "../../../api/ProjectAPI";
 import {DecorDialog} from "./DecorDialog/DecorDialog";
+import UploadStateButton from "./UploadStateButton";
 
 const ActorPanelImgCardButtonGroup = props => {
     const {actorId, actorData} = props;
@@ -41,7 +42,11 @@ const ActorPanelImgCardButtonGroup = props => {
     };
     return (
         <>
-            <div  style={{flex: "0 0 60px"}}>
+            <div  style={{flex: "0 0 90px"}}>
+                <UploadStateButton
+                    actorId={actorId}
+                />
+
                 <Tooltip title="Add state">
                     <Button
                         type="link"
