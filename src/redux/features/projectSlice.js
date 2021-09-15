@@ -79,6 +79,39 @@ const shareProject = createAsyncThunk(
 )
 
 
+const mergeProject = createAsyncThunk(
+    'project/mergeProject',
+    async (newProjectData, thunkAPI) => {
+        const {dispatch, getState}  = thunkAPI;
+        const type = "final";
+        const isLegalUpdate = await dispatch(loadAuthorData());
+        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+            dispatch(setFrozenMode(true));
+            return;}
+        const projectId = getState().project.value._id;
+        const modifiedProject = ProjectDataHandler.deepCopy(newProjectData);
+        console.log("modifiedProject: ", modifiedProject);
+        for (const storyboardDataJSON of modifiedProject.storyboardList) {
+            const payload =  {
+                projectId,
+                type,
+                storyboardDataJSON
+            };
+            await dispatch(addStoryboardInMemory(JSON.stringify(payload)));
+            await ProjectAPI.addStoryboard(payload);
+        }
+        if (modifiedProject !== null && modifiedProject.actorList.length > 0) {
+            for (const actorData of modifiedProject.actorList) {
+                dispatch(addActor(actorData));
+            }
+        }
+        // const response =
+        await dispatch(updateLastModified());
+        return "OK";
+    }
+)
+
+
 const updateName = createAsyncThunk(
     'project/updateName',
     async (name, thunkAPI) => {
@@ -1343,7 +1376,7 @@ export const {
     download,
 } = projectSlice.actions;
 export {
-    insertEmptyProjectToDatabase, loadProjectFromDatabase, updateName,  shareProject,//project
+    insertEmptyProjectToDatabase, loadProjectFromDatabase, updateName,  shareProject, mergeProject,//project
     setSelectedStoryboardId, setSelectedFrameId, setSelectedStarId, //selectedId
     addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
     addFrame, deleteFrame, updateFrameOrder, //frame
