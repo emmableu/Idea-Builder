@@ -7,9 +7,6 @@ import {Share} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import Cookies from "js-cookie";
 import {shareProject} from "../../redux/features/projectSlice";
-import { useClipboard } from 'use-clipboard-copy';
-import { Input, Select, Space, Cascader } from 'antd';
-import {CopyOutlined}  from '@ant-design/icons';
 
 
 const ShareProjectButton = () => {
