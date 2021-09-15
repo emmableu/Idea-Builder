@@ -111,11 +111,11 @@ export const MaterialMenu = () => {
         //     icon: <Chat/>,
         //     panel: <SpeechBubbleModal />
         // },
-        {
-            label: "Resources",
-            icon: <ExposurePlus1/>,
-            panel: <div />
-        },
+        // {
+        //     label: "Resources",
+        //     icon: <ExposurePlus1/>,
+        //     panel: <div />
+        // },
         // {
         //     label: "Templates",
         //     icon: <Theaters/>,

@@ -6,6 +6,13 @@ import fileDownload from "js-file-download";
 import {FrameData, FrameDataHandler} from "./FrameData";
 import {StoryboardData, StoryboardDataHandler} from "./StoryboardData";
 import globalConfig, {globalLog} from "../globalConfig";
+import JSZip from  'jszip';
+import { saveAs } from 'file-saver';
+import axios from "../axiosConfig";
+// import JSZipUtils from 'jszip-utils'
+// export const generateZip = () => {
+//     var zip = new JSZip();
+
 
 export interface ProjectData {
     _id: string;
@@ -366,13 +373,13 @@ export class ProjectDataHandler {
         projectData.backdropList.splice(backdropIndex, 1);
         for (const storyboardData of projectData.storyboardList) {
             for (const frameData of storyboardData.frameList) {
-                console.log(JSON.stringify(frameData.backdropStar._id))
-                console.log(JSON.stringify(frameData.backdropStar.prototypeId))
-                console.log(JSON.stringify(stateId))
+                // console.log(JSON.stringify(frameData.backdropStar._id))
+                // console.log(JSON.stringify(frameData.backdropStar.prototypeId))
+                // console.log(JSON.stringify(stateId))
                 if (frameData.backdropStar.prototypeId === stateId) {
-                        console.log("frameDATA backdropstar - before: ", JSON.stringify(frameData.backdropStar))
+                        // console.log("frameDATA backdropstar - before: ", JSON.stringify(frameData.backdropStar))
                         frameData.backdropStar.prototypeId = newStateId;
-                        console.log("frameDATA backdropstar - after: ", JSON.stringify(frameData.backdropStar))
+                        // console.log("frameDATA backdropstar - after: ", JSON.stringify(frameData.backdropStar))
                     }
             }
         }
@@ -393,6 +400,54 @@ export class ProjectDataHandler {
     }
 
     static download (projectData:ProjectData) {
-        fileDownload(JSON.stringify(projectData), 'project.json');
+        let filename = "project-" + projectData.name;
+        const zip = new JSZip()
+        const folder = zip.folder('project')
+        const {actorList, backdropList} = projectData;
+        const imgData: { actorName: string; _id: string; name: string; order: number; }[] = []
+        actorList.forEach(actorData => {
+            actorData.stateList.forEach(
+                (stateData, i)  => {
+                    imgData.push({
+                        actorName: actorData.name,
+                        _id: stateData._id,
+                        name: stateData.name,
+                        order: i,
+                    })
+                }
+            )
+        })
+        backdropList.forEach(
+            (backdropData, i)  => {
+                imgData.push({
+                    actorName: "stage",
+                    _id: backdropData._id,
+                    name: backdropData.name,
+                    order: i,
+                })}
+        )
+
+        imgData.forEach((img)=> {
+            const blobPromise =  fetch(axios.defaults.baseURL + img._id)
+                .then(function (response) {
+                    console.log({response})
+                    if (response.status === 200 || response.status === 0) {
+                        return Promise.resolve(response.blob());
+                    } else {
+                        return Promise.reject(new Error(response.statusText));
+                    }
+                })
+            const idSplit = img._id.split("?")[0].split(".")
+            const postfix = idSplit[idSplit.length-1]
+            const name = `${img.actorName}-${img.name}-${img.order}.${postfix}`
+            // @ts-ignore
+            folder.file(name, blobPromise)
+        })
+        // @ts-ignore
+        folder.file("project.json", JSON.stringify(projectData));
+
+        zip.generateAsync({type:"blob"})
+            .then(blob => saveAs(blob, filename))
+            .catch(e => console.log(e));
     }
 }

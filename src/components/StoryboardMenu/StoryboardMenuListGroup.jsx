@@ -23,17 +23,6 @@ function StoryboardMenuListGroup() {
     };
 
 
-    const initialColumns = {
-        "final": {
-            name: "My storyboards",
-            items: []
-        },
-        "draft": {
-            name: "Drafts",
-            items: []
-        },
-    };
-
     const columns = useSelector(state => {
         if (state.project.value === null) return;
         return state.project.value.storyboardMenu;
@@ -47,6 +36,7 @@ function StoryboardMenuListGroup() {
                 onDragEnd={result => onDragEnd(result)}
             >
                 {Object.entries(columns).map(([columnId, column]) => {
+                    if (column.name === "Drafts") {return;}
                     return (
                         <StoryboardSubMenu
                             columnId={columnId}

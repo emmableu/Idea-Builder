@@ -15,6 +15,8 @@ import UserButton from "../Dashboard/UserButton";
 import Toolbar from "@material-ui/core/Toolbar";
 import Cookies from "js-cookie";
 import Box from "@material-ui/core/Box";
+import { Modal } from 'antd';
+import MergeUploadButton from "./MergeUploadButton";
 
 
 
@@ -41,6 +43,7 @@ const ProjectTitleBarActionGroup  = () => {
     }
     const handleClick = () => {
         dispatch(download());
+        setTimeout(() => {success()}, 1000);
     }
 
     const handleChange = (checked, event) => {
@@ -56,6 +59,18 @@ const ProjectTitleBarActionGroup  = () => {
         }, 200)
     };
 
+    function success() {
+        Modal.success({
+            title: 'Storyboard downloaded!',
+            content: (
+                <div>
+                    <p>Tip: you may unzip the downloaded folder to reuse the assets in your Snap project.</p>
+                </div>
+            ),
+            onOk() {},
+        });
+    }
+
     return (
         <div
             style={{width: 300,
@@ -64,7 +79,7 @@ const ProjectTitleBarActionGroup  = () => {
                     alignItems: "center",
             }}
         >
-            <Box m={0.5}>
+            <Box m={0.75}>
                 <Switch loading={isLoading}
                         checked={view}
                         defaultChecked={true}
@@ -73,10 +88,10 @@ const ProjectTitleBarActionGroup  = () => {
                         unCheckedChildren="Edit"
                         />
             </Box>
-            <Box m={0.5}>
+            <Box m={0.75}>
             <ShareProjectButton/>
             </Box>
-            <Box m={0.5}>
+            <Box m={0.75}>
             <Tooltip title="Save to computer">
                 <IconButton
                     aria-label="files"
@@ -89,22 +104,14 @@ const ProjectTitleBarActionGroup  = () => {
                 </IconButton>
             </Tooltip>
             </Box>
-            <Box m={0.5}>
-                <Tooltip title="Save to computer">
-                    <IconButton
-                        aria-label="files"
-                        size="medium"
-                        onClick={handleClick}
-                        disabled={view}
-                    >
-                        <CloudUpload style={{color:
-                                view?null:"white"}}/>
-                    </IconButton>
-                </Tooltip>
+            <Box m={0.75}>
+                <MergeUploadButton
+                    view={view}
+                />
             </Box>
 
             {/*FileUploadIcon*/}
-            <Box m={0.5}>
+            <Box m={0.75}>
             <Tooltip title="Back to home">
                 <IconButton
                     aria-label="display more actions"
@@ -115,7 +122,7 @@ const ProjectTitleBarActionGroup  = () => {
                 </IconButton>
             </Tooltip>
             </Box>
-            <Box m={0.5}>
+            <Box m={0.75}>
             <UserButton userId={Cookies.get("userId")}/>
             </Box>
         </div>

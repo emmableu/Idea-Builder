@@ -49,7 +49,7 @@ const ShareProjectButton = () => {
             <>
                 <p>
                     {`Only your team member can edit the project using the URL link of this page.\n
-                    They should also see the project in their own dashboard.`}
+                    They should also see the project in their own dashboard after reloading.`}
                 </p>
             </>
         ),
