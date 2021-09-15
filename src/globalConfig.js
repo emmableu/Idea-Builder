@@ -84,7 +84,7 @@ const globalConfig = {
      innerBoxLeftRightPaddingEach: 20,
      topAndBottomMarginOutsideFrame: 5,
      noScaleWidth: 480, //to make it the same as scratch
-     storyboardModalWidth: 900,
+     storyboardModalWidth: 1100,
      color: {
           veryLightGrey: "#fafafa",
      },

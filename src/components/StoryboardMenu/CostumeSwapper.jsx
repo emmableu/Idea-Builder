@@ -86,6 +86,20 @@ const useStyles = makeStyles((theme) => ({
         // justifyContent: "space-between",
         // alignItems: "center",
     },
+    stepsAction: {
+        width: 100,
+        height: globalConfig.costumeSwapperHeight,
+        // marginTop: 16,
+        // padding: "8px 8px",
+        textAlign: "center",
+        backgroundColor: "#fafafa",
+        // border: "1px dashed #e9e9e9",
+        borderRadius: 2,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+    },
     avatarList: {
         display: 'flex',
         '& > *': {
@@ -120,21 +134,14 @@ const getSelectedRecommend = createSelector(
     state => state.project.value.actorList,
     state => state.project.value.backdropList,
     state => state.recommend.value.selected,
-    (actorList,backdropList, selected) => {
-        const selectedCostumes = [];
-        for (const actor of selected.actorList) {
-            for (const state of actor.stateList) {
-                selectedCostumes.push(
-                    {
-                        actorId: actor._id,
-                        actorName: actor.name,
-                        ...state,
-                    }
-                )
-            }
-        }
+    state => state.recommend.value.originalCostumes,
+    state => state.recommend.value.originalBackdrops,
+    state => state.recommend.value.currentCostumes,
+    state => state.recommend.value.currentBackdrops,
+    (actorList,backdropList, selected, originalCostumes, originalBackdrops,
+     currentCostumes, currentBackdrops
+     ) => {
 
-        const selectedBackdrops = selected.backdropList;
 
         const userCostumes = [];
         for (const actor of actorList) {
@@ -151,8 +158,9 @@ const getSelectedRecommend = createSelector(
             }
         }
         return {
-            selectedCostumes, userCostumes,
-        userBackdrops: backdropList, selectedBackdrops,
+            originalCostumes, userCostumes,
+        userBackdrops: backdropList, originalBackdrops,
+            currentCostumes, currentBackdrops,
         }
     }
 )
@@ -168,7 +176,8 @@ const CostumeSwapper = (props) => {
     const {
         setCurrent,
         userCostumes, userBackdrops,
-        selectedCostumes, selectedBackdrops
+        originalCostumes, originalBackdrops,
+        currentCostumes, currentBackdrops,
     } = props;
     const [currentCostumeStep, setCurrentCostumeStep] = React.useState(0);
     const [isComplete, setIsComplete] = React.useState(false);
@@ -179,35 +188,35 @@ const CostumeSwapper = (props) => {
     };
 
     const handleUse = (e, actorId, _id) => {
-        console.log("handleUse", currentCostumeStep, selectedCostumes.length, selectedBackdrops.length)
-        dispatch(modifyRecommend(
-            {
-                actorId: selectedCostumes[currentCostumeStep - selectedBackdrops.length].actorId,
-                stateId: selectedCostumes[currentCostumeStep - selectedBackdrops.length]._id,
-                newActorId: actorId,
-                newStateId: _id,
-            }
-        ));
-        if (currentCostumeStep === selectedCostumes.length + selectedBackdrops.length - 1) {
-            setIsComplete(true);
+        console.log("handleUse", currentCostumeStep, originalCostumes.length, originalBackdrops.length)
+        if (currentCostumes[currentCostumeStep - originalBackdrops.length] === null) {
+            dispatch(modifyRecommend(
+                {
+                    actorId: originalCostumes[currentCostumeStep - originalBackdrops.length].actorId,
+                    stateId: originalCostumes[currentCostumeStep - originalBackdrops.length]._id,
+                    newActorId: actorId,
+                    newStateId: _id,
+                    currentCostumeStep: currentCostumeStep,
+                }
+            ));
         }
         else {
-            setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
+            dispatch(modifyRecommend(
+                {
+                    actorId: currentCostumes[currentCostumeStep - originalBackdrops.length].actorId,
+                    stateId: currentCostumes[currentCostumeStep - originalBackdrops.length]._id,
+                    newActorId: actorId,
+                    newStateId: _id,
+                    currentCostumeStep: currentCostumeStep,
+                }
+            ));
         }
+
     };
 
-    const useOriginal = (e) => {
-        if (currentCostumeStep >= selectedBackdrops.length) {
-            dispatch(justModifyStateId({
-                newStateId: selectedCostumes[currentCostumeStep - selectedBackdrops.length]._id,
-                type: "state"}));
-        }
-        else {
-            dispatch(justModifyStateId({
-                newStateId: selectedBackdrops[currentCostumeStep]._id,
-                type: "backdrop"}));
-        }
-        if (currentCostumeStep === selectedCostumes.length + selectedBackdrops.length - 1) {
+
+    const next = (e) => {
+        if (currentCostumeStep === originalCostumes.length + originalBackdrops.length - 1) {
             setIsComplete(true);
         }
         else {
@@ -215,20 +224,62 @@ const CostumeSwapper = (props) => {
         }
     }
 
-    const handleUseBackdrop = (e, _id) => {
-        // globalLog("handleUse")
-        dispatch(modifyRecommendBackdrop(
-            {
-                stateId: selectedBackdrops[currentCostumeStep]._id,
-                newStateId: _id,
-            }
-        ));
-        if (currentCostumeStep === selectedCostumes.length + selectedBackdrops.length - 1) {
+
+    const prev = (e) => {
+        if (currentCostumeStep === originalCostumes.length + originalBackdrops.length - 1) {
             setIsComplete(true);
         }
         else {
-            setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
+            setCurrentCostumeStep(currentCostumeStep => currentCostumeStep - 1);
         }
+    }
+
+    const useOriginal = (e) => {
+        if (currentCostumeStep >= originalBackdrops.length) {
+            dispatch(justModifyStateId({
+                idx: currentCostumeStep - originalBackdrops.length,
+                type: "state"
+            }));
+        }
+        else {
+            dispatch(justModifyStateId({
+                idx: currentCostumeStep,
+                type: "backdrop"}));
+        }
+        // if (currentCostumeStep === originalCostumes.length + originalBackdrops.length - 1) {
+        //     setIsComplete(true);
+        // }
+        // else {
+        //     setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
+        // }
+    }
+
+    const handleUseBackdrop = (e, _id) => {
+        if (currentBackdrops[currentCostumeStep]===null) {
+            dispatch(modifyRecommendBackdrop(
+                {
+                    stateId: originalBackdrops[currentCostumeStep]._id,
+                    newStateId: _id,
+                    currentCostumeStep,
+                }
+            ));
+        }
+        else {
+            dispatch(modifyRecommendBackdrop(
+                {
+                    stateId: currentBackdrops[currentCostumeStep]._id,
+                    newStateId: _id,
+                    currentCostumeStep,
+                }
+            ));
+        }
+
+        // if (currentCostumeStep === originalCostumes.length + originalBackdrops.length - 1) {
+        //     setIsComplete(true);
+        // }
+        // else {
+        //     setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
+        // }
     };
 
 
@@ -236,8 +287,8 @@ const CostumeSwapper = (props) => {
         <>
             <div className={classes.root}>
                 <SwappedAvatarList
-                    selectedBackdrops={selectedBackdrops}
-                    selectedCostumes={selectedCostumes}
+                    originalBackdrops={originalBackdrops}
+                    originalCostumes={originalCostumes}
                 />
             <div
              className={classes.stepsContainer}
@@ -284,7 +335,7 @@ const CostumeSwapper = (props) => {
                     progressDot
                     className={classes.steps}
                     current={currentCostumeStep}>
-                    {selectedBackdrops.map(
+                    {originalBackdrops.map(
                         (c, i) => (
                                 <Step
                                     key={c._id} title={<CostumeTitle
@@ -293,19 +344,19 @@ const CostumeSwapper = (props) => {
                                 />}/>
                         )
                     )}
-                    {selectedCostumes.map(
+                    {originalCostumes.map(
                         (c, i) => (
                                 <Step
                                     key={c._id} title={<CostumeTitle
                                     costume={c}
-                                    isCurrent={currentCostumeStep === i+selectedBackdrops.length}
+                                    isCurrent={currentCostumeStep === i+originalBackdrops.length}
                                 />}/>
                         )
                     )}
                 </Steps>
                 <div className={classes.stepsContent}>
                         {
-                            currentCostumeStep < selectedBackdrops.length &&
+                            currentCostumeStep < originalBackdrops.length &&
                             (
                                 <>
                                     <div  className={classes.userCostumes}>
@@ -357,7 +408,7 @@ const CostumeSwapper = (props) => {
                             )
                         }
                         {
-                            currentCostumeStep >= selectedBackdrops.length &&
+                            currentCostumeStep >= originalBackdrops.length &&
                             (
                                 <>
                                 <div  className={classes.userCostumes}>
@@ -411,6 +462,25 @@ const CostumeSwapper = (props) => {
                             )
                         }
                 </div>
+
+
+                        <div className={classes.stepsAction}>
+                            {currentCostumeStep > 0 && (
+                                <Button style={{ margin: '20px 20px' }} onClick={prev}>
+                                    Previous
+                                </Button>
+                            )}
+                            {currentCostumeStep < originalCostumes.length + originalBackdrops.length - 1 && (
+                                <Button type="primary" onClick={next}>
+                                    Next
+                                </Button>
+                            )}
+                            {currentCostumeStep === originalCostumes.length + originalBackdrops.length - 1 && (
+                                <Button type="primary" onClick={null}>
+                                    Done
+                                </Button>
+                            )}
+                        </div>
                 </>}
             </div>
             </div>
@@ -473,7 +543,6 @@ const CostumeTitle = React.memo((props) => {
             </div>
 
         </>
-
 )
 })
 
@@ -481,30 +550,30 @@ const CostumeTitle = React.memo((props) => {
 
 const SwappedAvatarList = (props) => {
     const classes = useStyles();
-    const {selectedBackdrops, selectedCostumes} = props;
-    const modifiedCostumes = useSelector(state =>
-        (state.recommend.value.modifiedCostumes)
+    const {originalBackdrops, originalCostumes} = props;
+    const currentCostumes = useSelector(state =>
+        (state.recommend.value.currentCostumes)
     );
-    const modifiedBackdrops = useSelector(state =>
-        (state.recommend.value.modifiedBackdrops)
+    const currentBackdrops = useSelector(state =>
+        (state.recommend.value.currentBackdrops)
     );
     const oldSrc = [];
     const newSrc = [];
 
-    for (let i = 0; i < selectedBackdrops.length; i++) {
-        oldSrc.push(axios.defaults.baseURL + selectedBackdrops[i]._id);
-        if (i < modifiedBackdrops.length) {
-            newSrc.push(axios.defaults.baseURL + modifiedBackdrops[i]);
+    for (let i = 0; i < originalBackdrops.length; i++) {
+        oldSrc.push(axios.defaults.baseURL + originalBackdrops[i]._id);
+        if (currentBackdrops[i]) {
+            newSrc.push(axios.defaults.baseURL + currentBackdrops[i]._id);
         }
         else {
             newSrc.push(null)
         }
     }
 
-    for (let i = 0; i < selectedCostumes.length; i++) {
-        oldSrc.push(axios.defaults.baseURL + selectedCostumes[i]._id);
-        if (i < modifiedCostumes.length){
-            newSrc.push(axios.defaults.baseURL + modifiedCostumes[i]);
+    for (let i = 0; i < originalCostumes.length; i++) {
+        oldSrc.push(axios.defaults.baseURL + originalCostumes[i]._id);
+        if (currentCostumes[i]){
+            newSrc.push(axios.defaults.baseURL + currentCostumes[i]._id);
         }
         else {
             newSrc.push(null)

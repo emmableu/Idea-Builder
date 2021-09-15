@@ -170,7 +170,7 @@ const setSelectedStoryboardId = createAsyncThunk(
         const response = await ProjectAPI.updateSelectedIdData(
             {
                 projectId: project._id,
-                selectedId: project.selectedId
+                selectedId:  getState().project.value.selectedId
                 }
             );
         await dispatch(updateLastModified());
@@ -257,7 +257,8 @@ const addStoryboard = createAsyncThunk(
         dispatch(addStoryboardInMemory(JSON.stringify(payload)));
         if (modifiedProject !== null && modifiedProject.actorList.length > 0) {
             for (const actorData of modifiedProject.actorList) {
-                dispatch(addActor(actorData));
+                const newActorData = ActorDataHandler.useModified(actorData);
+                dispatch(addActor(newActorData));
             }
         }
         const isLegalUpdate = await dispatch(loadAuthorData());
@@ -273,17 +274,20 @@ const addStoryboard = createAsyncThunk(
 const deleteStoryboard = createAsyncThunk(
     'project/deleteStoryboard',
     async (storyboardId, thunkAPI) => {
-        globalLog("storyboardID: ", storyboardId);
+
         const {dispatch, getState} = thunkAPI;
-        const state = getState();
-        const project = state.project.value;
-        const projectId = project._id;
-        const storyboardMenu = state.project.value.storyboardMenu;
-        dispatch(deleteStoryboardInMemory(storyboardId));
         const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
             return;}
+
+        const state = getState();
+        const project = state.project.value;
+        const projectId = project._id;
+        await dispatch(setSelectedStoryboardId(null));
+        dispatch(deleteStoryboardInMemory(storyboardId));
+        const storyboardMenu = getState().project.value.storyboardMenu;
+
         const response = await ProjectAPI.replaceStoryboardIdMenuInDatabase({
             projectId, storyboardMenu
         });

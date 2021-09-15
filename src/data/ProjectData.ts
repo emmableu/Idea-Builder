@@ -60,13 +60,15 @@ export class ProjectDataHandler {
         } = importedData;
         const projectId = _id? _id:UUID.v4();
         const projectName = name? name:"Untitled";
-        const projectStoryboardList = storyboardList? storyboardList:[StoryboardDataHandler.initializeStoryboard()];
+        const projectStoryboardList = storyboardList? storyboardList:[];
+        // const projectStoryboardList = storyboardList? storyboardList:[StoryboardDataHandler.initializeStoryboard()];
         const projectActorList = actorList? actorList:[];
         const projectBackdropList = backdropList? backdropList:[];
 
         let projectTemplateList;
         if (templateList === undefined) {
-            projectTemplateList = [projectStoryboardList[0].frameList[0]._id]
+            projectTemplateList = []
+            // projectTemplateList = [projectStoryboardList[0].frameList[0]._id]
         }
         else {
             projectTemplateList = templateList;
@@ -77,8 +79,6 @@ export class ProjectDataHandler {
                 "final": {
                     "name": "My storyboards",
                     "items": [
-                        {"_id": projectStoryboardList[0]._id,
-                            "name": projectStoryboardList[0].name,}
                     ]
                 },
                 "draft":  {
@@ -92,8 +92,8 @@ export class ProjectDataHandler {
         }
 
         const projectSelectedId = selectedId?selectedId: SelectedIdDataHandler.initializeSelectedId(
-            projectStoryboardList[0]._id,
-            projectStoryboardList[0].frameList[0]._id,
+            // projectStoryboardList[0]._id,
+            // projectStoryboardList[0].frameList[0]._id,
         )
 
         const projectSpeechBubbleList = speechBubbleList?speechBubbleList:[];
@@ -338,13 +338,17 @@ export class ProjectDataHandler {
 
     static swapCostume (projectData:ProjectData, actorId:string, stateId: string, newActorId:string, newStateId:string) {
         const actorIndex = projectData.actorList.findIndex(a => a._id === actorId)
-        const actorData = projectData.actorList[actorIndex];
-        if (actorData.stateList.length === 1) {
-            projectData.actorList.splice(actorIndex, 1);
-        }
-        else {
-            const stateIndex = actorData.stateList.findIndex(s => s._id === stateId);
-            actorData.stateList.splice(stateIndex, 1);
+        if (actorIndex !== -1) {
+            const actorData = projectData.actorList[actorIndex];
+            if (actorData.stateList.length === 1) {
+                // projectData.actorList.splice(actorIndex, 1);
+                projectData.actorList[actorIndex].deleted = true;
+            }
+            else {
+                const stateIndex = actorData.stateList.findIndex(s => s._id === stateId);
+                // actorData.stateList.splice(stateIndex, 1);
+                actorData.stateList[stateIndex].deleted = true;
+            }
         }
         for (const storyboardData of projectData.storyboardList) {
             for (const frameData of storyboardData.frameList) {

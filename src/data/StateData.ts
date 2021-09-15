@@ -3,6 +3,7 @@ import * as UUID from "uuid";
 export interface StateData {
     _id: string;
     name: string;
+    deleted?: boolean;
 }
 
 

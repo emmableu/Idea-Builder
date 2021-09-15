@@ -11,8 +11,10 @@ export const recommendSlice = createSlice({
             initial: [],
             selected: null,
             modified: null,
-            modifiedCostumes: [],
-            modifiedBackdrops: [],
+            originalCostumes: [],
+            originalBackdrops: [],
+            currentCostumes: [],
+            currentBackdrops: [],
         },
     },
     reducers: {
@@ -27,50 +29,89 @@ export const recommendSlice = createSlice({
         setSelectedRecommend: (state, action) => {
             const selected = action.payload;
             state.value.selected = selected;
-            state.value.modifiedCostumes = [];
-            state.value.modifiedBackdrops = [];
+            const originalCostumes = [];
+            for (const actor of selected.actorList) {
+                for (const state of actor.stateList) {
+                    originalCostumes.push(
+                        {
+                            actorId: actor._id,
+                            actorName: actor.name,
+                            ...state,
+                        }
+                    )
+                }
+            }
+            state.value.originalCostumes = originalCostumes;
+            state.value.currentBackdrops = new Array(originalCostumes.length).fill(null);
+            state.value.originalBackdrops = selected.backdropList;
+            state.value.currentBackdrops = new Array(selected.backdropList.length).fill(null);
+
             state.value.modified = JSON.parse(JSON.stringify(selected));
-            state.value.modified._id = UUID.v4();
+            if (state.value.modified !== null) {
+                state.value.modified._id = UUID.v4();
+            }
         },
 
         resetModifiedRecommend: (state) => {
-            state.value.modifiedCostumes = [];
-            state.value.modifiedBackdrops = [];
             state.value.modified = JSON.parse(JSON.stringify(state.value.selected));
-            state.value.modified._id = UUID.v4();
+            const selected = state.value.selected;
+            const originalCostumes = [];
+            for (const actor of selected.actorList) {
+                for (const state of actor.stateList) {
+                    originalCostumes.push(
+                        {
+                            actorId: actor._id,
+                            actorName: actor.name,
+                            ...state,
+                        }
+                    )
+                }
+            }
+            state.value.originalCostumes = originalCostumes;
+            state.value.currentBackdrops = new Array(originalCostumes.length).fill(null);
+            state.value.originalBackdrops = selected.backdropList;
+            state.value.currentBackdrops = new Array(selected.backdropList.length).fill(null);
+
+            if (state.value.modified !== null) {
+                state.value.modified._id = UUID.v4();
+            }
         },
 
         clearModifiedRecommend: (state) => {
             state.value.selected = null;
             state.value.modified = null;
-            state.value.modifiedCostumes = [];
-            state.value.modifiedBackdrops = [];
+            state.value.currentCostumes = [];
+            state.value.currentBackdrops = [];
+            state.value.originalCostumes = [];
+            state.value.originalBackdrops = [];
         },
 
         setModifiedRecommend: (state, action) => {
             state.value.modified = action.payload
         },
 
-        modifyRecommend: (state, action) => {
-            const {actorId, stateId, newActorId, newStateId} = action.payload;
-            state.value.modifiedCostumes.push(newStateId);
+        modifyRecommend: (state, action,) => {
+            const {actorId, stateId, newActorId, newStateId, currentCostumeStep} = action.payload;
+            state.value.currentCostumes[currentCostumeStep - state.value.originalBackdrops.length] = {_id: newStateId, name: "untitled"};
             ProjectDataHandler.swapCostume(state.value.modified, actorId, stateId, newActorId, newStateId);
             console.log("modified: ", state.value.modified);
         },
+
+
         modifyRecommendBackdrop: (state, action) => {
-            const {stateId, newStateId} = action.payload;
-            state.value.modifiedBackdrops.push(newStateId);
+            const {stateId, newStateId, currentCostumeStep} = action.payload;
+            state.value.currentBackdrops[currentCostumeStep]= {_id: newStateId, name: "stage"};
             ProjectDataHandler.swapBackdrop(state.value.modified, stateId, newStateId);
-            console.log("modified: ", state.value.modified);
+            // console.log("modified: ", state.value.modified);
         },
 
         justModifyStateId: (state, action) => {
-            const {newStateId, type} = action.payload;
+            const {idx, type} = action.payload;
             if (type === "backdrop") {
-                state.value.modifiedBackdrops.push(newStateId);
+                state.value.currentBackdrops[idx] = state.value.originalBackdrops[idx];
             }
             else if (type === "state") {
-                state.value.modifiedCostumes.push(newStateId);
+                state.value.currentCostumes[idx] = state.value.originalCostumes[idx];
             }
         }
     },

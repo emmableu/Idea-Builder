@@ -80,7 +80,7 @@ const GalleryStepper = (props) => {
                 }
                 {current === 1 &&
                     <>
-                        <div style={{height: 200}}>
+                        <div style={{height: 160}}>
                             <ModifyingFrameList/>
                         </div>
                         <CostumeSwapper

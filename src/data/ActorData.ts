@@ -38,6 +38,25 @@ export class ActorDataHandler {
         };
     }
 
+    static useModified(actorData:ActorData) {
+        if (actorData.deleted) {
+            return null
+        }
+        const { name, stateList, deleted,} = actorData;
+        const newStateList = []
+        for (const state of stateList) {
+            if (state.deleted !== undefined && !state.deleted) {
+                newStateList.push(state)
+            }
+        }
+        return {
+            _id: UUID.v4(),
+            name,
+            stateList: newStateList,
+            deleted,
+        };
+    }
+
     static addState(actorData:ActorData, stateId:string) {
         actorData.stateList.push(StateDataHandler.initializeState(stateId))
     }

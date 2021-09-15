@@ -27,7 +27,6 @@ const StoryboardActionDropdown  = (props) => {
             okType: 'danger',
             cancelText: 'No',
             async onOk() {
-                await dispatch(setSelectedStoryboardId(null));
                 dispatch(deleteStoryboard(storyboardId));
             },
             onCancel() {

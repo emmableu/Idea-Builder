@@ -20,7 +20,7 @@ const StoryboardPageContainer = () => {
         {(storyboardListLength === 0 )
             && <EmptyStoryboardOptions text={`Your project is currently empty. Please create a new storyboard.`}/>}
         {(storyboardListLength !== 0  && (selectedStoryboard === null))
-            && <EmptyStoryboardOptions text={`Currently, no file is selected. Please select a storyboard from the file tree.`}/>}
+            && <EmptyStoryboardOptions text={`Currently, no storyboard is selected. Please select a storyboard from the file tree.`}/>}
         </>
     )
 }
