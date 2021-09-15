@@ -437,12 +437,12 @@ export class ProjectDataHandler {
                 })
 
             let name;
-            if (deployMode === false) {
+            if (!deployMode) {
                 const idSplit = img._id.split("?")[0].split(".")
                 const postfix = idSplit[idSplit.length-1]
                 name = idSplit[0].split("/")[idSplit[0].split("/").length-1] + "." + postfix
             }
-            else if (deployMode === true) {
+            else if (deployMode) {
                 const idSplit = img._id.split("?")[0].split(".")
                 const postfix = idSplit[idSplit.length-1]
                 name = `${img.actorName}-${img.name}-${img.order}.${postfix}`
@@ -450,11 +450,11 @@ export class ProjectDataHandler {
             // @ts-ignore
             folder.file(name, blobPromise)
         })
-        if (deployMode === false) {
+        if (!deployMode) {
             // @ts-ignore
             folder.file("recommend.json", JSON.stringify(projectData));
         }
-        else if (deployMode === true) {
+        else if (deployMode) {
             // @ts-ignore
             folder.file("project.json", JSON.stringify(projectData));
         }
