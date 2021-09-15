@@ -9,6 +9,7 @@ import globalConfig, {globalLog} from "../globalConfig";
 import JSZip from  'jszip';
 import { saveAs } from 'file-saver';
 import axios from "../axiosConfig";
+import store from "../redux/store";
 // import JSZipUtils from 'jszip-utils'
 // export const generateZip = () => {
 //     var zip = new JSZip();
@@ -163,13 +164,10 @@ export class ProjectDataHandler {
         const projectTemplateList = [projectStoryboardList[0].frameList[0]._id]
 
 
-        const projectStoryboardMenu =  {
+        const projectStoryboardMenu =  storyboardMenu? storyboardMenu:{
                 "final": {
                     "name": "My storyboards",
-                    "items": [
-                        {   "_id": projectStoryboardList[0]._id,
-                            "name": projectStoryboardList[0].name,}
-                    ]
+                    "items": []
                 },
                 "draft":  {
                     "name": "Drafts",
@@ -177,9 +175,7 @@ export class ProjectDataHandler {
                 }
             };
 
-        const projectSelectedId = selectedId?selectedId: SelectedIdDataHandler.initializeSelectedId(
-            projectStoryboardList[0]._id,
-            projectStoryboardList[0].frameList[0]._id,
+        const projectSelectedId = SelectedIdDataHandler.initializeSelectedId(
         )
 
         const projectSpeechBubbleList = speechBubbleList?speechBubbleList:[];

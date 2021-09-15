@@ -12,13 +12,8 @@ const { Dragger } = Upload;
 const MergeUploadModalContent = (props) => {
     const {isModalVisible, setIsModalVisible} = props;
     const dispatch = useDispatch();
+    const [currentFileList, setCurrentFileList] = React.useState([]);
 
-    function error() {
-        Modal.error({
-            title: 'Merge error',
-            content: 'Cannot find project.json file inside the zip folder',
-        });
-    }
 
     // const fakeUpload = async () => {
     //     return await new Promise(() => {setTimeout(() => {return;}, 2000)});
@@ -36,31 +31,23 @@ const MergeUploadModalContent = (props) => {
                     setIsModalVisible(false);
                     success();
                 }, 100)
+                setCurrentFileList([]);
                 return;
             }
         }
         onError("error")
+        Modal.error({
+            title: 'Merge error',
+            content: 'Cannot find project.json file inside the zip folder',
+        });
     };
+
+    const handleChange = ({fileList}) => {
+        setCurrentFileList(fileList);
+    }
     const uploaderProps = {
         name: 'file',
         multiple: false,
-        // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                // // globalLog(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                console.log("success");
-                // setIsModalVisible(false);
-                // message.success(`${info.file.name} file uploaded successfully.`);
-            } else if (status === 'error') {
-                // message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            // // globalLog('Dropped files', e.dataTransfer.files);
-        },
     };
 
 
@@ -79,6 +66,8 @@ const MergeUploadModalContent = (props) => {
     return (
         <Dragger
             customRequest={dummyRequest}
+            fileList={currentFileList}
+            onChange={handleChange}
             {...uploaderProps}>
             <p className="ant-upload-drag-icon">
                 <InboxOutlined />

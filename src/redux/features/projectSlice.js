@@ -10,13 +10,11 @@ import globalConfig, {globalLog} from "../../globalConfig";
 import {FrameDataHandler} from "../../data/FrameData";
 import {SelectedIdDataHandler} from "../../data/SelectedIdData";
 import {StarDataHandler} from "../../data/StarData";
-import {setPermanentViewMode, setViewMode} from "./modeSlice";
+import {setPermanentViewMode} from "./modeSlice";
 import {AuthorDataHandler} from "../../data/AuthorData";
 import {AuthorAPI} from "../../api/AuthorAPI";
 import {loadAuthorData, setFrozenMode, setLastLoaded, updateLastModified} from "./authorSlice";
-
-
-
+import {stringify} from "uuid";
 
 
 const insertEmptyProjectToDatabase = createAsyncThunk(
@@ -33,11 +31,27 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
     }
 )
 
+
+const insertProjectToDatabase = createAsyncThunk(
+    'project/insertNewProjectToDatabase',
+    async (projectData, thunkAPI) => {
+        const {_id} = projectData;
+        projectData.authorIdList = [Cookies.get("userId")];
+        const authorData = AuthorDataHandler.initializeAuthor({_id});
+        globalLog('projectData: ', projectData);
+        const response = await ProjectAPI.insertProject(Cookies.get("userId"), projectData);
+        const response2 = await AuthorAPI.insertAuthorData(authorData);
+        return response.status;
+    }
+)
+
 const loadProjectFromDatabase = createAsyncThunk(
     'project/loadProjectFromDatabase',
     async (_id, thunkAPI) => {
         const response = await ProjectAPI.loadProject(_id);
         const {dispatch} = thunkAPI;
+        console.log("project!!!!!!!!, ", JSON.stringify(response.data));
+
         dispatch(loadProjectInMemory(response.data));
         const authorIdList = response.data.authorIdList;
         const userId =  Cookies.get("userId");
@@ -1376,7 +1390,7 @@ export const {
     download,
 } = projectSlice.actions;
 export {
-    insertEmptyProjectToDatabase, loadProjectFromDatabase, updateName,  shareProject, mergeProject,//project
+    insertEmptyProjectToDatabase, insertProjectToDatabase, loadProjectFromDatabase, updateName,  shareProject, mergeProject,//project
     setSelectedStoryboardId, setSelectedFrameId, setSelectedStarId, //selectedId
     addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
     addFrame, deleteFrame, updateFrameOrder, //frame
