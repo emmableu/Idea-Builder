@@ -49,6 +49,7 @@ const ImgCard = (props) => {
                             handleDelete={handleDelete}
                             handleUse={handleUse}
                             contentNode={<ImgTileEdiText
+                                actorId={actorId}
                                 _id={imgData._id}
                                 name={imgData.name}
                                 handleSave={handleSave}

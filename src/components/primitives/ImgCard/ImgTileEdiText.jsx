@@ -47,7 +47,7 @@ const EditButton = () => (
 )
 
 const ImgTileEdiText = (props) => {
-    const {_id, name, handleSave} = props;
+    const {actorId, _id, name, handleSave} = props;
     const [editing, setEditing] = useState(false);
     const [value, setValue] = useState(name);
 
@@ -61,7 +61,12 @@ const ImgTileEdiText = (props) => {
             value={value}
             type="text"
             onSave={ value =>
-                handleSave({_id, name:value})}
+                {if (actorId !== undefined) {
+                    handleSave(actorId, _id, value)}
+                 else{
+                    handleSave(_id, value)}
+                    }
+                }
             editButtonContent={<EditButton/>}
             editing={editing}
             showButtonsOnHover

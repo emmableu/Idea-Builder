@@ -2,7 +2,13 @@ import ActorPanelButtonGroup from "./ActorPanelButtonGroup";
 import ImgCard from "../../primitives/ImgCard/ImgCard";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addStar, deleteActor, deleteState, updateActorName} from "../../../redux/features/projectSlice";
+import {
+    addStar,
+    deleteActor,
+    deleteState,
+    updateActorName,
+    updateStateName
+} from "../../../redux/features/projectSlice";
 import {Input} from "antd";
 import Grid from "@material-ui/core/Grid";
 import ActorPanelImgCardButtonGroup from "./ActorPanelImgCardButtonGroup";
@@ -27,22 +33,25 @@ const ActorPanelCardTitle = (props) => {
     )
 }
 
-const ActorPanelImgButtonGroup = (props) => {
-
-}
 
 
 export const ActorPanelImgCard = (props) => {
     const {actorData} = props;
     const dispatch = useDispatch();
 
-    const handleSave = React.useCallback((data) => {
-        const {_id, name} = data;
-        dispatch(
-            updateActorName({
-                "_id": _id,
-                "name": name
-            }));
+    const handleSave = React.useCallback((e, actorId, _id, name) => {
+        // dispatch(
+        //     updateActorName({
+        //         "_id": _id,
+        //         "name": name
+        //     }));
+        dispatch(updateStateName(
+            {
+                actorId,
+                stateId: _id,
+                stateName: name,
+            }
+        ))
     }, []);
 
     const handleDelete = React.useCallback((e, actorId, _id) => {
@@ -78,8 +87,8 @@ export const ActorPanelImgCard = (props) => {
             />}
             actorId={actorData._id}
             dataList = {actorData.stateList}
-            imgWidth={5}
-            handleSave={null}
+            imgWidth={6}
+            handleSave={handleSave}
             handleDelete={handleDelete}
             handleUse={handleUse}
             ratio="100%"
