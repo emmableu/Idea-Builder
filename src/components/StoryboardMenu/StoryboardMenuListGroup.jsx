@@ -19,6 +19,7 @@ function StoryboardMenuListGroup() {
 
 
     const onDragEnd = (result) => {
+        console.log("result: ", JSON.stringify(result));
         dispatch(updateStoryboardOrder(JSON.stringify(result)));
     };
 
@@ -36,7 +37,7 @@ function StoryboardMenuListGroup() {
                 onDragEnd={result => onDragEnd(result)}
             >
                 {Object.entries(columns).map(([columnId, column]) => {
-                    if (column.name === "Drafts") {return;}
+                    // if (column.name === "Drafts") {return;}
                     return (
                         <StoryboardSubMenu
                             columnId={columnId}
