@@ -21,7 +21,7 @@ import {Input, Modal} from "antd";
 // )
 
 const SearchDialog = (props) => {
-    const {searchDialogOpen, handleClose, type} = props;
+    const {searchDialogOpen, addAs, handleClose, type, actorId,} = props;
     //type can be "state" or "backdrop"
 
     return (
@@ -39,6 +39,7 @@ const SearchDialog = (props) => {
                     height={600}
                     xs={type==="state"? 2:3}
                     type={type}
+                    actorId={actorId}
                 />
             </Modal>
 

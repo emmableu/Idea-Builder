@@ -1,5 +1,6 @@
-import {Button, Modal, Tooltip} from 'antd';
+import {Button, Dropdown, Menu, Modal, Tooltip} from 'antd';
 import {
+    DeleteOutlined,
     DeleteTwoTone,
     DragOutlined,
     SearchOutlined,
@@ -16,6 +17,8 @@ import {toPng} from "html-to-image";
 import {ProjectAPI} from "../../../api/ProjectAPI";
 import {DecorDialog} from "./DecorDialog/DecorDialog";
 import UploadStateButton from "./UploadStateButton";
+import SearchStateButton from "./SearchStateButton";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const ActorPanelImgCardButtonGroup = props => {
     const {actorId, actorData} = props;
@@ -35,7 +38,26 @@ const ActorPanelImgCardButtonGroup = props => {
         setIsModalVisible(false);
     }, [])
 
+    const menu = (actorId) => {
+        return (
+            <Menu
+            >
+                <MenuItem
+                    key="1"
+                    onClick={(e) => {setIsModalVisible(true)}
+                    }
+                >Build a new state</MenuItem>
 
+                <UploadStateButton
+                    actorId={actorId}
+                />
+                <SearchStateButton
+                    actorId={actorId}
+                />
+
+
+            </Menu>
+        )};
     const handleCancel = () => {
         setCancelPressed(true);
         setIsModalVisible(false);
@@ -43,19 +65,25 @@ const ActorPanelImgCardButtonGroup = props => {
     return (
         <>
             <div  style={{flex: "0 0 90px"}}>
-                <UploadStateButton
-                    actorId={actorId}
-                />
+                {/*<UploadStateButton*/}
+                {/*    actorId={actorId}*/}
+                {/*/>*/}
 
+
+
+                <Dropdown overlay={menu(actorId)}
+                          overlayStyle={{zIndex:1}}
+                >
                 <Tooltip title="Add state">
                     <Button
                         type="link"
                         shape="circle"
                         size="small"
-                        onClick={(e) => {setIsModalVisible(true)}}
+                        //
                         icon={<PlusOutlined />}
                     />
                 </Tooltip>
+                </Dropdown>
                 <Tooltip title="Delete actor">
                     <Button
                         type="link"

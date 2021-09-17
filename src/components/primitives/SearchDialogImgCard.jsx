@@ -3,7 +3,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import {useDispatch} from "react-redux";
-import {addBackdrop} from "../../redux/features/projectSlice";
+import {addBackdrop, addState} from "../../redux/features/projectSlice";
 import {IconButton} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -54,7 +54,7 @@ const useStyles = makeStyles({
 
 
 const SearchDialogImgCard = React.memo((props) =>  {
-    const {type, imgId, imgSrc} = props;
+    const {type, imgId, imgSrc, actorId} = props;
     const classes = useStyles(props);
     const dispatch  = useDispatch();
     const [onHover, setOnHover] = React.useState();
@@ -71,15 +71,18 @@ const SearchDialogImgCard = React.memo((props) =>  {
 
     const handleAddItem = () => {
         if (type=== "state") {
-            // dispatch(addActor(
-            //     {
-            //         stateList: [{
-            //             _id: imgId,
-            //             name: "",
-            //         }]
-            //     }
-            // ))
-            setIsModalVisible(true);
+            if (actorId !== undefined){
+                dispatch(addState(
+                    {
+                        actorId,
+                        stateId: imgId,
+                    }
+                ))
+            }
+
+            else {
+                setIsModalVisible(true);
+            }
         }
         else if (type=== "backdrop") {
             dispatch(addBackdrop(

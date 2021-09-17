@@ -5,6 +5,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import axios from "../../../axiosConfig"
 import {useDispatch} from "react-redux";
 import {addActor, updateStateName} from "../../../redux/features/projectSlice";
+import MenuItem from '@material-ui/core/MenuItem';
 
 const uploadButtonProps = {
     name: 'file',
@@ -40,32 +41,6 @@ const UploadStateButton = (props) => {
                 }
             ))
         })
-        // }).then(response => {
-        //     dispatch(addActor({
-        //         stateList: [{
-        //             _id: response.data._id,
-        //             name: "Untitled"
-        //         }]
-        //     }));
-        // })
-
-
-        // callback(img) {
-        //     img = img.src;
-        //     axios({
-        //         method: "post",
-        //         url: "/state/upload/img",
-        //         data: {img},
-        //     }).then(response => {
-        //         dispatch(updateStateName(
-        //             {
-        //                 actorId: actorData._id,
-        //                 stateId: response.data._id,
-        //                 stateName: stateName,
-        //             }
-        //         ))
-        //     })
-        // }
     };
 
 
@@ -74,9 +49,7 @@ const UploadStateButton = (props) => {
             <Upload
                 customRequest={uploadImage}
                 {...uploadButtonProps}>
-                <Tooltip title="Upload new state">
-                    <Button type="link" shape="circle"  size="small" icon={<UploadOutlined />} />
-                </Tooltip>
+                    <MenuItem> Upload new state</MenuItem>
             </Upload>
         </>
     );

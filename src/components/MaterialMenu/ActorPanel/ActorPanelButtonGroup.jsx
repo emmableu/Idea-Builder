@@ -19,6 +19,12 @@ const ActorPanelButtonGroup = props => {
     return (
         <>
             <>
+                <div
+                    style={{display: "flex", flexDirection: "column",
+                        width: "100%", justifyContent:"center", alignItems: "center",
+                    }}
+                >
+                <div>
             <ActorPanelUploadButton/>
             <Tooltip title="Search for actors">
                 <Button type="link" shape="circle" size="medium"
@@ -26,7 +32,11 @@ const ActorPanelButtonGroup = props => {
                         loading={searchLoading}
                         icon={<SearchOutlined />} />
             </Tooltip>
-
+                </div>
+                <div>
+            Add a new actor
+                </div>
+                </div>
 
             </>
             <SearchDialog

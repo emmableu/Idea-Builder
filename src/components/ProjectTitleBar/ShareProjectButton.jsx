@@ -41,7 +41,7 @@ const ShareProjectButton = () => {
     };
 
     const successConfig = {
-        title: 'Share project success!',
+        title: 'Project sharing success!',
         content: (
             <>
                 <p>

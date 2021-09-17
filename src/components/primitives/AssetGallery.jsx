@@ -9,7 +9,7 @@ import {setAsset} from "../../redux/features/assetSlice";
 const ImgRow = React.memo(
     (props) => {
         const {data, index, style} = props;
-        const {type, imgList, xs} = data;
+        const {type, imgList, xs, actorId} = data;
         const subList = imgList.slice(index*(12/xs), index*(12/xs)+(12/xs));
         return (
             <Grid
@@ -26,6 +26,7 @@ const ImgRow = React.memo(
                         >
                             <SearchDialogImgCard
                                 type={type}
+                                actorId={actorId}
                                 imgId={imgId}
                                 imgSrc={axios.defaults.baseURL + imgId}
                                 heightToWidthRatio={'75%'}
@@ -39,7 +40,7 @@ const ImgRow = React.memo(
 )
 
 const AssetGallery = React.memo((props) => {
-    const {type, height, xs} = props;
+    const {type, height, xs, actorId} = props;
     let {itemSize} = props;
     if (itemSize === undefined) {
         itemSize = xs===2? 150:200;
@@ -75,7 +76,8 @@ const AssetGallery = React.memo((props) => {
                 itemData = {{
                     type,
                     imgList,
-                    xs
+                    xs,
+                    actorId,
                 }}
             >
                 {ImgRow}
