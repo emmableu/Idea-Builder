@@ -8,6 +8,7 @@ import globalConfig from "../../globalConfig";
 import {clearModifiedRecommend, resetModifiedRecommend} from "../../redux/features/recommendSlice";
 import {useDispatch} from "react-redux";
 import NewStoryboardNameInput from "./NewStoryboardNameInput";
+import CostumeSwapperStepper from "./CostumeSwapperStepper";
 
 const { Step } = Steps;
 
@@ -83,7 +84,7 @@ const GalleryStepper = (props) => {
                         <div style={{height: 160}}>
                             <ModifyingFrameList/>
                         </div>
-                        <CostumeSwapper
+                        <CostumeSwapperStepper
                             setCurrent={setCurrent}
                         />
                     </>

@@ -12,9 +12,9 @@ export const recommendSlice = createSlice({
             selected: null,
             modified: null,
             originalCostumes: [],
-            originalBackdrops: [],
+            // originalBackdrops: [],
             currentCostumes: [],
-            currentBackdrops: [],
+            // currentBackdrops: [],
         },
     },
     reducers: {
@@ -30,6 +30,12 @@ export const recommendSlice = createSlice({
             const selected = action.payload;
             state.value.selected = selected;
             const originalCostumes = [];
+            for (const backdrop of selected.backdropList) {
+                originalCostumes.push({
+                    type: "backdrop",
+                    ...backdrop
+                })
+            }
             for (const actor of selected.actorList) {
                 for (const state of actor.stateList) {
                     originalCostumes.push(
@@ -37,14 +43,16 @@ export const recommendSlice = createSlice({
                             actorId: actor._id,
                             actorName: actor.name,
                             ...state,
+                            type: "costume",
                         }
                     )
                 }
             }
             state.value.originalCostumes = originalCostumes;
-            state.value.currentBackdrops = new Array(originalCostumes.length).fill(null);
-            state.value.originalBackdrops = selected.backdropList;
-            state.value.currentBackdrops = new Array(selected.backdropList.length).fill(null);
+            // state.value.currentBackdrops = new Array(originalCostumes.length).fill(null);
+            // state.value.originalBackdrops = selected.backdropList;
+            // state.value.currentBackdrops = new Array(selected.backdropList.length).fill(null);
+            state.value.currentCostumes = JSON.parse(JSON.stringify(originalCostumes));
 
             state.value.modified = JSON.parse(JSON.stringify(selected));
             if (state.value.modified !== null) {
@@ -56,6 +64,12 @@ export const recommendSlice = createSlice({
             state.value.modified = JSON.parse(JSON.stringify(state.value.selected));
             const selected = state.value.selected;
             const originalCostumes = [];
+            for (const backdrop of selected.backdropList) {
+                originalCostumes.push({
+                    type: "backdrop",
+                    ...backdrop
+                })
+            }
             for (const actor of selected.actorList) {
                 for (const state of actor.stateList) {
                     originalCostumes.push(
@@ -63,14 +77,16 @@ export const recommendSlice = createSlice({
                             actorId: actor._id,
                             actorName: actor.name,
                             ...state,
+                            type: "state",
                         }
                     )
                 }
             }
             state.value.originalCostumes = originalCostumes;
-            state.value.currentBackdrops = new Array(originalCostumes.length).fill(null);
-            state.value.originalBackdrops = selected.backdropList;
-            state.value.currentBackdrops = new Array(selected.backdropList.length).fill(null);
+            // state.value.currentBackdrops = new Array(originalCostumes.length).fill(null);
+            // state.value.originalBackdrops = selected.backdropList;
+            // state.value.currentBackdrops = new Array(selected.backdropList.length).fill(null);
+            state.value.currentCostumes = JSON.parse(JSON.stringify(originalCostumes));
 
             if (state.value.modified !== null) {
                 state.value.modified._id = UUID.v4();
@@ -81,9 +97,7 @@ export const recommendSlice = createSlice({
             state.value.selected = null;
             state.value.modified = null;
             state.value.currentCostumes = [];
-            state.value.currentBackdrops = [];
             state.value.originalCostumes = [];
-            state.value.originalBackdrops = [];
         },
 
         setModifiedRecommend: (state, action) => {
@@ -91,29 +105,37 @@ export const recommendSlice = createSlice({
         },
 
         modifyRecommend: (state, action,) => {
-            const {actorId, stateId, newActorId, newStateId, currentCostumeStep} = action.payload;
-            state.value.currentCostumes[currentCostumeStep - state.value.originalBackdrops.length] = {_id: newStateId, name: "untitled"};
-            ProjectDataHandler.swapCostume(state.value.modified, actorId, stateId, newActorId, newStateId);
-            console.log("modified: ", state.value.modified);
-        },
+            const {newActorId, newStateId, selected} = action.payload;
+            const {actorId, _id, type, } = state.value.currentCostumes[selected]
+            state.value.currentCostumes[selected] = {_id: newStateId, name: "untitled"};
+            if (type === "state") {
+                ProjectDataHandler.swapCostume(state.value.modified, actorId, _id, newActorId, newStateId);
+            }
+            else if (type === "backdrop") {
+                // ProjectDataHandler.swapCostume(state.value.modified, actorId, stateId, newActorId, newStateId);
+                ProjectDataHandler.swapBackdrop(state.value.modified, _id, newStateId);
+            }
 
-
-        modifyRecommendBackdrop: (state, action) => {
-            const {stateId, newStateId, currentCostumeStep} = action.payload;
-            state.value.currentBackdrops[currentCostumeStep]= {_id: newStateId, name: "stage"};
-            ProjectDataHandler.swapBackdrop(state.value.modified, stateId, newStateId);
             // console.log("modified: ", state.value.modified);
         },
 
-        justModifyStateId: (state, action) => {
-            const {idx, type} = action.payload;
-            if (type === "backdrop") {
-                state.value.currentBackdrops[idx] = state.value.originalBackdrops[idx];
-            }
-            else if (type === "state") {
-                state.value.currentCostumes[idx] = state.value.originalCostumes[idx];
-            }
-        }
+
+        // modifyRecommendBackdrop: (state, action) => {
+        //     const {stateId, newStateId, currentCostumeStep} = action.payload;
+        //     state.value.currentBackdrops[currentCostumeStep]= {_id: newStateId, name: "stage"};
+        //     ProjectDataHandler.swapBackdrop(state.value.modified, stateId, newStateId);
+        //     // console.log("modified: ", state.value.modified);
+        // },
+
+        // justModifyStateId: (state, action) => {
+        //     const {idx, type} = action.payload;
+        //     if (type === "backdrop") {
+        //         state.value.currentBackdrops[idx] = state.value.originalBackdrops[idx];
+        //     }
+        //     else if (type === "state") {
+        //         state.value.currentCostumes[idx] = state.value.originalCostumes[idx];
+        //     }
+        // }
     },
 })
 
