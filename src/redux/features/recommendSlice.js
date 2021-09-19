@@ -107,17 +107,17 @@ export const recommendSlice = createSlice({
         modifyRecommend: (state, action,) => {
             const {newActorId, newStateId, selected} = action.payload;
             console.log("modifyRecommend newActorId, newStateId, selected: ", newActorId, newStateId, selected);
-            const {actorId, _id, type} = state.value.currentCostumes[selected]
-            console.log("modifyRecommend: ", actorId, _id, type);
-            state.value.currentCostumes[selected] = {_id: newStateId, name: "untitled"};
+            const {actorId, _id, type} = state.value.currentCostumes[selected];
+            console.log("modifyRecommend: ", actorId, _id, "type", type);
             if (type === "state") {
+                console.log("swapping costume");
                 ProjectDataHandler.swapCostume(state.value.modified, actorId, _id, newActorId, newStateId);
             }
             else if (type === "backdrop") {
                 // ProjectDataHandler.swapCostume(state.value.modified, actorId, stateId, newActorId, newStateId);
                 ProjectDataHandler.swapBackdrop(state.value.modified, _id, newStateId);
             }
-
+            state.value.currentCostumes[selected] = {_id: newStateId, name: "untitled", type: type};
             // console.log("modified: ", state.value.modified);
         },
 

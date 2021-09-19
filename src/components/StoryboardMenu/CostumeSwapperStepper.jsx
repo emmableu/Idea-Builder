@@ -266,11 +266,11 @@ const Swapper = React.memo((props) => {
     const classes = useStyles();
     const {currentCostume, selected, userCostumes} = props;
     const {type} = currentCostume;
-    console.log("!!!type: ", type);
     const imgTileType = type === "backdrop"? "swap-costume-backdrop":"swap-costume";
     // newActorId, newStateId, selected
     const dispatch = useDispatch();
     const handleUse = (e, actorId, _id) => {
+        console.log("handle use");
         dispatch(modifyRecommend(
             {
                 newActorId: actorId,
