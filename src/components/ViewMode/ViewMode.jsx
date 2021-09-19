@@ -8,6 +8,7 @@ import ProjectTitleBarActionGroup from "../ProjectTitleBar/ProjectTitleBarAction
 import globalConfig from "../../globalConfig";
 import Container from '@material-ui/core/Container';
 import FrameList from "../FrameList/FrameList";
+import Typography from "@material-ui/core/Typography";
 
 
 const getStoryboardList = createSelector(
@@ -48,6 +49,19 @@ const ViewMode = (props) => {
             <Container maxWidth="lg"
             >
          {storyboardList.map(s => (
+             <>
+             <div
+                 style={{
+                     padding: '10px 10px 5px 10px'
+                 }}
+             >
+                 <Typography align='center' variant='subtitle1'>
+                     {s.name}
+                 </Typography>
+                 <Typography align='center' variant='subtitle2'>
+                     {s.note}
+                 </Typography>
+             </div>
            <FrameList
                frameList={s.frameList}
                key={s._id}
@@ -55,6 +69,7 @@ const ViewMode = (props) => {
                handleDelete={null}
                handleAdd={null}
            />
+           </>
 
          ))}
             </Container>

@@ -4,12 +4,13 @@ import axios from '../../axiosConfig';
 import FrameList from '../FrameList/FrameList';
 import Typography from '@material-ui/core/Typography';
 import {IconButton, makeStyles} from '@material-ui/core';
-import {Button, Tooltip} from 'antd'
+import {Button, Modal, Tooltip} from 'antd'
 import globalConfig, {globalLog} from '../../globalConfig';
 import ArrowRightOutlined from '@ant-design/icons/lib/icons/ArrowRightOutlined';
 import {addRecommend, resetRecommend, setSelectedRecommend, setRecommend} from '../../redux/features/recommendSlice';
 import { useDispatch, useSelector, connect } from 'react-redux';
 import {createSelector} from 'reselect'
+import Paper from "@material-ui/core/Paper/Paper";
 
 const useStyles = makeStyles({
     baseDiv: {
@@ -115,6 +116,12 @@ const StoryboardGallery = (props) => {
         <>
             <Container maxWidth='lg'
             >
+                <Typography style={{fontStyle: 'italic',color: "grey"}} component="h1" variant="body2">
+                    {/*Sign in using your unity ID*/}
+                    {`You may select a recommended storyboard to begin with.\n
+                    Later when you program in Snap, you may see code examples for these storyboards.`}
+
+                </Typography>
                 {projectList.map(p => (
                     <FrameListBox
                         key = {p._id}
@@ -147,7 +154,7 @@ const FrameListBox = React.memo(
                         padding: '10px 10px 5px 10px'
                     }}
                 >
-                    <Typography align='center' variant='body2'>
+                    <Typography align='center' variant='subtitle1'>
                         {storyboardData.name}
                     </Typography>
                     <Typography align='center' variant='subtitle2'>
