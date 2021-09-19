@@ -118,6 +118,10 @@ export class ProjectDataHandler {
             {
                 _id: globalConfig.imageServer.sample.event + "mouse-hover.png",
                 name: "mouse hovered",
+            },
+            {
+                _id: globalConfig.imageServer.sample.event + "mouse-released.png",
+                name: "mouse released",
             }
         ];
 

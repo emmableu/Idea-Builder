@@ -238,7 +238,6 @@ const addStoryboard = createAsyncThunk(
         const storyboardId = UUID.v4();
         const state = getState();
         const modified = state.recommend.value.modified;
-        console.log("modified actorList: ", JSON.stringify(modified.actorList));
         const projectId = state.project.value._id;
         let storyboardDataJSON, modifiedProject;
         if (modified === null) {
@@ -492,9 +491,10 @@ const deleteStar = createAsyncThunk(
         dispatch(deleteStarInMemory({
             storyboardId, frameId, starId
         }));
-        const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
+        const storyboardData = ProjectDataHandler.getStoryboard( getState().project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
+        console.log("starList: ", starList);
         const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
