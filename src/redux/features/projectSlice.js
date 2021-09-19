@@ -238,6 +238,7 @@ const addStoryboard = createAsyncThunk(
         const storyboardId = UUID.v4();
         const state = getState();
         const modified = state.recommend.value.modified;
+        console.log("modified actorList: ", JSON.stringify(modified.actorList));
         const projectId = state.project.value._id;
         let storyboardDataJSON, modifiedProject;
         if (modified === null) {

@@ -45,9 +45,10 @@ export class ActorDataHandler {
         const { name, stateList, deleted,} = actorData;
         const newStateList = []
         for (const state of stateList) {
-            if (state.deleted !== undefined && !state.deleted) {
-                newStateList.push(state)
+            if (state.deleted === true) {
+                continue;
             }
+            newStateList.push(state)
         }
         return {
             _id: UUID.v4(),

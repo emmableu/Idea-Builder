@@ -149,16 +149,16 @@ const getSelectedRecommend = createSelector(
     state => state.recommend.value.currentCostumes,
     (actorList,backdropList, selected, originalCostumes, currentCostumes,
      ) => {
-        const userCostumes = [];
+        const userCostumes = {"backdrop": [], "state": []};
         for (const backdrop of backdropList) {
-            userCostumes.push({
+            userCostumes.backdrop.push({
                 type: "backdrop",
                 ...backdrop
             })
         }
         for (const actor of actorList) {
             for (const state of actor.stateList) {
-                userCostumes.push(
+                userCostumes.state.push(
                     {
                         actorId: actor._id,
                         actorName: actor.name,
@@ -290,7 +290,7 @@ const Swapper = React.memo((props) => {
                 </div>
                 <Grid container spacing={1} justifyContent="center">
 
-                    {userCostumes.map(imgData => (
+                    {userCostumes[type].map(imgData => (
                         <Grid item xs={3}
                               key={imgData._id}
                         >

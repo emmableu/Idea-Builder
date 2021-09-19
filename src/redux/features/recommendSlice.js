@@ -106,11 +106,8 @@ export const recommendSlice = createSlice({
 
         modifyRecommend: (state, action,) => {
             const {newActorId, newStateId, selected} = action.payload;
-            console.log("modifyRecommend newActorId, newStateId, selected: ", newActorId, newStateId, selected);
             const {actorId, _id, type} = state.value.currentCostumes[selected];
-            console.log("modifyRecommend: ", actorId, _id, "type", type);
             if (type === "state") {
-                console.log("swapping costume");
                 ProjectDataHandler.swapCostume(state.value.modified, actorId, _id, newActorId, newStateId);
             }
             else if (type === "backdrop") {

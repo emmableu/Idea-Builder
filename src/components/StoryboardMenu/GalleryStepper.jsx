@@ -59,6 +59,13 @@ const GalleryStepper = (props) => {
         setCurrent(current - 1);
     };
 
+    const next = () => {
+        // if (current === 2) {
+        //     dispatch(resetModifiedRecommend());
+        // }
+        setCurrent(current + 1);
+    };
+
     const createEmptyStoryboard = () => {
         dispatch(clearModifiedRecommend());
         setCurrent(2)
@@ -106,6 +113,11 @@ const GalleryStepper = (props) => {
                 {current > 0 && (
                     <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
                         Back
+                    </Button>
+                )}
+                {current === 1 && (
+                    <Button type="primary" style={{ margin: '0 8px' }} onClick={() => next()}>
+                        Next
                     </Button>
                 )}
             </div>

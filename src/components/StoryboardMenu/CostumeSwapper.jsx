@@ -246,12 +246,6 @@ const CostumeSwapper = (props) => {
                 idx: currentCostumeStep,
                 type: "backdrop"}));
         }
-        // if (currentCostumeStep === originalCostumes.length + originalBackdrops.length - 1) {
-        //     setIsComplete(true);
-        // }
-        // else {
-        //     setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
-        // }
     }
 
     const handleUseBackdrop = (e, _id) => {
@@ -274,12 +268,6 @@ const CostumeSwapper = (props) => {
             ));
         }
 
-        // if (currentCostumeStep === originalCostumes.length + originalBackdrops.length - 1) {
-        //     setIsComplete(true);
-        // }
-        // else {
-        //     setCurrentCostumeStep(currentCostumeStep => currentCostumeStep + 1);
-        // }
     };
 
 
