@@ -171,8 +171,8 @@ const calcFrameWidth = ( windowInnerWidth, windowInnerHeight ) => {
 
 
 const globalLog = (...msgs) => {
-     // if (process.env.REACT_APP_DEBUG !== 'OFF') console.log(...msgs)
-      console.log(...msgs)
+     if (process.env.REACT_APP_DEBUG !== 'OFF') console.log(...msgs)
+      // console.log(...msgs)
 }
 
 Object.freeze(globalConfig);

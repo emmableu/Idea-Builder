@@ -21,7 +21,7 @@ const ProjectPageContainer = () => {
     )
     const frozenMode = useSelector(
         state => {
-            console.log("frozenmode: ", state.author.value.frozenMode)
+            // console.log("frozenmode: ", state.author.value.frozenMode)
             return state.author.value.frozenMode}
     )
     React.useEffect(() => {
