@@ -150,6 +150,9 @@ const FrameListBox = React.memo(
                     <Typography align='center' variant='body2'>
                         {storyboardData.name}
                     </Typography>
+                    <Typography align='center' variant='subtitle2'>
+                        {storyboardData.note}
+                    </Typography>
                 </div>
                 <div className={classes.baseDiv}
                      onMouseEnter={() => {setOnHover(true)}}

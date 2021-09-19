@@ -44,27 +44,6 @@ const FrameList = (props) => {
               className={classes.box}>
             {
                 <>
-                {handleAdd !== null &&
-                (
-                    <>
-                        {frameList.map((frameData, i) => (
-                            <StaticFrameContainerWithAction
-                                key={frameData._id}
-                                frameIndex={i}
-                                frameData={frameData}
-                                handleDelete={handleDelete}
-                                _id={_id}
-                            />
-                        ))}
-                        <Grid item xs={2} align="middle">
-                            <Fab color="default" aria-label="add"
-                                 onClick={(e) =>{ handleAdd(e)}}
-                            >
-                                <AddIcon />
-                            </Fab>
-                        </Grid>
-                    </>
-                )}
                 {handleAdd===null &&
                 (
                     <>
