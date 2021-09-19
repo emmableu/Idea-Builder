@@ -119,7 +119,7 @@ const StoryboardGallery = (props) => {
                 <Typography style={{fontStyle: 'italic',color: "grey"}} component="h1" variant="body2">
                     {/*Sign in using your unity ID*/}
                     {`You may select a recommended storyboard to begin with.\n
-                    Later when you program in Snap, you may see code examples for these storyboards.`}
+                    When you program in Snap for Project 1, you will see code examples for these storyboards.`}
 
                 </Typography>
                 {projectList.map(p => (
