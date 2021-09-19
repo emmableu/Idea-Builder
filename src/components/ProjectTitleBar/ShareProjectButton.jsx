@@ -15,6 +15,8 @@ const ShareProjectButton = () => {
     const tagsData = [...authorIdList]
     const idx = tagsData.findIndex(t => t === Cookies.get("userId"))
     tagsData.splice(idx, 1);
+
+
     const dispatch = useDispatch();
     const [confirmLoading, setConfirmLoading] = React.useState(false);
     const [tags, setTags] = React.useState(tagsData)
@@ -38,6 +40,7 @@ const ShareProjectButton = () => {
 
     const handleCancel = () => {
         setIsModalVisible(false);
+        setTags(tagsData);
     };
 
     const successConfig = {
