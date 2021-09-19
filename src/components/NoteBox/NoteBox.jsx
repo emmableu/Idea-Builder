@@ -57,7 +57,7 @@ const NoteBox = (props) => {
 
     React.useEffect(() => {
         setValue(note)
-    }, [note]);
+    }, [note, storyboardId]);
 
 
     const saveNoteDebounce = AwesomeDebouncePromise(

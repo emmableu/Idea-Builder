@@ -29,6 +29,7 @@ export const recommendSlice = createSlice({
         setSelectedRecommend: (state, action) => {
             const selected = action.payload;
             state.value.selected = selected;
+            console.log("recommend: ", JSON.stringify(selected));
             const originalCostumes = [];
             for (const backdrop of selected.backdropList) {
                 originalCostumes.push({

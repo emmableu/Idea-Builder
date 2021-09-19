@@ -3,12 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import {IconButton} from "@material-ui/core";
-import {Add} from "@material-ui/icons";
+import {Add, SwapVert} from "@material-ui/icons";
 import {ArrowForward, DeleteOutlined} from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import {globalLog} from "../../../globalConfig";
-import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 
 const useStyles = makeStyles({
     root: {
@@ -109,7 +108,7 @@ const ImgTile = React.memo((props) =>  {
                                         }}
                                         size={buttonSize}>
                                 {type==="decor"&& <Add style={{color: "white"}} />}
-                                {type.startsWith("swap-costume") && <SwapHorizIcon style={{color: "white"}} />}
+                                {type.startsWith("swap-costume") && <SwapVert style={{color: "white"}} />}
                                 {!type.startsWith("swap-costume") && type!=="decor" && <ArrowForward style={{color: "white"}} />}
                             </IconButton>
                         </Tooltip>

@@ -66,7 +66,10 @@ const StoryboardGallery = (props) => {
              if (projectList.length > 0) {
                  return;
              }
-            for (const rawName of ['Bounce']) {
+            for (const rawName of ['Reappear',
+            'Level win',
+            'Ball trail',
+            'Aim']) {
             // for (const rawName of [
             //     // 'acceleration',
             //     'asteroid_alien_move',

@@ -259,7 +259,9 @@ const addStoryboard = createAsyncThunk(
         if (modifiedProject !== null && modifiedProject.actorList.length > 0) {
             for (const actorData of modifiedProject.actorList) {
                 const newActorData = ActorDataHandler.useModified(actorData);
-                dispatch(addActor(newActorData));
+                if (newActorData !== null) {
+                    dispatch(addActor(newActorData));
+                }
             }
         }
         const isLegalUpdate = await dispatch(loadAuthorData());
