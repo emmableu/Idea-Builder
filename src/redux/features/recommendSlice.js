@@ -43,7 +43,7 @@ export const recommendSlice = createSlice({
                             actorId: actor._id,
                             actorName: actor.name,
                             ...state,
-                            type: "costume",
+                            type: "state",
                         }
                     )
                 }
@@ -106,7 +106,9 @@ export const recommendSlice = createSlice({
 
         modifyRecommend: (state, action,) => {
             const {newActorId, newStateId, selected} = action.payload;
-            const {actorId, _id, type, } = state.value.currentCostumes[selected]
+            console.log("modifyRecommend newActorId, newStateId, selected: ", newActorId, newStateId, selected);
+            const {actorId, _id, type} = state.value.currentCostumes[selected]
+            console.log("modifyRecommend: ", actorId, _id, type);
             state.value.currentCostumes[selected] = {_id: newStateId, name: "untitled"};
             if (type === "state") {
                 ProjectDataHandler.swapCostume(state.value.modified, actorId, _id, newActorId, newStateId);

@@ -266,6 +266,8 @@ const Swapper = React.memo((props) => {
     const classes = useStyles();
     const {currentCostume, selected, userCostumes} = props;
     const {type} = currentCostume;
+    console.log("!!!type: ", type);
+    const imgTileType = type === "backdrop"? "swap-costume-backdrop":"swap-costume";
     // newActorId, newStateId, selected
     const dispatch = useDispatch();
     const handleUse = (e, actorId, _id) => {
@@ -284,16 +286,16 @@ const Swapper = React.memo((props) => {
         <div className={classes.stepsContent}>
             <div  className={classes.userCostumes}>
                 <div>
-                    {"My backdrops"}
+                    {`My ${type === "backdrop"? "backdrop": "actor"}`}
                 </div>
                 <Grid container spacing={1} justifyContent="center">
 
                     {userCostumes.map(imgData => (
-                        <Grid item xs={4}
+                        <Grid item xs={3}
                               key={imgData._id}
                         >
                             <ImgTile
-                                type="swap-costume-backdrop"
+                                type={imgTileType}
                                 _id={imgData._id}
                                 name={imgData.name}
                                 imgSrc={axios.defaults.baseURL + imgData._id}
@@ -311,7 +313,7 @@ const Swapper = React.memo((props) => {
             >
                 {`Search for a new ${type === "backdrop"? "backdrop": "actor"}`}
                 <AssetGallery
-                    xs={4}
+                    xs={3}
                     height={globalConfig.costumeSwapperHeight-50}
                     type={type}
                     itemSize={120}
