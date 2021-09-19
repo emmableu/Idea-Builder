@@ -297,6 +297,7 @@ const Swapper = React.memo((props) => {
                             <ImgTile
                                 type={imgTileType}
                                 _id={imgData._id}
+                                actorId={imgData.actorId}
                                 name={imgData.name}
                                 imgSrc={axios.defaults.baseURL + imgData._id}
                                 heightToWidthRatio="70%"

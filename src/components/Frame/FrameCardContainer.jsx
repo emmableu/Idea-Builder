@@ -10,6 +10,8 @@ import EmptyFrameCardContainer from "./EmptyFrameCardContainer";
 import {PaletteOutlined, Refresh} from "@material-ui/icons";
 import {deleteBackdrop, deleteBackdropStar, deleteStar} from "../../redux/features/projectSlice";
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import Button from "@material-ui/core/Button";
+
 const useStyles = makeStyles((theme) => ({
         frame: { flex: `0 0 calc(100vh - ${globalConfig.toolBarHeight}px
                          - ${globalConfig.storyboardToolBarHeight}px
@@ -174,7 +176,7 @@ const FrameCardContainer = props => {
                                 }}
                             >
                                 <Tooltip title="Clear backdrop">
-                                    <IconButton aria-label="clear backdrop"
+                                    <Button aria-label="clear backdrop"
                                                 color="inherit"
                                                 size="small"
                                                 onClick={(e) => {
@@ -185,8 +187,9 @@ const FrameCardContainer = props => {
                                                 )); // update the state to force render
                                                 }}
                                     >
-                                        <PaletteOutlined style={{ color: 'grey' }} />
-                                    </IconButton>
+                                        {/*<PaletteOutlined style={{ color: 'grey' }} />*/}
+                                        clear backdrop
+                                    </Button>
                                 </Tooltip>
 
                                 {/*<Tooltip title="Refresh frame">*/}
