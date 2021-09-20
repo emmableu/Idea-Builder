@@ -49,7 +49,7 @@ const NewStoryboardDialogue = props => {
                 onOk={handleOk}
                 onCancel={handleCancel}
                 okButtonProps={
-                    { disabled: newStoryboardName===""}
+                    { disabled: (newStoryboardName==="" || current < 2)}
                 }
                 okText="Create"
                 cancelText="Cancel"
