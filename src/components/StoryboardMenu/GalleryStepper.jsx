@@ -6,7 +6,7 @@ import CostumeSwapper from "./CostumeSwapper";
 import ModifyingFrameList from "./ModifiedFrameList";
 import globalConfig from "../../globalConfig";
 import {clearModifiedRecommend, resetModifiedRecommend} from "../../redux/features/recommendSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import NewStoryboardNameInput from "./NewStoryboardNameInput";
 import CostumeSwapperStepper from "./CostumeSwapperStepper";
 import Typography from "@material-ui/core/Typography";
@@ -51,14 +51,20 @@ const useStyles = makeStyles( theme => ({
 
 const GalleryStepper = (props) => {
     const {setNewStoryboardName, current, setCurrent} = props;
+    const selected = useSelector(state => state.recommend.value.selected);
     const classes = useStyles();
     const dispatch = useDispatch();
 
     const prev = () => {
-        if (current === 2) {
-            dispatch(resetModifiedRecommend());
+        if (selected === null) {
+            setCurrent(0)
         }
-        setCurrent(current - 1);
+        else {
+            if (current === 2) {
+                dispatch(resetModifiedRecommend());
+            }
+            setCurrent(current - 1);
+        }
     };
 
     const next = () => {

@@ -868,10 +868,11 @@ const updateBackdropName = createAsyncThunk(
 
 const saveNote = createAsyncThunk(
     'project/saveNote',
-    async (text, thunkAPI) => {
+    async (obj, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
-        dispatch(saveNoteInMemory(text));
-        const storyboardId = getState().project.value.selectedId.storyboardId;
+        const {storyboardId, text} = obj;
+        dispatch(saveNoteInMemory({storyboardId, text}));
+        // const storyboardId = getState().project.value.selectedId.storyboardId;
         const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
@@ -1365,7 +1366,9 @@ export const projectSlice = createSlice({
 
         saveNoteInMemory: {
           reducer: (state, action) => {
-              state.value.note = action.payload
+              const {text, storyboardId} = action.payload;
+              const storyboardData = ProjectDataHandler.getStoryboard(state.value, storyboardId)
+              storyboardData.note = text
           }
         },
 
