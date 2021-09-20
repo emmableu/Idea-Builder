@@ -179,6 +179,7 @@ const FrameCardContainer = props => {
                                     <Button aria-label="clear backdrop"
                                                 color="inherit"
                                                 size="small"
+                                                disabled={(props.backdropStar === undefined || props.backdropStar === null || props.backdropStar.prototypeId === null)}
                                                 onClick={(e) => {
                                                     dispatch(deleteBackdropStar({
                                                         storyboardId: props.storyboardId,
