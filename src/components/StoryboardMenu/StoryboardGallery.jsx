@@ -67,7 +67,7 @@ const StoryboardGallery = (props) => {
              if (projectList.length > 0) {
                  return;
              }
-            for (const rawName of [
+            for (const rawName of [ "Ball hits shape",
             'Ball trail']) {
             // for (const rawName of [
             //     // 'acceleration',

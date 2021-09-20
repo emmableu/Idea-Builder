@@ -9,6 +9,8 @@ import {clearModifiedRecommend, resetModifiedRecommend} from "../../redux/featur
 import {useDispatch} from "react-redux";
 import NewStoryboardNameInput from "./NewStoryboardNameInput";
 import CostumeSwapperStepper from "./CostumeSwapperStepper";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
 
 const { Step } = Steps;
 
@@ -88,6 +90,9 @@ const GalleryStepper = (props) => {
                 }
                 {current === 1 &&
                     <>
+                    <Typography style={{fontStyle: 'italic',color: "grey"}} component="h1" variant="body2">
+                        Select an actor in this example to swap it's costume, or click next to continue.
+                    </Typography>
                         <div style={{height: 160}}>
                             <ModifyingFrameList/>
                         </div>
@@ -106,7 +111,7 @@ const GalleryStepper = (props) => {
             </div>
             <div className={classes.stepsAction}>
                 {current === 0 && (
-                    <Button  onClick={createEmptyStoryboard}>
+                    <Button type="primary" onClick={createEmptyStoryboard}>
                         Create empty storyboard
                     </Button>
                 )}

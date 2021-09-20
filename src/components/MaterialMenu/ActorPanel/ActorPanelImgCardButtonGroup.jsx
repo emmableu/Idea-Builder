@@ -46,7 +46,7 @@ const ActorPanelImgCardButtonGroup = props => {
                     key="1"
                     onClick={(e) => {setIsModalVisible(true)}
                     }
-                >Build a new state</MenuItem>
+                >Paint a new state</MenuItem>
 
                 <UploadStateButton
                     actorId={actorId}

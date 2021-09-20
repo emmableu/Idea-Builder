@@ -70,6 +70,7 @@ const NoteBox = (props) => {
         }}>
             <Card
                 style={{height: editorHeight, width: "100%"}}
+                square={true}
             >
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">

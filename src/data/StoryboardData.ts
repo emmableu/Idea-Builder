@@ -22,7 +22,7 @@ export class StoryboardDataHandler {
         const storyboardId = _id? _id:UUID.v4();
         const storyboardName = name? name:"Untitled";
         const storyboardFrameList = frameList? frameList:[FrameDataHandler.initializeFrame()]
-        const storyboardNote = note? note:"**Key changes between the begin and end frame:**";
+        const storyboardNote = note? note:"Key changes between the begin and end frame:";
         return {
             _id: storyboardId,
             name: storyboardName,

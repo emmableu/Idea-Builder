@@ -62,13 +62,37 @@ export class StarDataHandler {
         const {prototypeId, _id, x, y, width, height, rotation, transform, actorId, type, childStar} = obj;
         const starWidth = width? width: 100;
         const starHeight = height?height: 100;
+        let starX, starY;
+        if (x !== undefined) {
+            starX = x;
+        }
+        else {
+            if (actorId === "event-events-are-different-states-under-this-same-actorId") {
+                starX = 0;
+            }
+            else {
+                starX = globalConfig.noScaleWidth/2 - starWidth/2
+            }
+        }
+        if (y !== undefined) {
+            starY = y;
+        }
+        else {
+            if (actorId === "event-events-are-different-states-under-this-same-actorId"){
+                starY = globalConfig.noScaleWidth*3/4 - starHeight;
+            }
+            else {
+                starY = (globalConfig.noScaleWidth*3/4)/2 - starHeight/2;
+            }
+        }
+
         return {
             prototypeId: prototypeId,
             actorId:actorId,
             _id: _id? _id:UUID.v4(),
             type: type?type:"actor",
-            x : x? x:globalConfig.noScaleWidth/2 - starWidth/2,
-            y : y? y:(globalConfig.noScaleWidth*3/4)/2 - starHeight/2,
+            x : starX,
+            y : starY,
             width : starWidth,
             height : starHeight,
             rotation: rotation?rotation: 0,

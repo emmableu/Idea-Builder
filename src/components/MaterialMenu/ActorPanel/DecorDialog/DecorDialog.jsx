@@ -81,9 +81,22 @@ export const DecorDialog = (props) => {
     const decorStageRef = React.useRef(null);
     const [decorList, setDecorList] = React.useState([]);
     const [stateName, setStateName] = React.useState("");
-    const [image] = useImage(axios.defaults.baseURL + actorData.stateList[0]._id)
+    const stateData = actorData.stateList[0];
+    const [image] = useImage(axios.defaults.baseURL + stateData._id);
+
     const dispatch = useDispatch()
+    let tentativeWidth = 200;
+    let tentativeHeight = 200;
     if (image !== undefined) {
+        const ratio = image.height/image.width;
+        if (ratio > 1) {
+            tentativeHeight = 200;
+            tentativeWidth = 200/ratio;
+        }
+        else {
+            tentativeHeight = 200*ratio;
+            tentativeWidth = 200;
+        }
         image.crossOrigin = "Anonymous";
     }
     React.useEffect(() => {
@@ -169,8 +182,8 @@ export const DecorDialog = (props) => {
                             image={image}
                             x={0}
                             y={0}
-                            width={200}
-                            height={200}
+                            width={tentativeWidth}
+                            height={tentativeHeight}
                         />
 
                         {decorList.map((_id, i) => {
