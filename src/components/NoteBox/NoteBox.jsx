@@ -41,23 +41,21 @@ const mapStateToProps = (state) => {
 
 const NoteBox = (props) => {
     const {storyboardId, note} = props;
-    const [value, setValue] = React.useState(note);
+    // const [value, setValue] = React.useState(note);
     const dispatch = useDispatch();
     const editorHeight = calcBoxHeight(window.innerHeight);
 
-    React.useEffect(() => {
-        setValue(note)
-    }, [note, storyboardId]);
 
-
-    const saveNoteDebounce = AwesomeDebouncePromise(
-        text => dispatch(saveNote(text)),
-        1000);
+    // const saveNoteDebounce = AwesomeDebouncePromise(
+    //     text => dispatch(saveNote({storyboardId, text})),
+    //     1000);
 
     const onFieldTextChange = async (e) => {
-        const text = e.target.value
-        setValue(text);
-        await saveNoteDebounce(text);
+        const text = e.target.value;
+        dispatch(saveNote({storyboardId, text}));
+
+        // setValue(text);
+        // await saveNoteDebounce(text);
     };
 
     return(
@@ -78,7 +76,7 @@ const NoteBox = (props) => {
                     </Typography>
                     <TextArea
                         style={{height: editorHeight}}
-                        value={value}
+                        value={note}
                         onChange={text => onFieldTextChange(text)}
                         placeholder="Key mechanics" bordered={false} />
                 </CardContent>

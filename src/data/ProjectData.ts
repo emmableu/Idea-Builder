@@ -254,18 +254,13 @@ export class ProjectDataHandler {
             //@ts-ignore
 
             const sourceColumn = projectData.storyboardMenu[source.droppableId];
-            console.log(sourceColumn)
             //@ts-ignore
             const destColumn = projectData.storyboardMenu[destination.droppableId];
-            console.log(destColumn)
             const sourceItems = [...sourceColumn.items];
-            console.log(sourceItems)
 
             const destItems = [...destColumn.items];
-            console.log(destItems)
             const [removed] = sourceItems.splice(source.index, 1);
             destItems.splice(destination.index, 0, removed);
-            console.log(removed)
             // destItems.splice(removed, 0);
             projectData.storyboardMenu = ({
                 ...projectData.storyboardMenu,
