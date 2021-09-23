@@ -270,7 +270,7 @@ const Swapper = React.memo((props) => {
     // newActorId, newStateId, selected
     const dispatch = useDispatch();
     const handleUse = (e, actorId, _id) => {
-        console.log("handle use");
+        console.log("handle use, ", actorId, _id);
         dispatch(modifyRecommend(
             {
                 newActorId: actorId,

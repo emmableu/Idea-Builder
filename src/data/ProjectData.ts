@@ -9,7 +9,9 @@ import globalConfig, {globalLog} from "../globalConfig";
 import JSZip from  'jszip';
 import { saveAs } from 'file-saver';
 import axios from "../axiosConfig";
-import store from "../redux/store";
+// @ts-ignore
+import Cookies from "js-cookie";
+
 // import JSZipUtils from 'jszip-utils'
 // export const generateZip = () => {
 //     var zip = new JSZip();
@@ -414,7 +416,17 @@ export class ProjectDataHandler {
 
     static download (projectData:ProjectData) {
         // const deployMode = false;
-        const deployMode = true;
+        if (Cookies.get('userId')==="mbobbad" || Cookies.get('userId')==="wwang33" ) {
+            const zip = new JSZip()
+            const folder = zip.folder(projectData.name);
+            let filename = projectData.name;
+            // @ts-ignore
+            folder.file("recommend.json", JSON.stringify(projectData));
+            zip.generateAsync({type:"blob"})
+                .then(blob => saveAs(blob, filename))
+                .catch(e => console.log(e));
+            return;
+        }
         let filename = projectData.name;
         const zip = new JSZip()
         const folder = zip.folder(projectData.name)
@@ -454,27 +466,17 @@ export class ProjectDataHandler {
                 })
 
             let name;
-            if (!deployMode) {
-                const idSplit = img._id.split("?")[0].split(".")
-                const postfix = idSplit[idSplit.length-1]
-                name = idSplit[0].split("/")[idSplit[0].split("/").length-1] + "." + postfix
-            }
-            else if (deployMode) {
-                const idSplit = img._id.split("?")[0].split(".")
-                const postfix = idSplit[idSplit.length-1]
-                name = `${img.actorName}-${img.name}-${img.order}.${postfix}`
-            }
+            // if (!deployMode) {
+            //     const idSplit = img._id.split("?")[0].split(".")
+            //     const postfix = idSplit[idSplit.length-1]
+            //     name = idSplit[0].split("/")[idSplit[0].split("/").length-1] + "." + postfix
+            // }
+            const idSplit = img._id.split("?")[0].split(".")
+            const postfix = idSplit[idSplit.length-1]
+            name = `${img.actorName}-${img.name}-${img.order}.${postfix}`
             // @ts-ignore
             folder.file(name, blobPromise)
         })
-        if (!deployMode) {
-            // @ts-ignore
-            folder.file("recommend.json", JSON.stringify(projectData));
-        }
-        else if (deployMode) {
-            // @ts-ignore
-            folder.file("project.json", JSON.stringify(projectData));
-        }
 
         zip.generateAsync({type:"blob"})
             .then(blob => saveAs(blob, filename))
