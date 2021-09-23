@@ -10,7 +10,7 @@ import ArrowRightOutlined from '@ant-design/icons/lib/icons/ArrowRightOutlined';
 import {addRecommend, resetRecommend, setSelectedRecommend, setRecommend} from '../../redux/features/recommendSlice';
 import { useDispatch, useSelector, connect } from 'react-redux';
 import {createSelector} from 'reselect'
-import Paper from "@material-ui/core/Paper/Paper";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles({
     baseDiv: {
@@ -62,46 +62,53 @@ const StoryboardGallery = (props) => {
     const {setCurrent, projectList} = props;
     const dispatch = useDispatch();
 
+    let rawNameList;
+    if (Cookies.get('userId')==="mbobbad" || Cookies.get('userId')==="wwang33" ) {
+        rawName = [
+            // 'acceleration',
+            'asteroid_alien_move',
+            'bullet_wrap',
+            'button_select',
+            'carousel',
+            'checkout_list',
+            'click_show_calendar',
+            'collision_change_score',
+            'collision_explosion',
+            'hit_remove',
+            'inertia',
+            'initialize_fish_property',
+            'initialize_to_random',
+            // 'jump',
+            'key_trigger_bounce',
+            'keymove',
+            'move_between_points',
+            'move_free',
+            'move_with_mouse',
+            'multiple_choice_question',
+            'paddle',
+            'radio_options',
+            'shoot_bullets',
+            'show_hide_calendar',
+            'spawn_enemies',
+            'start_button',
+            'timer',
+            'turn_smaller']
+    }
+    else {
+        rawNameList = [ "Ball hits shape",
+        'Ball trail']
+    }
     React.useEffect(
          () => {
              if (projectList.length > 0) {
                  return;
              }
-            // for (const rawName of [ "Ball hits shape",
-            // 'Ball trail']) {
-            for (const rawName of [
-                // 'acceleration',
-                'asteroid_alien_move',
-                'bullet_wrap',
-                'button_select',
-                'carousel',
-                'checkout_list',
-                'click_show_calendar',
-                'collision_change_score',
-                'collision_explosion',
-                'hit_remove',
-                'inertia',
-                'initialize_fish_property',
-                'initialize_to_random',
-                // 'jump',
-                'key_trigger_bounce',
-                'keymove',
-                'move_between_points',
-                'move_free',
-                'move_with_mouse',
-                'multiple_choice_question',
-                'paddle',
-                'radio_options',
-                'shoot_bullets',
-                'show_hide_calendar',
-                'spawn_enemies',
-                'start_button',
-                'timer',
-                'turn_smaller']) {
+            // for (const rawName of ) {
+            for (const rawName of rawNameList) {
             // for (const projectName of ['35-Green%20Your%20City', '25-Snowball%20Fight', '27-Flappy%20Parrot']) {
                 const projectName = rawName.split(' ').join('%20');
                 // const url = `/static/project/${projectName}/recommend.json`;
-                const url = `/static/week1project/${projectName}/recommend.json`;
+                const url = `/static/project/${projectName}/recommend.json`;
                 axios({
                         method: 'get',
                         url: url,
