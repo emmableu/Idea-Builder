@@ -64,7 +64,7 @@ const StoryboardGallery = (props) => {
 
     let rawNameList;
     if (Cookies.get('userId')==="mbobbad" || Cookies.get('userId')==="wwang33" ) {
-        rawName = [
+        rawNameList = [
             // 'acceleration',
             'asteroid_alien_move',
             'bullet_wrap',
