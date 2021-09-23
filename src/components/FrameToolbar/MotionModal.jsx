@@ -13,6 +13,7 @@ export const MotionModal = (props) => {
     const [okPressed, setOkPressed] = React.useState(false);
     const [cancelPressed, setCancelPressed] = React.useState(false);
     const [okEnabled, setOkEnabled] = React.useState(false);
+    // console.log("selectedActor: ", selectedActor);
 
     const handleOk = () => {
         setIsModalVisible(false);

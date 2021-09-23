@@ -201,6 +201,7 @@ export class StarDataHandler {
                 y: starData.y,
                 width: starData.width,
                 height: starData.height,
+                rotation:starData.rotation,
                 transform: starData.transform,
                 childStar: StarDataHandler.deepCopyChildStar(starData.childStar, copyMotion),
             }
