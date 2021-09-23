@@ -95,8 +95,7 @@ const StoryboardGallery = (props) => {
             'turn_smaller']
     }
     else {
-        rawNameList = [ "Ball hits shape",
-        'Ball trail']
+        rawNameList = []
     }
     React.useEffect(
          () => {
