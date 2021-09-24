@@ -63,36 +63,11 @@ const StoryboardGallery = (props) => {
     const dispatch = useDispatch();
 
     let rawNameList;
-    if (Cookies.get('userId')==="mbobbad" || Cookies.get('userId')==="wwang33" ) {
-        rawNameList = [
-            // 'acceleration',
-            'asteroid_alien_move',
-            'bullet_wrap',
-            'button_select',
-            'carousel',
-            'checkout_list',
-            'click_show_calendar',
-            'collision_change_score',
-            'collision_explosion',
-            'hit_remove',
-            'inertia',
-            'initialize_fish_property',
-            'initialize_to_random',
-            // 'jump',
-            'key_trigger_bounce',
-            'keymove',
-            'move_between_points',
-            'move_free',
-            'move_with_mouse',
-            'multiple_choice_question',
-            'paddle',
-            'radio_options',
-            'shoot_bullets',
-            'show_hide_calendar',
-            'spawn_enemies',
-            'start_button',
-            'timer',
-            'turn_smaller']
+    if (["mbobbad", "wwang33", 'twprice', 'test1', 'test2', 'test3', 'test4' ].includes(Cookies.get('userId'))) {
+        rawNameList = ['bullet_wrap', 'asteroid_alien_move', 'collision_change_score', 'checkout_list', 'move_between_points',
+            'key_trigger_bounce', 'hit_remove', 'keymove', 'button_select', 'carousel', 'inertia',
+            'collision_explosion', 'click_show_calendar', 'initialize_to_random', 'move_with_mouse', 'Bounce on paddle',
+            'initialize_fish_property']
     }
     else {
         rawNameList = []
@@ -107,7 +82,7 @@ const StoryboardGallery = (props) => {
             // for (const projectName of ['35-Green%20Your%20City', '25-Snowball%20Fight', '27-Flappy%20Parrot']) {
                 const projectName = rawName.split(' ').join('%20');
                 // const url = `/static/project/${projectName}/recommend.json`;
-                const url = `/static/project/${projectName}/recommend.json`;
+                const url = `/static/week2project/${projectName}/recommend.json`;
                 axios({
                         method: 'get',
                         url: url,
