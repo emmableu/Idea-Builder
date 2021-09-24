@@ -19,6 +19,7 @@ export const SpeechBubbleModal = (props) => {
     const bubbleRef = React.useRef(null);
     const [confirmLoading, setConfirmLoading] = React.useState(false);
     const dispatch = useDispatch();
+    const actorName = selectedActor?selectedActor.name:"Your actor"
 
     const handleOk = React.useCallback(() => {
         if (bubbleRef.current === null) {
@@ -54,9 +55,9 @@ export const SpeechBubbleModal = (props) => {
     };
     return (
             <>
-                {selectedStar !== null && selectedActor !== undefined && selectedActor !== null &&
+                {selectedStar !== null &&
                 <Modal
-                    title={selectedActor.name + " says..."}
+                    title={actorName + " says..."}
                     visible={isModalVisible}
                     onOk={handleOk}
                     onCancel={handleCancel}

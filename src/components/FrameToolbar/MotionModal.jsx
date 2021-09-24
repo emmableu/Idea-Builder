@@ -13,8 +13,8 @@ export const MotionModal = (props) => {
     const [okPressed, setOkPressed] = React.useState(false);
     const [cancelPressed, setCancelPressed] = React.useState(false);
     const [okEnabled, setOkEnabled] = React.useState(false);
-    // console.log("selectedActor: ", selectedActor);
-
+    console.log("selectedActor, selectedStar: ", selectedActor, selectedStar);
+    const headline = selectedActor?"   Record motion for  " + selectedActor.name: "   Record motion";
     const handleOk = () => {
         setIsModalVisible(false);
         setOkPressed(true);
@@ -27,13 +27,13 @@ export const MotionModal = (props) => {
     };
     return (
         <>
-            {selectedStar !== null && selectedActor !== undefined && selectedActor !== null &&
+            {selectedStar !== null &&
             <Modal
                 title={
                     <>
                     <Avatar src={axios.defaults.baseURL + selectedStar.prototypeId}
                     />
-                    <span>{"   Record motion for " + selectedActor.name }</span>
+                    <span>{ headline }</span>
                     </>
                     }
                 visible={isModalVisible}

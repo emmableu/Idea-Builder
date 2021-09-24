@@ -259,7 +259,9 @@ const addStoryboard = createAsyncThunk(
             for (const actorData of modifiedProject.actorList) {
                 const newActorData = ActorDataHandler.useModified(actorData);
                 if (newActorData !== null) {
-                    dispatch(addActor(newActorData));
+                    const newActor = ActorDataHandler.deepCopy(newActorData)
+                    console.log("newactor: ", newActor);
+                    dispatch(addActor(newActor));
                 }
             }
         }
