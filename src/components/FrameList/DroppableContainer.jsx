@@ -122,6 +122,7 @@ const DroppableContainer = (props) => {
                                             {/*    {...item}*/}
                                             {/*    {...provided.dragHandleProps}/>*/}
                                             <StaticFrameContainerWithAction
+                                                storyboardId={storyboardId}
                                                 key={frameData._id}
                                                 frameIndex={i}
                                                 frameData={frameData}

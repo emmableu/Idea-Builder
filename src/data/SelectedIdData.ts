@@ -36,7 +36,6 @@ export class SelectedIdDataHandler {
     }
 
     static setFrameId (selectedIdData: SelectedIdData, frameId:string) {
-        globalLog("selected Frame ID: ", frameId);
         selectedIdData.frameId = frameId;
         selectedIdData.starId = null
     }

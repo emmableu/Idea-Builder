@@ -1,13 +1,13 @@
 import {Button, Dropdown, Menu} from "antd";
 import {makeStyles, Paper, Tooltip} from "@material-ui/core";
-import React from "react";
+import React, {useCallback} from "react";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import StaticFrame from "./StaticFrame";
 import Grid from "@material-ui/core/Grid";
 // import Card from "@material-ui/core/Card/Card";
 import { Card, Avatar } from 'antd';
 import {DeleteTwoTone, EditOutlined, EllipsisOutlined, SettingOutlined} from '@ant-design/icons';
-import {addFrame, setSelectedFrameId} from "../../redux/features/projectSlice";
+import {addFrame, setSelectedFrameId, updateStarList} from "../../redux/features/projectSlice";
 import globalConfig from "../../globalConfig";
 import {useDispatch, useSelector} from "react-redux";
 import DragHandleIcon from "../primitives/DragHandleIcon";
@@ -28,13 +28,24 @@ const useStyles = makeStyles((theme) => ({
 
 const StaticFrameContainerWithAction = React.memo((props) => {
     const classes = useStyles();
-    const {frameData, frameIndex, handleDelete, _id, idx} = props;
+    const {storyboardId, frameData, frameIndex, handleDelete, _id, idx} = props;
     const dispatch = useDispatch();
     const deleteFrame = (e) =>
         handleDelete(e, frameIndex)
 
     const addFrameHere = (e, _id) =>
         dispatch(addFrame({prevIndex: idx}));
+
+
+
+    React.useEffect(() => {
+        if (frameData._id !== _id) {
+            dispatch(updateStarList({
+                storyboardId,
+                frameId: frameData._id
+            }))
+        }
+    }, [frameData._id===_id]);
 
     const menu = (
         <Menu>

@@ -24,7 +24,10 @@ const FrozenMode = () => {
                 color: "grey",
                 fontStyle: "italic",
             }}>
-                {`This project has been edited by another student. Please reload your page to import their latest updates.`}
+                {`This project has been edited by another student. 
+                Please reload your page to import their latest updates.
+                Note that Idea Builder only allows one student to edit at a time. 
+                `}
             </Typography>
             </Box>
         </Box>

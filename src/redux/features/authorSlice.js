@@ -12,14 +12,12 @@ import moment from "moment";
 const loadAuthorData = createAsyncThunk(
     'author/loadAuthorData',
     async (payload, thunkAPI) => {
-        console.log("tunk", thunkAPI);
         const {getState, dispatch, rejectWithValue} = thunkAPI;
         const state = getState();
         const projectId = state.project.value._id;
         const lastLoaded = state.author.value.lastLoaded;
         const authorRes = await AuthorAPI.loadAuthorData(projectId);
         const {lastModified, lastModifiedBy} = AuthorDataHandler.parse(authorRes.data)
-        console.log("authordata", lastModified, lastModifiedBy, lastLoaded)
         if (lastModifiedBy !== Cookies.get("userId")
             && lastModified > lastLoaded
         ) {
@@ -56,9 +54,16 @@ export const authorSlice = createSlice({
         value: {
             lastLoaded: null,
             frozenMode: false,
+            cnt: 0,
         },
     },
     reducers: {
+        incrementCnt:  (state, action) => {
+            state.value.cnt = state.value.cnt + 1;
+        },
+        resetCnt:  (state, action) => {
+            state.value.cnt = 0;
+        },
         setLastLoaded:
             (state, action) => {
                     state.value.lastLoaded = moment().format();
@@ -72,6 +77,6 @@ export const authorSlice = createSlice({
 })
 
 
-export const { setLastLoaded, setFrozenMode } = authorSlice.actions;
+export const { setLastLoaded, setFrozenMode, incrementCount } = authorSlice.actions;
 export {loadAuthorData, updateLastModified};
 export default authorSlice.reducer;
