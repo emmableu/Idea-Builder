@@ -55,7 +55,7 @@ const getSelectedStarAndActorData = createSelector(
             actorData = null;
         }
         else {
-            globalLog("frameId: ", frameId);
+            // globalLog("frameId: ", frameId);
             selectedFrame = selectedStoryboard.frameList.find(s => s._id === frameId);
             if (selectedFrame === undefined) {
                 frameId = null;

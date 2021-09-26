@@ -24,16 +24,6 @@ const Star = (props) => {
         setStrokeEnabled(false);
     }
 
-
-    // const saveStarDebounce = useCallback(debounce(dispatchSaveNote, 1000), [])
-    //
-    // const onFieldTextChange = async (e) => {
-    //     const text = e.target.value
-    //     setValue(text)
-    //     saveNoteDebounce(text);
-    // };
-    //
-
     const updatePositionAndSize = (attrs) => {
         const {x, y, width} = attrs;
         const deltaX = x - starData.x;
@@ -74,7 +64,7 @@ const Star = (props) => {
             },
         };
 
-        dispatch(updateStarList({
+        dispatch(updateStarListInMemory({
                 storyboardId,
                 frameId,
                 starData: newData

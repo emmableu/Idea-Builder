@@ -381,7 +381,7 @@ const deleteFrame = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
 
 
-        const project = getState().project.value;
+        let project = getState().project.value;
         const storyboardId = project.selectedId.storyboardId;
         dispatch(updateFrameListInMemory(JSON.stringify(
             {storyboardId,
@@ -389,6 +389,7 @@ const deleteFrame = createAsyncThunk(
             }
         )));
 
+        project = getState().project.value;
         const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
@@ -440,21 +441,21 @@ const addStar = createAsyncThunk(
         dispatch(addStarInMemory({
             storyboardId, frameId, actorId, stateId,
         }));
-        const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
-        const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
-        const starList =  frameData.starList;
-
-        //sometimes the first dispatch does not work, because the actor is not yet fully updated on the canvas.
-        const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
-            dispatch(setFrozenMode(true));
-            return;}
-        const response = await ProjectAPI.replaceStarListInDatabase({
-            frameId,
-            starList
-        });
-        await dispatch(updateLastModified());
-        return response.status;
+        // const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
+        // const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+        // const starList =  frameData.starList;
+        //
+        // //sometimes the first dispatch does not work, because the actor is not yet fully updated on the canvas.
+        // const isLegalUpdate = await dispatch(loadAuthorData());
+        // if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+        //     dispatch(setFrozenMode(true));
+        //     return;}
+        // const response = await ProjectAPI.replaceStarListInDatabase({
+        //     frameId,
+        //     starList
+        // });
+        // await dispatch(updateLastModified());
+        return "OK";
     }
 );
 
@@ -462,9 +463,9 @@ const addStar = createAsyncThunk(
 const updateStarList = createAsyncThunk(
     'project/updateStarList',
     async (payload, thunkAPI) => {
-        const {storyboardId, frameId, starData} = payload;
+        const {storyboardId, frameId} = payload;
         const {dispatch, getState} = thunkAPI;
-        dispatch(updateStarListInMemory(payload));
+        // dispatch(updateStarListInMemory(payload));
         const state = getState();
         const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
@@ -488,25 +489,25 @@ const deleteStar = createAsyncThunk(
     async (obj, thunkAPI) => {
         const {storyboardId, frameId, starId} = obj;
         const {dispatch, getState} = thunkAPI;
-        const state = getState();
+        // const state = getState();
         dispatch(setSelectedStarIdInMemory(null));
         dispatch(deleteStarInMemory({
             storyboardId, frameId, starId
         }));
-        const storyboardData = ProjectDataHandler.getStoryboard( getState().project.value, storyboardId);
-        const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
-        const starList =  frameData.starList;
-        console.log("starList: ", starList);
-        const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
-            dispatch(setFrozenMode(true));
-            return;}
-        const response = await ProjectAPI.replaceStarListInDatabase({
-            frameId,
-            starList: starList
-        });
-        await dispatch(updateLastModified());
-        return response.status;
+        // const storyboardData = ProjectDataHandler.getStoryboard( getState().project.value, storyboardId);
+        // const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+        // const starList =  frameData.starList;
+        // console.log("starList: ", starList);
+        // const isLegalUpdate = await dispatch(loadAuthorData());
+        // if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+        //     dispatch(setFrozenMode(true));
+        //     return;}
+        // const response = await ProjectAPI.replaceStarListInDatabase({
+        //     frameId,
+        //     starList: starList
+        // });
+        // await dispatch(updateLastModified());
+        return "OK";
     }
 );
 
@@ -524,19 +525,19 @@ const copyStar = createAsyncThunk(
             storyboardId, frameId, selectedStar, newStarId,
         }));
         dispatch(setSelectedStarIdInMemory(newStarId));
-        const storyboardData = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId);
-        const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
-        const starList =  frameData.starList;
-        const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
-            dispatch(setFrozenMode(true));
-            return;}
-        const response = await ProjectAPI.replaceStarListInDatabase({
-            frameId,
-            starList: starList
-        });
-        await dispatch(updateLastModified());
-        return response.status;
+        // const storyboardData = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId);
+        // const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+        // const starList =  frameData.starList;
+        // const isLegalUpdate = await dispatch(loadAuthorData());
+        // if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+        //     dispatch(setFrozenMode(true));
+        //     return;}
+        // const response = await ProjectAPI.replaceStarListInDatabase({
+        //     frameId,
+        //     starList: starList
+        // });
+        // await dispatch(updateLastModified());
+        return "OK";
     }
 );
 
@@ -557,19 +558,19 @@ const addSpeechChildStar = createAsyncThunk(
             ...obj,
             childStarId
         }));
-        const storyboardData = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId);
-        const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
-        const starList =  frameData.starList;
-        const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
-            dispatch(setFrozenMode(true));
-            return;}
-        const response = await ProjectAPI.replaceStarListInDatabase({
-            frameId,
-            starList: starList
-        });
-        await dispatch(updateLastModified());
-        return response.status;
+        // const storyboardData = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId);
+        // const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+        // const starList =  frameData.starList;
+        // const isLegalUpdate = await dispatch(loadAuthorData());
+        // if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+        //     dispatch(setFrozenMode(true));
+        //     return;}
+        // const response = await ProjectAPI.replaceStarListInDatabase({
+        //     frameId,
+        //     starList: starList
+        // });
+        // await dispatch(updateLastModified());
+        return "OK";
     }
 );
 

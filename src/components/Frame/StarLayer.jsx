@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useCallback} from "react"
 import axios from '../../axiosConfig'
 import {Image, Layer, Stage} from 'react-konva';
 import useImage from "use-image";
@@ -6,6 +6,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import globalConfig, {globalLog} from "../../globalConfig";
 import Star from "../Star/Star";
 import StaticStar from "../Star/StaticStar";
+import {saveNote, updateStarList, updateStarListInMemory} from "../../redux/features/projectSlice";
+import { debounce } from "lodash";
 
 
 
@@ -25,6 +27,18 @@ const StarLayer = (props) => {
         backdropImg.crossOrigin = "Anonymous";
     }
 
+    const saveStarListDebounce = useCallback(debounce(
+        (storyboardId, frameId) =>
+            dispatch(updateStarList({
+                    storyboardId,
+                    frameId,
+                })), 2000), [])
+
+
+    React.useEffect(() => {
+        saveStarListDebounce(storyboardId,
+            frameId);
+    }, [starList])
 
  return (
      <>
@@ -39,12 +53,6 @@ const StarLayer = (props) => {
                          id={backdropStar._id}
                          width={globalConfig.noScaleWidth}
                          height={globalConfig.noScaleWidth*3/4}
-                         onClick={(e) => {
-                             globalLog("clicking");
-                         }}
-                         onTap={(e) => {
-                             globalLog("tapping");
-                         }}
                      />
                  )
              }
