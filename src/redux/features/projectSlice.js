@@ -20,10 +20,13 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
     async (obj, thunkAPI) => {
         const {_id, name} = obj;
+        console.log("in thunk")
         const authorIdList =  [Cookies.get("userId")];
+        console.log("authoridolist: ", authorIdList)
         const projectData = ProjectDataHandler.initializeProject({_id, authorIdList, name});
+        console.log('projectData: ', projectData);
         const authorData = AuthorDataHandler.initializeAuthor({_id});
-        globalLog('projectData: ', projectData);
+        console.log('authorData: ', authorData);
         const response = await ProjectAPI.insertProject(Cookies.get("userId"), projectData);
         const response2 = await AuthorAPI.insertAuthorData(authorData);
         return response.status;
@@ -37,7 +40,7 @@ const insertProjectToDatabase = createAsyncThunk(
         const {_id} = projectData;
         projectData.authorIdList = [Cookies.get("userId")];
         const authorData = AuthorDataHandler.initializeAuthor({_id});
-        globalLog('projectData: ', projectData);
+        console.log('projectData: ', projectData);
         const response = await ProjectAPI.insertProject(Cookies.get("userId"), projectData);
         const response2 = await AuthorAPI.insertAuthorData(authorData);
         return response.status;
@@ -73,10 +76,10 @@ const shareProject = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(setAuthorIdListInMemory(obj));
         const projectId = getState().project.value._id;
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.updateAuthorIdList({
             projectId, authorIdList
         });
@@ -86,7 +89,7 @@ const shareProject = createAsyncThunk(
                     projectId});
             }
         }
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 )
@@ -97,10 +100,10 @@ const mergeProject = createAsyncThunk(
     async (newProjectData, thunkAPI) => {
         const {dispatch, getState}  = thunkAPI;
         const type = "final";
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const projectId = getState().project.value._id;
         const modifiedProject = ProjectDataHandler.deepCopy(newProjectData);
         console.log("modifiedProject: ", modifiedProject);
@@ -119,7 +122,7 @@ const mergeProject = createAsyncThunk(
             }
         }
         // const response =
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return "OK";
     }
 )
@@ -131,15 +134,15 @@ const updateName = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(updateNameInMemory(name));
         const projectId = getState().project.value._id;
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /*const isLegalUpdate = await dispatch(loadAuthorData());
         console.log("isLegalUpdate: ", isLegalUpdate);
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.updateName({
             projectId, name
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -265,12 +268,12 @@ const addStoryboard = createAsyncThunk(
                 }
             }
         }
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.addStoryboard(payload);
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 )
@@ -280,10 +283,10 @@ const deleteStoryboard = createAsyncThunk(
     async (storyboardId, thunkAPI) => {
 
         const {dispatch, getState} = thunkAPI;
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
 
         const state = getState();
         const project = state.project.value;
@@ -308,14 +311,14 @@ const updateStoryboardOrder = createAsyncThunk(
         const state = getState();
         const projectId = state.project.value._id;
         const storyboardMenu = state.project.value.storyboardMenu;
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceStoryboardIdMenuInDatabase({
             projectId, storyboardMenu
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -325,12 +328,12 @@ const updateStoryboardName = createAsyncThunk(
     async (payload, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         dispatch(updateStoryboardNameInMemory(JSON.stringify(payload)));
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.updateStoryboardName(payload);
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -361,16 +364,16 @@ const addFrame = createAsyncThunk(
         })));
         dispatch(setSelectedFrameId(frameId));
         const newFrameList = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId).frameList;
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.insertFrameAndReplaceFrameListInDatabase({
             storyboardId,
             frameId,
             frameList: newFrameList,
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -390,15 +393,15 @@ const deleteFrame = createAsyncThunk(
         )));
 
         project = getState().project.value;
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceFrameIdListInDatabase({
             storyboardId,
             frameIdList: ProjectDataHandler.getStoryboard(project, storyboardId).frameList.map(f => f._id)
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -412,15 +415,15 @@ const updateFrameOrder = createAsyncThunk(
         dispatch(updateFrameOrderInMemory(text));
         const state = getState();
         const frameIdList = ProjectDataHandler.frameList(state.project.value, storyboardId).map(a=>a._id);
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceFrameIdListInDatabase({
             storyboardId,
             frameIdList,
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -470,15 +473,15 @@ const updateStarList = createAsyncThunk(
         const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
         const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         const starList =  frameData.starList;
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceStarListInDatabase({
             frameId,
             starList: starList
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -592,15 +595,15 @@ const addBackdropStar = createAsyncThunk(
         dispatch(addBackdropStarInMemory({
             storyboardId, frameId, backdropStar,
         }));
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceBackdropStarInDatabase({
             frameId,
             backdropStar
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -620,14 +623,14 @@ const deleteBackdropStar = createAsyncThunk(
                 storyboardId, frameId,backdropStar
             })
         );
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceBackdropStarInDatabase({
             frameId, backdropStar
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -649,7 +652,7 @@ const addTemplateStar = createAsyncThunk(
         dispatch(addTemplateStarInMemory(JSON.stringify({
             storyboardId, frameId, templateId,
         })));
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return "OK";
     }
 );
@@ -673,12 +676,12 @@ const addActor = createAsyncThunk(
             actorDataJSON
         });
         dispatch(addActorInMemory(payload));
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.addActor(payload);
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 )
@@ -692,14 +695,14 @@ const deleteActor = createAsyncThunk(
         const state = getState();
         const projectId = state.project.value._id;
         const actorIdList = state.project.value.actorList.filter(e => !e.deleted).map(a=>a._id);
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceActorIdListInDatabase({
             projectId, actorIdList
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -712,14 +715,14 @@ const updateActorOrder = createAsyncThunk(
         const state = getState();
         const projectId = state.project.value._id;
         const actorIdList = state.project.value.actorList.map(a=>a._id);
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceActorIdListInDatabase({
             projectId, actorIdList
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -729,12 +732,12 @@ const updateActorName = createAsyncThunk(
     async (payload, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         dispatch(updateActorNameInMemory(JSON.stringify(payload)));
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.updateActorName(payload);
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -749,15 +752,15 @@ const addState = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(addStateInMemory(JSON.stringify(payload)));
         const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -769,15 +772,15 @@ const deleteState = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(deleteStateInMemory(JSON.stringify(payload)));
         const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -789,15 +792,15 @@ const updateStateName = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         dispatch(updateStateNameInMemory(payload));
         const stateList = ProjectDataHandler.stateList(getState().project.value, actorId);
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceStateListInDatabase({
             actorId,
             stateList
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -814,14 +817,14 @@ const addBackdrop = createAsyncThunk(
                 backdropId)
         );
         const backdropList = getState().project.value.backdropList;
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -835,14 +838,14 @@ const deleteBackdrop = createAsyncThunk(
             backdropId)
         );
         const backdropList = getState().project.value.backdropList;
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -857,14 +860,14 @@ const updateBackdropName = createAsyncThunk(
             backdropId, backdropName
         })));
         const backdropList = getState().project.value.backdropList;
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.replaceBackdropListInDatabase({
             projectId, backdropList
         });
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );
@@ -876,16 +879,16 @@ const saveNote = createAsyncThunk(
         const {storyboardId, text} = obj;
         dispatch(saveNoteInMemory({storyboardId, text}));
         // const storyboardId = getState().project.value.selectedId.storyboardId;
-        const isLegalUpdate = await dispatch(loadAuthorData());
+        /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
             dispatch(setFrozenMode(true));
-            return;}
+            return;} */
         const response = await ProjectAPI.saveNote({
             storyboardId,
            text
         });
 
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return response.status;
     }
 );

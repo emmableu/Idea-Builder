@@ -30,6 +30,7 @@ const StaticFrameContainerWithAction = React.memo((props) => {
     const classes = useStyles();
     const {storyboardId, frameData, frameIndex, handleDelete, _id, idx} = props;
     const dispatch = useDispatch();
+    const [onceTrue, setOnceTrue] = React.useState(false);
     const deleteFrame = (e) =>
         handleDelete(e, frameIndex)
 
@@ -39,7 +40,10 @@ const StaticFrameContainerWithAction = React.memo((props) => {
 
 
     React.useEffect(() => {
-        if (frameData._id !== _id) {
+        if (frameData.id === _id && !onceTrue) {
+            setOnceTrue(true)
+        }
+        if (frameData._id !== _id && onceTrue) {
             dispatch(updateStarList({
                 storyboardId,
                 frameId: frameData._id

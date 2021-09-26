@@ -97,7 +97,7 @@ export class ProjectDataHandler {
             // projectStoryboardList[0]._id,
             // projectStoryboardList[0].frameList[0]._id,
         )
-        if (storyboardList.length > 0) {
+        if (projectStoryboardList.length > 0) {
             projectSelectedId.storyboardId = projectStoryboardList[0]._id
             if (storyboardList[0].frameList.length > 0) {
                 projectSelectedId.frameId = projectStoryboardList[0].frameList[0]._id
