@@ -1,8 +1,8 @@
-import React from "react"
+import React, {useCallback} from "react"
 import StarImage from "../Star/StarImage.jsx";
 import {Image, Layer, Stage, Group, Line} from 'react-konva';
 import {useDispatch, useSelector} from 'react-redux';
-import {updateStarList} from "../../redux/features/projectSlice";
+import {updateStarList, updateStarListInMemory} from "../../redux/features/projectSlice";
 import {setSelectedStarId} from "../../redux/features/projectSlice";
 import {StarDataHandler} from "../../data/StarData";
 import useImage from "use-image";
@@ -15,7 +15,6 @@ const Star = (props) => {
     const {storyboardId, frameId, selectedStar, starData} = props;
     const starImageData = JSON.parse(JSON.stringify(starData));
     const dispatch = useDispatch();
-    const childStarRef = React.useRef(null);
     const selectedStarId = (selectedStar!==undefined && selectedStar!==null)?selectedStar._id:null;
     const [strokeEnabled, setStrokeEnabled] = React.useState(false);
 
@@ -24,6 +23,16 @@ const Star = (props) => {
         dispatch(setSelectedStarId(starId));
         setStrokeEnabled(false);
     }
+
+
+    // const saveStarDebounce = useCallback(debounce(dispatchSaveNote, 1000), [])
+    //
+    // const onFieldTextChange = async (e) => {
+    //     const text = e.target.value
+    //     setValue(text)
+    //     saveNoteDebounce(text);
+    // };
+    //
 
     const updatePositionAndSize = (attrs) => {
         const {x, y, width} = attrs;

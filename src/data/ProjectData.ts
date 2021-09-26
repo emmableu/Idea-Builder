@@ -93,10 +93,16 @@ export class ProjectDataHandler {
             projectStoryboardMenu = storyboardMenu;
         }
 
-        const projectSelectedId = selectedId?selectedId: SelectedIdDataHandler.initializeSelectedId(
+        const projectSelectedId = SelectedIdDataHandler.initializeSelectedId(
             // projectStoryboardList[0]._id,
             // projectStoryboardList[0].frameList[0]._id,
         )
+        if (storyboardList.length > 0) {
+            projectSelectedId.storyboardId = projectStoryboardList[0]._id
+            if (storyboardList[0].frameList.length > 0) {
+                projectSelectedId.frameId = projectStoryboardList[0].frameList[0]._id
+            }
+        }
 
         const projectSpeechBubbleList = speechBubbleList?speechBubbleList:[];
 

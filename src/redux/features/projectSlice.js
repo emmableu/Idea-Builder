@@ -14,7 +14,6 @@ import {setPermanentViewMode} from "./modeSlice";
 import {AuthorDataHandler} from "../../data/AuthorData";
 import {AuthorAPI} from "../../api/AuthorAPI";
 import {loadAuthorData, setFrozenMode, setLastLoaded, updateLastModified} from "./authorSlice";
-import {stringify} from "uuid";
 
 
 const insertEmptyProjectToDatabase = createAsyncThunk(
@@ -163,18 +162,18 @@ const setSelectedStoryboardId = createAsyncThunk(
         else {
             dispatch(voidSelectedStoryboardIdInMemory())
         }
-        const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
-            dispatch(setFrozenMode(true));
-            return;}
-        const response = await ProjectAPI.updateSelectedIdData(
-            {
-                projectId: project._id,
-                selectedId:  getState().project.value.selectedId
-                }
-            );
-        await dispatch(updateLastModified());
-        return response.status;
+        // const isLegalUpdate = await dispatch(loadAuthorData());
+        // if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+        //     dispatch(setFrozenMode(true));
+        //     return;}
+        // const response = await ProjectAPI.updateSelectedIdData(
+        //     {
+        //         projectId: project._id,
+        //         selectedId:  getState().project.value.selectedId
+        //         }
+        //     );
+        // await dispatch(updateLastModified());
+        return "OK";
     }
 );
 
@@ -185,18 +184,19 @@ const setSelectedFrameId = createAsyncThunk(
         const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
         dispatch(setSelectedFrameIdInMemory(frameId));
-        const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
-            dispatch(setFrozenMode(true));
-            return;}
-        const response = await ProjectAPI.updateSelectedIdData(
-            {
-                projectId: project._id,
-                selectedId: project.selectedId
-            }
-        );
-        await dispatch(updateLastModified());
-        return response.status;
+        // const isLegalUpdate = await dispatch(loadAuthorData());
+        // if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+        //     dispatch(setFrozenMode(true));
+        //     return;}
+        // const response = await ProjectAPI.updateSelectedIdData(
+        //     {
+        //         projectId: project._id,
+        //         selectedId: project.selectedId
+        //     }
+        // );
+        // await dispatch(updateLastModified());
+        // return response.status;
+        return "OK"
     }
 );
 
@@ -208,20 +208,20 @@ const setSelectedStarId = createAsyncThunk(
         const prevStarId = getState().project.value.selectedId.starId;
         if (prevStarId !== starId) {
             dispatch(setSelectedStarIdInMemory(starId));
-            const project = getState().project.value;
-            const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
-            dispatch(setFrozenMode(true));
-            return;}
-        const response = await ProjectAPI.updateSelectedIdData(
-                {
-                    projectId: project._id,
-                    selectedId: project.selectedId
-                }
-            );
-            return response.status;
+            // const project = getState().project.value;
+        //     const isLegalUpdate = await dispatch(loadAuthorData());
+        // if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
+        //     dispatch(setFrozenMode(true));
+        //     return;}
+        // const response = await ProjectAPI.updateSelectedIdData(
+        //         {
+        //             projectId: project._id,
+        //             selectedId: project.selectedId
+        //         }
+        //     );
+        //     return response.status;
         }
-        await dispatch(updateLastModified());
+        // await dispatch(updateLastModified());
         return "OK";
     }
 );

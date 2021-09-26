@@ -9,6 +9,8 @@ import {useDispatch, connect} from "react-redux";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import {useCallback} from "react";
+import { debounce } from "lodash";
 const { TextArea } = Input;
 
 const calcBoxHeight = (windowInnerHeight) => {
@@ -27,9 +29,11 @@ const getStoryboardNoteData = createSelector(
                 note: ""
             }
         }
+        const s = storyboardList.find(s => s._id === storyboardId)
+        const note = s?s.note:"";
         return {
             storyboardId: storyboardId,
-            note: storyboardList.find(s => s._id === storyboardId).note
+            note,
         }
     }
 );
@@ -41,21 +45,19 @@ const mapStateToProps = (state) => {
 
 const NoteBox = (props) => {
     const {storyboardId, note} = props;
-    // const [value, setValue] = React.useState(note);
+    const [value, setValue] = React.useState(note);
     const dispatch = useDispatch();
     const editorHeight = calcBoxHeight(window.innerHeight);
 
+    const dispatchSaveNote = text => dispatch(saveNote({storyboardId, text}));
 
-    // const saveNoteDebounce = AwesomeDebouncePromise(
-    //     text => dispatch(saveNote({storyboardId, text})),
-    //     1000);
+
+    const saveNoteDebounce = useCallback(debounce(dispatchSaveNote, 1000), [])
 
     const onFieldTextChange = async (e) => {
-        const text = e.target.value;
-        dispatch(saveNote({storyboardId, text}));
-
-        // setValue(text);
-        // await saveNoteDebounce(text);
+        const text = e.target.value
+        setValue(text)
+        saveNoteDebounce(text);
     };
 
     return(
@@ -76,8 +78,8 @@ const NoteBox = (props) => {
                     </Typography>
                     <TextArea
                         style={{height: editorHeight}}
-                        value={note}
-                        onChange={text => onFieldTextChange(text)}
+                        value={value}
+                        onChange={onFieldTextChange}
                         placeholder="Key mechanics" bordered={false} />
                 </CardContent>
             </Card>
