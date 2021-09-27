@@ -165,7 +165,10 @@ const FrameListBox = React.memo(
                     <Typography align='center' variant='subtitle1'>
                         {storyboardData.name}
                     </Typography>
-                    <Typography align='center' variant='subtitle2'>
+                    {/*<Typography align='center' variant='subtitle2'>*/}
+                    {/*    {storyboardData.note}*/}
+                    {/*</Typography>*/}
+                    <Typography style={{fontStyle: 'italic',color: "grey"}} component="div" variant="body2">
                         {storyboardData.note}
                     </Typography>
                 </div>

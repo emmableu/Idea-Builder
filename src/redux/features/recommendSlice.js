@@ -7,15 +7,22 @@ import axios from "../../axiosConfig";
 const loadAllRecommend = createAsyncThunk(
     'project/loadAllRecommend',
     async (payload, thunkAPI) => {
-        const {dispatch} = thunkAPI;
-        const rawNameList = ['Bounce Around the Stage', 'Paw Prints', 'Select a Button in a List', 'Move When Key Is Pressed', 'Boat Race', 'Snake Eating Apples', 'Create Many Actors', 'Click Icon to Show and Hide Calendar', 'Increases Score When Explode', 'Move With the Mouse', 'Browse Through Carousel', 'Helicopter Dropping Water', 'Snake Turning', 'Game Timer', 'Flower Grows When Water Dropped', 'Bounce on Paddle', 'Actor Moves Randomly to the Right', 'Initialize Actors to Random Positions', 'Move Between Points', 'Jump', 'Catching Fruit']
+        const {dispatch, getState} = thunkAPI;
+        const rawNameList = getState().recommend.value.nameList;
         for (const rawName of rawNameList) {
             const projectName = rawName.split(' ').join('%20');
             const url = `/static/week2project/${projectName}/recommend.json`;
             await axios({
                 method: 'get',
                 url: url,
-            }).then( res =>
+            }).catch(error => {
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                }
+            })
+                .then( res =>
                 dispatch(addRecommend({
                     name: rawName,
                     data:res.data,
@@ -79,9 +86,12 @@ export const recommendSlice = createSlice({
                 .sort((a, b) => a.sort - b.sort)
                 .map(({ value }) => value)
             for (const ele of shuffled) {
-                state.value.displayList.push(
-                    state.value.projectMap[ele]
-                )
+                if (state.value.projectMap[ele]) {
+                    state.value.displayList.push(
+                        state.value.projectMap[ele]
+                    )
+                }
+
             }
         },
 
