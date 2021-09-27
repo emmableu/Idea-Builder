@@ -61,7 +61,7 @@ export const recommendSlice = createSlice({
                     'Snake Turning',
                     'Game Timer',
                     'Flower Grows When Water Dropped',
-                    'Bounce on Paddle',
+                    'Bounce on paddle',
                     'Actor Moves Randomly to the Right',
                     'Initialize Actors to Random Positions',
                     'Move Between Points',
