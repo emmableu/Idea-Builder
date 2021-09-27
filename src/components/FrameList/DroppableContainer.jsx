@@ -78,7 +78,6 @@ const DroppableContainer = (props) => {
         if (!result.destination) {
             return;
         }
-        console.log("onDragEnd")
         dispatch(updateFrameOrder({
             storyboardId,
             "beginOrder": result.source.index,

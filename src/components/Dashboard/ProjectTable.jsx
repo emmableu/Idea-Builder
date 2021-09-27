@@ -41,7 +41,6 @@ function PatchedPagination(props) {
 
 const ProjectTable = (props) => {
     const {projectList} = props;
-    console.log("projectList : ", projectList);
     const dispatch = useDispatch();
     let history = useHistory();
     let match = useRouteMatch();

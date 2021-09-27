@@ -21,10 +21,8 @@ const MergeUploadModalContent = (props) => {
     const dummyRequest = async ({ file, onSuccess, onError }) => {
         const zip = await JSZip.loadAsync(file);
         for (const filename of Object.keys(zip.files)) {
-            console.log("zip: ", zip);
             if (filename.endsWith("project.json")) {
                 const fileData = await zip.files[filename].async('text');
-                console.log(fileData);
                 await dispatch(mergeProject(JSON.parse(fileData)));
                 onSuccess("ok");
                 setTimeout(() => {

@@ -19,7 +19,6 @@ function StoryboardMenuListGroup() {
 
 
     const onDragEnd = (result) => {
-        console.log("result: ", JSON.stringify(result));
         dispatch(updateStoryboardOrder(JSON.stringify(result)));
     };
 

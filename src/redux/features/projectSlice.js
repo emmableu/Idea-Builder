@@ -20,13 +20,9 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
     async (obj, thunkAPI) => {
         const {_id, name} = obj;
-        console.log("in thunk")
         const authorIdList =  [Cookies.get("userId")];
-        console.log("authoridolist: ", authorIdList)
         const projectData = ProjectDataHandler.initializeProject({_id, authorIdList, name});
-        console.log('projectData: ', projectData);
         const authorData = AuthorDataHandler.initializeAuthor({_id});
-        console.log('authorData: ', authorData);
         const response = await ProjectAPI.insertProject(Cookies.get("userId"), projectData);
         const response2 = await AuthorAPI.insertAuthorData(authorData);
         return response.status;
@@ -40,7 +36,6 @@ const insertProjectToDatabase = createAsyncThunk(
         const {_id} = projectData;
         projectData.authorIdList = [Cookies.get("userId")];
         const authorData = AuthorDataHandler.initializeAuthor({_id});
-        console.log('projectData: ', projectData);
         const response = await ProjectAPI.insertProject(Cookies.get("userId"), projectData);
         const response2 = await AuthorAPI.insertAuthorData(authorData);
         return response.status;
@@ -52,8 +47,6 @@ const loadProjectFromDatabase = createAsyncThunk(
     async (_id, thunkAPI) => {
         const response = await ProjectAPI.loadProject(_id);
         const {dispatch} = thunkAPI;
-        console.log("project!!!!!!!!, ", JSON.stringify(response.data));
-
         dispatch(loadProjectInMemory(response.data));
         const authorIdList = response.data.authorIdList;
         const userId =  Cookies.get("userId");
@@ -106,7 +99,6 @@ const mergeProject = createAsyncThunk(
             return;} */
         const projectId = getState().project.value._id;
         const modifiedProject = ProjectDataHandler.deepCopy(newProjectData);
-        console.log("modifiedProject: ", modifiedProject);
         for (const storyboardDataJSON of modifiedProject.storyboardList) {
             const payload =  {
                 projectId,
@@ -268,7 +260,6 @@ const addStoryboard = createAsyncThunk(
                 const newActorData = ActorDataHandler.useModified(actorData);
                 if (newActorData !== null) {
                     const newActor = ActorDataHandler.deepCopy(newActorData)
-                    console.log("newactor: ", newActor);
                     dispatch(addActor(newActor));
                 }
             }

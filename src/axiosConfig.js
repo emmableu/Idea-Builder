@@ -13,7 +13,7 @@ const instance = axios.create({
 });
 
 const handleRequest = async (request) => {
-    console.log(request);
+    globalLog(request);
     // // Edit request config
     if (request.method === "post") {
         // const state = store.getState();
@@ -35,16 +35,16 @@ const handleRequest = async (request) => {
 instance.interceptors.request.use(
         handleRequest,
         error => {
-    console.log(error);
+            globalLog(error);
     return Promise.reject(error);
 });
 
 instance.interceptors.response.use(response => {
-    console.log(response);
+    globalLog(response);
     // Edit response config
     return response;
 }, error => {
-    console.log(error);
+    globalLog(error);
     return Promise.reject(error);
 });
 

@@ -79,7 +79,6 @@ const StarImage = (props) => {
                     // we will reset it back
                     node.scaleX(1);
                     node.scaleY(1);
-                    console.log("rotation: ", node.rotation);
                     updatePositionAndSize({
                         ...starImageData,
                         x: node.x(),

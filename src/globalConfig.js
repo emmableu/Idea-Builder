@@ -37,8 +37,6 @@ const draftTheme = {
 }
 
 
-console.log(window.innerWidth);
-console.log(window.innerHeight);
 
 const storyboardTop = 60;
 
@@ -145,7 +143,6 @@ const globalConfig = {
 globalConfig.mode = mode;
 globalConfig.responsiveSizeData = responsiveSizeData;
 
-console.log("globalConfig.costumeSwapperHeight: ", globalConfig.costumeSwapperHeight);
 
 
 const calcFrameWidth = ( windowInnerWidth, windowInnerHeight ) => {

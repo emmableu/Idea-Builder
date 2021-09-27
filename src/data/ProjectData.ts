@@ -388,13 +388,10 @@ export class ProjectDataHandler {
                 }
             }
         }
-        console.log("swapping costumes");
 
         for (const storyboardData of projectData.storyboardList) {
             for (const frameData of storyboardData.frameList) {
                 for (const starData of frameData.starList) {
-                    console.log("starData.prototypeId: ", starData.prototypeId);
-                    console.log("stateId: ", stateId);
                     if (starData.prototypeId.split("?")[0] === stateId.split("?")[0]) {
                         starData.actorId = newActorId;
                         starData.prototypeId = newStateId;
@@ -492,7 +489,6 @@ export class ProjectDataHandler {
         imgData.forEach((img)=> {
             const blobPromise =  fetch(axios.defaults.baseURL + img._id)
                 .then(function (response) {
-                    console.log({response})
                     if (response.status === 200 || response.status === 0) {
                         return Promise.resolve(response.blob());
                     } else {

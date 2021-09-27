@@ -41,7 +41,6 @@ const ImgRow = React.memo(
 
 const AssetGallery = React.memo((props) => {
     const {type, height, xs, actorId} = props;
-    console.log("type in asset gallery: ", type);
     let {itemSize} = props;
     if (itemSize === undefined) {
         itemSize = xs===2? 150:200;

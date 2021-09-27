@@ -271,7 +271,6 @@ const Swapper = React.memo((props) => {
             setType(currentCostume.type);
         }
     }, [selected]);
-    console.log("type: ", type);
     const imgTileType = type === "backdrop"? "swap-costume-backdrop":"swap-costume";
     // newActorId, newStateId, selected
     const dispatch = useDispatch();

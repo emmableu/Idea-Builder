@@ -32,7 +32,6 @@ const ShareProjectButton = () => {
         const newAuthorList = tags.concat([Cookies.get("userId")]);
         newAuthorList.sort();
         await dispatch(shareProject({authorIdList: newAuthorList}));
-        console.log("newAuthorList: ", newAuthorList);
         setConfirmLoading(false);
         setIsModalVisible(false);
         success();
