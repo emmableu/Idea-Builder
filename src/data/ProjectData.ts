@@ -155,7 +155,7 @@ export class ProjectDataHandler {
 
     static deepCopy(projectData: ProjectData) : ProjectData {
         const {_id, authorIdList, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
-            selectedId, speechBubbleList, variableList, eventList,
+            selectedId, speechBubbleList, variableList, eventList
         } = projectData;
         const projectId = UUID.v4();
         const projectName = name;
@@ -425,6 +425,10 @@ export class ProjectDataHandler {
         if (Cookies.get('userId')==="mbobbad" || Cookies.get('userId')==="wwang33" ) {
             const zip = new JSZip()
             const folder = zip.folder(projectData.name);
+            // projectData. = true;
+            if (projectData.storyboardList.length > 0) {
+                projectData.storyboardList[0].recommendName = projectData.name;
+            }
             let filename = projectData.name;
             // @ts-ignore
             folder.file("recommend.json", JSON.stringify(projectData));

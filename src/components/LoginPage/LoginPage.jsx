@@ -89,7 +89,7 @@ const LoginPage = () => {
                 className={classes.paper}>
                 <Typography component="h1" variant="h6" style={{color: "#616161"}}>
                     <IdeaBuilderIcon className={classes.ideaBuilderIcon}/>
-                    {'\u00A0'} Idea Builder
+                    {'\u00A0'} Idea Builder - CSC110 Project 1
                 </Typography>
                 <br />
                 <Typography component="h1" variant="subtitle2" className={classes.instruction}>

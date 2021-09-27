@@ -6,6 +6,7 @@ export interface StoryboardData {
     name: string;
     frameList: Array<FrameData>
     note:string;
+    recommendName: string;
 }
 
 
@@ -15,25 +16,30 @@ export interface StoryboardData {
 export class StoryboardDataHandler {
 
     static initializeStoryboard
-    (_id?: string, name?:string, order?:number, frameList?:Array<FrameData>,
-                note?:string,
-    ):StoryboardData
+    (storyboardData:StoryboardData)
     {
+        // {_id?: string, name?:string, order?:number, frameList?:Array<FrameData>,
+        //     note?:string, isRecommand?:boolean,}
+        const {_id, name, frameList, note, recommendName} = storyboardData;
+
         const storyboardId = _id? _id:UUID.v4();
         const storyboardName = name? name:"Untitled";
         const storyboardFrameList = frameList? frameList:[FrameDataHandler.initializeFrame()]
         const storyboardNote = note? note:"Key changes between the begin and end frame:";
+        const storyboardRecommendName = recommendName? recommendName:"Non-Recommend";
+
         return {
             _id: storyboardId,
             name: storyboardName,
             frameList: storyboardFrameList,
             note: storyboardNote,
+            recommendName: storyboardRecommendName,
         }
     }
 
 
     static deepCopy(storyboardData: StoryboardData) {
-        const {name, frameList, note} = storyboardData;
+        const {name, frameList, note, recommendName} = storyboardData;
         const storyboardId = UUID.v4();
         const storyboardName = name;
         const storyboardNote = note;
@@ -46,6 +52,7 @@ export class StoryboardDataHandler {
             name: storyboardName,
             frameList: storyboardFrameList,
             note: storyboardNote,
+            recommendName: recommendName? recommendName:"Non-Recommend",
         }
     }
 

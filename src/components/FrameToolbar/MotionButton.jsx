@@ -4,7 +4,7 @@ import {Button, makeStyles, Tooltip} from "@material-ui/core";
 import React from "react";
 import NewMotionMenuItem from "./NewMotionMenuItem";
 import { Menu, Dropdown } from 'antd';
-import {updateStarList} from "../../redux/features/projectSlice";
+import {updateStarList, updateStarListInMemory} from "../../redux/features/projectSlice";
 import MenuItem from "@material-ui/core/MenuItem";
 import {useDispatch} from "react-redux";
 import {MotionIcon} from "../primitives/Icon/Icon";
@@ -35,7 +35,7 @@ const MotionButton = (props) => {
             },
         }
 
-        dispatch(updateStarList(
+        dispatch(updateStarListInMemory(
             {
                 storyboardId, frameId,
                 starData: newStarData

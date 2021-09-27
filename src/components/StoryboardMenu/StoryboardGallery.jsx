@@ -63,7 +63,27 @@ const StoryboardGallery = (props) => {
     const dispatch = useDispatch();
 
     let rawNameList;
-    if (["mbobbad", "wwang33", 'twprice', 'test1', 'test2', 'test3', 'test4' ].includes(Cookies.get('userId'))) {
+    if (["mbobbad", "wwang33", 'twprice', 'test1', 'test2', 'test3', 'test4',
+        'kljone23', 'ggdallma', 'svegesa', 'jlrusse7', 'akjone23', 'cliu27', 'jarevoir', 'wlstell', 'mlmacdon',
+            'nmbock2', 'jpsoutha', 'thkelley', 'jhsmith9', 'ndcovert', 'zxu16', 'eagodwin', 'imwilli2', 'jwjenni3',
+            'mlmitch7', 'nbward', 'ptsmith4', 'smthomp7', 'sejeffe2', 'nbbailey', 'zmander2', 'mbautis2', 'cehandly',
+            "wtmorga3",
+            "ujkaraba",
+            "slmclenn",
+            "sechestn",
+            "nrsoufan",
+            "msevans5",
+            "kghaley",
+            "kbsitton",
+            "jhcarlyl",
+            "eemarsh",
+            "delaseri",
+            "cfveit",
+            "btsek2",
+            "aschenna",
+            "antearry",
+            "aahasan"
+    ].includes(Cookies.get('userId'))) {
         rawNameList = ['bullet_wrap', 'asteroid_alien_move', 'collision_change_score', 'checkout_list', 'move_between_points',
             'key_trigger_bounce', 'hit_remove', 'keymove', 'button_select', 'carousel', 'inertia',
             'collision_explosion', 'click_show_calendar', 'initialize_to_random', 'move_with_mouse', 'Bounce on paddle',

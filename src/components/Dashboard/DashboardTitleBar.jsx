@@ -44,7 +44,7 @@ export const DashboardTitleBar = (props) => {
                     >
                 <Toolbar>
                         <Button color="inherit" startIcon={<IdeaBuilderIcon />}>
-                            Idea Builder
+                            CSC110 Project 1 (North Carolina State University)
                         </Button>
 
                 <Typography variant="h6" className={classes.title}>

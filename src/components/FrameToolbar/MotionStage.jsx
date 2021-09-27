@@ -3,7 +3,7 @@ import useImage from "use-image";
 import axios from "../../axiosConfig";
 import {Provider, ReactReduxContext, useDispatch} from "react-redux";
 import * as UUID from "uuid";
-import {updateStarList} from "../../redux/features/projectSlice";
+import {updateStarList, updateStarListInMemory} from "../../redux/features/projectSlice";
 import globalConfig, {globalLog} from "../../globalConfig";
 import {StarDataHandler} from "../../data/StarData";
 import Box from "@material-ui/core/Box";
@@ -114,7 +114,7 @@ export const MotionStage = (props) => {
                 motionStarList: tempMotionStarList,
             }
         }
-        dispatch(updateStarList(
+        dispatch(updateStarListInMemory(
             {
                 storyboardId, frameId,
                 starData: newStarData

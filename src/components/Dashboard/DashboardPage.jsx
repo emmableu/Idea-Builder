@@ -22,6 +22,7 @@ import Cookies from "js-cookie";
 import {fetchDashboardByUserID} from "../../redux/features/dashboardSlice";
 import { Skeleton } from 'antd';
 import {LoadingSkeleton} from "./LoadingSkeleton";
+import Container from "@material-ui/core/Container";
 
 const drawerWidth = globalConfig.projectDrawerWidth;
 

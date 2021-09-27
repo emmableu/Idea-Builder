@@ -245,7 +245,7 @@ const addStoryboard = createAsyncThunk(
         let storyboardDataJSON, modifiedProject;
         if (modified === null) {
             modifiedProject = null;
-            storyboardDataJSON = StoryboardDataHandler.initializeStoryboard(storyboardId, storyboardName);
+            storyboardDataJSON = StoryboardDataHandler.initializeStoryboard({_id: storyboardId, name: storyboardName});
         }
         else {
             modifiedProject = ProjectDataHandler.deepCopy(modified);
