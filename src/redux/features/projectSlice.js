@@ -878,7 +878,7 @@ const saveNote = createAsyncThunk(
     async (obj, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const {storyboardId, text} = obj;
-        dispatch(saveNoteInMemory({storyboardId, text}));
+        // dispatch(saveNoteInMemory({storyboardId, text}));
         // const storyboardId = getState().project.value.selectedId.storyboardId;
         /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {

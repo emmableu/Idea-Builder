@@ -4,7 +4,7 @@ import globalConfig from "../../globalConfig";
 import {createSelector} from "reselect";
 import * as React from "react";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
-import {saveNote} from "../../redux/features/projectSlice";
+import {saveNote, saveNoteInMemory} from "../../redux/features/projectSlice";
 import {useDispatch, connect} from "react-redux";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -45,7 +45,6 @@ const mapStateToProps = (state) => {
 
 const NoteBox = (props) => {
     const {storyboardId, note} = props;
-    const [value, setValue] = React.useState(note);
     const dispatch = useDispatch();
     const editorHeight = calcBoxHeight(window.innerHeight);
 
@@ -56,7 +55,7 @@ const NoteBox = (props) => {
 
     const onFieldTextChange = async (e) => {
         const text = e.target.value
-        setValue(text)
+        dispatch(saveNoteInMemory( {storyboardId, text} ))
         saveNoteDebounce(text);
     };
 
@@ -78,7 +77,7 @@ const NoteBox = (props) => {
                     </Typography>
                     <TextArea
                         style={{height: editorHeight}}
-                        value={value}
+                        value={note}
                         onChange={onFieldTextChange}
                         placeholder="Key mechanics" bordered={false} />
                 </CardContent>
