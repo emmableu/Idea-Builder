@@ -6,6 +6,7 @@ import {Grid} from "@material-ui/core";
 import ImgTile from "../../../primitives/ImgCard/ImgTile";
 import Paper from "@material-ui/core/Paper/Paper";
 import {Input, Modal} from "antd";
+import Button from "@material-ui/core/Button";
 import {addActor, updateStateName} from "../../../../redux/features/projectSlice";
 import * as UUID from "uuid";
 import {useDispatch} from "react-redux";
@@ -83,6 +84,27 @@ export const DecorDialog = (props) => {
     const [stateName, setStateName] = React.useState("");
     const stateData = actorData.stateList[0];
     const [image] = useImage(axios.defaults.baseURL + stateData._id);
+    const [curScaleX, setCurScaleX] = React.useState(1)
+    const [curX, setCurX] = React.useState(0)
+
+    const flip = () => {
+        setCurScaleX(-curScaleX)
+    }
+
+    React.useEffect(() => {
+        setCurScaleX(1)
+        setCurX(0)
+    }, []);
+
+    React.useEffect(() => {
+        if (curScaleX === -1) {
+            setCurX(tentativeWidth)
+        }
+        else {
+            setCurX(0)
+        }
+    }, [curScaleX])
+
 
     const dispatch = useDispatch()
     let tentativeWidth = 200;
@@ -106,8 +128,8 @@ export const DecorDialog = (props) => {
     }, [])
 
     React.useEffect(() => {
-        setOkEnabled(decorList.length>0 && stateName!=="");
-    }, [decorList.length>0 && stateName!==""])
+        setOkEnabled(stateName!=="");
+    }, [stateName!==""])
 
     React.useEffect(() => {
         if (cancelPressed === false) {
@@ -156,13 +178,19 @@ export const DecorDialog = (props) => {
             <div
                 style={{
                     width: "100%",
-                    height: 300,
+                    height: 340,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     flexDirection:"column"
                 }}
             >
+                <br/>
+                <br/>
+                <Button onClick={flip} variant="contained" color="inherit">
+                    Flip
+                </Button>
+                <br/>
             <Paper
                 style={{
                     width: 200,
@@ -180,10 +208,11 @@ export const DecorDialog = (props) => {
                     >
                         <Image
                             image={image}
-                            x={0}
+                            x={curX}
                             y={0}
                             width={tentativeWidth}
                             height={tentativeHeight}
+                            scaleX={curScaleX}
                         />
 
                         {decorList.map((_id, i) => {
