@@ -463,7 +463,10 @@ export class ProjectDataHandler {
         const folder = zip.folder(projectData.name)
         const {actorList, backdropList} = projectData;
         const imgData: { actorName: string; _id: string; name: string; order: number; }[] = []
-        actorList.forEach(actorData => {
+        for (const actorData of actorList){
+            if (actorData.deleted) {
+                continue;
+            }
             actorData.stateList.forEach(
                 (stateData, i)  => {
                     imgData.push({
@@ -474,7 +477,8 @@ export class ProjectDataHandler {
                     })
                 }
             )
-        })
+        }
+
         backdropList.forEach(
             (backdropData, i)  => {
                 imgData.push({
