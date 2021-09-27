@@ -58,7 +58,6 @@ const AssetGallery = React.memo((props) => {
                 url: `/sample_${type}_id_list/get`,
             }).then(
                 res => {
-                    console.log("res.data!!!!!!")
                     setImgList(res.data);
                 }
             )

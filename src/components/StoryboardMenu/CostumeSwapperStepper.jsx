@@ -265,7 +265,7 @@ const CostumeSwapperStepper = (props) => {
 const Swapper = React.memo((props) => {
     const classes = useStyles();
     const {currentCostume, selected, userCostumes} = props;
-    const [type, setType] = React.useState("state");
+    const [type, setType] = React.useState("");
     React.useEffect( () =>{
         if (currentCostume && ["backdrop", "state"].includes(currentCostume.type)) {
             setType(currentCostume.type);
@@ -288,44 +288,53 @@ const Swapper = React.memo((props) => {
 
 
     return (
+        <>
+        {type === "" &&
         <div className={classes.stepsContent}>
-            <div  className={classes.userCostumes}>
-                <div>
-                    {`My ${type === "backdrop"? "backdrop": "actor"}`}
-                </div>
-                <Grid container spacing={1} justifyContent="center">
+        </div>
+        }
+            {type !== "" &&
+            <div className={classes.stepsContent}>
+                <div  className={classes.userCostumes}>
+                    <div>
+                        {`My ${type === "backdrop"? "backdrop": "actor"}`}
+                    </div>
+                    <Grid container spacing={1} justifyContent="center">
 
-                    {userCostumes[type].map(imgData => (
-                        <Grid item xs={3}
-                              key={imgData._id}
-                        >
-                            <ImgTile
-                                type={imgTileType}
-                                _id={imgData._id}
-                                actorId={imgData.actorId}
-                                name={imgData.name}
-                                imgSrc={axios.defaults.baseURL + imgData._id}
-                                heightToWidthRatio="70%"
-                                handleDelete={null}
-                                handleUse={handleUse}
-                                contentNode={imgData.name}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
+                        {userCostumes[type].map(imgData => (
+                            <Grid item xs={3}
+                                  key={imgData._id}
+                            >
+                                <ImgTile
+                                    type={imgTileType}
+                                    _id={imgData._id}
+                                    actorId={imgData.actorId}
+                                    name={imgData.name}
+                                    imgSrc={axios.defaults.baseURL + imgData._id}
+                                    heightToWidthRatio="70%"
+                                    handleDelete={null}
+                                    handleUse={handleUse}
+                                    contentNode={imgData.name}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </div>
+                <div
+                    className={classes.assetGallery}
+                >
+                    {`Search for a new ${type === "backdrop"? "backdrop": "actor"}`}
+                    <AssetGallery
+                        xs={3}
+                        height={globalConfig.costumeSwapperHeight-50}
+                        type={type}
+                        itemSize={120}
+                    />
+                </div>
             </div>
-            <div
-                className={classes.assetGallery}
-            >
-                {`Search for a new ${type === "backdrop"? "backdrop": "actor"}`}
-                {type !== "" && <AssetGallery
-                    xs={3}
-                    height={globalConfig.costumeSwapperHeight-50}
-                    type={type}
-                    itemSize={120}
-                />}
-            </div>
-            </div>
+            }
+
+            </>
     )
 })
 
