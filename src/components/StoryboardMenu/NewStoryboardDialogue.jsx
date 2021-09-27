@@ -11,7 +11,7 @@ import {addStoryboard} from "../../redux/features/projectSlice";
 import StoryboardGallery from "./StoryboardGallery";
 import GalleryStepper from "./GalleryStepper";
 import globalConfig from "../../globalConfig";
-import {clearModifiedRecommend} from "../../redux/features/recommendSlice";
+import {clearModifiedRecommend, resetDisplayRecommend, resetRecommend} from "../../redux/features/recommendSlice";
 import Cookies from "js-cookie";
 import NewStoryboardNameInput from "./NewStoryboardNameInput";
 
@@ -76,10 +76,12 @@ const NewStoryboardDialogue = props => {
         dispatch(clearModifiedRecommend());
         setCurrent(0);
         setIsModalVisible(false);
+        dispatch(resetDisplayRecommend());
     };
 
     const handleCancel = () => {
         setIsModalVisible(false);
+        dispatch(resetDisplayRecommend());
     };
 
     return (

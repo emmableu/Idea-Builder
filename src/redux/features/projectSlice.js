@@ -121,6 +121,11 @@ const mergeProject = createAsyncThunk(
                 dispatch(addActor(actorData));
             }
         }
+        if (modifiedProject !== null && modifiedProject.backdropList.length > 0) {
+            for (const backdrop of modifiedProject.backdropList) {
+                dispatch(addBackdrop(backdrop._id))
+            }
+        }
         // const response =
         // await dispatch(updateLastModified());
         return "OK";
@@ -266,6 +271,11 @@ const addStoryboard = createAsyncThunk(
                     console.log("newactor: ", newActor);
                     dispatch(addActor(newActor));
                 }
+            }
+        }
+        if (modifiedProject !== null && modifiedProject.backdropList.length > 0) {
+            for (const backdrop of modifiedProject.backdropList) {
+                dispatch(addBackdrop(backdrop._id))
             }
         }
         /* const isLegalUpdate = await dispatch(loadAuthorData());

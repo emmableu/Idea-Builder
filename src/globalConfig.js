@@ -60,8 +60,8 @@ let responsiveSizeData = {
      actorDrawerWidth: 200,
      storyboardDrawerWidth: 200,
      noteWidth: 230,
-     frameListHeight: 185,
-     frameListPaperHeight: 105,
+     frameListHeight: 165,
+     frameListPaperHeight: 100,
 }
 
 const costumeSwapperHeight = Math.max(window.innerHeight - storyboardTop*2 - (56 + 24 + 28 + 8 + 148 + 21 + 21 + 42 + 42 + 32 + 12 + 24 + 52 + 50), 200);

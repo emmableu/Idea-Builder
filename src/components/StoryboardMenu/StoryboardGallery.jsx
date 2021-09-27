@@ -7,7 +7,13 @@ import {IconButton, makeStyles} from '@material-ui/core';
 import {Button, Modal, Tooltip} from 'antd'
 import globalConfig, {globalLog} from '../../globalConfig';
 import ArrowRightOutlined from '@ant-design/icons/lib/icons/ArrowRightOutlined';
-import {addRecommend, resetRecommend, setSelectedRecommend, setRecommend} from '../../redux/features/recommendSlice';
+import {
+    addRecommend,
+    resetRecommend,
+    setSelectedRecommend,
+    setRecommend,
+    resetDisplayRecommend
+} from '../../redux/features/recommendSlice';
 import { useDispatch, useSelector, connect } from 'react-redux';
 import {createSelector} from 'reselect'
 import Cookies from "js-cookie";
@@ -46,7 +52,7 @@ const useStyles = makeStyles({
 });
 
 const getRecommendProjectList = createSelector(
-    state => state.recommend.value.initial,
+    state => state.recommend.value.displayList,
     (projectList) => {
         return {projectList}
     }
@@ -60,59 +66,58 @@ const mapStateToProps = (state) => {
 
 const StoryboardGallery = (props) => {
     const {setCurrent, projectList} = props;
-    const dispatch = useDispatch();
-
-    let rawNameList;
-    if (["mbobbad", "wwang33", 'twprice', 'test1', 'test2', 'test3', 'test4',
-        'kljone23', 'ggdallma', 'svegesa', 'jlrusse7', 'akjone23', 'cliu27', 'jarevoir', 'wlstell', 'mlmacdon',
-            'nmbock2', 'jpsoutha', 'thkelley', 'jhsmith9', 'ndcovert', 'zxu16', 'eagodwin', 'imwilli2', 'jwjenni3',
-            'mlmitch7', 'nbward', 'ptsmith4', 'smthomp7', 'sejeffe2', 'nbbailey', 'zmander2', 'mbautis2', 'cehandly',
-            "wtmorga3",
-            "ujkaraba",
-            "slmclenn",
-            "sechestn",
-            "nrsoufan",
-            "msevans5",
-            "kghaley",
-            "kbsitton",
-            "jhcarlyl",
-            "eemarsh",
-            "delaseri",
-            "cfveit",
-            "btsek2",
-            "aschenna",
-            "antearry",
-            "aahasan"
-    ].includes(Cookies.get('userId'))) {
-        rawNameList = ['bullet_wrap', 'asteroid_alien_move', 'collision_change_score', 'checkout_list', 'move_between_points',
-            'key_trigger_bounce', 'hit_remove', 'keymove', 'button_select', 'carousel', 'inertia',
-            'collision_explosion', 'click_show_calendar', 'initialize_to_random', 'move_with_mouse', 'Bounce on paddle',
-            'initialize_fish_property']
-    }
-    else {
-        rawNameList = []
-    }
-    React.useEffect(
-         () => {
-             if (projectList.length > 0) {
-                 return;
-             }
-            // for (const rawName of ) {
-            for (const rawName of rawNameList) {
-            // for (const projectName of ['35-Green%20Your%20City', '25-Snowball%20Fight', '27-Flappy%20Parrot']) {
-                const projectName = rawName.split(' ').join('%20');
-                // const url = `/static/project/${projectName}/recommend.json`;
-                const url = `/static/week2project/${projectName}/recommend.json`;
-                axios({
-                        method: 'get',
-                        url: url,
-                    }).then( res =>
-                    dispatch(addRecommend(res.data))
-            )
-            }
-
-        }, []
-    )
+    // const dispatch = useDispatch();
+    // React.useEffect( () => {
+    //     display(resetDisplayRecommend())
+    // }, [])
+    // let rawNameList;
+    // if (["mbobbad", "wwang33", 'twprice', 'test1', 'test2', 'test3', 'test4',
+    //     'kljone23', 'ggdallma', 'svegesa', 'jlrusse7', 'akjone23', 'cliu27', 'jarevoir', 'wlstell', 'mlmacdon',
+    //         'nmbock2', 'jpsoutha', 'thkelley', 'jhsmith9', 'ndcovert', 'zxu16', 'eagodwin', 'imwilli2', 'jwjenni3',
+    //         'mlmitch7', 'nbward', 'ptsmith4', 'smthomp7', 'sejeffe2', 'nbbailey', 'zmander2', 'mbautis2', 'cehandly',
+    //         "wtmorga3",
+    //         "ujkaraba",
+    //         "slmclenn",
+    //         "sechestn",
+    //         "nrsoufan",
+    //         "msevans5",
+    //         "kghaley",
+    //         "kbsitton",
+    //         "jhcarlyl",
+    //         "eemarsh",
+    //         "delaseri",
+    //         "cfveit",
+    //         "btsek2",
+    //         "aschenna",
+    //         "antearry",
+    //         "aahasan"
+    // ].includes(Cookies.get('userId'))) {
+    //     rawNameList = ['Bounce Around the Stage', 'Paw Prints', 'Select a Button in a List', 'Move When Key Is Pressed', 'Boat Race', 'Snake Eating Apples', 'Create Many Actors', 'Click Icon to Show and Hide Calendar', 'Increases Score When Explode', 'Move With the Mouse', 'Browse Through Carousel', 'Helicopter Dropping Water', 'Snake Turning', 'Game Timer', 'Flower Grows When Water Dropped', 'Bounce on Paddle', 'Actor Moves Randomly to the Right', 'Initialize Actors to Random Positions', 'Move Between Points', 'Jump', 'Catching Fruit']
+    // }
+    // else {
+    //     rawNameList = []
+    // }
+    // React.useEffect(
+    //      () => {
+    //          if (projectList.length > 0) {
+    //              return;
+    //          }
+    //         // for (const rawName of ) {
+    //         for (const rawName of rawNameList) {
+    //         // for (const projectName of ['35-Green%20Your%20City', '25-Snowball%20Fight', '27-Flappy%20Parrot']) {
+    //             const projectName = rawName.split(' ').join('%20');
+    //             // const url = `/static/project/${projectName}/recommend.json`;
+    //             const url = `/static/week2project/${projectName}/recommend.json`;
+    //             axios({
+    //                     method: 'get',
+    //                     url: url,
+    //                 }).then( res =>
+    //                 dispatch(addRecommend(res.data))
+    //         )
+    //         }
+    //
+    //     }, []
+    // )
     return (
         <>
             <Container maxWidth='lg'

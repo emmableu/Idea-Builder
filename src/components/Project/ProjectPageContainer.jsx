@@ -5,8 +5,9 @@ import {loadProjectFromDatabase} from "../../redux/features/projectSlice";
 import ProjectDrawer from "./ProjectDrawer";
 import Spinner from "../Spinner";
 import ViewMode from "../ViewMode/ViewMode";
-import {loadAssets} from "../../redux/features/assetSlice";
+import {loadAssets} from "../../redux/features/allRecommendSlice";
 import FrozenMode from "./FrozenMode";
+import {loadAllRecommend} from "../../redux/features/recommendSlice";
 
 
 const ProjectPageContainer = () => {
@@ -26,6 +27,7 @@ const ProjectPageContainer = () => {
     )
     React.useEffect(() => {
             dispatch(loadProjectFromDatabase(_id))
+            dispatch(loadAllRecommend());
             // dispatch(loadAssets());
         }, [])
 

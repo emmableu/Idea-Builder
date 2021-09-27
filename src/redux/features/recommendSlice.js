@@ -1,29 +1,88 @@
-import { createSlice} from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {ProjectDataHandler} from "../../data/ProjectData";
 import * as UUID from "uuid";
+import axios from "../../axiosConfig";
 
 
+const loadAllRecommend = createAsyncThunk(
+    'project/loadAllRecommend',
+    async (payload, thunkAPI) => {
+        const {dispatch} = thunkAPI;
+        const rawNameList = ['Bounce Around the Stage', 'Paw Prints', 'Select a Button in a List', 'Move When Key Is Pressed', 'Boat Race', 'Snake Eating Apples', 'Create Many Actors', 'Click Icon to Show and Hide Calendar', 'Increases Score When Explode', 'Move With the Mouse', 'Browse Through Carousel', 'Helicopter Dropping Water', 'Snake Turning', 'Game Timer', 'Flower Grows When Water Dropped', 'Bounce on Paddle', 'Actor Moves Randomly to the Right', 'Initialize Actors to Random Positions', 'Move Between Points', 'Jump', 'Catching Fruit']
+        for (const rawName of rawNameList) {
+            const projectName = rawName.split(' ').join('%20');
+            const url = `/static/week2project/${projectName}/recommend.json`;
+            await axios({
+                method: 'get',
+                url: url,
+            }).then( res =>
+                dispatch(addRecommend({
+                    name: rawName,
+                    data:res.data,
+                }))
+            )
+        }
+        dispatch(resetDisplayRecommend());
+        return "OK";
+    }
+)
 
 export const recommendSlice = createSlice({
     name: 'recommendSlice',
     initialState: {
         value: {
-            initial: [],
+            projectMap: {},
+            displayList: [],
             selected: null,
             modified: null,
             originalCostumes: [],
             // originalBackdrops: [],
             currentCostumes: [],
-            // currentBackdrops: [],
+            nameList:
+                ['Bounce Around the Stage',
+                    'Paw Prints',
+                    'Select a Button in a List',
+                    'Move When Key Is Pressed',
+                    'Boat Race',
+                    'Snake Eating Apples',
+                    'Create Many Actors',
+                    'Click Icon to Show and Hide Calendar',
+                    'Increases Score When Explode',
+                    'Move With the Mouse',
+                    'Browse Through Carousel',
+                    'Helicopter Dropping Water',
+                    'Snake Turning',
+                    'Game Timer',
+                    'Flower Grows When Water Dropped',
+                    'Bounce on Paddle',
+                    'Actor Moves Randomly to the Right',
+                    'Initialize Actors to Random Positions',
+                    'Move Between Points',
+                    'Jump',
+                    'Catching Fruit'],
         },
     },
     reducers: {
         resetRecommend: (state) => {
-            state.value.initial = []
+            state.value.displayList = []
         },
 
         addRecommend: (state, action) => {
-            state.value.initial.push(action.payload);
+            const {name, data} = action.payload;
+            state.value.projectMap[name] = data;
+        },
+
+        resetDisplayRecommend: (state, action) => {
+            state.value.displayList = []
+            const shuffled = state.value.nameList
+                .map((value) => ({ value, sort: Math.random() }))
+                .sort((a, b) => a.sort - b.sort)
+                .map(({ value }) => value)
+            for (const ele of shuffled) {
+                state.value.displayList.push(
+                    state.value.projectMap[ele]
+                )
+            }
         },
 
         setSelectedRecommend: (state, action) => {
@@ -139,6 +198,7 @@ export const recommendSlice = createSlice({
     },
 })
 
-export const { resetRecommend, addRecommend, setSelectedRecommend, setModifiedRecommend,resetModifiedRecommend, clearModifiedRecommend,  modifyRecommend,
+export const { resetRecommend, addRecommend, setSelectedRecommend,resetDisplayRecommend,  setModifiedRecommend,resetModifiedRecommend, clearModifiedRecommend,  modifyRecommend,
     modifyRecommendBackdrop, justModifyStateId } = recommendSlice.actions
+export {loadAllRecommend};
 export default recommendSlice.reducer

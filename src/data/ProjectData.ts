@@ -160,8 +160,12 @@ export class ProjectDataHandler {
         const projectId = UUID.v4();
         const projectName = name;
         const projectStoryboardList = [];
+        const idOldNewMap = {};
         for (const storyboard of storyboardList) {
-            projectStoryboardList.push(StoryboardDataHandler.deepCopy(storyboard));
+            const newS = StoryboardDataHandler.deepCopy(storyboard);
+            // @ts-ignore
+            idOldNewMap[storyboard._id] = newS._id
+            projectStoryboardList.push(newS);
         }
         const projectActorList = [];
         for (const actor of actorList) {
@@ -173,19 +177,36 @@ export class ProjectDataHandler {
             projectBackdropList.push(BackdropDataHandler.deepCopy(backdrop));
         }
 
-        const projectTemplateList = [projectStoryboardList[0].frameList[0]._id]
+        const projectTemplateList = templateList? templateList:[];
 
 
-        const projectStoryboardMenu =  storyboardMenu? storyboardMenu:{
-                "final": {
-                    "name": "My storyboards",
-                    "items": []
-                },
-                "draft":  {
-                    "name": "Drafts",
-                    "items": []
+        let projectStoryboardMenu = {
+            "final": {
+                "name": "My storyboards",
+                "items": []
+            },
+            "draft":  {
+                "name": "Drafts",
+                "items": []
+            }};
+        if (storyboardMenu) {
+            if (storyboardMenu.final === undefined || storyboardMenu.draft === undefined) {
+            }
+            else {
+                if (storyboardMenu.final.items === undefined || storyboardMenu.draft.items === undefined) {}
+                else {
+                    for (const id of storyboardMenu.final.items) {
+                        // @ts-ignore
+                        projectStoryboardMenu.final.items.push(idOldNewMap[id])
+                    }
+                    for (const id of storyboardMenu.draft.items) {
+                        // @ts-ignore
+                        projectStoryboardMenu.draft.items.push(idOldNewMap[id])
+                    }
                 }
-            };
+            }
+        }
+
 
         const projectSelectedId = SelectedIdDataHandler.initializeSelectedId(
         )

@@ -4,7 +4,7 @@ import {Grid, makeStyles} from "@material-ui/core";
 import SearchDialogImgCard from "./SearchDialogImgCard";
 import { FixedSizeList } from "react-window";
 import {useSelector} from "react-redux";
-import {setAsset} from "../../redux/features/assetSlice";
+import {setAsset} from "../../redux/features/allRecommendSlice";
 
 const ImgRow = React.memo(
     (props) => {
@@ -49,6 +49,9 @@ const AssetGallery = React.memo((props) => {
     const [imgList, setImgList] = React.useState([]);
     React.useEffect(
         () => {
+            if (imgList.length > 0) {
+                return;
+            }
             axios({
                 method: 'get',
                 url: `/sample_${type}_id_list/get`,
