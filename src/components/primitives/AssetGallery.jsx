@@ -41,6 +41,7 @@ const ImgRow = React.memo(
 
 const AssetGallery = React.memo((props) => {
     const {type, height, xs, actorId} = props;
+    console.log("type in asset gallery: ", type);
     let {itemSize} = props;
     if (itemSize === undefined) {
         itemSize = xs===2? 150:200;
@@ -49,9 +50,9 @@ const AssetGallery = React.memo((props) => {
     const [imgList, setImgList] = React.useState([]);
     React.useEffect(
         () => {
-            if (imgList.length > 0) {
-                return;
-            }
+            // if (imgList.length > 0) {
+            //     return;
+            // }
             axios({
                 method: 'get',
                 url: `/sample_${type}_id_list/get`,
@@ -61,7 +62,7 @@ const AssetGallery = React.memo((props) => {
                     setImgList(res.data);
                 }
             )
-        }, []
+        }, [type]
     )
 
     return (

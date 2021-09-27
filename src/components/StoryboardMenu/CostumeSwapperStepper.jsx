@@ -190,7 +190,7 @@ const CostumeSwapperStepper = (props) => {
         originalCostumes,
         currentCostumes,
     } = props;
-    console.log("currentCostumes: ", currentCostumes);
+    // console.log("currentCostumes: ", currentCostumes);
     const [selected, setSelected] = React.useState(null);
     const dispatch = useDispatch();
 
@@ -265,12 +265,17 @@ const CostumeSwapperStepper = (props) => {
 const Swapper = React.memo((props) => {
     const classes = useStyles();
     const {currentCostume, selected, userCostumes} = props;
-    const {type} = currentCostume;
+    const [type, setType] = React.useState("state");
+    React.useEffect( () =>{
+        if (currentCostume && ["backdrop", "state"].includes(currentCostume.type)) {
+            setType(currentCostume.type);
+        }
+    }, [selected]);
+    console.log("type: ", type);
     const imgTileType = type === "backdrop"? "swap-costume-backdrop":"swap-costume";
     // newActorId, newStateId, selected
     const dispatch = useDispatch();
     const handleUse = (e, actorId, _id) => {
-        console.log("handle use, ", actorId, _id);
         dispatch(modifyRecommend(
             {
                 newActorId: actorId,
@@ -313,12 +318,12 @@ const Swapper = React.memo((props) => {
                 className={classes.assetGallery}
             >
                 {`Search for a new ${type === "backdrop"? "backdrop": "actor"}`}
-                <AssetGallery
+                {type !== "" && <AssetGallery
                     xs={3}
                     height={globalConfig.costumeSwapperHeight-50}
                     type={type}
                     itemSize={120}
-                />
+                />}
             </div>
             </div>
     )
@@ -338,39 +343,35 @@ const SwapperCard = React.memo(( props
                 padding: "1px 1px",
                 border: order === selected? "2px solid orange":"1px solid #e0e0e0",
                 height: "120px",
-                width: `${120*0.44}px`,
+                width: `50px`,
                 margin: "5px 5px"
             }}
-            cover={
-                <div
-                    onClick={(e) => {setSelected(order)}}
-                    style={{display: "flex", flexDirection: "column"}}
-                >
-                    <div
-                        style = {{height: "44%", width: "100%", border:"1px solid #e0e0e0" }}
-                    >
-                    <img src={axios.defaults.baseURL + originalCostume._id} alt="original"
-                         style = {{height: "100%", width: "100%"}}
-                    />
-                    </div>
-                    <div
-                        style = {{height: "44%", width: "100%", border:"1px solid #e0e0e0" }}
-                    >
-                        <img src={axios.defaults.baseURL + currentCostume._id} alt="current"
-                             style = {{height: "100%", width: "100%"}}
-                        />
-                    </div>
-                </div>
-            }
             bodyStyle={{padding: "0 0",
             }}
         >
-            <Meta
-                description={<div style={{overflow: "hidden",
-                    height: "100%", display: "block",
+            <div
+                onClick={(e) => {setSelected(order)}}
+                style={{display: "flex", flexDirection: "column", justifyContent:"space-evenly"}}
+            >
+                <div
+                    style = {{flex: "0 0 50px", border:"1px solid #e0e0e0" }}
+                >
+                    <img src={axios.defaults.baseURL + originalCostume._id} alt="original"
+                         style = {{maxHeight: "50px", width: "50px", objectFit:"contain"}}
+                    />
+                </div>
+                <div
+                    style = {{flex: "0 0 50px", width: "100%", border:"1px solid #e0e0e0" }}
+                >
+                    <img src={axios.defaults.baseURL + currentCostume._id} alt="current"
+                         style = {{maxHeight: "50px", width: "50px", objectFit:"contain"}}
+                    />
+                </div>
+                <div style={{overflow: "hidden",
+                    flex: "0 0 20px", display: "block",
                     whiteSpace: "nowrap",
-                    textOverflow: "clip"}}>{originalCostume.actorName? originalCostume.actorName : "stage"}</div>}
-            />
+                    textOverflow: "clip"}}>{originalCostume.actorName? originalCostume.actorName : "stage"}</div>
+            </div>
         </Card>
     )
 
