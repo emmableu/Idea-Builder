@@ -488,6 +488,9 @@ export class ProjectDataHandler {
             folder.file(name, blobPromise)
         })
 
+        // @ts-ignore
+        folder.file("project.json", JSON.stringify(projectData));
+
         zip.generateAsync({type:"blob"})
             .then(blob => saveAs(blob, filename))
             .catch(e => console.log(e));
