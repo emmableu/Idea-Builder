@@ -32,7 +32,7 @@ const StarLayer = (props) => {
             dispatch(updateStarList({
                     storyboardId,
                     frameId,
-                })), 2000), [])
+                })), 1200), [])
 
 
     React.useEffect(() => {

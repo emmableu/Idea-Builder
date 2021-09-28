@@ -51,7 +51,7 @@ const NoteBox = (props) => {
     const dispatchSaveNote = text => dispatch(saveNote({storyboardId, text}));
 
 
-    const saveNoteDebounce = useCallback(debounce(dispatchSaveNote, 1000), [])
+    const saveNoteDebounce = useCallback(debounce(dispatchSaveNote, 700), [])
 
     const onFieldTextChange = async (e) => {
         const text = e.target.value
