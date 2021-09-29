@@ -17,7 +17,7 @@ import Cookies from "js-cookie";
 import Box from "@material-ui/core/Box";
 import { Modal } from 'antd';
 import MergeUploadButton from "./MergeUploadButton";
-
+import Button from "@material-ui/core/Button";
 
 
 
@@ -79,6 +79,13 @@ const ProjectTitleBarActionGroup  = () => {
                     alignItems: "center",
             }}
         >
+            <Box m={0.75}>
+                <Tooltip title="Complete survey in a new tab">
+                    <Button variant="contained" color="primary"  target="_blank" href="https://ncsu.qualtrics.com/jfe/form/SV_bNuNdZKlGzrNWGW">
+                        Survey
+                    </Button>
+                </Tooltip>
+            </Box>
             <Box m={0.75}>
                 <Switch loading={isLoading}
                         checked={view}
