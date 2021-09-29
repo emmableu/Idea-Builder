@@ -48,7 +48,7 @@ const NoteBox = (props) => {
     const dispatch = useDispatch();
     const editorHeight = calcBoxHeight(window.innerHeight);
 
-    const dispatchSaveNote = text => dispatch(saveNote({storyboardId, text}));
+    const dispatchSaveNote = (storyboardId, text) => dispatch(saveNote({storyboardId, text}));
 
 
     const saveNoteDebounce = useCallback(debounce(dispatchSaveNote, 700), [])
@@ -56,7 +56,7 @@ const NoteBox = (props) => {
     const onFieldTextChange = async (e) => {
         const text = e.target.value
         dispatch(saveNoteInMemory( {storyboardId, text} ))
-        saveNoteDebounce(text);
+        saveNoteDebounce(storyboardId, text);
     };
 
     return(
