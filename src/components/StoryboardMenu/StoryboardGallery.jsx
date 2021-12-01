@@ -127,8 +127,6 @@ const StoryboardGallery = (props) => {
                     When you program in Snap for Project 1,
                     you will see <a target="_blank" href="https://isnap.csc.ncsu.edu/public/example-helper/snap.html?assignment=project1">code examples</a>
                     {" "}  for these storyboards.
-
-
                 </Typography>
                 {projectList.map(p => (
                     <FrameListBox

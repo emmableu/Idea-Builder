@@ -93,10 +93,6 @@ const mergeProject = createAsyncThunk(
     async (newProjectData, thunkAPI) => {
         const {dispatch, getState}  = thunkAPI;
         const type = "final";
-        /* const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
-            dispatch(setFrozenMode(true));
-            return;} */
         const projectId = getState().project.value._id;
         const modifiedProject = ProjectDataHandler.deepCopy(newProjectData);
         for (const storyboardDataJSON of modifiedProject.storyboardList) {
@@ -118,8 +114,6 @@ const mergeProject = createAsyncThunk(
                 dispatch(addBackdrop(backdrop._id))
             }
         }
-        // const response =
-        // await dispatch(updateLastModified());
         return "OK";
     }
 )
@@ -401,7 +395,7 @@ const deleteFrame = createAsyncThunk(
         const response = await ProjectAPI.replaceFrameIdListInDatabase({
             storyboardId,
             frameIdList: ProjectDataHandler.getStoryboard(project, storyboardId).frameList.map(f => f._id)
-        });
+          });
         // await dispatch(updateLastModified());
         return response.status;
     }

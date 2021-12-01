@@ -107,7 +107,7 @@ const ProjectTitleBarActionGroup  = () => {
                     aria-label="files"
                     size="medium"
                     onClick={handleClick}
-                    disabled={view}
+                    // disabled={view}
                 >
                     <SaveAlt style={{color:
                             view?null:"white"}}/>
