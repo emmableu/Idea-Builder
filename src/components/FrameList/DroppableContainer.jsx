@@ -136,13 +136,14 @@ const DroppableContainer = (props) => {
                             </>
                         ))}
                         {provided.placeholder}
-                            <Grid item xs={1} align="middle">
+                            <Grid item xs={3} align="middle">
                                 <Fab color="default" aria-label="add"
                                      onClick={(e) =>{ handleAdd(e)}}
                                 >
                                     <AddIcon
                                     />
                                 </Fab>
+                                <Button>show code for this storyboard</Button>
                             </Grid>
                         </Grid>
                 )}

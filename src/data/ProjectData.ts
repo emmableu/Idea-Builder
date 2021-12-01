@@ -440,21 +440,21 @@ export class ProjectDataHandler {
 
     static download (projectData:ProjectData) {
         // const deployMode = false;
-        if (Cookies.get('userId')==="mbobbad" || Cookies.get('userId')==="wwang33" ) {
-            const zip = new JSZip()
-            const folder = zip.folder(projectData.name);
-            // projectData. = true;
-            if (projectData.storyboardList.length > 0) {
-                projectData.storyboardList[0].recommendName = projectData.name;
-            }
-            let filename = projectData.name;
-            // @ts-ignore
-            folder.file("recommend.json", JSON.stringify(projectData));
-            zip.generateAsync({type:"blob"})
-                .then(blob => saveAs(blob, filename))
-                .catch(e => console.log(e));
-            return;
-        }
+        // if (Cookies.get('userId')==="mbobbad" || Cookies.get('userId')==="wwang33" ) {
+        //     const zip = new JSZip()
+        //     const folder = zip.folder(projectData.name);
+        //     // projectData. = true;
+        //     if (projectData.storyboardList.length > 0) {
+        //         projectData.storyboardList[0].recommendName = projectData.name;
+        //     }
+        //     let filename = projectData.name;
+        //     // @ts-ignore
+        //     folder.file("recommend.json", JSON.stringify(projectData));
+        //     zip.generateAsync({type:"blob"})
+        //         .then(blob => saveAs(blob, filename))
+        //         .catch(e => console.log(e));
+        //     return;
+        // }
         let filename = projectData.name;
         const zip = new JSZip()
         const folder = zip.folder(projectData.name)

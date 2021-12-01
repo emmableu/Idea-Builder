@@ -7,6 +7,7 @@ import {MaterialMenu} from "../MaterialMenu/MaterialMenu";
 import FrameListFunctionContainer from "../FrameList/FrameListFunctionContainer";
 import NoteBox from "../NoteBox/NoteBox";
 import FrameCardContainer from "../Frame/FrameCardContainer";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
     rootContainer: {
