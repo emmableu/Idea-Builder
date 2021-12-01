@@ -47,9 +47,9 @@ const ProjectTitleBarActionGroup  = () => {
     }
 
     const handleChange = (checked, event) => {
-        // if (permanentViewMode) {
-        //     return;
-        // }
+        if (permanentViewMode) {
+            return;
+        }
         setIsLoading(true)
         setTimeout(() => {
             dispatch(setViewMode(checked));
