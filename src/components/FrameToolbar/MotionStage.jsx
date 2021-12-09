@@ -1,6 +1,6 @@
 import React from "react";
 import useImage from "use-image";
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import {Provider, ReactReduxContext, useDispatch} from "react-redux";
 import * as UUID from "uuid";
 import {updateStarList, updateStarListInMemory} from "../../redux/features/projectSlice";

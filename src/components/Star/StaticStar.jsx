@@ -1,7 +1,7 @@
 import React from "react"
 import {Image, Layer, Stage, Group, Line} from 'react-konva';
 import useImage from "use-image";
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import {StarDataHandler} from "../../data/StarData";
 
 export const StaticStarUnit = (props) => {

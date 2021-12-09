@@ -4,7 +4,7 @@ import FrameCardContainer from "../Frame/FrameCardContainer";
 import React from "react";
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import { useSelector } from 'react-redux';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';

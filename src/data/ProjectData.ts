@@ -8,7 +8,7 @@ import {StoryboardData, StoryboardDataHandler} from "./StoryboardData";
 import globalConfig, {globalLog} from "../globalConfig";
 import JSZip from  'jszip';
 import { saveAs } from 'file-saver';
-import axios from "../axiosConfig";
+import axios from "../axios/ideaServerAxiosConfig";
 // @ts-ignore
 import Cookies from "js-cookie";
 

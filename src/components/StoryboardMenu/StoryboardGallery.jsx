@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import axios from '../../axiosConfig';
+import axios from '../../axios/ideaServerAxiosConfig';
 import FrameList from '../FrameList/FrameList';
 import Typography from '@material-ui/core/Typography';
 import {IconButton, makeStyles} from '@material-ui/core';

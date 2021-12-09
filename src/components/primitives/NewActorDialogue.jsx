@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import {addActor} from "../../redux/features/projectSlice";
 import Paper from "@material-ui/core/Paper";
 import * as UUID from "uuid";
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 
 const NewActorDialogue = React.memo(props => {
     const {isModalVisible, setIsModalVisible, imgId} = props;

@@ -1,5 +1,5 @@
 // @ts-ignore
-import axios from "../axiosConfig";
+import axios from "../axios/ideaServerAxiosConfig";
 import {AuthorData} from "../data/AuthorData";
 
 class AuthorAPI {

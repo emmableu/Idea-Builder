@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stage, Layer, Image } from 'react-konva';
 import useImage from 'use-image';
-import axios from "../../../../axiosConfig";
+import axios from "../../../../axios/ideaServerAxiosConfig";
 import {Grid} from "@material-ui/core";
 import ImgTile from "../../../primitives/ImgCard/ImgTile";
 import Paper from "@material-ui/core/Paper/Paper";

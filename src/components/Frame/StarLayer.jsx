@@ -1,5 +1,5 @@
 import React, {useCallback} from "react"
-import axios from '../../axiosConfig'
+import axios from '../../axios/ideaServerAxiosConfig'
 import {Image, Layer, Stage} from 'react-konva';
 import useImage from "use-image";
 import {useDispatch, useSelector} from 'react-redux';

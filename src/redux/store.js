@@ -4,6 +4,7 @@ import dashboardReducer from './features/dashboardSlice'
 import modeReducer from "./features/modeSlice"
 import recommendReducer from "./features/recommendSlice"
 import authorReducer from "./features/authorSlice"
+import codeReducer from "./features/codeSlice"
 
 export default configureStore({
     reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
         mode: modeReducer,
         recommend: recommendReducer,
         author: authorReducer,
+        code: codeReducer,
     },
 })

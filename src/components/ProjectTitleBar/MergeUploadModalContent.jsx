@@ -1,7 +1,7 @@
 import {Upload, message, Modal} from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import React from "react";
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import {addActor, mergeProject} from "../../redux/features/projectSlice";
 import JSZip from  'jszip';
 import {useDispatch} from "react-redux";

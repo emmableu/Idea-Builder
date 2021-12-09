@@ -2,7 +2,7 @@ import React from 'react';
 import { Upload, Button } from 'antd';
 import {Tooltip} from "@material-ui/core";
 import { UploadOutlined } from '@ant-design/icons';
-import axios from "../../../axiosConfig"
+import axios from "../../../axios/ideaServerAxiosConfig"
 import {useDispatch} from "react-redux";
 import {addBackdrop} from "../../../redux/features/projectSlice";
 

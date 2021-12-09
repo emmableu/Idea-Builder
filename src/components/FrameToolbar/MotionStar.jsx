@@ -1,5 +1,5 @@
 import useImage from "use-image";
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import {Image} from "react-konva";
 import React from "react";
 

@@ -1,7 +1,7 @@
 import {Card} from "antd";
 import React from "react";
 import {Grid} from "@material-ui/core";
-import axios from "../../../axiosConfig";
+import axios from "../../../axios/ideaServerAxiosConfig";
 import ImgTileEdiText from "./ImgTileEdiText";
 import ImgTile from "./ImgTile";
 

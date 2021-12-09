@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import globalConfig, {globalLog} from "../../globalConfig";
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import {Grid} from "@material-ui/core";
 import SearchDialogImgCard from "./SearchDialogImgCard";
 import { FixedSizeList } from "react-window";

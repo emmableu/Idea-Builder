@@ -18,6 +18,8 @@ import StaticFrameContainerWithAction from "../Frame/StaticFrameContainerWithAct
 import {makeStyles} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import {updateFrameOrder} from "../../redux/features/projectSlice";
+import {getActorCodeList} from "../../redux/features/codeSlice";
+import Code from "../Code/Code";
 
 
 
@@ -70,7 +72,6 @@ const getListStyle = isDraggingOver => ({
 
 const DroppableContainer = (props) => {
     const {storyboardId, frameList, handleDelete, handleAdd, _id} = props;
-    const classes = useStyles();
     const dispatch = useDispatch();
 
     const onDragEnd = (result) => {
@@ -83,13 +84,6 @@ const DroppableContainer = (props) => {
             "beginOrder": result.source.index,
             "endOrder": result.destination.index,
         }))
-
-        // const newItems = reorder(
-        //     items,
-        //     result.source.index,
-        //     result.destination.index
-        // );
-        // setItems(newItems);
     };
 
     // Normally you would want to split things out into separate components.
@@ -143,7 +137,10 @@ const DroppableContainer = (props) => {
                                     <AddIcon
                                     />
                                 </Fab>
-                                <Button>show code for this storyboard</Button>
+                                <Button
+                                    onClick={() => {dispatch(getActorCodeList(storyboardId))}}
+                                >show code for this storyboard</Button>
+                                <Code/>
                             </Grid>
                         </Grid>
                 )}

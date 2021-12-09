@@ -1,4 +1,4 @@
-import axios from "../axiosConfig";
+import axios from "../axios/ideaServerAxiosConfig";
 import {DashboardAPIData} from "../data/DashboardData/DashboardData";
 
 class DashboardAPI {

@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {ProjectDataHandler} from "../../data/ProjectData";
 import * as UUID from "uuid";
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 
 
 const loadAllRecommend = createAsyncThunk(

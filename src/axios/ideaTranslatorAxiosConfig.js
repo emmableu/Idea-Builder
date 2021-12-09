@@ -1,15 +1,11 @@
 // First we need to import axios.js
 import axios from 'axios';
 // import store from "./redux/store"
-import {globalLog} from "./globalConfig"
-import {AuthorAPI} from "./api/AuthorAPI";
-import {loadAuthorData} from "./redux/features/authorSlice";
-import Cookies from "js-cookie";
-import {AuthorDataHandler} from "./data/AuthorData";
+import {globalLog} from "../globalConfig"
 // Next we make an 'instance' of it
 const instance = axios.create({
 // .. where we make our configurations
-    baseURL: process.env.REACT_APP_BACKEND_BASE_URL
+    baseURL: process.env.REACT_APP_IDEA_TRANSLATOR_BASE_URL
 });
 
 const handleRequest = async (request) => {
@@ -33,11 +29,11 @@ const handleRequest = async (request) => {
 }
 
 instance.interceptors.request.use(
-        handleRequest,
-        error => {
-            globalLog(error);
-    return Promise.reject(error);
-});
+    handleRequest,
+    error => {
+        globalLog(error);
+        return Promise.reject(error);
+    });
 
 instance.interceptors.response.use(response => {
     globalLog(response);

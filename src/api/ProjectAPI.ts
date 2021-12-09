@@ -1,4 +1,4 @@
-import axios from "../axiosConfig";
+import axios from "../axios/ideaServerAxiosConfig";
 import {DashboardData} from "../data/DashboardData/DashboardData";
 import {ProjectData} from "../data/ProjectData";
 

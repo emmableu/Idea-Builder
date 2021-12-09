@@ -13,7 +13,7 @@ import MoreIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import {ArrowForward, DeleteOutlined} from "@material-ui/icons";
 import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
-import axios from "../../../axiosConfig";
+import axios from "../../../axios/ideaServerAxiosConfig";
 import urlExist from "url-exist";
 
 const useStyles = makeStyles({

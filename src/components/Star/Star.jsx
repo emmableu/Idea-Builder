@@ -6,7 +6,7 @@ import {updateStarList, updateStarListInMemory} from "../../redux/features/proje
 import {setSelectedStarId} from "../../redux/features/projectSlice";
 import {StarDataHandler} from "../../data/StarData";
 import useImage from "use-image";
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import {StaticStarUnit} from "./StaticStar";
 
 

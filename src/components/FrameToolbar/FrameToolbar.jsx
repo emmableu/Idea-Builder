@@ -7,7 +7,7 @@ import {ProjectDataHandler} from "../../data/ProjectData";
 import globalConfig from "../../globalConfig";
 import {useDispatch, connect} from "react-redux";
 import {copyStar, deleteStar} from "../../redux/features/projectSlice";
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import {CopyIcon, MotionIcon} from "../primitives/Icon/Icon";
 import SpeechBubbleButton from "./SpeechBubbleButton";
 import {Button} from "antd";

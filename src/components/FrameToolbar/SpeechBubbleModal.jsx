@@ -3,7 +3,7 @@ import {Button, Card, Select, Avatar, Input, Modal} from 'antd';
 import Box from "@material-ui/core/Box";
 import './SpeechBubble.css'
 import SpeechBubbleEdiText from "./SpeechBubbleEdiText";
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import { toPng } from 'html-to-image';
 import * as UUID from "uuid"
 import {ProjectAPI} from "../../api/ProjectAPI";

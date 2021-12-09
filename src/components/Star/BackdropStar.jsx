@@ -1,7 +1,7 @@
 import React from 'react';
 import {Transformer, Image} from 'react-konva';
 import useImage from 'use-image';
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import globalConfig from "../../globalConfig";
 
 const BackdropStar = (props) => {

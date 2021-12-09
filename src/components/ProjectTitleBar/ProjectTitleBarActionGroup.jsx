@@ -79,16 +79,16 @@ const ProjectTitleBarActionGroup  = () => {
                     alignItems: "center",
             }}
         >
-            {
-                !view &&
-            <Box m={0.75}>
-                <Tooltip title="Complete survey in a new tab">
-                    <Button variant="contained" color="primary"  target="_blank" href="https://ncsu.qualtrics.com/jfe/form/SV_bNuNdZKlGzrNWGW">
-                        Survey
-                    </Button>
-                </Tooltip>
-            </Box>
-            }
+            {/*{*/}
+            {/*    !view &&*/}
+            {/*<Box m={0.75}>*/}
+            {/*    <Tooltip title="Complete survey in a new tab">*/}
+            {/*        <Button variant="contained" color="primary"  target="_blank" href="https://ncsu.qualtrics.com/jfe/form/SV_bNuNdZKlGzrNWGW">*/}
+            {/*            Survey*/}
+            {/*        </Button>*/}
+            {/*    </Tooltip>*/}
+            {/*</Box>*/}
+            {/*}*/}
             <Box m={0.75}>
                 <Switch loading={isLoading}
                         checked={view}

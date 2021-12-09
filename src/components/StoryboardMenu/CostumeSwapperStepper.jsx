@@ -2,7 +2,7 @@ import React from "react";
 import {createSelector} from "reselect";
 import {useDispatch, connect, useSelector} from "react-redux";
 import {Modal, Steps, Button, Progress, Card, Dropdown} from 'antd';
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import Paper from "@material-ui/core/Paper";
 import {Grid, makeStyles, Tooltip} from "@material-ui/core";
 import ImgTile from "../primitives/ImgCard/ImgTile";

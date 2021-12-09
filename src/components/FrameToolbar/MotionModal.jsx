@@ -2,7 +2,7 @@ import React from "react";
 import {Button, Card, Select, Avatar, Input, Modal} from 'antd';
 import {useDispatch} from "react-redux";
 import {MotionContainer} from "./MotionContainer";
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import {DecorDialog} from "../MaterialMenu/ActorPanel/DecorDialog/DecorDialog";
 
 

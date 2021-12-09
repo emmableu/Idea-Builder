@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from "../../axiosConfig";
+import axios from "../../axios/ideaServerAxiosConfig";
 import {Grid, makeStyles} from "@material-ui/core";
 import SearchDialogImgCard from "./SearchDialogImgCard";
 import { FixedSizeList } from "react-window";
