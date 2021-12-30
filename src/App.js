@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@material-ui/core';
 import Dashboard from './components/Dashboard/Dashboard';
 import { useDispatch } from 'react-redux';
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Route,
   Redirect,
 } from "react-router-dom";
@@ -34,7 +34,7 @@ const App = () => {
 
   return (
       <ProvideAuth>
-      <Router>
+      <Router basename={'/idea-builder'}>
         <ThemeProvider theme={theme}>
           <Route path={globalConfig.routes.login} children={<LoginPage/>} />
           <PrivateRoute path={globalConfig.routes.dashboard} children={<Dashboard />} />

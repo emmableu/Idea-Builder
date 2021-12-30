@@ -1,5 +1,6 @@
 {
-  "name": "create-react-app-antd",
+  "name": "idea-builder",
+  "homepage": "https://isnap.csc.ncsu.edu/idea-builder/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
