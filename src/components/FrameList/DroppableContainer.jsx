@@ -18,7 +18,7 @@ import StaticFrameContainerWithAction from "../Frame/StaticFrameContainerWithAct
 import {makeStyles} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import {updateFrameOrder} from "../../redux/features/projectSlice";
-import {getActorCodeList} from "../../redux/features/codeSlice";
+import {getProgram} from "../../redux/features/codeSlice";
 import Code from "../Code/Code";
 
 
@@ -73,6 +73,7 @@ const getListStyle = isDraggingOver => ({
 const DroppableContainer = (props) => {
     const {storyboardId, frameList, handleDelete, handleAdd, _id} = props;
     const dispatch = useDispatch();
+    const [codeModalOpen, setCodeModalOpen] = React.useState(false);
 
     const onDragEnd = (result) => {
         // dropped outside the list
@@ -138,9 +139,14 @@ const DroppableContainer = (props) => {
                                     />
                                 </Fab>
                                 <Button
-                                    onClick={() => {dispatch(getActorCodeList(storyboardId))}}
+                                    onClick={() => {dispatch(getProgram(storyboardId));
+                                        setCodeModalOpen(true);
+                                    }}
                                 >show code for this storyboard</Button>
-                                <Code/>
+                                {codeModalOpen && <Code
+                                    codeModalOpen={codeModalOpen}
+                                    setCodeModalOpen={setCodeModalOpen}
+                                />}
                             </Grid>
                         </Grid>
                 )}

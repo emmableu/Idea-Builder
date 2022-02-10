@@ -1,35 +1,35 @@
 // First we need to import axios.js
 import axios from 'axios';
-// import store from "./redux/store"
-import {globalLog} from "../globalConfig"
-// Next we make an 'instance' of it
+import 'regenerator-runtime/runtime';
 const instance = axios.create({
 // .. where we make our configurations
-    baseURL: process.env.REACT_APP_IDEA_SERVER_BASE_URL
+//     baseURL: process.env.REACT_APP_EXPRESS_BASE_URL
+    baseURL:"http://localhost:9090"
 });
 
 const handleRequest = async (request) => {
-    globalLog(request);
+    // // Edit request config
     if (request.method === "post") {
     }
     return request;
 }
 
 instance.interceptors.request.use(
-        handleRequest,
-        error => {
-            globalLog(error);
-    return Promise.reject(error);
-});
+    handleRequest,
+    error => {
+        console.log(error);
+        return Promise.reject(error);
+    });
 
 instance.interceptors.response.use(response => {
-    globalLog(response);
+    console.log(response);
     // Edit response config
     return response;
 }, error => {
-    globalLog(error);
+    console.log(error);
     return Promise.reject(error);
 });
+
 
 
 

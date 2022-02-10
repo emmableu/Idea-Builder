@@ -72,6 +72,7 @@ const globalConfig = {
      storyboardToolBarHeight: 40,
      addNewActorBoxHeight: 50,
      projectDrawerWidth: 270,
+     codeBoxHeight: window.innerHeight - 250,
      panelTabsWidth: 65,
      storyboardTop: storyboardTop,
      galleryStepperMaxHeight: window.innerHeight - storyboardTop*2 - 200,

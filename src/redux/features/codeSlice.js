@@ -4,8 +4,8 @@ import {ProjectDataHandler} from "../../data/ProjectData";
 import scratchblocks from "scratchblocks";
 
 
-const getActorCodeList = createAsyncThunk(
-    'code/getActorCodeList',
+const getProgram = createAsyncThunk(
+    'code/getProgram',
     async (storyboardId, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
@@ -13,19 +13,29 @@ const getActorCodeList = createAsyncThunk(
         const actorList = project.actorList;
         const backdropList = project.backdropList;
         const eventList = project.eventList;
-        const response = await CodeAPI.getActorCodeList(
+        // console.log("line 16")
+        const projectXml = await CodeAPI.getProgram(
             storyboardData, actorList, backdropList, eventList
         );
-        if (response.status === 200) {
-            dispatch(setActorCodeList(response.data.actorCodeList))
-            dispatch(setCodeModalOpen(true));
-            setTimeout(() => {
-                scratchblocks.renderMatching("pre.blocks", {
-                style:     'scratch3',   // Optional, defaults to 'scratch2'.
-                languages: ['en'], // Optional, defaults to ['en'].
-                scale: 0.7,                // Optional, defaults to 1
-            })}, 500);
-        }
+        dispatch(setSnapXml(projectXml));
+
+
+
+        // console.log("snapXml: ", snapXml)
+        // dispatch(setSnapXml(snapXml));
+        // dispatch(setCodeModalOpen(true)); //to be deleted
+
+
+        // if (response.status === 200) {
+        //     dispatch(setSnapXml(response.data.snapXml))
+        //     dispatch(setCodeModalOpen(true));
+        //     setTimeout(() => {
+        //         scratchblocks.renderMatching("pre.blocks", {
+        //         style:     'scratch3',   // Optional, defaults to 'scratch2'.
+        //         languages: ['en'], // Optional, defaults to ['en'].
+        //         scale: 0.7,                // Optional, defaults to 1
+        //     })}, 500);
+        // }
     }
 )
 
@@ -33,12 +43,12 @@ const getActorCodeList = createAsyncThunk(
 export const codeSlice = createSlice({
     name: 'codeSlice',
     initialState: {
-        actorCodeList: [],
+        snapXml: "",
         codeModalOpen: false,
     },
     reducers: {
-        setActorCodeList: (state, action) => {
-            state.actorCodeList = action.payload;
+        setSnapXml: (state, action) => {
+            state.snapXml = action.payload;
         },
         setCodeModalOpen: (state, action) => {
             state.codeModalOpen = action.payload;
@@ -46,6 +56,6 @@ export const codeSlice = createSlice({
     },
 })
 
-export const { setActorCodeList, setCodeModalOpen } = codeSlice.actions
-export {getActorCodeList};
+export const { setSnapXml, setCodeModalOpen } = codeSlice.actions
+export {getProgram};
 export default codeSlice.reducer
