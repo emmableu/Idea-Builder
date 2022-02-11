@@ -13,6 +13,7 @@ import {StarDataHandler} from "../../data/StarData";
 import {setPermanentViewMode} from "./modeSlice";
 import {AuthorDataHandler} from "../../data/AuthorData";
 import {AuthorAPI} from "../../api/AuthorAPI";
+import starterProject from "../../json/starterProject.json"
 import {loadAuthorData, setFrozenMode, setLastLoaded, updateLastModified} from "./authorSlice";
 
 
@@ -20,10 +21,13 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
     'project/insertNewProjectToDatabase',
     async (obj, thunkAPI) => {
         const {_id, name} = obj;
-        const authorIdList =  [Cookies.get("userId")];
-        const projectData = ProjectDataHandler.initializeProject({_id, authorIdList, name});
+        const project = ProjectDataHandler.deepCopy(starterProject);
+        project._id = _id;
+        project.name = name;
+        project.authorIdList =  [Cookies.get("userId")];
+        // const projectData = ProjectDataHandler.initializeProject({_id, authorIdList, name});
         const authorData = AuthorDataHandler.initializeAuthor({_id});
-        const response = await ProjectAPI.insertProject(Cookies.get("userId"), projectData);
+        const response = await ProjectAPI.insertProject(Cookies.get("userId"), project);
         const response2 = await AuthorAPI.insertAuthorData(authorData);
         return response.status;
     }

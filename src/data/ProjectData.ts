@@ -515,7 +515,7 @@ export class ProjectDataHandler {
         })
 
         // @ts-ignore
-        folder.file("project.json", JSON.stringify(projectData));
+        folder.file("starterProject.json", JSON.stringify(projectData));
 
         zip.generateAsync({type:"blob"})
             .then(blob => saveAs(blob, filename))

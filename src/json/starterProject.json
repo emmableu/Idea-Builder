@@ -1,0 +1,164 @@
+{
+    "_id": "e382578c-2a5c-49c9-9516-bacaf275d096",
+    "authorIdList": [
+        "wwang33"
+    ],
+    "name": "Project 1 Storyboards",
+    "storyboardList": [
+        {
+            "_id": "f7353eb2-9939-406f-8b8b-4da0487d4741",
+            "name": "Starter Storyboard",
+            "note": "Keep in mind that a storyboard demonstrate a single mechanic.",
+            "recommendName": "Non-Recommend",
+            "originalCostumes": [],
+            "currentCostumes": [],
+            "frameList": [
+                {
+                    "_id": "static/student/frame/92128386-8f9c-426b-a8c1-835dfda390c9.png",
+                    "backdropStar": {
+                        "prototypeId": null,
+                        "_id": null
+                    },
+                    "starList": [
+                        {
+                            "prototypeId": "static/student/state/5d34853b-5944-4168-993d-21248b1ffe93.svg",
+                            "actorId": "feea0bc5-c218-4dd5-9082-718ee1903483",
+                            "_id": "c3d0afa9-a00f-43f2-8d93-5fcb0ef4acbf",
+                            "type": "actor",
+                            "x": 78.92561983471073,
+                            "y": 148.34710743801656,
+                            "width": 100,
+                            "height": 107.6923076923077,
+                            "rotation": 0,
+                            "transform": null,
+                            "childStar": {
+                                "speechStar": {
+                                    "x": 178.92561983471074,
+                                    "y": 148.34710743801656
+                                },
+                                "lineStar": null,
+                                "motionStarList": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "_id": "33f0cfb1-0a11-40c3-b3de-ee0bdfd57fa6",
+            "name": "Bags of Stuff",
+            "note": "\"Bags of Stuff\" is a brainstorming technique, where you start by dumping elements that you want into one or more frames on the left.\n",
+            "recommendName": "Non-Recommend",
+            "originalCostumes": [],
+            "currentCostumes": [],
+            "frameList": [
+                {
+                    "_id": "static/student/frame/7f199870-03a9-4423-a4cd-bb9a91aa1901.png",
+                    "backdropStar": {
+                        "prototypeId": null,
+                        "_id": null
+                    },
+                    "starList": []
+                }
+            ]
+        },
+        {
+            "_id": "605cfde9-5061-4ac8-ac88-8b7f2e94ed38",
+            "name": "Other Descriptions and Notes",
+            "note": "You don't need to put everything of your design into storyboards.\nUse this section to add non-storyboard items. (e.g., descriptions of your game / actors). ",
+            "recommendName": "Non-Recommend",
+            "originalCostumes": [],
+            "currentCostumes": [],
+            "frameList": [
+                {
+                    "_id": "static/student/frame/6bfcbde2-6b8d-45fc-85e3-45a1c90a83a2.png",
+                    "backdropStar": {
+                        "prototypeId": null,
+                        "_id": null
+                    },
+                    "starList": []
+                }
+            ]
+        }
+    ],
+    "actorList": [
+        {
+            "_id": "feea0bc5-c218-4dd5-9082-718ee1903483",
+            "name": "Cat",
+            "stateList": [
+                {
+                    "_id": "static/student/state/5d34853b-5944-4168-993d-21248b1ffe93.svg",
+                    "name": "Untitled"
+                },
+                {
+                    "_id": "static/student/state/644bf68d-df5f-481f-8134-b8f1ca50294f.svg",
+                    "name": "untitled"
+                },
+                {
+                    "_id": "static/student/state/f2527f3a-f2ee-4667-b50f-cec8d02b4fd7.svg",
+                    "name": "untitled"
+                }
+            ],
+            "deleted": false
+        }
+    ],
+    "backdropList": [],
+    "storyboardMenu": {
+        "final": {
+            "name": "My Storyboards",
+            "items": [
+                {
+                    "_id": "f7353eb2-9939-406f-8b8b-4da0487d4741",
+                    "name": "Starter Storyboard"
+                }
+            ]
+        },
+        "draft": {
+            "name": "My Scribbles",
+            "items": [
+                {
+                    "_id": "33f0cfb1-0a11-40c3-b3de-ee0bdfd57fa6",
+                    "name": "Bags of Stuff"
+                },
+                {
+                    "_id": "605cfde9-5061-4ac8-ac88-8b7f2e94ed38",
+                    "name": "Other Descriptions and Notes"
+                }
+            ]
+        }
+    },
+    "templateList": [],
+    "selectedId": {
+        "storyboardId": "f7353eb2-9939-406f-8b8b-4da0487d4741",
+        "frameId": "static/student/frame/92128386-8f9c-426b-a8c1-835dfda390c9.png",
+        "starId": null
+    },
+    "speechBubbleList": [],
+    "eventList": [
+        {
+            "_id": "static/sample/event/time.png",
+            "name": "time goes by"
+        },
+        {
+            "_id": "static/sample/event/green-flag.png",
+            "name": "green flag clicked"
+        },
+        {
+            "_id": "static/sample/event/key-press.png",
+            "name": "key pressed"
+        },
+        {
+            "_id": "static/sample/event/mouse-click.png",
+            "name": "mouse clicked"
+        },
+        {
+            "_id": "static/sample/event/mouse-hover.png",
+            "name": "mouse hovered"
+        },
+        {
+            "_id": "static/sample/event/mouse-released.png",
+            "name": "mouse released"
+        }
+    ],
+    "variableList": []
+}
