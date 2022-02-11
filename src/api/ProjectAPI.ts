@@ -134,6 +134,18 @@ class ProjectAPI {
         return response;
     }
 
+    // template
+    static async replaceTemplateListInDatabase(obj:any) {
+        const response = await axios(
+            {
+                method: 'post',
+                url: `/template_list/replace`,
+                data: obj,
+            }
+        )
+        return response;
+    }
+
     /* This is on speech bubble */
 
     static async sendSpeechBubbleImg(text:any) {

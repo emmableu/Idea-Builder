@@ -231,17 +231,26 @@ const addStoryboard = createAsyncThunk(
         const {dispatch, getState}  = thunkAPI;
         const storyboardId = UUID.v4();
         const state = getState();
+        console.log("state.value.originalCostumes: ", JSON.stringify(state.recommend.value.originalCostumes));
+        console.log("state.value.currentCostumes: ", JSON.stringify(state.recommend.value.currentCostumes));
         const modified = state.recommend.value.modified;
         const projectId = state.project.value._id;
         let storyboardDataJSON, modifiedProject;
         if (modified === null) {
             modifiedProject = null;
-            storyboardDataJSON = StoryboardDataHandler.initializeStoryboard({_id: storyboardId, name: storyboardName});
+            storyboardDataJSON = StoryboardDataHandler.initializeStoryboard(
+                {_id: storyboardId,
+                                name: storyboardName});
         }
         else {
+            const originalCostumes = JSON.parse(JSON.stringify(state.recommend.value.originalCostumes));
+            const currentCostumes = JSON.parse(JSON.stringify(state.recommend.value.currentCostumes));
             modifiedProject = ProjectDataHandler.deepCopy(modified);
             storyboardDataJSON = modifiedProject.storyboardList[0];
-            storyboardDataJSON.name = storyboardName
+            storyboardDataJSON.name = storyboardName;
+            storyboardDataJSON.originalCostumes = originalCostumes;
+            storyboardDataJSON.currentCostumes = currentCostumes;
+
         }
         const payload =  {
             projectId,
@@ -630,6 +639,19 @@ const deleteBackdropStar = createAsyncThunk(
     }
 );
 
+const addTemplate = createAsyncThunk(
+    'project/addTemplate',
+    async (frameId, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        const projectId = getState().project.value._id;
+        const templateList = JSON.parse(JSON.stringify(getState().project.value.templateList));
+        const templateId = frameId + "?" + UUID.v4();
+        templateList.unshift(templateId);
+        dispatch(addTemplateFrameInMemory(templateId));
+        const response = await ProjectAPI.replaceTemplateListInDatabase({projectId,templateList});
+        return response.status;
+    }
+)
 
 
 /* The next section are about template stars on on the frame */
@@ -638,6 +660,7 @@ const addTemplateStar = createAsyncThunk(
     async (templateId, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const state = getState();
+        const simpleTemplateId = templateId.split("?")[0]
         const storyboardId = state.project.value.selectedId.storyboardId;
         const frameId = state.project.value.selectedId.frameId
         globalLog("storyboardId: ", storyboardId)
@@ -645,7 +668,7 @@ const addTemplateStar = createAsyncThunk(
         if (storyboardId === null || frameId === null) {return;}
         if (storyboardId === undefined || frameId === undefined) {return;}
         dispatch(addTemplateStarInMemory(JSON.stringify({
-            storyboardId, frameId, templateId,
+            storyboardId, frameId, templateId:simpleTemplateId,
         })));
         // await dispatch(updateLastModified());
         return "OK";
@@ -1039,9 +1062,9 @@ export const projectSlice = createSlice({
             reducer: (state, action) => {
                 const {storyboardId, frameIndex} = JSON.parse(action.payload);
                 const frameList = ProjectDataHandler.getStoryboard(state.value, storyboardId).frameList;
-                const frameId = frameList[frameIndex]._id;
-                const templateIndex = state.value.templateList.indexOf(frameId);
-                state.value.templateList.splice(templateIndex, 1);
+                // const frameId = frameList[frameIndex]._id;
+                // const templateIndex = state.value.templateList.indexOf(frameId);
+                // state.value.templateList.splice(templateIndex, 1);
                 frameList.splice(frameIndex, 1);
                 // globalLog("frameList!!!!!!!!!!!!!!!!!!!!!!: ", JSON.stringify(frameList));
 
@@ -1127,6 +1150,13 @@ export const projectSlice = createSlice({
                 const frame = StoryboardDataHandler.getFrame(storyboardData, frameId);
                 frame.backdropStar = backdropStar;
             },
+        },
+
+        addTemplateFrameInMemory: {
+            reducer: (state, action) => {
+                state.value.templateList.unshift(action.payload);
+                console.log("state.project.value.templateList: ", state.value.templateList);
+            }
         },
 
         addTemplateStarInMemory: {
@@ -1390,7 +1420,7 @@ export const {
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
     addStarInMemory, updateStarListInMemory, deleteStarInMemory, copyStarInMemory,addSpeechChildStarInMemory, //star
     addBackdropStarInMemory, //backdropStar
-    addTemplateStarInMemory, //templateStar
+    addTemplateFrameInMemory, addTemplateStarInMemory, //templateStar
     addSpeechBubbleInMemory, deleteSpeechBubbleInMemory, updateTextNameInMemory, //text ==> todo: delete these at some point
     addResourceInMemory, deleteResourceInMemory, updateResourceValueInMemory, //resource
     addFrameInMemory, updateFrameListInMemory, updateFrameOrderInMemory,//frame
@@ -1407,7 +1437,7 @@ export {
     addFrame, deleteFrame, updateFrameOrder, //frame
     addStar, updateStarList, deleteStar, copyStar, addSpeechChildStar, //star
     addBackdropStar,deleteBackdropStar, //backdropStar
-    addTemplateStar, //templateSar,
+    addTemplate, addTemplateStar, //templateSar,
     addActor, deleteActor, updateActorOrder, updateActorName, //actor
     addState, deleteState, updateStateName, //state
     addBackdrop, deleteBackdrop, updateBackdropName, //backdrop

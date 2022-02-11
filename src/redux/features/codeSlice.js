@@ -13,29 +13,10 @@ const getProgram = createAsyncThunk(
         const actorList = project.actorList;
         const backdropList = project.backdropList;
         const eventList = project.eventList;
-        // console.log("line 16")
         const projectXml = await CodeAPI.getProgram(
             storyboardData, actorList, backdropList, eventList
         );
         dispatch(setSnapXml(projectXml));
-
-
-
-        // console.log("snapXml: ", snapXml)
-        // dispatch(setSnapXml(snapXml));
-        // dispatch(setCodeModalOpen(true)); //to be deleted
-
-
-        // if (response.status === 200) {
-        //     dispatch(setSnapXml(response.data.snapXml))
-        //     dispatch(setCodeModalOpen(true));
-        //     setTimeout(() => {
-        //         scratchblocks.renderMatching("pre.blocks", {
-        //         style:     'scratch3',   // Optional, defaults to 'scratch2'.
-        //         languages: ['en'], // Optional, defaults to ['en'].
-        //         scale: 0.7,                // Optional, defaults to 1
-        //     })}, 500);
-        // }
     }
 )
 

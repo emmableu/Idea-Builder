@@ -79,12 +79,12 @@ export class ProjectDataHandler {
         if (storyboardMenu === undefined) {
              projectStoryboardMenu =  {
                 "final": {
-                    "name": "My storyboards",
+                    "name": "My Storyboards",
                     "items": [
                     ]
                 },
                 "draft":  {
-                    "name": "Drafts",
+                    "name": "My Scribbles",
                     "items": []
                 }
             };
@@ -182,30 +182,35 @@ export class ProjectDataHandler {
 
         let projectStoryboardMenu = {
             "final": {
-                "name": "My storyboards",
+                "name": "My Storyboards",
                 "items": []
             },
             "draft":  {
-                "name": "Drafts",
+                "name": "My Scribbles",
                 "items": []
-            }};
+            }
+        };
+        console.log("pppidOldNewMap: ", idOldNewMap)
         if (storyboardMenu) {
             if (storyboardMenu.final === undefined || storyboardMenu.draft === undefined) {
             }
             else {
                 if (storyboardMenu.final.items === undefined || storyboardMenu.draft.items === undefined) {}
                 else {
-                    for (const id of storyboardMenu.final.items) {
-                        // @ts-ignore
-                        projectStoryboardMenu.final.items.push(idOldNewMap[id])
-                    }
-                    for (const id of storyboardMenu.draft.items) {
-                        // @ts-ignore
-                        projectStoryboardMenu.draft.items.push(idOldNewMap[id])
-                    }
+                    try {
+                        for (const item of storyboardMenu.final.items) {
+                            // @ts-ignore
+                            projectStoryboardMenu.final.items.push({_id: idOldNewMap[item._id], name: storyboardList.find(s => s._id === item._id).name,})
+                        }
+                        for (const item of storyboardMenu.draft.items) {
+                            // @ts-ignore
+                            projectStoryboardMenu.draft.items.push({_id: idOldNewMap[item._id], name: storyboardList.find(s => s._id === item._id).name,})
+                        }
+                    } catch (e) {console.log(e)}
                 }
             }
         }
+        console.log("pppprojectStoryboardMenu: ", projectStoryboardMenu);
 
 
         const projectSelectedId = SelectedIdDataHandler.initializeSelectedId(
@@ -248,7 +253,7 @@ export class ProjectDataHandler {
             newStoryboardData
         )
 
-        projectData.templateList.unshift(newStoryboardData.frameList[0]._id);
+        // projectData.templateList.unshift(newStoryboardData.frameList[0]._id);
 
     }
 

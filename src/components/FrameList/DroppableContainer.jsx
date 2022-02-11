@@ -138,15 +138,15 @@ const DroppableContainer = (props) => {
                                     <AddIcon
                                     />
                                 </Fab>
-                                <Button
-                                    onClick={() => {dispatch(getProgram(storyboardId));
-                                        setCodeModalOpen(true);
-                                    }}
-                                >show code for this storyboard</Button>
-                                {codeModalOpen && <Code
-                                    codeModalOpen={codeModalOpen}
-                                    setCodeModalOpen={setCodeModalOpen}
-                                />}
+                                {/*<Button*/}
+                                {/*    onClick={() => {dispatch(getProgram(storyboardId));*/}
+                                {/*        setCodeModalOpen(true);*/}
+                                {/*    }}*/}
+                                {/*>show code for this storyboard</Button>*/}
+                                {/*{codeModalOpen && <Code*/}
+                                {/*    codeModalOpen={codeModalOpen}*/}
+                                {/*    setCodeModalOpen={setCodeModalOpen}*/}
+                                {/*/>}*/}
                             </Grid>
                         </Grid>
                 )}

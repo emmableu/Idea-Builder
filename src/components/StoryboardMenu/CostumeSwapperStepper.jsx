@@ -193,22 +193,6 @@ const CostumeSwapperStepper = (props) => {
     // console.log("currentCostumes: ", currentCostumes);
     const [selected, setSelected] = React.useState(null);
     const dispatch = useDispatch();
-
-    // const reset = (e) => {
-    //     dispatch(resetModifiedRecommend());
-    // };
-    //
-    // const handleUse = (e, actorId, _id) => {
-    //     // console.log("handleUse", selected, originalCostumes.length, originalBackdrops.length)
-    //     dispatch(modifyRecommend(
-    //         {
-    //             newActorId: actorId,
-    //             newStateId: _id,
-    //             selected,
-    //         }))
-    //
-    // };
-
     return (
         <>
             <div className={classes.cardList}>

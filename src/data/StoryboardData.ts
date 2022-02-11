@@ -7,6 +7,8 @@ export interface StoryboardData {
     frameList: Array<FrameData>
     note:string;
     recommendName: string;
+    originalCostumes: Array<any>;
+    currentCostumes: Array<any>;
 }
 
 
@@ -20,13 +22,15 @@ export class StoryboardDataHandler {
     {
         // {_id?: string, name?:string, order?:number, frameList?:Array<FrameData>,
         //     note?:string, isRecommand?:boolean,}
-        const {_id, name, frameList, note, recommendName} = storyboardData;
+        const {_id, name, frameList, note, recommendName, originalCostumes, currentCostumes} = storyboardData;
 
         const storyboardId = _id? _id:UUID.v4();
         const storyboardName = name? name:"Untitled";
         const storyboardFrameList = frameList? frameList:[FrameDataHandler.initializeFrame()]
         const storyboardNote = note? note:"Key changes between the begin and end frame:";
         const storyboardRecommendName = recommendName? recommendName:"Non-Recommend";
+        const storyboardOriginalCostumes = originalCostumes? originalCostumes:[];
+        const storyboardCurrentCostumes = currentCostumes? currentCostumes:[];
 
         return {
             _id: storyboardId,
@@ -34,16 +38,20 @@ export class StoryboardDataHandler {
             frameList: storyboardFrameList,
             note: storyboardNote,
             recommendName: storyboardRecommendName,
+            originalCostumes: storyboardOriginalCostumes,
+            currentCostumes: storyboardCurrentCostumes,
         }
     }
 
 
     static deepCopy(storyboardData: StoryboardData) {
-        const {name, frameList, note, recommendName} = storyboardData;
+        const {name, frameList, note, recommendName, originalCostumes, currentCostumes} = storyboardData;
         const storyboardId = UUID.v4();
         const storyboardName = name;
         const storyboardNote = note;
         const storyboardFrameList = [];
+        const storyboardOriginalCostumes = originalCostumes? originalCostumes:[];
+        const storyboardCurrentCostumes = currentCostumes? currentCostumes:[];
         for (const frame of frameList) {
             storyboardFrameList.push(FrameDataHandler.deepCopy(frame))
         }
@@ -53,6 +61,8 @@ export class StoryboardDataHandler {
             frameList: storyboardFrameList,
             note: storyboardNote,
             recommendName: recommendName? recommendName:"Non-Recommend",
+            originalCostumes: storyboardOriginalCostumes,
+            currentCostumes: storyboardCurrentCostumes,
         }
     }
 

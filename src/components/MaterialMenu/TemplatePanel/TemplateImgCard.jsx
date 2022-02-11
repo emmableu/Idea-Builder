@@ -15,6 +15,8 @@ import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "../../../axios/ideaServerAxiosConfig";
 import urlExist from "url-exist";
+import {ProjectDataHandler} from "../../../data/ProjectData";
+import StaticFrame from "../../Frame/StaticFrame";
 
 const useStyles = makeStyles({
     root: {
@@ -76,37 +78,45 @@ const TemplateImgCard = (props) =>  {
     const { templateId, contentNode } = props;
     const classes = useStyles(props);
     const dispatch  = useDispatch();
-    const [onHover, setOnHover] = React.useState();
-    const imgUpdated = useSelector((state) => state.frameThumbnailState.value.serverActionCounter);
-    const isSelected = useSelector(state => state.project.value.selectedId.frameId === templateId);
-    const [imgSrc, setImgSrc] = React.useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAQAAAAe/WZNAAAADklEQVR42mNkgAJGDAYAAFEABCaLYqoAAAAASUVORK5CYII=");
-    const [urlExists, setUrlExists] = React.useState(false);
-
-
-
-    const updateSrc = () => {
-        // globalLog( "----------- updating SRC ------------------------------------------------------------------------")
-        // globalLog(axios.defaults.baseURL + templateId);
-        if (urlExists) {
-            setImgSrc(axios.defaults.baseURL + templateId+`?fakeRender=${imgUpdated.toString()}`)
-            return;
-        };
-        urlExist(axios.defaults.baseURL + templateId).then( exists =>
-            {   // globalLog("exists: ", exists);
-                setUrlExists(exists)}
-        )
+    const frameData = useSelector(s =>
+    {
+        try
+            {return JSON.parse(JSON.stringify(ProjectDataHandler.findFrame(s.project.value, templateId.split("?")[0])))}
+        catch (e) {
+        return null
     }
+    });
+    const [onHover, setOnHover] = React.useState();
+    // const imgUpdated = useSelector((state) => state.frameThumbnailState.value.serverActionCounter);
+    // const isSelected = useSelector(state => state.project.value.selectedId.frameId === templateId);
+    // const [imgSrc, setImgSrc] = React.useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAQAAAAe/WZNAAAADklEQVR42mNkgAJGDAYAAFEABCaLYqoAAAAASUVORK5CYII=");
+    // const [urlExists, setUrlExists] = React.useState(false);
 
-    React.useEffect(()=> {
-        updateSrc()
-    }, [isSelected, imgUpdated]);
-
-
-    React.useEffect(()=> {
-        if (urlExists === true){
-            setImgSrc(axios.defaults.baseURL + templateId+`?fakeRender=${imgUpdated.toString()}`)
-        }
-    }, [urlExists]);
+    //
+    //
+    // const updateSrc = () => {
+    //     // globalLog( "----------- updating SRC ------------------------------------------------------------------------")
+    //     // globalLog(axios.defaults.baseURL + templateId);
+    //     if (urlExists) {
+    //         setImgSrc(axios.defaults.baseURL + templateId+`?fakeRender=${imgUpdated.toString()}`)
+    //         return;
+    //     };
+    //     urlExist(axios.defaults.baseURL + templateId).then( exists =>
+    //         {   // globalLog("exists: ", exists);
+    //             setUrlExists(exists)}
+    //     )
+    // }
+    //
+    // React.useEffect(()=> {
+    //     updateSrc()
+    // }, [isSelected, imgUpdated]);
+    //
+    //
+    // React.useEffect(()=> {
+    //     if (urlExists === true){
+    //         setImgSrc(axios.defaults.baseURL + templateId+`?fakeRender=${imgUpdated.toString()}`)
+    //     }
+    // }, [urlExists]);
 
 
     const handleAddTemplateStar = (e) => {
@@ -125,12 +135,15 @@ const TemplateImgCard = (props) =>  {
             >
                 <div className={classes.elementToStretch}
                 >
-                    <img
-                        draggable
-                        className={classes.imgStyle}
-                        src={imgSrc}
-                        alt="img"
-                    />
+                    {/*<img*/}
+                    {/*    draggable*/}
+                    {/*    className={classes.imgStyle}*/}
+                    {/*    src={axios.defaults.baseURL + templateId}*/}
+                    {/*    alt="img"*/}
+                    {/*/>*/}
+                    {frameData && <StaticFrame
+                        frameData={frameData}
+                    />}
                     <div className={classes.divOverlap} style={{display: onHover? "block":"none" }}>
                         <Tooltip title="Use">
                             <IconButton aria-label="add"

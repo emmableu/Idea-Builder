@@ -10,7 +10,7 @@ class CodeAPI {
                                    eventList: Array<{ //user inputs are like key pressed, mouse moving, etc
                                        _id: string; //this id is fixed for now because they are given by default
                                        name: string; //this name is also fixed for now because this is given by default
-                                   }>
+                                   }>,
     ) {
         const response = await axios({
             method: 'post',
@@ -23,25 +23,8 @@ class CodeAPI {
             }
         })
         const projectJson = response.data;
-        // console.log("projectJson: ", projectJson);
         const xml =  await CodeAPI.postSnapXML(storyboardData.name, projectJson, "csc110");
-        // console.log("xml: ", xml);
         return xml;
-
-        // return response.data;
-        // await axios({
-        //     method: 'get',
-        //     url: `/trace/keymove`,
-        // })
-        // const response = await axios({
-        //     method: 'post',
-        //     url: `/edit`,
-        //     data: {
-        //         start: 0,
-        //         end: 3,
-        //     }
-        // })
-        // return response;
     }
 
     static async postSnapXML (projectName:string, projectJson:any, type:string) {

@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 // import Card from "@material-ui/core/Card/Card";
 import { Card, Avatar } from 'antd';
 import {DeleteTwoTone, EditOutlined, EllipsisOutlined, SettingOutlined} from '@ant-design/icons';
-import {addFrame, setSelectedFrameId, updateStarList} from "../../redux/features/projectSlice";
+import {addFrame, addTemplate, setSelectedFrameId, updateStarList} from "../../redux/features/projectSlice";
 import globalConfig from "../../globalConfig";
 import {useDispatch, useSelector} from "react-redux";
 import DragHandleIcon from "../primitives/DragHandleIcon";
@@ -37,6 +37,8 @@ const StaticFrameContainerWithAction = React.memo((props) => {
     const addFrameHere = (e, _id) =>
         dispatch(addFrame({prevIndex: idx}));
 
+    const saveAsTemplate = (e) =>
+        dispatch(addTemplate(_id));
 
 
     React.useEffect(() => {
@@ -54,7 +56,9 @@ const StaticFrameContainerWithAction = React.memo((props) => {
     const menu = (
         <Menu>
             <MenuItem
-                onClick={addFrameHere}>New frame</MenuItem>
+                onClick={addFrameHere}>New Frame</MenuItem>
+            <MenuItem
+                onClick={saveAsTemplate}>Add to Templates</MenuItem>
             <MenuItem
                 onClick={deleteFrame}>Delete</MenuItem>
         </Menu>

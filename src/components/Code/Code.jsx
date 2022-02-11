@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import axios from "../../axios/ideaTranslatorAxiosConfig";
 import { Image, Modal, Button } from 'antd';
 import React from "react";
-import {setCodeModalOpen} from "../../redux/features/codeSlice";
+import {setCodeModalOpen, setSnapXml} from "../../redux/features/codeSlice";
 import { Spin, Alert } from 'antd';
 import globalConfig from "../../globalConfig";
 
@@ -34,7 +34,7 @@ const Code = (props) => {
                style={{ top: 60 }}
                width="90%"
                footer={[
-                   <Button key="ok" type="primary" onClick={() => {setCodeModalOpen(false)}}>
+                   <Button key="ok" type="primary" onClick={() => {setCodeModalOpen(false);dispatch(setSnapXml(""));}}>
                        OK
                    </Button>]}
                onCancel={() => {setCodeModalOpen(false)}}

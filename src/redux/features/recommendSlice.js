@@ -11,6 +11,7 @@ const loadAllRecommend = createAsyncThunk(
         const rawNameList = getState().recommend.value.nameList;
         for (const rawName of rawNameList) {
             const projectName = rawName.split(' ').join('%20');
+            // const url = `/static/csc110s22/${projectName}/recommend.json`;
             const url = `/static/week2project/${projectName}/recommend.json`;
             await axios({
                 method: 'get',
@@ -45,6 +46,7 @@ export const recommendSlice = createSlice({
             originalCostumes: [],
             // originalBackdrops: [],
             currentCostumes: [],
+            // nameList: ['carousel']
             nameList:
                 ['Bounce Around the Stage',
                     'Paw Prints',
@@ -166,6 +168,8 @@ export const recommendSlice = createSlice({
         clearModifiedRecommend: (state) => {
             state.value.selected = null;
             state.value.modified = null;
+            console.log("state.value.originalCostumes: ", JSON.stringify(state.value.originalCostumes));
+            console.log("state.value.currentCostumes: ", JSON.stringify(state.value.currentCostumes));
             state.value.currentCostumes = [];
             state.value.originalCostumes = [];
         },
@@ -187,24 +191,6 @@ export const recommendSlice = createSlice({
             state.value.currentCostumes[selected] = {_id: newStateId, name: "untitled", type: type};
             // console.log("modified: ", state.value.modified);
         },
-
-
-        // modifyRecommendBackdrop: (state, action) => {
-        //     const {stateId, newStateId, currentCostumeStep} = action.payload;
-        //     state.value.currentBackdrops[currentCostumeStep]= {_id: newStateId, name: "stage"};
-        //     ProjectDataHandler.swapBackdrop(state.value.modified, stateId, newStateId);
-        //     // console.log("modified: ", state.value.modified);
-        // },
-
-        // justModifyStateId: (state, action) => {
-        //     const {idx, type} = action.payload;
-        //     if (type === "backdrop") {
-        //         state.value.currentBackdrops[idx] = state.value.originalBackdrops[idx];
-        //     }
-        //     else if (type === "state") {
-        //         state.value.currentCostumes[idx] = state.value.originalCostumes[idx];
-        //     }
-        // }
     },
 })
 
