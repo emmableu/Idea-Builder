@@ -3,8 +3,8 @@ import axios from 'axios';
 import 'regenerator-runtime/runtime';
 const instance = axios.create({
 // .. where we make our configurations
-//     baseURL: process.env.REACT_APP_EXPRESS_BASE_URL
-    baseURL:"http://localhost:9090"
+    baseURL: process.env.REACT_APP_EXPRESS_BASE_URL
+//     baseURL:"http://localhost:9090"
 });
 
 const handleRequest = async (request) => {
