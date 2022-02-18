@@ -916,6 +916,25 @@ const saveNote = createAsyncThunk(
 );
 
 
+const saveRating = createAsyncThunk(
+    'project/saveRating',
+    async (obj, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        const {storyboardId, type, val} = obj;
+        dispatch(saveRatingInMemory({storyboardId, type, val}));
+        const response = await ProjectAPI.saveRating({
+            storyboardId,
+            type,
+            val
+        });
+
+        // await dispatch(updateLastModified());
+        return response.status;
+    }
+);
+
+
+
 export const projectSlice = createSlice({
     name: 'project',
     initialState: {
@@ -1407,6 +1426,14 @@ export const projectSlice = createSlice({
           }
         },
 
+        saveRatingInMemory: {
+            reducer: (state, action) => {
+                const {storyboardId, type, val} = action.payload;
+                const storyboardData = ProjectDataHandler.getStoryboard(state.value, storyboardId)
+                storyboardData[type] = val;
+            }
+        },
+
 
 
         download: {
@@ -1432,6 +1459,7 @@ export const {
     addStateInMemory, deleteStateInMemory, updateStateNameInMemory, //state
     addBackdropInMemory, deleteBackdropInMemory, updateBackdropNameInMemory, //backdrop
     saveNoteInMemory, //note
+    saveRatingInMemory,
     download,
 } = projectSlice.actions;
 export {
@@ -1446,5 +1474,6 @@ export {
     addState, deleteState, updateStateName, //state
     addBackdrop, deleteBackdrop, updateBackdropName, //backdrop
     saveNote, //note
+    saveRating,
 };
 export default projectSlice.reducer;

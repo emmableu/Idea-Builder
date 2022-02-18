@@ -1,10 +1,10 @@
-import { Input } from 'antd';
+import {Input, Rate} from 'antd';
 import Paper from "@material-ui/core/Paper";
 import globalConfig from "../../globalConfig";
 import {createSelector} from "reselect";
 import * as React from "react";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
-import {saveNote, saveNoteInMemory} from "../../redux/features/projectSlice";
+import {saveNote, saveNoteInMemory, saveRating} from "../../redux/features/projectSlice";
 import {useDispatch, connect} from "react-redux";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -17,7 +17,7 @@ const calcBoxHeight = (windowInnerHeight) => {
     return windowInnerHeight
         - globalConfig.toolBarHeight
         - globalConfig.storyboardToolBarHeight
-        - globalConfig.storyboardPageMargin*2 - 30
+        - globalConfig.storyboardPageMargin*2 - 30 - 300
 }
 const getStoryboardNoteData = createSelector(
     state => state.project.value.selectedId.storyboardId,
@@ -26,14 +26,21 @@ const getStoryboardNoteData = createSelector(
         if (storyboardId === null) {
             return {
                 storyboardId: null,
-                note: ""
+                note: "",
+                confidenceRating: 0,
+                knowledgeRating: 0,
             }
         }
         const s = storyboardList.find(s => s._id === storyboardId)
         const note = s?s.note:"";
+        const confidenceRating = s && s.confidenceRating ? s.confidenceRating: 0;
+        const knowledgeRating = s && s.knowledgeRating ? s.knowledgeRating: 0;
+        console.log("confidenceRating: ", confidenceRating);
         return {
             storyboardId: storyboardId,
             note,
+            confidenceRating,
+            knowledgeRating,
         }
     }
 );
@@ -44,9 +51,12 @@ const mapStateToProps = (state) => {
 
 
 const NoteBox = (props) => {
-    const {storyboardId, note} = props;
+    const {storyboardId, note, confidenceRating, knowledgeRating} = props;
     const dispatch = useDispatch();
     const editorHeight = calcBoxHeight(window.innerHeight);
+
+    const handleChangeConfidence = (val) => {dispatch(saveRating({storyboardId, type:"confidenceRating", val}))};
+    const handleChangeKnowledge = (val) => {dispatch(saveRating({storyboardId, type: "knowledgeRating", val}))};
 
     const dispatchSaveNote = (storyboardId, text) => dispatch(saveNote({storyboardId, text}));
 
@@ -82,6 +92,16 @@ const NoteBox = (props) => {
                         placeholder="Key mechanics" bordered={false} />
                 </CardContent>
             </Card>
+            <Paper  style={{padding: "10px 10px", margin:"20px 0px"
+            }} variant="outlined">
+                <p style={{color:"grey", fontStyle:"italic"}}>
+                    Rate from strongly disagree to strongly agree:
+                </p>
+                <li>I feel confident that I can make this storyboard in <i>Snap!</i></li>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><Rate onChange={handleChangeConfidence} value={confidenceRating}/>
+                <li>I could apply some cool coding knowledge to make this!</li>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><Rate onChange={handleChangeKnowledge} value={knowledgeRating}/>
+            </Paper>
         </div>
     )
 }

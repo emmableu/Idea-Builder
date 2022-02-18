@@ -9,6 +9,10 @@ export interface StoryboardData {
     recommendName: string;
     originalCostumes: Array<any>;
     currentCostumes: Array<any>;
+    confidenceRating: number,
+    knowledgeRating: number,
+    usefulRating: number,
+    hasCode: boolean,
 }
 
 
@@ -22,7 +26,7 @@ export class StoryboardDataHandler {
     {
         // {_id?: string, name?:string, order?:number, frameList?:Array<FrameData>,
         //     note?:string, isRecommand?:boolean,}
-        const {_id, name, frameList, note, recommendName, originalCostumes, currentCostumes} = storyboardData;
+        const {_id, name, frameList, note, recommendName, originalCostumes, currentCostumes, confidenceRating, knowledgeRating, usefulRating, hasCode} = storyboardData;
 
         const storyboardId = _id? _id:UUID.v4();
         const storyboardName = name? name:"Untitled";
@@ -31,7 +35,7 @@ export class StoryboardDataHandler {
         const storyboardRecommendName = recommendName? recommendName:"Non-Recommend";
         const storyboardOriginalCostumes = originalCostumes? originalCostumes:[];
         const storyboardCurrentCostumes = currentCostumes? currentCostumes:[];
-
+        const storyboardHasCode = hasCode ? hasCode: true;
         return {
             _id: storyboardId,
             name: storyboardName,
@@ -40,12 +44,16 @@ export class StoryboardDataHandler {
             recommendName: storyboardRecommendName,
             originalCostumes: storyboardOriginalCostumes,
             currentCostumes: storyboardCurrentCostumes,
+            confidenceRating: confidenceRating?confidenceRating:0,
+            knowledgeRating: knowledgeRating?knowledgeRating:0,
+            usefulRating: usefulRating?usefulRating:0,
+            hasCode: storyboardHasCode,
         }
     }
 
 
     static deepCopy(storyboardData: StoryboardData) {
-        const {name, frameList, note, recommendName, originalCostumes, currentCostumes} = storyboardData;
+        const {name, frameList, note, recommendName, originalCostumes, currentCostumes, confidenceRating, knowledgeRating, usefulRating, hasCode} = storyboardData;
         const storyboardId = UUID.v4();
         const storyboardName = name;
         const storyboardNote = note;
@@ -55,6 +63,8 @@ export class StoryboardDataHandler {
         for (const frame of frameList) {
             storyboardFrameList.push(FrameDataHandler.deepCopy(frame))
         }
+
+        const storyboardHasCode = hasCode ? hasCode: true;
         return {
             _id: storyboardId,
             name: storyboardName,
@@ -63,6 +73,10 @@ export class StoryboardDataHandler {
             recommendName: recommendName? recommendName:"Non-Recommend",
             originalCostumes: storyboardOriginalCostumes,
             currentCostumes: storyboardCurrentCostumes,
+            confidenceRating: confidenceRating?confidenceRating:0,
+            knowledgeRating: knowledgeRating?knowledgeRating:0,
+            usefulRating: usefulRating?usefulRating:0,
+            hasCode: storyboardHasCode,
         }
     }
 

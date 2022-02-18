@@ -1,4 +1,5 @@
 import React from "react";
+import { Rate } from 'antd';
 import {createTheme, makeStyles, ThemeProvider, withStyles} from '@material-ui/core/styles';
 import {light} from "@material-ui/core/styles/createPalette";
 import globalConfig from "../../globalConfig";
@@ -8,6 +9,7 @@ import FrameListFunctionContainer from "../FrameList/FrameListFunctionContainer"
 import NoteBox from "../NoteBox/NoteBox";
 import FrameCardContainer from "../Frame/FrameCardContainer";
 import Button from "@material-ui/core/Button";
+import {Paper} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     rootContainer: {
@@ -58,8 +60,7 @@ const useStyles = makeStyles((theme) => ({
     },
     noteDiv: {backgroundColor:  globalConfig.color.veryLightGrey,
         flex:`0 0 ${globalConfig.responsiveSizeData.noteWidth}px`,
-        width: globalConfig.responsiveSizeData.noteWidth}
-
+        width: globalConfig.responsiveSizeData.noteWidth},
 
 }));
 const StoryboardPage = React.memo(() => {

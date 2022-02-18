@@ -90,6 +90,16 @@ class ProjectAPI {
         return response;
     }
 
+    static async saveRating(obj:any) {
+        const response = await axios(
+            {
+                method: 'post',
+                url: `/storyboard_save_rating`,
+                data: obj,
+            }
+        )
+    }
+
     /* this section is on frame */
     static async replaceFrameIdListInDatabase(text:any) {
         const response = await axios({
