@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import CodeAPI from "../../api/CodeAPI";
 import {ProjectDataHandler} from "../../data/ProjectData";
-import scratchblocks from "scratchblocks";
 
 
 const getProgram = createAsyncThunk(
@@ -26,6 +25,7 @@ export const codeSlice = createSlice({
     initialState: {
         snapXml: "",
         codeModalOpen: false,
+        snapWindowLoaded: false,
     },
     reducers: {
         setSnapXml: (state, action) => {
@@ -34,9 +34,12 @@ export const codeSlice = createSlice({
         setCodeModalOpen: (state, action) => {
             state.codeModalOpen = action.payload;
         },
+        setSnapWindowLoaded: (state, action) => {
+            state.snapWindowLoaded = action.payload;
+        },
     },
 })
 
-export const { setSnapXml, setCodeModalOpen } = codeSlice.actions
+export const { setSnapXml, setCodeModalOpen,setSnapWindowLoaded} = codeSlice.actions
 export {getProgram};
 export default codeSlice.reducer

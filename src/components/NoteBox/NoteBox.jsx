@@ -11,6 +11,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import {useCallback} from "react";
 import { debounce } from "lodash";
+import ExampleEval from "../ExampleEval";
 const { TextArea } = Input;
 
 const calcBoxHeight = (windowInnerHeight) => {
@@ -97,7 +98,7 @@ const NoteBox = (props) => {
                 <p style={{color:"grey", fontStyle:"italic"}}>
                     Rate from strongly disagree to strongly agree:
                 </p>
-                <li>I feel confident that I can make this storyboard in <i>Snap!</i></li>
+                <li>I feel confident I can turn my storyboard ideas into <i>Snap!</i> code.</li>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><Rate onChange={handleChangeConfidence} value={confidenceRating}/>
                 <li>I could apply some cool coding knowledge to make this!</li>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><Rate onChange={handleChangeKnowledge} value={knowledgeRating}/>

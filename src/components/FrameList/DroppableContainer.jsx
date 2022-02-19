@@ -20,7 +20,7 @@ import StaticFrameContainerWithAction from "../Frame/StaticFrameContainerWithAct
 import {makeStyles} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import {updateFrameOrder} from "../../redux/features/projectSlice";
-import {getProgram} from "../../redux/features/codeSlice";
+import {getProgram, setCodeModalOpen} from "../../redux/features/codeSlice";
 import Code from "../Code/Code";
 
 
@@ -75,7 +75,6 @@ const getListStyle = isDraggingOver => ({
 const DroppableContainer = (props) => {
     const {storyboardId, frameList, handleDelete, handleAdd, _id} = props;
     const dispatch = useDispatch();
-    const [codeModalOpen, setCodeModalOpen] = React.useState(false);
 
     const onDragEnd = (result) => {
         // dropped outside the list
@@ -144,19 +143,15 @@ const DroppableContainer = (props) => {
                                 </Fab>
                                 </Tooltip>
                                 <Tooltip title="Show Code for this Storyboard">
-                                <Fab size="medium" color="primary" aria-label="code"
+                                <Fab size="medium" color="secondary" aria-label="code"
                                      onClick={() => {dispatch(getProgram(storyboardId));
-                                         setCodeModalOpen(true);
+                                         dispatch(setCodeModalOpen(true));
                                      }}
                                 >
                                     <CodeIcon
                                     />
                                 </Fab>
                                 </Tooltip>
-                                <Code
-                                    codeModalOpen={codeModalOpen}
-                                    setCodeModalOpen={setCodeModalOpen}
-                                />
                             </Grid>
                         </Grid>
                 )}

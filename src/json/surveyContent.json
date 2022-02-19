@@ -1,0 +1,40 @@
+{
+  "pages": [
+    {
+      "name": "page1",
+      "elements": [
+        {
+          "type": "html",
+          "name": "question3",
+          "html": "Rate your agreement with the following statements, from highly disagree (1) to highly agree (5). "
+        },
+        {
+          "type": "rating",
+          "name": "question1",
+          "title": "I was able to be expressive and creative while making storyboards."
+        },
+        {
+          "type": "rating",
+          "name": "question2",
+          "title": "I was very engaged in this design activity - I enjoyed this activity and would do it again."
+        },
+        {
+          "type": "rating",
+          "name": "question4",
+          "title": "I'm proud of the design I created."
+        },
+        {
+          "type": "rating",
+          "name": "question5",
+          "title": "The storyboarding process helped me come up with ideas that will require me to use my knowledge of programming."
+        },
+        {
+          "type": "rating",
+          "name": "question6",
+          "title": "I feel confident I can turn my storyboard ideas into Snap code."
+        }
+      ],
+      "title": "Idea Builder Survey"
+    }
+  ]
+}
