@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         height: globalConfig.responsiveSizeData.frameListPaperHeight + 32 + 2,
         backgroundColor: "white",
-        width: globalConfig.responsiveSizeData.frameListPaperHeight*4/3 + 2,
+        width: globalConfig.responsiveSizeData.frameListPaperHeight*4/3 + 4,
         borderRadius: "2px",
         "& li": {margin: "2px 0",}
     },
