@@ -11,6 +11,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import {useCallback} from "react";
 import { debounce } from "lodash";
+import RatingPaper from "./RatingPaper";
 const { TextArea } = Input;
 
 const calcBoxHeight = (windowInnerHeight) => {
@@ -55,13 +56,15 @@ const NoteBox = (props) => {
     const dispatch = useDispatch();
     const editorHeight = calcBoxHeight(window.innerHeight);
 
-    const handleChangeConfidence = (val) => {dispatch(saveRating({storyboardId, type:"confidenceRating", val}))};
-    const handleChangeKnowledge = (val) => {dispatch(saveRating({storyboardId, type: "knowledgeRating", val}))};
 
     const dispatchSaveNote = (storyboardId, text) => dispatch(saveNote({storyboardId, text}));
 
 
     const saveNoteDebounce = useCallback(debounce(dispatchSaveNote, 700), [])
+
+    const handleChangeConfidence = (val) => {dispatch(saveRating({storyboardId, type:"confidenceRating", val}))};
+    const handleChangeKnowledge = (val) => {dispatch(saveRating({storyboardId, type: "knowledgeRating", val}))};
+
 
     const onFieldTextChange = async (e) => {
         const text = e.target.value
@@ -92,16 +95,7 @@ const NoteBox = (props) => {
                         placeholder="Key mechanics" bordered={false} />
                 </CardContent>
             </Card>
-            <Paper  style={{padding: "10px 10px", margin:"20px 0px"
-            }} variant="outlined">
-                <p style={{color:"grey", fontStyle:"italic"}}>
-                    Rate from strongly disagree to strongly agree:
-                </p>
-                <li>I feel confident I can turn my storyboard ideas into <i>Snap!</i> code.</li>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><Rate onChange={handleChangeConfidence} value={confidenceRating}/>
-                <li>I could apply some cool coding knowledge to make this!</li>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><Rate onChange={handleChangeKnowledge} value={knowledgeRating}/>
-            </Paper>
+            <RatingPaper confidenceRating={confidenceRating} knowledgeRating={knowledgeRating} handleChangeConfidence={handleChangeConfidence} handleChangeKnowledge={handleChangeKnowledge} />
         </div>
     )
 }
