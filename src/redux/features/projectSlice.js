@@ -297,7 +297,7 @@ const addStoryboard = createAsyncThunk(
         if (modified === null) {
             modifiedProject = null;
             let hasCode;
-            const currentStoryboardLen = state.project.storyboardMenu.final.items.length;
+            const currentStoryboardLen = state.project.value.storyboardMenu.final.items.length;
             const hasCodeList = state.project.hasCodeList;
             if (type === "final") {
                 if (currentStoryboardLen <= 4) hasCode = hasCodeList.includes(currentStoryboardLen);
@@ -320,7 +320,7 @@ const addStoryboard = createAsyncThunk(
             storyboardDataJSON.name = storyboardName;
             storyboardDataJSON.originalCostumes = originalCostumes;
             storyboardDataJSON.currentCostumes = currentCostumes;
-
+            storyboardDataJSON.hasCode = true;
         }
         const payload =  {
             projectId,

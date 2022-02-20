@@ -246,6 +246,34 @@ export class ProjectDataHandler {
     }
 
 
+
+    static calcNotification (storyboardId:string, storyboardList:Array<StoryboardData>, storyboardMenu:any) {
+        const s = storyboardList.find(s => s._id === storyboardId)
+        if (!s) return {showRating:false, showCodeNotification:false,confidenceRating:0, knowledgeRating:0}
+        const confidenceRating = s && s.confidenceRating ? s.confidenceRating: 0;
+        const knowledgeRating = s && s.knowledgeRating ? s.knowledgeRating: 0;
+        const usefulRating = s && s.usefulRating ? s.usefulRating: 0;
+        const hasCode = !!(s && s.hasCode === true);
+        let showRating = false;
+        let showCodeNotification = false;
+        let finalStoryboardIdLst = storyboardMenu.final.items.map((i: { _id: any; }) => i._id);
+        if (
+            finalStoryboardIdLst.includes(storyboardId)
+        ) {
+            const frameLen = s.frameList.length;
+            if (frameLen >= 2) {
+                if (confidenceRating === 0 || knowledgeRating === 0) {
+                    showRating = true;
+                }
+                if (hasCode === true && usefulRating === 0) {
+                    showCodeNotification = true;
+                }
+            }
+        }
+        return {showRating,
+            showCodeNotification,
+            confidenceRating, knowledgeRating};
+    }
     /* below are about storyboards */
 
     static addStoryboard (projectData: ProjectData, type:"draft"|"final", newStoryboardData:any) {
