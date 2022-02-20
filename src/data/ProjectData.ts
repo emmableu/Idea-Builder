@@ -11,6 +11,7 @@ import { saveAs } from 'file-saver';
 import axios from "../axios/ideaServerAxiosConfig";
 // @ts-ignore
 import Cookies from "js-cookie";
+import {sampleSize} from "lodash";
 
 // import JSZipUtils from 'jszip-utils'
 // export const generateZip = () => {
@@ -52,16 +53,18 @@ export interface ProjectData {
         _id: string; //this id is fixed for now because they are given by default
         name: string; //this name is also fixed for now because this is given by default
     }>;
+    hasCodeList: Array<number>
 }
 
 export class ProjectDataHandler {
     static initializeProject( importedData:any ) : ProjectData
     {
         const {_id, authorIdList, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
-            selectedId, speechBubbleList, variableList, eventList,
+            selectedId, speechBubbleList, variableList, eventList,hasCodeList
         } = importedData;
         const projectId = _id? _id:UUID.v4();
         const projectName = name? name:"Untitled";
+        // const projectHasCodeList = hasCodeList !== undefined ? hasCodeList: sampleSize([0,1,2,3,4], 3);
         const projectStoryboardList = storyboardList? storyboardList:[];
         // const projectStoryboardList = storyboardList? storyboardList:[StoryboardDataHandler.initializeStoryboard()];
         const projectActorList = actorList? actorList:[];
@@ -150,12 +153,13 @@ export class ProjectDataHandler {
             speechBubbleList: projectSpeechBubbleList,
             eventList: projectEventList,
             variableList: projectVariableList,
+            hasCodeList: hasCodeList,
         }
     }
 
     static deepCopy(projectData: ProjectData) : ProjectData {
         const {_id, authorIdList, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
-            selectedId, speechBubbleList, variableList, eventList
+            selectedId, speechBubbleList, variableList, eventList, hasCodeList
         } = projectData;
         const projectId = UUID.v4();
         const projectName = name;
@@ -221,7 +225,7 @@ export class ProjectDataHandler {
         const projectEventList = eventList;
 
         const projectVariableList = variableList? variableList: [];
-
+        const projectHasCodeList = hasCodeList
         //variable changes to resources (e.g., should have icons, should have big speechBubble and character limit.
 
         return {
@@ -237,6 +241,7 @@ export class ProjectDataHandler {
             speechBubbleList: projectSpeechBubbleList,
             eventList: projectEventList,
             variableList: projectVariableList,
+            hasCodeList: projectHasCodeList,
         }
     }
 

@@ -26,6 +26,7 @@ export const codeSlice = createSlice({
         snapXml: "",
         codeModalOpen: false,
         snapWindowLoaded: false,
+        codeEvalOpen: false,
     },
     reducers: {
         setSnapXml: (state, action) => {
@@ -37,9 +38,12 @@ export const codeSlice = createSlice({
         setSnapWindowLoaded: (state, action) => {
             state.snapWindowLoaded = action.payload;
         },
+        setCodeEvalOpen: (state, action) => {
+            state.codeEvalOpen = action.payload;
+        },
     },
 })
 
-export const { setSnapXml, setCodeModalOpen,setSnapWindowLoaded} = codeSlice.actions
+export const { setSnapXml, setCodeModalOpen,setSnapWindowLoaded, setCodeEvalOpen} = codeSlice.actions
 export {getProgram};
 export default codeSlice.reducer

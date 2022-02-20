@@ -11,7 +11,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import {useCallback} from "react";
 import { debounce } from "lodash";
-import ExampleEval from "../ExampleEval";
 const { TextArea } = Input;
 
 const calcBoxHeight = (windowInnerHeight) => {

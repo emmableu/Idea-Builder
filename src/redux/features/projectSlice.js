@@ -15,6 +15,7 @@ import {AuthorDataHandler} from "../../data/AuthorData";
 import {AuthorAPI} from "../../api/AuthorAPI";
 import starterProject from "../../json/starterProject.json"
 import {loadAuthorData, setFrozenMode, setLastLoaded, updateLastModified} from "./authorSlice";
+import {sampleSize} from "lodash";
 
 
 const insertEmptyProjectToDatabase = createAsyncThunk(
@@ -25,6 +26,7 @@ const insertEmptyProjectToDatabase = createAsyncThunk(
         project._id = _id;
         project.name = name;
         project.authorIdList =  [Cookies.get("userId")];
+        project.hasCodeList = sampleSize([0,1,2,3,4], 3);
         // const projectData = ProjectDataHandler.initializeProject({_id, authorIdList, name});
         const authorData = AuthorDataHandler.initializeAuthor({_id});
         const response = await ProjectAPI.insertProject(Cookies.get("userId"), project);
@@ -50,8 +52,45 @@ const loadProjectFromDatabase = createAsyncThunk(
     'project/loadProjectFromDatabase',
     async (_id, thunkAPI) => {
         const response = await ProjectAPI.loadProject(_id);
-        const {dispatch} = thunkAPI;
+        const {dispatch, getState} = thunkAPI;
         dispatch(loadProjectInMemory(response.data));
+        const project = getState().project.value;
+        if (project.hasCodeList === undefined) {
+            const hasCodeList =  sampleSize([0,1,2,3,4], 3);
+            if (project.storyboardMenu.final.items.length > 0) {
+                let i =  project.storyboardMenu.final.items.length - 1;
+                let cnt = 0;
+                while (i >= 0) {
+                    const storyboardId =  project.storyboardMenu.final.items[i]._id;
+                    const storyboard = project.storyboardList.find((s) => s._id === storyboardId)
+                    console.log("storyboard.hasCode: ", storyboard.hasCode)
+                    if (storyboard && storyboard.hasCode === undefined) {
+                        dispatch(updateStoryboardHasCode({storyboardId, hasCode:hasCodeList.includes(cnt)}))
+                        // storyboard.hasCode = (hasCodeList.includes(cnt));
+                        console.log("cnt: ", cnt);
+                        // console.log("storyboard.hasCode: ", storyboard.hasCode);
+                    }
+                    cnt += 1;
+                    i -= 1
+                }
+            }
+
+            if (project.storyboardMenu.draft.items.length > 0) {
+                let i =  project.storyboardMenu.draft.items.length - 1;
+                while (i >= 0) {
+                    const storyboardId =  project.storyboardMenu.draft.items[i]._id;
+                    const storyboard = project.storyboardList.find((s) => s._id === storyboardId)
+                    // console.log("storyboard.hasCode: ", storyboard.hasCode)
+                    if (storyboard && storyboard.hasCode === undefined) {
+                        // storyboard.hasCode = false;
+                        dispatch(updateStoryboardHasCode({storyboardId, hasCode:false}))
+                    }
+                    i -= 1
+                }
+            }
+
+            dispatch(updateHasCodeList(hasCodeList));
+        }
         const authorIdList = response.data.authorIdList;
         const userId =  Cookies.get("userId");
         if (authorIdList.includes(userId)) {
@@ -141,6 +180,21 @@ const updateName = createAsyncThunk(
         return response.status;
     }
 );
+
+
+const updateHasCodeList = createAsyncThunk(
+    'project/updateHasCodeList',
+    async (hasCodeList, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        dispatch(updateHasCodeListInMemory(hasCodeList));
+        const projectId = getState().project.value._id;
+        const response = await ProjectAPI.updateHasCodeList({
+            projectId, hasCodeList
+        });
+        return response.status;
+    }
+);
+
 
 /* The next section are about selectedIds:
  */
@@ -242,9 +296,21 @@ const addStoryboard = createAsyncThunk(
         let storyboardDataJSON, modifiedProject;
         if (modified === null) {
             modifiedProject = null;
+            let hasCode;
+            const currentStoryboardLen = state.project.storyboardMenu.final.items.length;
+            const hasCodeList = state.project.hasCodeList;
+            if (type === "final") {
+                if (currentStoryboardLen <= 4) hasCode = hasCodeList.includes(currentStoryboardLen);
+                else {
+                    hasCode = Math.random() < 0.5;
+                }
+            }
+            else {
+                hasCode = false;
+            }
             storyboardDataJSON = StoryboardDataHandler.initializeStoryboard(
                 {_id: storyboardId,
-                                name: storyboardName});
+                                name: storyboardName, hasCode,});
         }
         else {
             const originalCostumes = JSON.parse(JSON.stringify(state.recommend.value.originalCostumes));
@@ -342,6 +408,16 @@ const updateStoryboardName = createAsyncThunk(
             return;} */
         const response = await ProjectAPI.updateStoryboardName(payload);
         // await dispatch(updateLastModified());
+        return response.status;
+    }
+);
+
+const updateStoryboardHasCode = createAsyncThunk(
+    'project/updateStoryboardHasCode',
+    async (payload, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        dispatch(updateStoryboardHasCodeInMemory(payload));
+        const response = await ProjectAPI.updateStoryboardHasCode(payload);
         return response.status;
     }
 );
@@ -944,7 +1020,7 @@ export const projectSlice = createSlice({
 
         loadProjectInMemory: {
             reducer: (state, action) => {
-                globalLog("action payload", action.payload);
+                console.log("action payload", action.payload);
                 state.value = ProjectDataHandler.initializeProject(action.payload);
                 globalLog("parsed project: ", state.value);
             },
@@ -953,6 +1029,12 @@ export const projectSlice = createSlice({
         updateNameInMemory: {
             reducer: (state, action) => {
                 state.value.name = action.payload;
+            }
+        },
+
+        updateHasCodeListInMemory: {
+            reducer: (state, action) => {
+                state.value.hasCodeList = action.payload;
             }
         },
 
@@ -1093,6 +1175,15 @@ export const projectSlice = createSlice({
 
             }
         },
+
+        updateStoryboardHasCodeInMemory: {
+            reducer: (state, action) => {
+                const {storyboardId, hasCode} = action.payload;
+                const storyboard = ProjectDataHandler.getStoryboard(state.value, storyboardId);
+                storyboard.hasCode = hasCode;
+            }
+        },
+
 
 
 
@@ -1460,6 +1551,7 @@ export const {
     addBackdropInMemory, deleteBackdropInMemory, updateBackdropNameInMemory, //backdrop
     saveNoteInMemory, //note
     saveRatingInMemory,
+    updateHasCodeListInMemory, updateStoryboardHasCodeInMemory,
     download,
 } = projectSlice.actions;
 export {
@@ -1475,5 +1567,6 @@ export {
     addBackdrop, deleteBackdrop, updateBackdropName, //backdrop
     saveNote, //note
     saveRating,
+    updateHasCodeList, updateStoryboardHasCode,
 };
 export default projectSlice.reducer;

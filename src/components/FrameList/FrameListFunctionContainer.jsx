@@ -37,8 +37,12 @@ const FrameListFunctionContainer = () => {
         ProjectDataHandler.getStoryboard(
             state.project.value, storyboardId
         ).frameList
-
-        );
+    );
+    const hasCode = useSelector(state =>
+        ProjectDataHandler.getStoryboard(
+            state.project.value, storyboardId
+        ).hasCode
+    );
 
 
     const dispatch = useDispatch();
@@ -69,6 +73,7 @@ const FrameListFunctionContainer = () => {
         frameList={frameList}
         handleAdd={handleAddFrame}
         handleDelete={handleDeleteFrame}
+        hasCode={hasCode}
     />);
 };
 

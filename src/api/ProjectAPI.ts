@@ -51,6 +51,24 @@ class ProjectAPI {
         return response;
     }
 
+    static async updateHasCodeList(obj: any) {
+        const response = await axios({
+            method: 'post',
+            url: `/has_code_list/set`,
+            data: obj,
+        });
+        return response;
+    }
+
+    static async updateStoryboardHasCode(obj: any) {
+        const response = await axios({
+            method: 'post',
+            url: `/storyboard_has_code/set`,
+            data: obj,
+        });
+        return response;
+    }
+
 
     /* below are about selectedIds */
     static async updateSelectedIdData(text:any) {
@@ -95,6 +113,16 @@ class ProjectAPI {
             {
                 method: 'post',
                 url: `/storyboard_save_rating`,
+                data: obj,
+            }
+        )
+    }
+
+    static async saveHasCode(obj:any) {
+        const response = await axios(
+            {
+                method: 'post',
+                url: `/storyboard_save_has_code`,
                 data: obj,
             }
         )

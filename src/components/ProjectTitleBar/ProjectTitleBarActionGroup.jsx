@@ -18,6 +18,7 @@ import Box from "@material-ui/core/Box";
 import { Modal } from 'antd';
 import MergeUploadButton from "./MergeUploadButton";
 import Button from "@material-ui/core/Button";
+import {setSnapWindowLoaded} from "../../redux/features/codeSlice";
 
 
 
@@ -40,6 +41,7 @@ const ProjectTitleBarActionGroup  = () => {
 
     const backToHome = () => {
         history.push(globalConfig.routes.dashboard);
+        dispatch(setSnapWindowLoaded(false));
     }
     const handleClick = () => {
         dispatch(download());

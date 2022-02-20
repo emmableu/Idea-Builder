@@ -35,7 +35,7 @@ export class StoryboardDataHandler {
         const storyboardRecommendName = recommendName? recommendName:"Non-Recommend";
         const storyboardOriginalCostumes = originalCostumes? originalCostumes:[];
         const storyboardCurrentCostumes = currentCostumes? currentCostumes:[];
-        const storyboardHasCode = hasCode ? hasCode: true;
+        const storyboardHasCode = hasCode !== undefined ? hasCode: true;
         return {
             _id: storyboardId,
             name: storyboardName,

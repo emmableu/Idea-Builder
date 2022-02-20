@@ -10,6 +10,7 @@ import NoteBox from "../NoteBox/NoteBox";
 import FrameCardContainer from "../Frame/FrameCardContainer";
 import Button from "@material-ui/core/Button";
 import {Paper} from "@material-ui/core";
+import ExampleEval from "../Code/ExampleEval";
 
 const useStyles = makeStyles((theme) => ({
     rootContainer: {

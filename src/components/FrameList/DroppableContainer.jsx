@@ -73,7 +73,7 @@ const getListStyle = isDraggingOver => ({
 
 
 const DroppableContainer = (props) => {
-    const {storyboardId, frameList, handleDelete, handleAdd, _id} = props;
+    const {storyboardId, frameList, handleDelete, handleAdd, _id, hasCode} = props;
     const dispatch = useDispatch();
 
     const onDragEnd = (result) => {
@@ -142,16 +142,19 @@ const DroppableContainer = (props) => {
                                     />
                                 </Fab>
                                 </Tooltip>
-                                <Tooltip title="Show Code for this Storyboard">
-                                <Fab size="medium" color="secondary" aria-label="code"
-                                     onClick={() => {dispatch(getProgram(storyboardId));
-                                         dispatch(setCodeModalOpen(true));
-                                     }}
-                                >
-                                    <CodeIcon
-                                    />
-                                </Fab>
-                                </Tooltip>
+                                {
+                                 hasCode === true &&
+                                    <Tooltip title="Show Code for this Storyboard">
+                                        <Fab size="medium" color="secondary" aria-label="code"
+                                             onClick={() => {dispatch(getProgram(storyboardId));
+                                                 dispatch(setCodeModalOpen(true));
+                                             }}
+                                        >
+                                            <CodeIcon
+                                            />
+                                        </Fab>
+                                    </Tooltip>
+                                }
                             </Grid>
                         </Grid>
                 )}

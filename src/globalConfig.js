@@ -173,10 +173,20 @@ const globalLog = (...msgs) => {
       // console.log(...msgs)
 }
 
+
+const snapLog = (msg, data) => {
+     if (!window.snap) {
+          console.log("does not have snap instance");
+          return;
+     }
+     window.snap.postMessage(JSON.stringify({logInfo: {msg, data}}), '*');
+}
+
 Object.freeze(globalConfig);
 Object.freeze(calcFrameWidth);
 Object.freeze(globalLog);
+Object.freeze(snapLog);
 
 export default globalConfig;
-export  {calcFrameWidth, globalLog};
+export  {calcFrameWidth, globalLog, snapLog};
 
