@@ -302,7 +302,9 @@ const addStoryboard = createAsyncThunk(
             if (type === "final") {
                 if (currentStoryboardLen <= 4) hasCode = hasCodeList.includes(currentStoryboardLen);
                 else {
+                    // console.log("final, hascODE: ");
                     hasCode = Math.random() < 0.5;
+                    // console.log(hasCode);
                 }
             }
             else {

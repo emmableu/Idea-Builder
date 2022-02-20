@@ -25,42 +25,7 @@ import {ProjectDataHandler} from "../../data/ProjectData";
 import NotificationHOC from "../Code/NotificationHOC";
 
 
-// const getStoryboardData = createSelector(
-//     state => state.project.value.selectedId.storyboardId,
-//     state => state.project.value.storyboardList,
-//         state => state.project.value.storyboardMenu,
-//     (storyboardId, storyboardList,storyboardMenu) => {
-//         if (storyboardId === null) {
-//             return {
-//                 storyboardId: null,
-//                 showCodeNotification: false,
-//                 showRating:false,
-//                 confidenceRating:0,
-//                 knowledgeRating:0,
-//             }
-//         }
-//
-//         const {showRating, showCodeNotification, confidenceRating, knowledgeRating} = ProjectDataHandler.calcNotification(storyboardId, storyboardList, storyboardMenu);
-//
-//
-//         return {
-//             storyboardId,
-//             showCodeNotification, ///change this to just showCodeNotification after dev
-//             showRating, //change this to just showRating after dev
-//             confidenceRating,
-//             knowledgeRating,
-//         }
-//     }
-// );
-//
-// const mapStateToProps = (state) => {
-//     return getStoryboardData(state)
-// };
-
-
 const NewStoryboardDialogue = props => {
-    // const storyboardId = useSelector(state =>  (state.project.value && state.project.value.selectedId) ?state.project.value.selectedId.storyboardId:null);
-    // const {storyboardId, showCodeNotification, showRating, confidenceRating, knowledgeRating} =  props;
     const {type} = props;
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const [newStoryboardName, setNewStoryboardName] = React.useState("");
@@ -91,7 +56,7 @@ const NewStoryboardDialogue = props => {
         //     "antearry",
         //     "aahasan"
         // ].includes(Cookies.get('userId'));
-        const cond1Calc = true;
+        const cond1Calc = false; // FOR dev, set as false, need to change to true.
         setCond1(cond1Calc);
 
         }, []
@@ -131,64 +96,6 @@ const NewStoryboardDialogue = props => {
         dispatch(resetDisplayRecommend());
     };
 
-
-    // const handleChangeConfidence = (val) => {dispatch(saveRating({storyboardId, type:"confidenceRating", val}))};
-    // const handleChangeKnowledge = (val) => {dispatch(saveRating({storyboardId, type: "knowledgeRating", val}))};
-    //
-    //
-    // const openShowCodeNotification = () => {
-    //     notification.open({
-    //         message: 'Check Code for Current Storyboard',
-    //         description:
-    //             <>
-    //                 <p>Before creating a new storyboard, check out code for this current storyboard first.</p>
-    //
-    //                 <Tooltip title="Show Code for this Storyboard">
-    //                     <Fab size="medium" color="secondary" aria-label="code"
-    //                          onClick={() => {dispatch(getProgram(storyboardId));
-    //                              dispatch(setCodeModalOpen(true));
-    //                          }}
-    //                     >
-    //                         <CodeIcon
-    //                         />
-    //                     </Fab>
-    //                 </Tooltip>
-    //             </>,
-    //         style:{top: 100}
-    //     });
-    // };
-    //
-    //
-    // const openShowRatingNotification = () => {
-    //     notification.open({
-    //         message: 'Rate your current storyboard',
-    //         description:
-    //             <Paper  style={{padding: "10px 10px", margin:"0px 0px"
-    //             }} variant="outlined">
-    //                 <p style={{color:"grey", fontStyle:"italic"}}>
-    //                     Rate from strongly disagree to strongly agree:
-    //                 </p>
-    //                 <li>I feel confident I can turn this storyboard's idea into <i>Snap!</i> code.</li>
-    //                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><Rate onChange={handleChangeConfidence} defaultValue={confidenceRating}/>
-    //                 <li>I could apply some cool coding knowledge to make this!</li>
-    //                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><Rate onChange={handleChangeKnowledge} defaultValue={knowledgeRating}/>
-    //             </Paper>
-    //             ,
-    //         style:{top: 100}
-    //     });
-    // };
-    //
-    // const handleClick = () => {
-    //     if (showCodeNotification) {
-    //         openShowCodeNotification();
-    //     }
-    //     else if (showRating) {
-    //         openShowRatingNotification();
-    //     }
-    //     else {
-    //         showModal();
-    //     }
-    // }
 
     return (
         <>
