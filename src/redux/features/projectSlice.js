@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import * as UUID from "uuid";
 import {ActorDataHandler} from "../../data/ActorData";
 import {BackdropDataHandler} from "../../data/BackdropData";
-import globalConfig, {globalLog} from "../../globalConfig";
+import globalConfig, {globalLog, snapLog} from "../../globalConfig";
 import {FrameDataHandler} from "../../data/FrameData";
 import {SelectedIdDataHandler} from "../../data/SelectedIdData";
 import {StarDataHandler} from "../../data/StarData";
@@ -285,6 +285,7 @@ const setSelectedStarId = createAsyncThunk(
 const addStoryboard = createAsyncThunk(
     'project/addStoryboard',
     async (text, thunkAPI) => {
+        snapLog("addStoryboard", text);
         const {storyboardName, type} = text;
         const {dispatch, getState}  = thunkAPI;
         const storyboardId = UUID.v4();
@@ -357,7 +358,6 @@ const addStoryboard = createAsyncThunk(
 const deleteStoryboard = createAsyncThunk(
     'project/deleteStoryboard',
     async (storyboardId, thunkAPI) => {
-
         const {dispatch, getState} = thunkAPI;
         /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
@@ -374,6 +374,8 @@ const deleteStoryboard = createAsyncThunk(
         const response = await ProjectAPI.replaceStoryboardIdMenuInDatabase({
             projectId, storyboardMenu
         });
+        snapLog("deleteStoryboard", {projectId,storyboardMenu, storyboardId});
+
         return response.status;
     }
 );
@@ -403,6 +405,7 @@ const updateStoryboardName = createAsyncThunk(
     'project/updateStoryboardName',
     async (payload, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
+        snapLog("updateStoryboardName", payload);
         dispatch(updateStoryboardNameInMemory(JSON.stringify(payload)));
         /* const isLegalUpdate = await dispatch(loadAuthorData());
         if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
@@ -431,6 +434,7 @@ const addFrame = createAsyncThunk(
     'project/addFrame',
     async (payload, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
+
         let {prevIndex} = payload;
         const project = getState().project.value;
         // globalLog("project: ", project);
@@ -448,6 +452,11 @@ const addFrame = createAsyncThunk(
             prevIndex,
             newId: frameId,
         })));
+        snapLog("addFrame", {
+            storyboardId,
+            prevIndex,
+            newId: frameId,
+        });
         dispatch(setSelectedFrameId(frameId));
         const newFrameList = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId).frameList;
         /* const isLegalUpdate = await dispatch(loadAuthorData());
@@ -468,6 +477,7 @@ const deleteFrame = createAsyncThunk(
     'project/deleteFrame',
     async (frameIndex, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
+        snapLog("deleteFrame");
 
 
         let project = getState().project.value;
@@ -530,6 +540,9 @@ const addStar = createAsyncThunk(
         dispatch(addStarInMemory({
             storyboardId, frameId, actorId, stateId,
         }));
+        snapLog("addStar", {
+            storyboardId, frameId, actorId, stateId,
+        });
         // const storyboardData = ProjectDataHandler.getStoryboard(state.project.value, storyboardId);
         // const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         // const starList =  frameData.starList;
@@ -553,6 +566,9 @@ const updateStarList = createAsyncThunk(
     'project/updateStarList',
     async (payload, thunkAPI) => {
         const {storyboardId, frameId} = payload;
+        snapLog("updateStarList", {
+            storyboardId, frameId,
+        });
         const {dispatch, getState} = thunkAPI;
         // dispatch(updateStarListInMemory(payload));
         const state = getState();
@@ -583,6 +599,9 @@ const deleteStar = createAsyncThunk(
         dispatch(deleteStarInMemory({
             storyboardId, frameId, starId
         }));
+        snapLog("deleteStar", {
+            storyboardId, frameId, starId
+        })
         // const storyboardData = ProjectDataHandler.getStoryboard( getState().project.value, storyboardId);
         // const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
         // const starList =  frameData.starList;
@@ -608,6 +627,7 @@ const copyStar = createAsyncThunk(
             frameId,
             selectedStar,
         } = obj;
+        snapLog("copyStar", obj);
         const {dispatch, getState} = thunkAPI;
         const newStarId = UUID.v4();
         dispatch(copyStarInMemory({
@@ -977,6 +997,7 @@ const saveNote = createAsyncThunk(
     async (obj, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const {storyboardId, text} = obj;
+        snapLog("saveNote", obj);
         // dispatch(saveNoteInMemory({storyboardId, text}));
         // const storyboardId = getState().project.value.selectedId.storyboardId;
         /* const isLegalUpdate = await dispatch(loadAuthorData());
@@ -999,6 +1020,7 @@ const saveRating = createAsyncThunk(
     async (obj, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const {storyboardId, type, val} = obj;
+        snapLog("saveRating", obj);
         dispatch(saveRatingInMemory({storyboardId, type, val}));
         const response = await ProjectAPI.saveRating({
             storyboardId,

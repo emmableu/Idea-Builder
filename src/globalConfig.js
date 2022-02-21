@@ -179,7 +179,12 @@ const snapLog = (msg, data) => {
           console.log("does not have snap instance");
           return;
      }
-     window.snap.postMessage(JSON.stringify({logInfo: {msg, data}}), '*');
+     try {
+          window.snap.postMessage(JSON.stringify({logInfo: {msg, data}}), '*');
+     }
+     catch (e) {
+          console.log("snap log error: ", e);
+     }
 }
 
 Object.freeze(globalConfig);
