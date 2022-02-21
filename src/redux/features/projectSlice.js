@@ -566,9 +566,9 @@ const updateStarList = createAsyncThunk(
     'project/updateStarList',
     async (payload, thunkAPI) => {
         const {storyboardId, frameId} = payload;
-        snapLog("updateStarList", {
-            storyboardId, frameId,
-        });
+        // snapLog("updateStarList", {
+        //     storyboardId, frameId,
+        // });
         const {dispatch, getState} = thunkAPI;
         // dispatch(updateStarListInMemory(payload));
         const state = getState();
