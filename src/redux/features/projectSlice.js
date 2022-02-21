@@ -289,8 +289,8 @@ const addStoryboard = createAsyncThunk(
         const {dispatch, getState}  = thunkAPI;
         const storyboardId = UUID.v4();
         const state = getState();
-        console.log("state.value.originalCostumes: ", JSON.stringify(state.recommend.value.originalCostumes));
-        console.log("state.value.currentCostumes: ", JSON.stringify(state.recommend.value.currentCostumes));
+        // console.log("state.value.originalCostumes: ", JSON.stringify(state.recommend.value.originalCostumes));
+        // console.log("state.value.currentCostumes: ", JSON.stringify(state.recommend.value.currentCostumes));
         const modified = state.recommend.value.modified;
         const projectId = state.project.value._id;
         let storyboardDataJSON, modifiedProject;
@@ -298,7 +298,7 @@ const addStoryboard = createAsyncThunk(
             modifiedProject = null;
             let hasCode;
             const currentStoryboardLen = state.project.value.storyboardMenu.final.items.length;
-            const hasCodeList = state.project.hasCodeList;
+            const hasCodeList = state.project.value.hasCodeList;
             if (type === "final") {
                 if (currentStoryboardLen <= 4) hasCode = hasCodeList.includes(currentStoryboardLen);
                 else {

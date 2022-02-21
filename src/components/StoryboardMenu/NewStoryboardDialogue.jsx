@@ -79,8 +79,8 @@ const NewStoryboardDialogue = props => {
         setIsModalVisible(true);
     };
 
-    const handleOk = () => {
-        dispatch(addStoryboard({
+    const handleOk = async () => {
+        await dispatch(addStoryboard({
             type,
             storyboardName: newStoryboardName,
         }))
