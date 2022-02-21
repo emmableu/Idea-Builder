@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import CodeAPI from "../../api/CodeAPI";
 import {ProjectDataHandler} from "../../data/ProjectData";
+import Cookies from "js-cookie";
 
 
 const getProgram = createAsyncThunk(
@@ -16,6 +17,10 @@ const getProgram = createAsyncThunk(
             storyboardData, actorList, backdropList, eventList
         );
         dispatch(setSnapXml(projectXml));
+        CodeAPI.saveCurrentProgram({
+            userId: Cookies.get('userId'),
+            storyboardId, storyboardName: storyboardData.name, projectXml,
+         }).then();
     }
 )
 

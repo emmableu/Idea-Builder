@@ -36,7 +36,6 @@ const getStoryboardNoteData = createSelector(
         const note = s?s.note:"";
         const confidenceRating = s && s.confidenceRating ? s.confidenceRating: 0;
         const knowledgeRating = s && s.knowledgeRating ? s.knowledgeRating: 0;
-        console.log("confidenceRating: ", confidenceRating);
         return {
             storyboardId: storyboardId,
             note,

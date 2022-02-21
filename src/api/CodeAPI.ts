@@ -1,4 +1,5 @@
 import axios from "../axios/ideaTranslatorAxiosConfig";
+import axiosPython from "../axios/ideaServerAxiosConfig";
 import {StoryboardData} from "../data/StoryboardData";
 import {ActorData} from "../data/ActorData";
 import {BackdropData} from "../data/BackdropData";
@@ -28,7 +29,7 @@ class CodeAPI {
     }
 
     static async postSnapXML (projectName:string, projectJson:any, type:string) {
-        console.log("postSnapXML");
+        // console.log("postSnapXML");
         const response = await axiosExpress({
             method: 'post',
             url: `/post-snap-xml/${projectName}`,
@@ -36,6 +37,15 @@ class CodeAPI {
                 projectJson: projectJson === null? null: JSON.stringify(projectJson),
                 type,
             }
+        })
+        return response.data;
+    }
+
+    static async saveCurrentProgram(obj: { userId: any; storyboardId: any; storyboardName: string; projectXml: any; }) {
+        const response = await axiosPython({
+            method: 'post',
+            url: `/save_current_program`,
+            data: obj,
         })
         return response.data;
     }
