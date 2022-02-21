@@ -56,7 +56,7 @@ const NewStoryboardDialogue = props => {
         //     "antearry",
         //     "aahasan"
         // ].includes(Cookies.get('userId'));
-        const cond1Calc = false; // FOR dev, set as false, need to change to true.
+        const cond1Calc = true; // FOR dev, set as false, need to change to true.
         setCond1(cond1Calc);
 
         }, []
@@ -64,7 +64,7 @@ const NewStoryboardDialogue = props => {
 
     React.useEffect( () => {
             if (cond1) {
-                setIsCreateDisabled(newStoryboardName==="" || current < 2)
+                setIsCreateDisabled(newStoryboardName==="" || current < 1)
             }
             else {
                 setIsCreateDisabled(newStoryboardName==="")

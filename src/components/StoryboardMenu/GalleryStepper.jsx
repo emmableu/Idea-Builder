@@ -19,10 +19,10 @@ const steps = [
         title: 'choose storyboard',
         content: 'First-content',
     },
-    {
-        title: 'swap costumes',
-        content: 'Second-content',
-    },
+    // {
+    //     title: 'swap costumes',
+    //     content: 'Second-content',
+    // },
     {
         title: 'add name',
         content: 'Last-content',
@@ -56,27 +56,30 @@ const GalleryStepper = (props) => {
     const dispatch = useDispatch();
 
     const prev = () => {
-        if (selected === null) {
-            setCurrent(0)
-        }
-        else {
-            if (current === 2) {
-                dispatch(resetModifiedRecommend());
-            }
+        if (current === 1) {
             setCurrent(current - 1);
         }
+        // if (selected === null) {
+        //     setCurrent(0)
+        // }
+        // else {
+        //     if (current === 2) {
+        //         dispatch(resetModifiedRecommend());
+        //     }
+        //     setCurrent(current - 1);
+        // }
     };
 
     const next = () => {
-        // if (current === 2) {
-        //     dispatch(resetModifiedRecommend());
-        // }
+        if (current === 1) {
+            dispatch(resetModifiedRecommend());
+        }
         setCurrent(current + 1);
     };
 
     const createEmptyStoryboard = () => {
         dispatch(clearModifiedRecommend());
-        setCurrent(2)
+        setCurrent(1)
     }
 
     return (
@@ -88,27 +91,34 @@ const GalleryStepper = (props) => {
                     <Step key={item.title} title={item.title} />
                 ))}
             </Steps>
+            {current === 0 && (
+                <div style={{padding: "10px 0px", display: "flex", justifyContent:"center", alignItems:"center"}}>
+                <Button type="primary" onClick={createEmptyStoryboard} style={{width: "200"}}>
+                    Create an Empty Storyboard
+                </Button>
+                </div>
+            )}
             <div className={classes.stepsContent}>
                 {current === 0 &&
                     <StoryboardGallery
                         setCurrent={setCurrent}
                     />
                 }
-                {current === 1 &&
-                    <>
-                    <Typography style={{fontStyle: 'italic',color: "grey"}} component="h1" variant="body2">
-                        Select an actor in this example to swap it's costume, or click next to continue.
-                    </Typography>
-                        <div style={{height: 160}}>
-                            <ModifyingFrameList/>
-                        </div>
-                        <CostumeSwapperStepper
-                            setCurrent={setCurrent}
-                        />
-                    </>
-                }
+                {/*{current === 1 &&*/}
+                {/*    <>*/}
+                {/*    <Typography style={{fontStyle: 'italic',color: "grey"}} component="h1" variant="body2">*/}
+                {/*        Select an actor in this example to swap it's costume, or click next to continue.*/}
+                {/*    </Typography>*/}
+                {/*        <div style={{height: 160}}>*/}
+                {/*            <ModifyingFrameList/>*/}
+                {/*        </div>*/}
+                {/*        <CostumeSwapperStepper*/}
+                {/*            setCurrent={setCurrent}*/}
+                {/*        />*/}
+                {/*    </>*/}
+                {/*}*/}
                 {
-                    current === 2 &&
+                    current === 1 &&
                         <NewStoryboardNameInput
                             setNewStoryboardName={setNewStoryboardName}
                         />
@@ -116,21 +126,16 @@ const GalleryStepper = (props) => {
 
             </div>
             <div className={classes.stepsAction}>
-                {current === 0 && (
-                    <Button type="primary" onClick={createEmptyStoryboard}>
-                        Create empty storyboard
-                    </Button>
-                )}
                 {current > 0 && (
                     <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
                         Back
                     </Button>
                 )}
-                {current === 1 && (
-                    <Button type="primary" style={{ margin: '0 8px' }} onClick={() => next()}>
-                        Next
-                    </Button>
-                )}
+                {/*{current === 1 && (*/}
+                {/*    <Button type="primary" style={{ margin: '0 8px' }} onClick={() => next()}>*/}
+                {/*        Next*/}
+                {/*    </Button>*/}
+                {/*)}*/}
             </div>
         </>
     );
