@@ -13,7 +13,7 @@ const SurveyComponent = (props) => {
     const localSurveyCompleted = localStorage.getItem("surveyCompleted");
     const [surveyCompleted, setSurveyCompleted] = React.useState(localSurveyCompleted === "true");
     const survey = new Survey.Model(surveyContent);
-    const showTime = Date.parse('23 Feb 2022 02:52:00 EST');
+    const showTime = Date.parse('23 Feb 2022 02:55:00 EST');
     // const showTime = Date.parse('23 Feb 2022 11:10:00 EST');
     function sendDataToServer(survey) {
         //send Ajax request to your web server.
