@@ -10,28 +10,175 @@
         },
         {
           "type": "rating",
-          "name": "question1",
-          "title": "I was able to be expressive and creative while making storyboards."
+          "name": "creative",
+          "title": "I was able to be expressive and creative while making storyboards.",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "creative-explain",
+          "visibleIf": "{creative} notempty",
+          "title": "Give an example, or explain why.",
+          "isRequired": true,
+          "validators": [
+            {
+              "type": "text",
+              "minLength": 30
+            }
+          ]
         },
         {
           "type": "rating",
-          "name": "question2",
-          "title": "I was very engaged in this design activity - I enjoyed this activity and would do it again."
+          "name": "engaged",
+          "title": "I was very engaged in this design activity - I enjoyed this activity and would do it again.",
+          "isRequired": true
         },
         {
           "type": "rating",
-          "name": "question4",
-          "title": "I'm proud of the design I created."
+          "name": "proud",
+          "title": "I'm proud of the design I created.",
+          "isRequired": true
         },
         {
           "type": "rating",
-          "name": "question5",
-          "title": "The storyboarding process helped me come up with ideas that will require me to use my knowledge of programming."
+          "name": "knowledge",
+          "title": "The storyboarding process helped me come up with ideas that will require me to use my knowledge of programming.",
+          "isRequired": true
         },
         {
           "type": "rating",
-          "name": "question6",
+          "name": "confident-code",
           "title": "I feel confident I can turn my storyboard ideas into Snap code."
+        },
+        {
+          "type": "radiogroup",
+          "name": "prefer-having",
+          "title": "Sometimes the storyboard you were working on would include a relevant code example. Would you prefer having the option to view relevant code examples during storyboarding or not? ",
+          "isRequired": true,
+          "choices": [
+            {
+              "value": "item1",
+              "text": "I prefer not viewing relevant code examples when planning."
+            },
+            {
+              "value": "item2",
+              "text": "To me it viewing and not viewing code examples were the same."
+            },
+            {
+              "value": "item3",
+              "text": "I prefer having the option to see relevant code examples when planning."
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "name": "prefer-having-explain",
+          "visibleIf": "{prefer-having} notempty",
+          "title": "Give an example, or explain why:",
+          "isRequired": true,
+          "validators": [
+            {
+              "type": "text",
+              "minLength": 30
+            }
+          ]
+        },
+        {
+          "type": "rating",
+          "name": "useful",
+          "title": "From not useful (1) to very useful (1), how useful did you find the code examples?",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "useful-explain",
+          "visibleIf": "{useful} > 2",
+          "title": "Can you give a specific scenario of when viewing the example was useful to you ?",
+          "isRequired": true,
+          "validators": [
+            {
+              "type": "text",
+              "minLength": 30
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "name": "unuseful-explain",
+          "visibleIf": "{useful} < 4",
+          "title": "Can you give a specific scenario of when viewing the example was not useful to you ?",
+          "isRequired": true,
+          "validators": [
+            {
+              "type": "text",
+              "minLength": 30
+            }
+          ]
+        },
+        {
+          "type": "html",
+          "name": "question1",
+          "html": "Rate your agreement with the following statements, from highly disagree (1) to highly agree (5). "
+        },
+        {
+          "type": "rating",
+          "name": "effort-with-code",
+          "title": "I put more effort into making storyboards when I was offered code examples.",
+          "isRequired": true
+        },
+        {
+          "type": "rating",
+          "name": "worthwhile-with-code",
+          "title": "I believe making storyboards is more worthwhile if I can see code examples relevant to my plans.",
+          "isRequired": true
+        },
+        {
+          "type": "rating",
+          "name": "implementation-with-code",
+          "title": "I think more about how I'm going to write the code for a storyboard when I see code examples related to the storyboard.",
+          "isRequired": true
+        },
+        {
+          "type": "rating",
+          "name": "find-idea-with-code",
+          "title": "Code examples helped me find ideas that made sense to build in Snap.",
+          "isRequired": true
+        },
+        {
+          "type": "radiogroup",
+          "name": "wrong-code",
+          "title": "Can you think of a situation when you saw a code example that looked different than you expected, or may have been wrong in some way?",
+          "isRequired": true,
+          "choices": [
+            {
+              "value": "yes",
+              "text": "Yes. Sometimes the code example looked different than I expected."
+            },
+            {
+              "value": "no",
+              "text": "No. The code examples matched what I wanted."
+            }
+          ]
+        },
+        {
+          "type": "rating",
+          "name": "wrong-code-rate",
+          "visibleIf": "{wrong-code} = 'yes'",
+          "title": "Rate from disagree (1) to agree (5): When code examples looked different than expected, I still thought the code examples were useful. ",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "wrong-code-explain",
+          "visibleIf": "{wrong-code-rate} notempty",
+          "title": "Give an example, or explain why.",
+          "isRequired": true,
+          "validators": [
+            {
+              "type": "text",
+              "minLength": 30
+            }
+          ]
         }
       ],
       "title": "Idea Builder Survey"

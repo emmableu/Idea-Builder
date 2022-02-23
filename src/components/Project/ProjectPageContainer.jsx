@@ -10,6 +10,7 @@ import FrozenMode from "./FrozenMode";
 import {loadAllRecommend} from "../../redux/features/recommendSlice";
 import {setCodeModalOpen} from "../../redux/features/codeSlice";
 import Code from "../Code/Code";
+import SurveyComponent from "../SurveyComponent";
 
 
 const ProjectPageContainer = () => {
@@ -43,12 +44,22 @@ const ProjectPageContainer = () => {
 
     return (
         <>
-            {frozenMode && <FrozenMode/>}
-        {(!frozenMode && projectData===null) || (!snapWindowLoaded) && <Spinner loading={true}/>}
-        {!frozenMode &&  projectData!==null && view === false && snapWindowLoaded && <ProjectDrawer />}
-        {!frozenMode &&  projectData!==null && view === true && <ViewMode />}
+            {/*{frozenMode && <FrozenMode/>}*/}
+            {
+                view ? <ViewMode/> :
+
+                    projectData === null || !snapWindowLoaded ?
+                        <Spinner loading={true}/> : <ProjectDrawer />
+
+
+            }
+
+        {/*{(!frozenMode && projectData===null) || (!snapWindowLoaded) && <Spinner loading={true}/>}*/}
+        {/*{!frozenMode &&  projectData!==null && view === false && snapWindowLoaded && <ProjectDrawer />}*/}
+        {/*{!frozenMode &&  projectData!==null && view === true && <ViewMode />}*/}
 
             {!view && <Code />}
+            {!view && <SurveyComponent/>}
         </>
 
     )

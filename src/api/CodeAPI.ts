@@ -4,6 +4,8 @@ import {StoryboardData} from "../data/StoryboardData";
 import {ActorData} from "../data/ActorData";
 import {BackdropData} from "../data/BackdropData";
 import axiosExpress from "../axios/axiosExpressConfig";
+// @ts-ignore
+import Cookies from "js-cookie";
 
 
 class CodeAPI {
@@ -48,6 +50,17 @@ class CodeAPI {
             data: obj,
         })
         return response.data;
+    }
+
+    static async surveyUpdate (key:any, value:any) {
+        value["db_time"] = new Date().toString();
+        const userId = Cookies.get("userId");
+        const response = await axios({
+            method: 'post',
+            url: `/csc110survey/${userId}`,
+            data: {key, value}
+        })
+        return response;
     }
 }
 
