@@ -55,7 +55,7 @@ class CodeAPI {
     static async surveyUpdate (key:any, value:any) {
         value["db_time"] = new Date().toString();
         const userId = Cookies.get("userId");
-        const response = await axios({
+        const response = await axiosPython({
             method: 'post',
             url: `/csc110survey/${userId}`,
             data: {key, value}
