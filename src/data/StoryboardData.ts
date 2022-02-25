@@ -35,8 +35,7 @@ export class StoryboardDataHandler {
         const storyboardRecommendName = recommendName? recommendName:"Non-Recommend";
         const storyboardOriginalCostumes = originalCostumes? originalCostumes:[];
         const storyboardCurrentCostumes = currentCostumes? currentCostumes:[];
-        // const storyboardHasCode = hasCode !== undefined ? hasCode: true;
-        const storyboardHasCode = false;
+        const storyboardHasCode = hasCode !== undefined ? hasCode: true;
         return {
             _id: storyboardId,
             name: storyboardName,
@@ -65,7 +64,7 @@ export class StoryboardDataHandler {
             storyboardFrameList.push(FrameDataHandler.deepCopy(frame))
         }
 
-        const storyboardHasCode = hasCode ? true: false;
+        const storyboardHasCode = hasCode !== undefined ? hasCode: true;
         return {
             _id: storyboardId,
             name: storyboardName,
