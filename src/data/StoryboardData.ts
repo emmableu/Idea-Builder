@@ -64,7 +64,7 @@ export class StoryboardDataHandler {
             storyboardFrameList.push(FrameDataHandler.deepCopy(frame))
         }
 
-        const storyboardHasCode = hasCode ? hasCode: true;
+        const storyboardHasCode = hasCode !== undefined ? hasCode: true;
         return {
             _id: storyboardId,
             name: storyboardName,
