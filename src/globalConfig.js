@@ -72,9 +72,10 @@ const globalConfig = {
      storyboardToolBarHeight: 40,
      addNewActorBoxHeight: 50,
      projectDrawerWidth: 270,
+     codeBoxHeight: window.innerHeight - 250,
      panelTabsWidth: 65,
      storyboardTop: storyboardTop,
-     galleryStepperMaxHeight: window.innerHeight - storyboardTop*2 - 200,
+     galleryStepperMaxHeight: window.innerHeight - storyboardTop*2 - 250,
      costumeSwapperHeight: costumeSwapperHeight,
      // noteWidth: 335,
      // responsiveSizeData.frameListHeight: 200,
@@ -172,10 +173,25 @@ const globalLog = (...msgs) => {
       // console.log(...msgs)
 }
 
+
+const snapLog = (msg, data) => {
+     if (!window.snap) {
+          console.log("does not have snap instance");
+          return;
+     }
+     try {
+          window.snap.postMessage(JSON.stringify({logInfo: {msg, data}}), '*');
+     }
+     catch (e) {
+          console.log("snap log error: ", e);
+     }
+}
+
 Object.freeze(globalConfig);
 Object.freeze(calcFrameWidth);
 Object.freeze(globalLog);
+Object.freeze(snapLog);
 
 export default globalConfig;
-export  {calcFrameWidth, globalLog};
+export  {calcFrameWidth, globalLog, snapLog};
 

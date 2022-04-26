@@ -1,14 +1,19 @@
 import axios from "../axios/ideaTranslatorAxiosConfig";
+import axiosPython from "../axios/ideaServerAxiosConfig";
 import {StoryboardData} from "../data/StoryboardData";
 import {ActorData} from "../data/ActorData";
 import {BackdropData} from "../data/BackdropData";
+import axiosExpress from "../axios/axiosExpressConfig";
+// @ts-ignore
+import Cookies from "js-cookie";
+
 
 class CodeAPI {
-    static async getActorCodeList (storyboardData : StoryboardData, actorList : Array<ActorData>, backdropList: Array<BackdropData>,
+    static async getProgram (storyboardData : StoryboardData, actorList : Array<ActorData>, backdropList: Array<BackdropData>,
                                    eventList: Array<{ //user inputs are like key pressed, mouse moving, etc
                                        _id: string; //this id is fixed for now because they are given by default
                                        name: string; //this name is also fixed for now because this is given by default
-                                   }>
+                                   }>,
     ) {
         const response = await axios({
             method: 'post',
@@ -20,20 +25,42 @@ class CodeAPI {
                 eventListJson: eventList,
             }
         })
+        const projectJson = response.data;
+        const xml =  await CodeAPI.postSnapXML(storyboardData.name, projectJson, "csc110");
+        return xml;
+    }
+
+    static async postSnapXML (projectName:string, projectJson:any, type:string) {
+        // console.log("postSnapXML");
+        const response = await axiosExpress({
+            method: 'post',
+            url: `/post-snap-xml/${projectName}`,
+            data: {
+                projectJson: projectJson === null? null: JSON.stringify(projectJson),
+                type,
+            }
+        })
+        return response.data;
+    }
+
+    static async saveCurrentProgram(obj: { userId: any; storyboardId: any; storyboardName: string; projectXml: any; }) {
+        const response = await axiosPython({
+            method: 'post',
+            url: `/save_current_program`,
+            data: obj,
+        })
+        return response.data;
+    }
+
+    static async surveyUpdate (key:any, value:any) {
+        value["db_time"] = new Date().toString();
+        const userId = Cookies.get("userId");
+        const response = await axiosPython({
+            method: 'post',
+            url: `/csc110survey/${userId}`,
+            data: {key, value}
+        })
         return response;
-        // await axios({
-        //     method: 'get',
-        //     url: `/trace/keymove`,
-        // })
-        // const response = await axios({
-        //     method: 'post',
-        //     url: `/edit`,
-        //     data: {
-        //         start: 0,
-        //         end: 3,
-        //     }
-        // })
-        // return response;
     }
 }
 

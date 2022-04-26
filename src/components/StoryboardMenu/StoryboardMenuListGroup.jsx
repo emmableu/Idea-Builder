@@ -36,7 +36,6 @@ function StoryboardMenuListGroup() {
                 onDragEnd={result => onDragEnd(result)}
             >
                 {Object.entries(columns).map(([columnId, column]) => {
-                    // if (column.name === "Drafts") {return;}
                     return (
                         <StoryboardSubMenu
                             columnId={columnId}

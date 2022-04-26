@@ -3,9 +3,11 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Card, Input } from 'antd';
 import { geekblue, magenta } from '@ant-design/colors';
 import grey from '@material-ui/core/colors/grey';
-import { Upload, Button, Tooltip } from 'antd';
+import { Upload, Button } from 'antd';
 import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
+import Tooltip from "@material-ui/core/Tooltip";
+import CodeIcon from '@material-ui/icons/Code';
 import Box from "@material-ui/core/Box";
 import {PlusOutlined, SearchOutlined, UploadOutlined, DragOutlined, DeleteTwoTone} from "@ant-design/icons";
 import {CloudUpload} from "@material-ui/icons";
@@ -18,7 +20,7 @@ import StaticFrameContainerWithAction from "../Frame/StaticFrameContainerWithAct
 import {makeStyles} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import {updateFrameOrder} from "../../redux/features/projectSlice";
-import {getActorCodeList} from "../../redux/features/codeSlice";
+import {getProgram, setCodeModalOpen} from "../../redux/features/codeSlice";
 import Code from "../Code/Code";
 
 
@@ -71,7 +73,7 @@ const getListStyle = isDraggingOver => ({
 
 
 const DroppableContainer = (props) => {
-    const {storyboardId, frameList, handleDelete, handleAdd, _id} = props;
+    const {storyboardId, frameList, handleDelete, handleAdd, _id, hasCode} = props;
     const dispatch = useDispatch();
 
     const onDragEnd = (result) => {
@@ -130,17 +132,29 @@ const DroppableContainer = (props) => {
                             </>
                         ))}
                         {provided.placeholder}
-                            <Grid item xs={3} align="middle">
-                                <Fab color="default" aria-label="add"
+                            <Grid item xs={2} alignItems="center" spacing={1} container={true}
+                                  style={{flexDirection:"column", gap:"10px"}}>
+                                <Tooltip title="New Frame">
+                                <Fab size="medium" color="default" aria-label="add"
                                      onClick={(e) =>{ handleAdd(e)}}
                                 >
                                     <AddIcon
                                     />
                                 </Fab>
-                                <Button
-                                    onClick={() => {dispatch(getActorCodeList(storyboardId))}}
-                                >show code for this storyboard</Button>
-                                <Code/>
+                                </Tooltip>
+                                {
+                                 hasCode === true &&
+                                    <Tooltip title="Show Code for this Storyboard">
+                                        <Fab size="medium" color="secondary" aria-label="code"
+                                             onClick={() => {dispatch(getProgram(storyboardId));
+                                                 dispatch(setCodeModalOpen(true));
+                                             }}
+                                        >
+                                            <CodeIcon
+                                            />
+                                        </Fab>
+                                    </Tooltip>
+                                }
                             </Grid>
                         </Grid>
                 )}

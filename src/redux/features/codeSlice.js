@@ -1,11 +1,11 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import CodeAPI from "../../api/CodeAPI";
 import {ProjectDataHandler} from "../../data/ProjectData";
-import scratchblocks from "scratchblocks";
+import Cookies from "js-cookie";
 
 
-const getActorCodeList = createAsyncThunk(
-    'code/getActorCodeList',
+const getProgram = createAsyncThunk(
+    'code/getProgram',
     async (storyboardId, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const project = getState().project.value;
@@ -13,19 +13,14 @@ const getActorCodeList = createAsyncThunk(
         const actorList = project.actorList;
         const backdropList = project.backdropList;
         const eventList = project.eventList;
-        const response = await CodeAPI.getActorCodeList(
+        const projectXml = await CodeAPI.getProgram(
             storyboardData, actorList, backdropList, eventList
         );
-        if (response.status === 200) {
-            dispatch(setActorCodeList(response.data.actorCodeList))
-            dispatch(setCodeModalOpen(true));
-            setTimeout(() => {
-                scratchblocks.renderMatching("pre.blocks", {
-                style:     'scratch3',   // Optional, defaults to 'scratch2'.
-                languages: ['en'], // Optional, defaults to ['en'].
-                scale: 0.7,                // Optional, defaults to 1
-            })}, 500);
-        }
+        dispatch(setSnapXml(projectXml));
+        CodeAPI.saveCurrentProgram({
+            userId: Cookies.get('userId'),
+            storyboardId, storyboardName: storyboardData.name, projectXml,
+         }).then();
     }
 )
 
@@ -33,19 +28,27 @@ const getActorCodeList = createAsyncThunk(
 export const codeSlice = createSlice({
     name: 'codeSlice',
     initialState: {
-        actorCodeList: [],
+        snapXml: "",
         codeModalOpen: false,
+        snapWindowLoaded: false,
+        codeEvalOpen: false,
     },
     reducers: {
-        setActorCodeList: (state, action) => {
-            state.actorCodeList = action.payload;
+        setSnapXml: (state, action) => {
+            state.snapXml = action.payload;
         },
         setCodeModalOpen: (state, action) => {
             state.codeModalOpen = action.payload;
         },
+        setSnapWindowLoaded: (state, action) => {
+            state.snapWindowLoaded = action.payload;
+        },
+        setCodeEvalOpen: (state, action) => {
+            state.codeEvalOpen = action.payload;
+        },
     },
 })
 
-export const { setActorCodeList, setCodeModalOpen } = codeSlice.actions
-export {getActorCodeList};
+export const { setSnapXml, setCodeModalOpen,setSnapWindowLoaded, setCodeEvalOpen} = codeSlice.actions
+export {getProgram};
 export default codeSlice.reducer

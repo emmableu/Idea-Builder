@@ -11,6 +11,7 @@ import { saveAs } from 'file-saver';
 import axios from "../axios/ideaServerAxiosConfig";
 // @ts-ignore
 import Cookies from "js-cookie";
+import {sampleSize} from "lodash";
 
 // import JSZipUtils from 'jszip-utils'
 // export const generateZip = () => {
@@ -52,16 +53,18 @@ export interface ProjectData {
         _id: string; //this id is fixed for now because they are given by default
         name: string; //this name is also fixed for now because this is given by default
     }>;
+    hasCodeList: Array<number>
 }
 
 export class ProjectDataHandler {
     static initializeProject( importedData:any ) : ProjectData
     {
         const {_id, authorIdList, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
-            selectedId, speechBubbleList, variableList, eventList,
+            selectedId, speechBubbleList, variableList, eventList,hasCodeList
         } = importedData;
         const projectId = _id? _id:UUID.v4();
         const projectName = name? name:"Untitled";
+        // const projectHasCodeList = hasCodeList !== undefined ? hasCodeList: sampleSize([0,1,2,3,4], 3);
         const projectStoryboardList = storyboardList? storyboardList:[];
         // const projectStoryboardList = storyboardList? storyboardList:[StoryboardDataHandler.initializeStoryboard()];
         const projectActorList = actorList? actorList:[];
@@ -79,12 +82,12 @@ export class ProjectDataHandler {
         if (storyboardMenu === undefined) {
              projectStoryboardMenu =  {
                 "final": {
-                    "name": "My storyboards",
+                    "name": "My Storyboards",
                     "items": [
                     ]
                 },
                 "draft":  {
-                    "name": "Drafts",
+                    "name": "My Scribbles",
                     "items": []
                 }
             };
@@ -150,12 +153,13 @@ export class ProjectDataHandler {
             speechBubbleList: projectSpeechBubbleList,
             eventList: projectEventList,
             variableList: projectVariableList,
+            hasCodeList: hasCodeList,
         }
     }
 
     static deepCopy(projectData: ProjectData) : ProjectData {
         const {_id, authorIdList, name, storyboardList, actorList, backdropList, storyboardMenu, templateList,
-            selectedId, speechBubbleList, variableList, eventList
+            selectedId, speechBubbleList, variableList, eventList, hasCodeList
         } = projectData;
         const projectId = UUID.v4();
         const projectName = name;
@@ -182,30 +186,35 @@ export class ProjectDataHandler {
 
         let projectStoryboardMenu = {
             "final": {
-                "name": "My storyboards",
+                "name": "My Storyboards",
                 "items": []
             },
             "draft":  {
-                "name": "Drafts",
+                "name": "My Scribbles",
                 "items": []
-            }};
+            }
+        };
+        console.log("pppidOldNewMap: ", idOldNewMap)
         if (storyboardMenu) {
             if (storyboardMenu.final === undefined || storyboardMenu.draft === undefined) {
             }
             else {
                 if (storyboardMenu.final.items === undefined || storyboardMenu.draft.items === undefined) {}
                 else {
-                    for (const id of storyboardMenu.final.items) {
-                        // @ts-ignore
-                        projectStoryboardMenu.final.items.push(idOldNewMap[id])
-                    }
-                    for (const id of storyboardMenu.draft.items) {
-                        // @ts-ignore
-                        projectStoryboardMenu.draft.items.push(idOldNewMap[id])
-                    }
+                    try {
+                        for (const item of storyboardMenu.final.items) {
+                            // @ts-ignore
+                            projectStoryboardMenu.final.items.push({_id: idOldNewMap[item._id], name: storyboardList.find(s => s._id === item._id).name,})
+                        }
+                        for (const item of storyboardMenu.draft.items) {
+                            // @ts-ignore
+                            projectStoryboardMenu.draft.items.push({_id: idOldNewMap[item._id], name: storyboardList.find(s => s._id === item._id).name,})
+                        }
+                    } catch (e) {console.log(e)}
                 }
             }
         }
+        console.log("pppprojectStoryboardMenu: ", projectStoryboardMenu);
 
 
         const projectSelectedId = SelectedIdDataHandler.initializeSelectedId(
@@ -216,7 +225,7 @@ export class ProjectDataHandler {
         const projectEventList = eventList;
 
         const projectVariableList = variableList? variableList: [];
-
+        const projectHasCodeList = hasCodeList
         //variable changes to resources (e.g., should have icons, should have big speechBubble and character limit.
 
         return {
@@ -232,10 +241,39 @@ export class ProjectDataHandler {
             speechBubbleList: projectSpeechBubbleList,
             eventList: projectEventList,
             variableList: projectVariableList,
+            hasCodeList: projectHasCodeList,
         }
     }
 
 
+
+    static calcNotification (storyboardId:string, storyboardList:Array<StoryboardData>, storyboardMenu:any) {
+        const s = storyboardList.find(s => s._id === storyboardId)
+        if (!s) return {showRating:false, showCodeNotification:false,confidenceRating:0, knowledgeRating:0}
+        const confidenceRating = s && s.confidenceRating ? s.confidenceRating: 0;
+        const knowledgeRating = s && s.knowledgeRating ? s.knowledgeRating: 0;
+        const usefulRating = s && s.usefulRating ? s.usefulRating: 0;
+        const hasCode = !!(s && s.hasCode === true);
+        let showRating = false;
+        let showCodeNotification = false;
+        let finalStoryboardIdLst = storyboardMenu.final.items.map((i: { _id: any; }) => i._id);
+        if (
+            finalStoryboardIdLst.includes(storyboardId)
+        ) {
+            const frameLen = s.frameList.length;
+            if (frameLen >= 2) {
+                if (confidenceRating === 0 || knowledgeRating === 0) {
+                    showRating = true;
+                }
+                if (hasCode === true && usefulRating === 0) {
+                    showCodeNotification = true;
+                }
+            }
+        }
+        return {showRating,
+            showCodeNotification,
+            confidenceRating, knowledgeRating};
+    }
     /* below are about storyboards */
 
     static addStoryboard (projectData: ProjectData, type:"draft"|"final", newStoryboardData:any) {
@@ -248,7 +286,7 @@ export class ProjectDataHandler {
             newStoryboardData
         )
 
-        projectData.templateList.unshift(newStoryboardData.frameList[0]._id);
+        // projectData.templateList.unshift(newStoryboardData.frameList[0]._id);
 
     }
 

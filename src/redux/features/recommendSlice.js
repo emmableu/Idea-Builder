@@ -11,6 +11,7 @@ const loadAllRecommend = createAsyncThunk(
         const rawNameList = getState().recommend.value.nameList;
         for (const rawName of rawNameList) {
             const projectName = rawName.split(' ').join('%20');
+            // const url = `/static/csc110s22/${projectName}/recommend.json`;
             const url = `/static/week2project/${projectName}/recommend.json`;
             await axios({
                 method: 'get',
@@ -45,28 +46,29 @@ export const recommendSlice = createSlice({
             originalCostumes: [],
             // originalBackdrops: [],
             currentCostumes: [],
+            // nameList: ['carousel']
             nameList:
-                ['Bounce Around the Stage',
-                    'Paw Prints',
+                [
                     'Select a Button in a List',
                     'Move When Key Is Pressed',
-                    'Boat Race',
-                    'Snake Eating Apples',
-                    'Create Many Actors',
+                    // 'Boat Race',
+                    // 'Snake Eating Apples',
+                    // 'Create Many Actors',
                     'Click Icon to Show and Hide Calendar',
-                    'Increases Score When Explode',
+                    // 'Increases Score When Explode',
                     'Move With the Mouse',
                     'Browse Through Carousel',
                     'Helicopter Dropping Water',
-                    'Snake Turning',
-                    'Game Timer',
-                    'Flower Grows When Water Dropped',
-                    'Bounce on paddle',
-                    'Actor Moves Randomly to the Right',
-                    'Initialize Actors to Random Positions',
-                    'Move Between Points',
+                    // 'Snake Turning',
+                    // 'Game Timer', this does not show up
+                    // 'Flower Grows When Water Dropped',
+                    'Bounce on Paddle',
+                    // 'Actor Moves Randomly to the Right',
+                    // 'Initialize Actors to Random Positions',
+                    // 'Move Between Points',
                     'Jump',
-                    'Catching Fruit'],
+                    // 'Catching Fruit'
+                ],
         },
     },
     reducers: {
@@ -187,24 +189,6 @@ export const recommendSlice = createSlice({
             state.value.currentCostumes[selected] = {_id: newStateId, name: "untitled", type: type};
             // console.log("modified: ", state.value.modified);
         },
-
-
-        // modifyRecommendBackdrop: (state, action) => {
-        //     const {stateId, newStateId, currentCostumeStep} = action.payload;
-        //     state.value.currentBackdrops[currentCostumeStep]= {_id: newStateId, name: "stage"};
-        //     ProjectDataHandler.swapBackdrop(state.value.modified, stateId, newStateId);
-        //     // console.log("modified: ", state.value.modified);
-        // },
-
-        // justModifyStateId: (state, action) => {
-        //     const {idx, type} = action.payload;
-        //     if (type === "backdrop") {
-        //         state.value.currentBackdrops[idx] = state.value.originalBackdrops[idx];
-        //     }
-        //     else if (type === "state") {
-        //         state.value.currentCostumes[idx] = state.value.originalCostumes[idx];
-        //     }
-        // }
     },
 })
 

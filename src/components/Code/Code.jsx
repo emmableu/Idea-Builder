@@ -1,68 +1,99 @@
 import {useDispatch, useSelector} from "react-redux";
 import axios from "../../axios/ideaTranslatorAxiosConfig";
-import { Image, Modal, Button } from 'antd';
-import scratchblocks from 'scratchblocks';
+import { Image, Modal, Button, Popconfirm } from 'antd';
 import React from "react";
-import {setCodeModalOpen} from "../../redux/features/codeSlice";
+import {setCodeEvalOpen, setCodeModalOpen, setSnapWindowLoaded, setSnapXml} from "../../redux/features/codeSlice";
+import { Spin, Alert } from 'antd';
+import globalConfig, {snapLog} from "../../globalConfig";
+import ExampleEval from "./ExampleEval";
+import {saveRating} from "../../redux/features/projectSlice";
 
-const Code = () => {
+const Code = (props) => {
+    const storyboardId = useSelector(state =>  (state.project.value && state.project.value.selectedId) ?state.project.value.selectedId.storyboardId:null);
+    const codeModalOpen = useSelector(s => s.code.codeModalOpen);
+    const snapWindowLoaded = useSelector(s => s.code.snapWindowLoaded);
     const dispatch = useDispatch();
-    const actorCodeList = useSelector(state => state.code.actorCodeList);
-    // const codeModalOpen = useSelector(state => state.code.codeModalOpen);
-    const codeModalOpen = false;
-    React.useEffect( ()=> {
-        if (!codeModalOpen) return;
-    }, [actorCodeList])
+    const snapXml = useSelector(state => state.code.snapXml);
+    const iframe = React.useRef(null);
+    // const [snapWindowLoaded, setSnapWindowLoaded] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
+    const [currentVal, setCurrentVal] = React.useState(0);
+
+    React.useEffect(
+        () => {
+            if (iframe.current) {
+                window.snap = iframe.current.contentWindow;
+            }
+        }, [iframe.current]
+    )
+
+
+    React.useEffect(
+        () => {
+            if (snapXml && snapWindowLoaded && iframe.current) {
+                iframe.current.contentWindow.postMessage(JSON.stringify({snapXml}), '*');
+                setLoading(false);
+            }
+        }, [snapXml, snapWindowLoaded]
+    )
+    window.onmessage = function(e) {
+        if (e.data === 'snapWindowLoaded') {
+            dispatch(setSnapWindowLoaded(true));
+        }
+    };
+
+    const handleClose = () => {
+        dispatch(setCodeModalOpen(false));
+        dispatch(setSnapXml(""));
+        dispatch(saveRating({storyboardId, type: "usefulRating", val:currentVal}))
+        snapLog("saveRatingAndClose", {storyboardId, type: "usefulRating", val:currentVal});
+        // dispatch(setCodeEvalOpen(true));
+        // snapLog("closeExample");
+        setCurrentVal(0);
+    }
+
     return (
         <>
-        {codeModalOpen &&
         <Modal title="Code for this storyboard" visible={codeModalOpen}
-               style={{top: 300}}
-               width={1500}
+               style={{ top: 60 }}
+               keyboard={false}
+               width="90%"
+               closable={false}
+               maskClosable={false}
                footer={[
-                   <Button key="ok" type="primary" onClick={() => {dispatch(setCodeModalOpen(false))}}>
-                       OK
-                   </Button>]}
-               onCancel={() => {dispatch(setCodeModalOpen(false))}}
 
-        >
-        <div
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                gap: 50,
-            }}
-        >
-            {  actorCodeList.length > 0 &&
-            actorCodeList.map((data) => (
-                <>
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        gap: 10,
-                        border: "1px solid grey",
-                    }}
-                >
-                    {/*<Image*/}
-                    {/*    width={50}*/}
-                    {/*    height={50}*/}
-                    {/*    src={ axios.baseURL + data.actorImg}*/}
-                    {/*    fallback="data:image/png;base64,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"*/}
-                    {/*/>*/}
-                    <p>{data.name}</p>
-                    <pre className="blocks">
-                                {data.code}
-                    </pre>
-                </div>
-                </>
-            ))
-            }
+                       storyboardId?
 
-        </div>
+                           <Popconfirm
+                               placement="topRight"
+                               title={<ExampleEval storyboardId={storyboardId} currentVal={currentVal} setCurrentVal={setCurrentVal}/>}
+                               onConfirm={handleClose}
+                               okText="Ok"
+                               okButtonProps={{disabled:currentVal === 0}}
+                               showCancel={false}
+                               // cancelText="No"
+                           > <Button key="ok" type="primary">
+                               OK
+                           </Button>
+
+                           </Popconfirm> :
+                           <Button key="ok" type="primary" onClick={handleClose}>
+                               OK
+                           </Button>
+
+               ]}
+               onCancel={handleClose}
+        >
+            <div style={{height: globalConfig.codeBoxHeight, width: "100%"}}>
+                <Spin tip="Generating code..." spinning={loading} size="large">
+                <iframe ref={iframe}
+                        style={{border:"0px solid black"}}
+                        width="100%"
+                        height={`${globalConfig.codeBoxHeight}px`}
+                        src={process.env.REACT_APP_SNAP_REPLAY_URL}/>
+                </Spin>
+            </div>
         </Modal>
-        }
         </>
 
     )

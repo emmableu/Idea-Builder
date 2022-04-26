@@ -8,6 +8,9 @@ import ViewMode from "../ViewMode/ViewMode";
 import {loadAssets} from "../../redux/features/allRecommendSlice";
 import FrozenMode from "./FrozenMode";
 import {loadAllRecommend} from "../../redux/features/recommendSlice";
+import {setCodeModalOpen} from "../../redux/features/codeSlice";
+import Code from "../Code/Code";
+import SurveyComponent from "../SurveyComponent";
 
 
 const ProjectPageContainer = () => {
@@ -16,6 +19,13 @@ const ProjectPageContainer = () => {
     const projectData = useSelector(
         state => state.project.value
     );
+    const snapWindowLoaded = useSelector(s => s.code.snapWindowLoaded);
+
+    React.useEffect(() => {
+        if (snapWindowLoaded) {
+            dispatch(setCodeModalOpen(false));
+        }
+    }, [snapWindowLoaded])
 
     const view = useSelector(
         state => state.mode.view
@@ -26,6 +36,7 @@ const ProjectPageContainer = () => {
             return state.author.value.frozenMode}
     )
     React.useEffect(() => {
+            dispatch(setCodeModalOpen(true));
             dispatch(loadProjectFromDatabase(_id))
             dispatch(loadAllRecommend());
             // dispatch(loadAssets());
@@ -33,10 +44,22 @@ const ProjectPageContainer = () => {
 
     return (
         <>
-            {frozenMode && <FrozenMode/>}
-        {!frozenMode && projectData===null && <Spinner loading={true}/>}
-        {!frozenMode &&  projectData!==null && view === false && <ProjectDrawer />}
-        {!frozenMode &&  projectData!==null && view === true && <ViewMode />}
+            {/*{frozenMode && <FrozenMode/>}*/}
+            {
+                view ? <ViewMode/> :
+
+                    projectData === null || !snapWindowLoaded ?
+                        <Spinner loading={true}/> : <ProjectDrawer />
+
+
+            }
+
+        {/*{(!frozenMode && projectData===null) || (!snapWindowLoaded) && <Spinner loading={true}/>}*/}
+        {/*{!frozenMode &&  projectData!==null && view === false && snapWindowLoaded && <ProjectDrawer />}*/}
+        {/*{!frozenMode &&  projectData!==null && view === true && <ViewMode />}*/}
+
+            {!view && <Code />}
+            {!view && <SurveyComponent/>}
         </>
 
     )

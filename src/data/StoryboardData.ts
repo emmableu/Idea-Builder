@@ -7,6 +7,12 @@ export interface StoryboardData {
     frameList: Array<FrameData>
     note:string;
     recommendName: string;
+    originalCostumes: Array<any>;
+    currentCostumes: Array<any>;
+    confidenceRating: number,
+    knowledgeRating: number,
+    usefulRating: number,
+    hasCode: boolean,
 }
 
 
@@ -20,39 +26,57 @@ export class StoryboardDataHandler {
     {
         // {_id?: string, name?:string, order?:number, frameList?:Array<FrameData>,
         //     note?:string, isRecommand?:boolean,}
-        const {_id, name, frameList, note, recommendName} = storyboardData;
+        const {_id, name, frameList, note, recommendName, originalCostumes, currentCostumes, confidenceRating, knowledgeRating, usefulRating, hasCode} = storyboardData;
 
         const storyboardId = _id? _id:UUID.v4();
         const storyboardName = name? name:"Untitled";
         const storyboardFrameList = frameList? frameList:[FrameDataHandler.initializeFrame()]
         const storyboardNote = note? note:"Key changes between the begin and end frame:";
         const storyboardRecommendName = recommendName? recommendName:"Non-Recommend";
-
+        const storyboardOriginalCostumes = originalCostumes? originalCostumes:[];
+        const storyboardCurrentCostumes = currentCostumes? currentCostumes:[];
+        const storyboardHasCode = hasCode !== undefined ? hasCode: true;
         return {
             _id: storyboardId,
             name: storyboardName,
             frameList: storyboardFrameList,
             note: storyboardNote,
             recommendName: storyboardRecommendName,
+            originalCostumes: storyboardOriginalCostumes,
+            currentCostumes: storyboardCurrentCostumes,
+            confidenceRating: confidenceRating?confidenceRating:0,
+            knowledgeRating: knowledgeRating?knowledgeRating:0,
+            usefulRating: usefulRating?usefulRating:0,
+            hasCode: storyboardHasCode,
         }
     }
 
 
     static deepCopy(storyboardData: StoryboardData) {
-        const {name, frameList, note, recommendName} = storyboardData;
+        const {name, frameList, note, recommendName, originalCostumes, currentCostumes, confidenceRating, knowledgeRating, usefulRating, hasCode} = storyboardData;
         const storyboardId = UUID.v4();
         const storyboardName = name;
         const storyboardNote = note;
         const storyboardFrameList = [];
+        const storyboardOriginalCostumes = originalCostumes? originalCostumes:[];
+        const storyboardCurrentCostumes = currentCostumes? currentCostumes:[];
         for (const frame of frameList) {
             storyboardFrameList.push(FrameDataHandler.deepCopy(frame))
         }
+
+        const storyboardHasCode = hasCode !== undefined ? hasCode: true;
         return {
             _id: storyboardId,
             name: storyboardName,
             frameList: storyboardFrameList,
             note: storyboardNote,
             recommendName: recommendName? recommendName:"Non-Recommend",
+            originalCostumes: storyboardOriginalCostumes,
+            currentCostumes: storyboardCurrentCostumes,
+            confidenceRating: confidenceRating?confidenceRating:0,
+            knowledgeRating: knowledgeRating?knowledgeRating:0,
+            usefulRating: usefulRating?usefulRating:0,
+            hasCode: storyboardHasCode,
         }
     }
 

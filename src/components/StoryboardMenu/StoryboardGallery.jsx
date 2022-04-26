@@ -123,10 +123,8 @@ const StoryboardGallery = (props) => {
             <Container maxWidth='lg'
             >
                 <Typography style={{fontStyle: 'italic',color: "grey"}} component="h1" variant="body2">
-                    You may select a recommended storyboard to begin with.
-                    When you program in Snap for Project 1,
-                    you will see <a target="_blank" href="https://isnap.csc.ncsu.edu/public/example-helper/snap.html?assignment=project1">code examples</a>
-                    {" "}  for these storyboards.
+                    You may also select an example storyboard to begin with.
+                    As shown by these below examples, your storyboard should convey only <b>1 single trigger-action-based mechanic </b>.
                 </Typography>
                 {projectList.map(p => (
                     <FrameListBox
