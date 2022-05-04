@@ -59,7 +59,7 @@ const ProjectPageContainer = () => {
         {/*{!frozenMode &&  projectData!==null && view === true && <ViewMode />}*/}
 
             {!view && <Code />}
-            {!view && <SurveyComponent/>}
+            {/*{!view && <SurveyComponent/>}*/}
         </>
 
     )

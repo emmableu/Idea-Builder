@@ -24,13 +24,14 @@ const StoryboardMenuItem = (props) => {
     }
 
     return (
-        <NotificationHOC normalHandleClick={normalHandleClick}>
-            {handleClick =>
+        // <NotificationHOC normalHandleClick={normalHandleClick}>
+        //     {handleClick =>
                 <Paper
                     elevation={3}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
-                    onClick={handleClick}
+                    // onClick={handleClick}
+                    onClick={normalHandleClick}
                     onMouseEnter={toggleHover}
                     onMouseLeave={toggleHover}
                     style={{
@@ -70,8 +71,8 @@ const StoryboardMenuItem = (props) => {
                 </Paper>
 
 
-            }
-        </NotificationHOC>
+            // }
+        // </NotificationHOC>
     )
 }
 

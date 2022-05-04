@@ -47,7 +47,8 @@ export class StoryboardDataHandler {
             confidenceRating: confidenceRating?confidenceRating:0,
             knowledgeRating: knowledgeRating?knowledgeRating:0,
             usefulRating: usefulRating?usefulRating:0,
-            hasCode: storyboardHasCode,
+            hasCode: true, // set hasCode to always be true
+            // hasCode: storyboardHasCode,
         }
     }
 
