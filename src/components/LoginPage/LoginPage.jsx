@@ -80,6 +80,15 @@ const LoginPage = () => {
         });
     };
 
+
+    const handleKeyPress = (e) => {
+        if(e.keyCode === 13){
+            // console.log('value', e.target.value);
+            // put the login here
+            login()
+        }
+    }
+
     return (
         <ThemeProvider theme={globalConfig.dashboardTheme()}>
         <Container component="main" maxWidth="xs">
@@ -95,14 +104,14 @@ const LoginPage = () => {
                 <Typography component="h1" variant="subtitle2" className={classes.instruction}>
                         Sign in using your unity ID
                 </Typography>
-                <form className={classes.form} noValidate>
+                    <Box className={classes.form} noValidate onKeyDown={handleKeyPress}>
                     <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
                         id="userId"
-                        label="Unity ID"
+                        label="User ID"
                         name="userId"
                         autoComplete="userId"
                         autoFocus
@@ -117,7 +126,7 @@ const LoginPage = () => {
                     >
                         Sign In
                     </Button>
-                </form>
+                </Box>
             </Paper>
         </Container>
         </ThemeProvider>
