@@ -36,7 +36,7 @@ const ProjectPageContainer = () => {
             return state.author.value.frozenMode}
     )
     React.useEffect(() => {
-            dispatch(setCodeModalOpen(true));
+            // dispatch(setCodeModalOpen(true));
             dispatch(loadProjectFromDatabase(_id))
             dispatch(loadAllRecommend());
             // dispatch(loadAssets());
@@ -48,8 +48,11 @@ const ProjectPageContainer = () => {
             {
                 view ? <ViewMode/> :
 
-                    projectData === null || !snapWindowLoaded ?
-                        <Spinner loading={true}/> : <ProjectDrawer />
+                    // projectData === null || !snapWindowLoaded ?
+                    //     <Spinner loading={true}/> : <ProjectDrawer />
+
+                projectData === null ?
+                <Spinner loading={true}/> : <ProjectDrawer />
 
 
             }

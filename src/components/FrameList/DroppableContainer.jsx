@@ -142,19 +142,19 @@ const DroppableContainer = (props) => {
                                     />
                                 </Fab>
                                 </Tooltip>
-                                {
-                                 hasCode === true &&
-                                    <Tooltip title="Show Code for this Storyboard">
-                                        <Fab size="medium" color="secondary" aria-label="code"
-                                             onClick={() => {dispatch(getProgram(storyboardId));
-                                                 dispatch(setCodeModalOpen(true));
-                                             }}
-                                        >
-                                            <CodeIcon
-                                            />
-                                        </Fab>
-                                    </Tooltip>
-                                }
+                                {/*{*/}
+                                {/* hasCode === true &&*/}
+                                {/*    <Tooltip title="Show Code for this Storyboard">*/}
+                                {/*        <Fab size="medium" color="secondary" aria-label="code"*/}
+                                {/*             onClick={() => {dispatch(getProgram(storyboardId));*/}
+                                {/*                 dispatch(setCodeModalOpen(true));*/}
+                                {/*             }}*/}
+                                {/*        >*/}
+                                {/*            <CodeIcon*/}
+                                {/*            />*/}
+                                {/*        </Fab>*/}
+                                {/*    </Tooltip>*/}
+                                {/*}*/}
                             </Grid>
                         </Grid>
                 )}
