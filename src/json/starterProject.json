@@ -45,27 +45,9 @@
             ]
         },
         {
-            "_id": "33f0cfb1-0a11-40c3-b3de-ee0bdfd57fa6",
-            "name": "Bags of Stuff",
-            "note": "\"Bags of Stuff\" is a brainstorming technique, where you start by dumping elements that you want into one or more frames on the left.\n",
-            "recommendName": "Non-Recommend",
-            "originalCostumes": [],
-            "currentCostumes": [],
-            "frameList": [
-                {
-                    "_id": "static/student/frame/7f199870-03a9-4423-a4cd-bb9a91aa1901.png",
-                    "backdropStar": {
-                        "prototypeId": null,
-                        "_id": null
-                    },
-                    "starList": []
-                }
-            ]
-        },
-        {
             "_id": "605cfde9-5061-4ac8-ac88-8b7f2e94ed38",
-            "name": "Other Descriptions and Notes",
-            "note": "You don't need to put everything of your design into storyboards.\nUse this section to add non-storyboard items. (e.g., descriptions of your game / actors). ",
+            "name": "Draft Storyboard 1",
+            "note": "",
             "recommendName": "Non-Recommend",
             "originalCostumes": [],
             "currentCostumes": [],
@@ -114,15 +96,11 @@
             ]
         },
         "draft": {
-            "name": "My Scribbles",
+            "name": "My Drafts",
             "items": [
                 {
-                    "_id": "33f0cfb1-0a11-40c3-b3de-ee0bdfd57fa6",
-                    "name": "Bags of Stuff"
-                },
-                {
                     "_id": "605cfde9-5061-4ac8-ac88-8b7f2e94ed38",
-                    "name": "Other Descriptions and Notes"
+                    "name": "Draft Storyboard 1"
                 }
             ]
         }

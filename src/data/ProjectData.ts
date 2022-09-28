@@ -87,7 +87,7 @@ export class ProjectDataHandler {
                     ]
                 },
                 "draft":  {
-                    "name": "My Scribbles",
+                    "name": "My Drafts",
                     "items": []
                 }
             };
@@ -190,11 +190,11 @@ export class ProjectDataHandler {
                 "items": []
             },
             "draft":  {
-                "name": "My Scribbles",
+                "name": "My Drafts",
                 "items": []
             }
         };
-        console.log("pppidOldNewMap: ", idOldNewMap)
+        // console.log("pppidOldNewMap: ", idOldNewMap)
         if (storyboardMenu) {
             if (storyboardMenu.final === undefined || storyboardMenu.draft === undefined) {
             }
