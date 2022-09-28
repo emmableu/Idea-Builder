@@ -94,7 +94,7 @@ const NoteBox = (props) => {
                         placeholder="Key mechanics" bordered={false} />
                 </CardContent>
             </Card>
-            <RatingPaper confidenceRating={confidenceRating} knowledgeRating={knowledgeRating} handleChangeConfidence={handleChangeConfidence} handleChangeKnowledge={handleChangeKnowledge} />
+            {/*<RatingPaper confidenceRating={confidenceRating} knowledgeRating={knowledgeRating} handleChangeConfidence={handleChangeConfidence} handleChangeKnowledge={handleChangeKnowledge} />*/}
         </div>
     )
 }

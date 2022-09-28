@@ -49,16 +49,16 @@ const StoryboardTitleBar =  () => {
                         <StoryboardTitleEdiText />
                     </div>
                 </Grid>
-                <Grid item xs={2} align="right">
-                    <Button
-                        className={classes.button}
-                        target="_blank"
-                        href="https://go.ncsu.edu/csc110project1"
-                        endIcon={<OutBoundIcon/>}
-                    >
-                        Project 1 Design Requirements
-                    </Button>
-                </Grid>
+                {/*<Grid item xs={2} align="right">*/}
+                {/*    <Button*/}
+                {/*        className={classes.button}*/}
+                {/*        target="_blank"*/}
+                {/*        href="https://go.ncsu.edu/csc110project1"*/}
+                {/*        endIcon={<OutBoundIcon/>}*/}
+                {/*    >*/}
+                {/*        Project 1 Design Requirements*/}
+                {/*    </Button>*/}
+                {/*</Grid>*/}
             </Grid>
 
 
