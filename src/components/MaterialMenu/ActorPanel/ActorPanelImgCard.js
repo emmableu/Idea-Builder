@@ -10,8 +10,12 @@ import {
     updateStateName
 } from "../../../redux/features/projectSlice";
 import {Input} from "antd";
-import Grid from "@material-ui/core/Grid";
 import ActorPanelImgCardButtonGroup from "./ActorPanelImgCardButtonGroup";
+import { Collapse } from 'antd';
+import urlExist from "url-exist";
+import axios from "../../../axios/ideaServerAxiosConfig";
+const { Panel } = Collapse;
+
 
 const ActorPanelCardTitle = (props) => {
     const {_id, name} = props;
@@ -37,6 +41,19 @@ const ActorPanelCardTitle = (props) => {
 
 export const ActorPanelImgCard = (props) => {
     const {actorData} = props;
+
+    const gifs = []
+    for (const state of actorData.stateList) {
+        const gif = state._id.split(".")[0] + ".gif";
+        urlExist(axios.defaults.baseURL + gif).then(
+            (exists) => {
+                if (exists) {
+                    gifs.push(gif)
+                }
+            }
+        )
+    }
+
     const dispatch = useDispatch();
 
     const handleSave = React.useCallback((e, actorId, _id, name) => {
@@ -75,24 +92,31 @@ export const ActorPanelImgCard = (props) => {
                 margin: "10px 0px"
             }}
         >
-        <ImgCard
-            title = {<ActorPanelCardTitle
-                _id={actorData._id}
-                name={actorData.name}
-            />}
-            type= "state"
-            buttonGroup={<ActorPanelImgCardButtonGroup
+            <ImgCard
+                title = {<ActorPanelCardTitle
+                    _id={actorData._id}
+                    name={actorData.name}
+                />}
+                type= "state"
+                buttonGroup={<ActorPanelImgCardButtonGroup
+                    actorId={actorData._id}
+                    actorData={actorData}
+                />}
                 actorId={actorData._id}
-                actorData={actorData}
-            />}
-            actorId={actorData._id}
-            dataList = {actorData.stateList}
-            imgWidth={6}
-            handleSave={handleSave}
-            handleDelete={handleDelete}
-            handleUse={handleUse}
-            ratio="100%"
-    />
+                dataList = {actorData.stateList}
+                imgWidth={6}
+                handleSave={handleSave}
+                handleDelete={handleDelete}
+                handleUse={handleUse}
+                ratio="100%"
+            />
+            <Collapse bordered={false} defaultActiveKey={[]}>
+                <Panel header={actorData.name + " can..."} key="1">
+                    {gifs.map((gif_link, order) => (
+                       <img src={gif_link} alt="img" key={gif_link} style={{width:100, height:100}}/>
+                    ))}
+                </Panel>
+            </Collapse>
         </div>
     )
 }
