@@ -18,7 +18,7 @@ import Box from "@material-ui/core/Box";
 import { Modal } from 'antd';
 import MergeUploadButton from "./MergeUploadButton";
 import Button from "@material-ui/core/Button";
-import {setSnapWindowLoaded} from "../../redux/features/codeSlice";
+import {downloadCode, setSnapWindowLoaded} from "../../redux/features/codeSlice";
 
 
 
@@ -45,6 +45,7 @@ const ProjectTitleBarActionGroup  = () => {
     }
     const handleClick = () => {
         dispatch(download());
+        dispatch(downloadCode());
         setTimeout(() => {success()}, 1000);
     }
 

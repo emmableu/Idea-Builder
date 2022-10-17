@@ -41,7 +41,7 @@ const ActorImgCard = (props) => {
         <Grid item justifyContent="center" xs={parentWidth}>
         <Card
             title={title}
-            bordered={type === "state"}
+            bordered={type === "state" || type === "actorSearch"}
             size="small"
             extra={buttonGroup} >
             <Grid container spacing={1} justifyContent="center">

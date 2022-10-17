@@ -477,22 +477,6 @@ export class ProjectDataHandler {
     }
 
     static download (projectData:ProjectData) {
-        // const deployMode = false;
-        // if (Cookies.get('userId')==="mbobbad" || Cookies.get('userId')==="wwang33" ) {
-        //     const zip = new JSZip()
-        //     const folder = zip.folder(projectData.name);
-        //     // projectData. = true;
-        //     if (projectData.storyboardList.length > 0) {
-        //         projectData.storyboardList[0].recommendName = projectData.name;
-        //     }
-        //     let filename = projectData.name;
-        //     // @ts-ignore
-        //     folder.file("recommend.json", JSON.stringify(projectData));
-        //     zip.generateAsync({type:"blob"})
-        //         .then(blob => saveAs(blob, filename))
-        //         .catch(e => console.log(e));
-        //     return;
-        // }
         let filename = projectData.name;
         const zip = new JSZip()
         const folder = zip.folder(projectData.name)
@@ -535,11 +519,6 @@ export class ProjectDataHandler {
                 })
 
             let name;
-            // if (!deployMode) {
-            //     const idSplit = img._id.split("?")[0].split(".")
-            //     const postfix = idSplit[idSplit.length-1]
-            //     name = idSplit[0].split("/")[idSplit[0].split("/").length-1] + "." + postfix
-            // }
             const idSplit = img._id.split("?")[0].split(".")
             const postfix = idSplit[idSplit.length-1]
             name = `${img.actorName}-${img.name}-${img.order}.${postfix}`
