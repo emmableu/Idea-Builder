@@ -1,5 +1,5 @@
 import React from 'react'
-import AssetGallery from "./AssetGallery";
+import ActorGallery from "./ActorGallery";
 import {Input, Modal} from "antd";
 
 
@@ -8,7 +8,7 @@ import {Input, Modal} from "antd";
 //     (asset) => ({asset})
 // )
 
-const SearchDialog = (props) => {
+const ActorSearchDialog = (props) => {
     const {searchDialogOpen, addAs, handleClose, type, actorId,} = props;
     //type can be "state" or "backdrop"
 
@@ -16,16 +16,16 @@ const SearchDialog = (props) => {
         <div>
             <Modal
                 width={900}
-                title={type==="state"? "Actors":"Backdrops"}
+                title={type==="state" || type === "actorSearch"? "Actors":"Backdrops"}
                 visible={searchDialogOpen}
                 onOk={handleClose}
                 onCancel={handleClose}
                 cancelText="Cancel"
                 centered
             >
-                <AssetGallery
+                <ActorGallery
                     height={600}
-                    xs={type==="state"? 2:3}
+                    xs={4}
                     type={type}
                     actorId={actorId}
                 />
@@ -39,4 +39,4 @@ const SearchDialog = (props) => {
 
 //TODO: currently, searched images may have the same id, which is wrong.
 
-export default SearchDialog
+export default ActorSearchDialog

@@ -2,13 +2,13 @@ import {Button, Dropdown, Menu, Modal, Tooltip} from 'antd';
 import {
     DeleteOutlined,
     DeleteTwoTone,
-    DragOutlined,
+    DragOutlined, ExclamationCircleOutlined,
     SearchOutlined,
     UploadOutlined
 } from '@ant-design/icons';
 import React from 'react';
 import {useDispatch} from "react-redux";
-import {addSpeechChildStar, deleteActor} from "../../../redux/features/projectSlice";
+import {addSpeechChildStar, deleteActor, deleteStoryboard} from "../../../redux/features/projectSlice";
 import {Add} from "@material-ui/icons";
 import PlusOutlined from "@ant-design/icons/lib/icons/PlusOutlined";
 import globalConfig from "../../../globalConfig";
@@ -19,6 +19,8 @@ import {DecorDialog} from "./DecorDialog/DecorDialog";
 import UploadStateButton from "./UploadStateButton";
 import SearchStateButton from "./SearchStateButton";
 import MenuItem from "@material-ui/core/MenuItem";
+const { confirm } = Modal;
+
 
 const ActorPanelImgCardButtonGroup = props => {
     const {actorId, actorData} = props;
@@ -27,11 +29,6 @@ const ActorPanelImgCardButtonGroup = props => {
     const [okPressed, setOkPressed] = React.useState(false);
     const [cancelPressed, setCancelPressed] = React.useState(false);
     const [okEnabled, setOkEnabled] = React.useState(false);
-
-    const handleDeleteActor = (e) => {
-        dispatch(deleteActor(actorId));
-
-    }
 
     const handleOk = React.useCallback(() => {
         setOkPressed(true);
@@ -62,14 +59,26 @@ const ActorPanelImgCardButtonGroup = props => {
         setCancelPressed(true);
         setIsModalVisible(false);
     };
+
+    const showDeleteConfirm = async (e, actorId) => {
+        confirm({
+            title: 'Are you sure you want to delete this actor?',
+            icon: <ExclamationCircleOutlined />,
+            content: 'This action is irreversible.',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            async onOk() {
+                dispatch(deleteActor(actorId));
+            },
+            onCancel() {
+                // // globalLog('Cancel');
+            },
+        });
+    }
     return (
         <>
             <div  style={{flex: "0 0 90px"}}>
-                {/*<UploadStateButton*/}
-                {/*    actorId={actorId}*/}
-                {/*/>*/}
-
-
 
                 <Dropdown overlay={menu(actorId)}
                           overlayStyle={{zIndex:1}}
@@ -89,7 +98,7 @@ const ActorPanelImgCardButtonGroup = props => {
                         type="link"
                         shape="circle"
                         size="small"
-                        onClick={handleDeleteActor}
+                        onClick={e => {showDeleteConfirm(e, actorId)}}
                         icon={<DeleteTwoTone twoToneColor="#eb2f96" />}
                     />
                 </Tooltip>

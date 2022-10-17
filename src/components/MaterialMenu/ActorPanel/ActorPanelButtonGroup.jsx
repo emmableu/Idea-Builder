@@ -6,7 +6,8 @@ import {Tooltip} from "@material-ui/core";
 import React from 'react';
 import ActorPanelUploadButton from './ActorPanelUploadButton';
 import {useDispatch} from "react-redux";
-import SearchDialog from "../../primitives/SearchDialog";
+// import SearchDialog from "../../primitives/SearchDialog";
+import ActorSearchDialog from "./ActorSearchDialog";
 
 const ActorPanelButtonGroup = props => {
     const [searchDialogOpen, setSearchDialogOpen] = React.useState(false);
@@ -34,13 +35,13 @@ const ActorPanelButtonGroup = props => {
             </Tooltip>
                 </div>
                 <div>
-            Add a new actor
+                    Add a new actor
                 </div>
                 </div>
 
             </>
-            <SearchDialog
-                type="state"
+            <ActorSearchDialog
+                type="actorSearch"
                 searchDialogOpen={searchDialogOpen}
                 handleClose={handleClose}
                 searchLoading={searchLoading}

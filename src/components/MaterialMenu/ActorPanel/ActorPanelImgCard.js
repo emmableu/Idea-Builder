@@ -14,7 +14,8 @@ import ActorPanelImgCardButtonGroup from "./ActorPanelImgCardButtonGroup";
 import { Collapse } from 'antd';
 import urlExist from "url-exist";
 import axios from "../../../axios/ideaServerAxiosConfig";
-const { Panel } = Collapse;
+import ActorImgCard from "./ActorImgCard";
+
 
 
 const ActorPanelCardTitle = (props) => {
@@ -36,6 +37,8 @@ const ActorPanelCardTitle = (props) => {
         </>
     )
 }
+
+
 
 
 
@@ -92,7 +95,8 @@ export const ActorPanelImgCard = (props) => {
                 margin: "10px 0px"
             }}
         >
-            <ImgCard
+            <ActorImgCard
+                actorName={actorData.name}
                 title = {<ActorPanelCardTitle
                     _id={actorData._id}
                     name={actorData.name}
@@ -109,14 +113,9 @@ export const ActorPanelImgCard = (props) => {
                 handleDelete={handleDelete}
                 handleUse={handleUse}
                 ratio="100%"
+                textContent={""}
+                readOnly={false}
             />
-            <Collapse bordered={false} defaultActiveKey={[]}>
-                <Panel header={actorData.name + " can..."} key="1">
-                    {gifs.map((gif_link, order) => (
-                       <img src={gif_link} alt="img" key={gif_link} style={{width:100, height:100}}/>
-                    ))}
-                </Panel>
-            </Collapse>
         </div>
     )
 }

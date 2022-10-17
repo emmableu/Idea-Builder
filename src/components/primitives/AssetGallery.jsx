@@ -4,7 +4,6 @@ import {Grid, makeStyles} from "@material-ui/core";
 import SearchDialogImgCard from "./SearchDialogImgCard";
 import { FixedSizeList } from "react-window";
 import {useSelector} from "react-redux";
-import {setAsset} from "../../redux/features/allRecommendSlice";
 
 const ImgRow = React.memo(
     (props) => {

@@ -1,6 +1,6 @@
 {
-  "name": "idea-builder",
-  "homepage": "https://isnap.csc.ncsu.edu/idea-builder/",
+  "name": "idea-builder-stars",
+  "homepage": "https://isnap.csc.ncsu.edu/idea-builder-stars/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -55,7 +55,7 @@ const useStyles = makeStyles({
 
 
 const ImgTile = React.memo((props) =>  {
-    const { _id, actorId, stateId, imgSrc, contentNode, handleDelete, handleUse, type, order} = props;
+    const { _id, actorId, stateId, imgSrc, contentNode, handleDelete, handleUse, type, order, readOnly} = props;
     const classes = useStyles(props);
     const [onHover, setOnHover] = React.useState();
     const buttonSize = type==="state"? "small":"medium";
@@ -88,50 +88,55 @@ const ImgTile = React.memo((props) =>  {
                         src={imgSrc}
                         alt="img"
                     />
-                    <div className={classes.divOverlap} style={{display: onHover? "flex":"none" }}
-                         onMouseEnter={() => {setOnHover(true)}}
-                         onMouseLeave={() =>{ setOnHover(false)}}
-                    >
-                        <Tooltip title="Use">
-                            <IconButton aria-label="add"
-                                        className={classes.buttonOverlapUse}
-                                        color="inherit"
-                                        variant="contained"
-                                        onClick={e => {
-                                            globalLog("clicking, type: ", type);
-                                            if (type === "state" || type.startsWith("swap-costume")) {
-                                                handleUse(e, actorId, _id)
-                                            }
-                                            else if (type === "decor" || type === "backdrop" || type === "event") {
-                                                handleUse(e, _id)
-                                            }
-                                        }}
-                                        size={buttonSize}>
-                                {type==="decor"&& <Add style={{color: "white"}} />}
-                                {type.startsWith("swap-costume") && <SwapVert style={{color: "white"}} />}
-                                {!type.startsWith("swap-costume") && type!=="decor" && <ArrowForward style={{color: "white"}} />}
-                            </IconButton>
-                        </Tooltip>
-                        { hasDelete &&
-                            <Tooltip title="Delete">
-                            <IconButton aria-label="add"
-                                        className={classes.buttonOverlapDelete}
-                                        color="inherit"
-                                        variant="contained"
-                                        size={buttonSize}
-                                        onClick={e => {
-                                            if (type === "backdrop") {
-                                                handleDelete(e, _id)
-                                            }
-                                            else if (type === "state") {
-                                                handleDelete(e, actorId, _id)
-                                            }
-                                        }}>
-                                <DeleteOutlined style={{color: "white"}}/>
-                            </IconButton>
-                        </Tooltip>
-                        }
-                    </div>
+                    {readOnly !== true &&
+
+                        <div className={classes.divOverlap} style={{display: onHover? "flex":"none" }}
+                             onMouseEnter={() => {setOnHover(true)}}
+                             onMouseLeave={() =>{ setOnHover(false)}}
+                        >
+                            <Tooltip title="Use">
+                                <IconButton aria-label="add"
+                                            className={classes.buttonOverlapUse}
+                                            color="inherit"
+                                            variant="contained"
+                                            onClick={e => {
+                                                globalLog("clicking, type: ", type);
+                                                if (type === "state" || type.startsWith("swap-costume")) {
+                                                    handleUse(e, actorId, _id)
+                                                }
+                                                else if (type === "decor" || type === "backdrop" || type === "event") {
+                                                    handleUse(e, _id)
+                                                }
+                                            }}
+                                            size={buttonSize}>
+                                    {type==="decor"&& <Add style={{color: "white"}} />}
+                                    {type.startsWith("swap-costume") && <SwapVert style={{color: "white"}} />}
+                                    {!type.startsWith("swap-costume") && type!=="decor" && <ArrowForward style={{color: "white"}} />}
+                                </IconButton>
+                            </Tooltip>
+                            { hasDelete &&
+                                <Tooltip title="Delete">
+                                    <IconButton aria-label="add"
+                                                className={classes.buttonOverlapDelete}
+                                                color="inherit"
+                                                variant="contained"
+                                                size={buttonSize}
+                                                onClick={e => {
+                                                    if (type === "backdrop") {
+                                                        handleDelete(e, _id)
+                                                    }
+                                                    else if (type === "state") {
+                                                        handleDelete(e, actorId, _id)
+                                                    }
+                                                }}>
+                                        <DeleteOutlined style={{color: "white"}}/>
+                                    </IconButton>
+                                </Tooltip>
+                            }
+                        </div>
+
+                    }
+
                 </div>
             </CardMedia>
             {contentNode}

@@ -784,10 +784,7 @@ const addTemplateStar = createAsyncThunk(
 const addActor = createAsyncThunk(
     'project/addActor',
     async (obj, thunkAPI) => {
-        // const {stateList} = obj;
         const {dispatch, getState}  = thunkAPI;
-        const actorId = UUID.v4();
-        globalLog("actorId: ", actorId);
         const actorDataJSON = ActorDataHandler.initializeActor(obj);
         const state = getState();
         const projectId = state.project.value._id;
@@ -796,12 +793,7 @@ const addActor = createAsyncThunk(
             actorDataJSON
         });
         dispatch(addActorInMemory(payload));
-        /* const isLegalUpdate = await dispatch(loadAuthorData());
-        if (isLegalUpdate.type === "author/loadAuthorData/rejected") {
-            dispatch(setFrozenMode(true));
-            return;} */
         const response = await ProjectAPI.addActor(payload);
-        // await dispatch(updateLastModified());
         return response.status;
     }
 )
