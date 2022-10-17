@@ -48,8 +48,9 @@ const downloadCode = createAsyncThunk(
         const projectXml = await CodeAPI.getProgram(
             storyboardData, actorList, backdropList, eventList
         );
+
         console.log("projectXml: ", JSON.stringify(projectXml));
-        const blob = new Blob([projectXml], {type: 'application/xml'});
+        const blob = new Blob([decodeURIComponent(projectXml)], {type: 'application/xml'});
         saveAs(blob, project.name + ".xml");
     }
 )
