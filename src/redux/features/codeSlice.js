@@ -49,7 +49,7 @@ const downloadCode = createAsyncThunk(
             storyboardData, actorList, backdropList, eventList
         );
 
-        console.log("projectXml: ", JSON.stringify(projectXml));
+        // console.log("projectXml: ", JSON.stringify(projectXml));
         const blob = new Blob([decodeURIComponent(projectXml)], {type: 'application/xml'});
         saveAs(blob, project.name + ".xml");
     }

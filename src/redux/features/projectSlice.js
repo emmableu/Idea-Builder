@@ -684,6 +684,24 @@ const addSpeechChildStar = createAsyncThunk(
 );
 
 
+const addFrameText = createAsyncThunk(
+    'project/addFrameText',
+    async (obj, thunkAPI) => {
+        const {
+            storyboardId, frameId,
+            textId,
+            type,
+        } = obj;
+        globalLog("addFrameText: ", frameId);
+        const {dispatch, getState} = thunkAPI;
+        const childStarId = UUID.v4();
+        dispatch(addFrameTextInMemory({
+            ...obj,
+            childStarId
+        }));
+    }
+);
+
 /* The next section are about backdrop stars on on the frame */
 const addBackdropStar = createAsyncThunk(
     'project/addBackdropStar',
@@ -1237,6 +1255,29 @@ export const projectSlice = createSlice({
         },
 
 
+        addFrameTextInMemory: {
+            reducer: (state, action) => {
+                globalLog("inside add child star in memory");
+                const {storyboardId, frameId, childStarId, textId, type} = action.payload;
+                const storyboardData = ProjectDataHandler.getStoryboard(state.value, storyboardId);
+                const frameData = StoryboardDataHandler.getFrame(storyboardData, frameId);
+                const starData =
+                    StarDataHandler.initializeStar({
+                        prototypeId: textId,
+                        _id: childStarId,
+                        type: "text",
+                        width: 210,
+                        height: 50,
+                        x: 100,
+                        y: 150,
+                    });
+                FrameDataHandler.addStarObj(frameData, starData);
+                globalLog("star data after adding: ", starData);
+                globalLog("project data after adding: ", state.value);
+            }
+        },
+
+
 
         updateStarListInMemory: {
             reducer: (state, action) => {
@@ -1556,7 +1597,7 @@ export const {
     loadProjectInMemory, updateNameInMemory, setAuthorIdListInMemory, //project
     setSelectedFrameIdInMemory, setSelectedStoryboardIdInMemory, voidSelectedStoryboardIdInMemory, setSelectedStarIdInMemory, //selectedId
     addStoryboardInMemory, deleteStoryboardInMemory, updateStoryboardOrderInMemory, updateStoryboardNameInMemory, //storyboard
-    addStarInMemory, updateStarListInMemory, deleteStarInMemory, copyStarInMemory,addSpeechChildStarInMemory, //star
+    addStarInMemory, updateStarListInMemory, deleteStarInMemory, copyStarInMemory,addSpeechChildStarInMemory, addFrameTextInMemory, //star
     addBackdropStarInMemory, //backdropStar
     addTemplateFrameInMemory, addTemplateStarInMemory, //templateStar
     addSpeechBubbleInMemory, deleteSpeechBubbleInMemory, updateTextNameInMemory, //text ==> todo: delete these at some point
@@ -1575,7 +1616,7 @@ export {
     setSelectedStoryboardId, setSelectedFrameId, setSelectedStarId, //selectedId
     addStoryboard, deleteStoryboard, updateStoryboardOrder, updateStoryboardName, //storyboard
     addFrame, deleteFrame, updateFrameOrder, //frame
-    addStar, updateStarList, deleteStar, copyStar, addSpeechChildStar, //star
+    addStar, updateStarList, deleteStar, copyStar, addSpeechChildStar, addFrameText, //star
     addBackdropStar,deleteBackdropStar, //backdropStar
     addTemplate, addTemplateStar, //templateSar,
     addActor, deleteActor, updateActorOrder, updateActorName, //actor

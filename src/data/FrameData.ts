@@ -46,6 +46,15 @@ export class FrameDataHandler{
         }))
     }
 
+
+    static addStarObj(
+        frameData:FrameData,
+        starData:StarData,
+    ) {
+        frameData.starList.push(StarDataHandler.initializeStar(starData))
+    }
+
+
     static deleteStar(
         frameData:FrameData,
         starId:string)

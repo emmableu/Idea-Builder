@@ -55,7 +55,7 @@ let responsiveSizeData = {
      // storyboardDrawerWidth: 240,
      // noteWidth: 335,
      // frameListHeight: 200,
-     actorDrawerWidth: 200,
+     actorDrawerWidth: 300,
      storyboardDrawerWidth: 200,
      noteWidth: 230,
      frameListHeight: 165,

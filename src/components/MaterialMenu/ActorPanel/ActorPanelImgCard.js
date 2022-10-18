@@ -108,7 +108,7 @@ export const ActorPanelImgCard = (props) => {
                 />}
                 actorId={actorData._id}
                 dataList = {actorData.stateList}
-                imgWidth={6}
+                imgWidth={4}
                 handleSave={handleSave}
                 handleDelete={handleDelete}
                 handleUse={handleUse}

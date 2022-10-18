@@ -32,10 +32,7 @@
                             "rotation": 0,
                             "transform": null,
                             "childStar": {
-                                "speechStar": {
-                                    "x": 178.92561983471074,
-                                    "y": 148.34710743801656
-                                },
+                                "speechStar": null,
                                 "lineStar": null,
                                 "motionStarList": []
                             }

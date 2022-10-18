@@ -200,6 +200,22 @@ class ProjectAPI {
         return response;
     }
 
+    /* This is on frame text bubble */
+
+    static async sendFrameTextImg(text:any) {
+        // globalLog("_id: ", text._id)
+        // globalLog("img: ", text.img)
+        const response = await axios({
+            method: 'post',
+            url: `/text/upload`,
+            data: {
+                _id: text._id,
+                img: text.img
+            },
+        });
+        return response;
+    }
+
 
     /* this section is on actor */
     static async addActor(text:any) {

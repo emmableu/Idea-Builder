@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 import {
-    SearchOutlined,
+    SearchOutlined, StarOutlined, PlusCircleTwoTone
 } from '@ant-design/icons';
 import {Tooltip} from "@material-ui/core";
 import React from 'react';
@@ -8,12 +8,17 @@ import ActorPanelUploadButton from './ActorPanelUploadButton';
 import {useDispatch} from "react-redux";
 // import SearchDialog from "../../primitives/SearchDialog";
 import ActorSearchDialog from "./ActorSearchDialog";
+import SearchDialog from "../../primitives/SearchDialog";
 
 const ActorPanelButtonGroup = props => {
     const [searchDialogOpen, setSearchDialogOpen] = React.useState(false);
     const [searchLoading, setSearchLoading] = React.useState(false);
+    const [oldSearchDialogOpen, setOldSearchDialogOpen] = React.useState(false);
+    const [oldSearchLoading, setOldSearchLoading] = React.useState(false);
     const handleClickOpen = (e) => {setSearchDialogOpen(true)};
     const handleClose = (e) => {setSearchDialogOpen(false)};
+    const handleOldSearchOpen = (e) => {setOldSearchDialogOpen(true)};
+    const handleOldSearchClose = (e) => {setOldSearchDialogOpen(false)};
 
 
 
@@ -26,13 +31,22 @@ const ActorPanelButtonGroup = props => {
                     }}
                 >
                 <div>
-            <ActorPanelUploadButton/>
-            <Tooltip title="Search for actors">
+            <Tooltip title="Required actors">
                 <Button type="link" shape="circle" size="medium"
                         onClick= {handleClickOpen}
                         loading={searchLoading}
-                        icon={<SearchOutlined />} />
+                        icon={<PlusCircleTwoTone twoToneColor="#eb2f96"/>} />
             </Tooltip>
+
+                    <Tooltip title="Additional actors">
+                        <Button type="link" shape="circle" size="medium"
+                                onClick= {handleOldSearchOpen}
+                                loading={oldSearchLoading}
+                                icon={<SearchOutlined />} />
+                    </Tooltip>
+
+                    <ActorPanelUploadButton/>
+
                 </div>
                 <div>
                     Add a new actor
@@ -40,6 +54,16 @@ const ActorPanelButtonGroup = props => {
                 </div>
 
             </>
+
+            <SearchDialog
+                type="state"
+                searchDialogOpen={oldSearchDialogOpen}
+                handleClose={handleOldSearchClose}
+                searchLoading={oldSearchLoading}
+                setSearchLoading={oldSearchLoading}
+            />
+
+
             <ActorSearchDialog
                 type="actorSearch"
                 searchDialogOpen={searchDialogOpen}

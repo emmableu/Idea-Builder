@@ -23,32 +23,32 @@ const NewStoryboardDialogue = props => {
     const dispatch = useDispatch();
     const [cond1, setCond1] = React.useState(false)
     const [isCreateDisabled, setIsCreateDisabled] = React.useState(false)
-    React.useEffect( () => {
-        const cond1Calc = ["mbobbad", "wwang33", 'twprice', 'test1', 'test2', 'test3', 'test4',
-            'kljone23', 'ggdallma', 'svegesa', 'jlrusse7', 'akjone23', 'cliu27', 'jarevoir', 'wlstell', 'mlmacdon',
-            'nmbock2', 'jpsoutha', 'thkelley', 'jhsmith9', 'ndcovert', 'zxu16', 'eagodwin', 'imwilli2', 'jwjenni3',
-            'mlmitch7', 'nbward', 'ptsmith4', 'smthomp7', 'sejeffe2', 'nbbailey', 'zmander2', 'mbautis2', 'cehandly',
-            "wtmorga3",
-            "ujkaraba",
-            "slmclenn",
-            "sechestn",
-            "nrsoufan",
-            "msevans5",
-            "kghaley",
-            "kbsitton",
-            "jhcarlyl",
-            "eemarsh",
-            "delaseri",
-            "cfveit",
-            "btsek2",
-            "aschenna",
-            "antearry",
-            "aahasan"
-        ].includes(Cookies.get('userId'));
-        setCond1(cond1Calc);
-
-        }, []
-    )
+    // React.useEffect( () => {
+    //     const cond1Calc = ["mbobbad", "wwang33", 'twprice', 'test1', 'test2', 'test3', 'test4',
+    //         'kljone23', 'ggdallma', 'svegesa', 'jlrusse7', 'akjone23', 'cliu27', 'jarevoir', 'wlstell', 'mlmacdon',
+    //         'nmbock2', 'jpsoutha', 'thkelley', 'jhsmith9', 'ndcovert', 'zxu16', 'eagodwin', 'imwilli2', 'jwjenni3',
+    //         'mlmitch7', 'nbward', 'ptsmith4', 'smthomp7', 'sejeffe2', 'nbbailey', 'zmander2', 'mbautis2', 'cehandly',
+    //         "wtmorga3",
+    //         "ujkaraba",
+    //         "slmclenn",
+    //         "sechestn",
+    //         "nrsoufan",
+    //         "msevans5",
+    //         "kghaley",
+    //         "kbsitton",
+    //         "jhcarlyl",
+    //         "eemarsh",
+    //         "delaseri",
+    //         "cfveit",
+    //         "btsek2",
+    //         "aschenna",
+    //         "antearry",
+    //         "aahasan"
+    //     ].includes(Cookies.get('userId'));
+    //     setCond1(cond1Calc);
+    //
+    //     }, []
+    // )
 
     React.useEffect( () => {
             if (cond1) {

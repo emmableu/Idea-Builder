@@ -38,7 +38,7 @@ const ProjectPageContainer = () => {
     React.useEffect(() => {
             // dispatch(setCodeModalOpen(true));
             dispatch(loadProjectFromDatabase(_id))
-            dispatch(loadAllRecommend());
+            // dispatch(loadAllRecommend());
             // dispatch(loadAssets());
         }, [])
 

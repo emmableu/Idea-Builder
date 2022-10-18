@@ -62,6 +62,7 @@ export class StarDataHandler {
         const {prototypeId, _id, x, y, width, height, rotation, transform, actorId, type, childStar} = obj;
         const starWidth = width? width: 100;
         const starHeight = height?height: 100;
+
         let starX, starY;
         if (x !== undefined) {
             starX = x;
@@ -85,6 +86,27 @@ export class StarDataHandler {
                 starY = (globalConfig.noScaleWidth*3/4)/2 - starHeight/2;
             }
         }
+
+        if (type == 'text') {
+            return {
+                prototypeId: prototypeId,
+                actorId:"text-texts-are-different-states-under-this-same-actorId",
+                _id: _id? _id:UUID.v4(),
+                type: "text",
+                x : starX,
+                y : starY,
+                width : starWidth,
+                height : starHeight,
+                rotation: rotation?rotation: 0,
+                transform:transform?transform:null,
+                childStar: childStar? childStar: {
+                    speechStar: null,
+                    lineStar: null,
+                    motionStarList: [],
+                },
+            }
+        }
+
 
         return {
             prototypeId: prototypeId,

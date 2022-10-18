@@ -1,6 +1,6 @@
 import {Avatar} from "antd";
 import {IconButton, makeStyles, Paper, Tooltip} from "@material-ui/core";
-import {DeleteOutline, Chat} from "@material-ui/icons";
+import {DeleteOutline, Chat, TextFields} from "@material-ui/icons";
 import React from "react";
 import {createSelector} from "reselect";
 import {ProjectDataHandler} from "../../data/ProjectData";
@@ -12,6 +12,7 @@ import {CopyIcon, MotionIcon} from "../primitives/Icon/Icon";
 import SpeechBubbleButton from "./SpeechBubbleButton";
 import {Button} from "antd";
 import MotionButton from "./MotionButton";
+import {TextModal} from "./TextModal";
 
 const useStyles = makeStyles((theme) => ({
     frameToolbar: {
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const FrameToolbar = (props) => {
     const classes = useStyles();
     const {storyboardId, frameId, selectedStar, selectedActor, backdropStar, starList} = props;
+    const [isTextModalVisible, setIsTextModalVisible] = React.useState(false);
     const dispatch = useDispatch();
 
     const handleDeleteStar = (e) => {
@@ -46,6 +48,7 @@ const FrameToolbar = (props) => {
     }
     const handleCopyStar = (e) => {
         if ( selectedStar === null ) return;
+        if (selectedStar.type === "text") return;
         dispatch(copyStar({
             storyboardId,
             frameId,
@@ -63,14 +66,31 @@ const FrameToolbar = (props) => {
                variant="elevation"
                className={classes.frameToolbar}
            >
+               <Tooltip title="Add Text">
+                   <IconButton aria-label="add text"
+                               color="inherit"
+                               size="small"
+                               onClick={() => {setIsTextModalVisible(true)}}
+                   >
+                       <TextFields style={{ color: 'grey'}} />
+                   </IconButton>
+               </Tooltip>
+                <TextModal
+                    storyboardId={storyboardId}
+                    frameId={frameId}
+                    isTextModalVisible={isTextModalVisible}
+                    setIsTextModalVisible={setIsTextModalVisible}
+                />
+
                {selectedStar !== null &&
                <>
                <div>
-                   { selectedActor !== null
+                   { selectedActor !== null &&  selectedStar.type !== 'text'
                    && <Avatar src={axios.defaults.baseURL + selectedStar.prototypeId}
                    />}
                    {
                        selectedStar.actorId !== "event-events-are-different-states-under-this-same-actorId"
+                       &&  selectedStar.type !== 'text'
                        &&
                        <>
                            {'\u00A0'}{'\u00A0'}
@@ -94,15 +114,18 @@ const FrameToolbar = (props) => {
 
                 </div>
                <div>
-                   <Tooltip title="Copy Actor">
-                       <IconButton aria-label="copy star"
-                                   color="inherit"
-                                   size="small"
-                                   onClick={handleCopyStar}
-                       >
-                           <CopyIcon style={{ color: 'grey'}} />
-                       </IconButton>
-                   </Tooltip>
+                   {selectedStar.type !== 'text' &&
+                       <Tooltip title="Copy Actor">
+                           <IconButton aria-label="copy star"
+                                       color="inherit"
+                                       size="small"
+                                       onClick={handleCopyStar}
+                           >
+                               <CopyIcon style={{ color: 'grey'}} />
+                           </IconButton>
+                       </Tooltip>
+                   }
+
                    <Tooltip title="Delete Actor">
                        <IconButton aria-label="delete star"
                                    color="inherit"

@@ -18,9 +18,11 @@ const ActorGallery = React.memo((props) => {
     return (
         <div
             style={{
-                margin: "20px 0",
+                margin: "5px 0",
             }}
         >
+            <p style={{color: "grey"}}><i>Use at least one actor in each category.</i></p>
+
             <Tabs>
                 {
                     gifTypes.map((typ, i) => (

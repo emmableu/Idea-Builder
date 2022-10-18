@@ -5,6 +5,7 @@ import axios from "../../../axios/ideaServerAxiosConfig";
 import ImgTile from "../../primitives/ImgCard/ImgTile";
 import ImgTileEdiText from "../../primitives/ImgCard/ImgTileEdiText";
 import globalConfig from "../../../globalConfig";
+import {genGifStates} from "../../../json/actorAssetData";
 const { Panel } = Collapse;
 const { TextArea } = Input;
 
@@ -32,6 +33,7 @@ const ActorImgCard = (props) => {
     imgButtonGroup: the buttons on the overlay of an image
     handleSave: what happens when saving an image;
      */
+    const gifStates = genGifStates();
     const heightToWidthRatio = ratio===undefined?"75%":"100%";
     let parentWidth = 12;
     if (readOnly) {
@@ -59,14 +61,7 @@ const ActorImgCard = (props) => {
                             heightToWidthRatio={heightToWidthRatio}
                             handleDelete={handleDelete}
                             handleUse={handleUse}
-                            contentNode={readOnly?
-                             imgData.name :
-                                <ImgTileEdiText
-                                actorId={actorId}
-                                _id={imgData._id}
-                                name={imgData.name}
-                                handleSave={handleSave}
-                            />}
+                            contentNode={null}
                             order={order}
                             readOnly={readOnly}
                         />
@@ -79,14 +74,42 @@ const ActorImgCard = (props) => {
                         <TextArea rows={4} placeholder="" />
                     </Panel>
                     }
-                    <Panel header={"Example gif"} key="2">
-                        <img src={axios.defaults.baseURL +  globalConfig.imageServer.sample.state +  actorName + ".gif"} style={{width: 200, height: 150}}/>
-                    </Panel>
+                    {gifStates.hasOwnProperty(actorName) &&
+                        <Panel header={"Example gif"} key="2">
+                            {/*<img src={axios.defaults.baseURL +  globalConfig.imageServer.sample.state +  actorName + ".gif"}*/}
+                            {/*     style={{width: 200, height: 150, objectFit: "cover"}}/>*/}
+                            <div style={{width: 200}}>
+                            <ImgTile
+                                type={'backdrop'}
+                                _id={ actorName }
+                                key={actorName}
+                                actorId={null}
+                                name={actorName}
+                                imgSrc={
+                                    axios.defaults.baseURL +  globalConfig.imageServer.sample.state +  actorName + ".gif"
+                                }
+                                heightToWidthRatio={"75%"}
+                                handleDelete={null}
+                                handleUse={null}
+                                contentNode={null}
+                                readOnly={true}
+                            />
+                            </div>
+                        </Panel>
+                    }
                 </Collapse>
         </Card>
         </Grid>
 
 
+    // contentNode={readOnly?
+    //         imgData.name :
+    //         <ImgTileEdiText
+    //             actorId={actorId}
+    //             _id={imgData._id}
+    //             name={imgData.name}
+    //             handleSave={handleSave}
+    //         />}
     )
 };
 

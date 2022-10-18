@@ -18,8 +18,36 @@ const genGifStates = () => {
             states: ['rain.png'],
         },
         {
+            name: 'asteroid-player',
+            states: ['asteroid-player.png'],
+        },
+        {
+            name: 'instruction',
+            states: ['instruction.png'],
+        },
+        {
+            name: 'cats',
+            states: ['cats.png'],
+        },
+        {
+            name: 'pink-flower',
+            states: ['pink-flower.png'],
+        },
+        {
+            name: 'asteroid',
+            states: ['asteroid.png'],
+        },
+        {
+            name: 'star',
+            states: ["star.png"],
+        },
+        {
+            name: 'wings',
+            states: ['wings1.png', 'wings2.png'],
+        },
+        {
             name: 'fish',
-            states: ['fish1.png', 'fish2.svg', 'fish3.svg'],
+            states: ['fish1.png', 'fish2.png', 'fish3.png'],
         },
         {
             name: 'panda',
@@ -45,12 +73,21 @@ const genGifStates = () => {
 const gifTypes = [
     {
         name: 'Surrounding Actors',
-        gifs: ['brick', 'fish'],
+        gifs: ['asteroid', 'star', 'fish', 'cats', 'pink-flower', 'brick'],
     },
     {
         name: 'Main Actors',
-        gifs: ['panda'],
+        gifs: ['rain'],
     },
+
+    {
+        name: 'Buttons',
+        gifs: ['instruction', ]
+    },
+    {
+        name: 'Tools/Accessories (Optional)',
+        gifs: ['wings']
+    }
 ];
 
 export { genGifStates, gifTypes };
