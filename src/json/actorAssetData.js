@@ -18,6 +18,10 @@ const genGifStates = () => {
             states: ['rain.png'],
         },
         {
+            name: 'cloud',
+            states: ['cloud.png'],
+        },
+        {
             name: 'asteroid-player',
             states: ['asteroid-player.png'],
         },
@@ -34,7 +38,7 @@ const genGifStates = () => {
             states: ['pink-flower.png'],
         },
         {
-            name: 'asteroid',
+            name: 'asteroid-player',
             states: ['asteroid.png'],
         },
         {
@@ -53,6 +57,62 @@ const genGifStates = () => {
             name: 'panda',
             states: ['panda.png'],
         },
+        {
+            name: 'snow',
+            states: ['snow1.png', 'snow2.png']
+        },
+        {
+            name: 'dog-smile',
+            states: ['dog-smile-1.png', 'dog-smile-2.png']
+        },
+        {
+            name: 'cube',
+            states: ['cube-left.png', 'cube-right.png', 'cube-up.png', 'cube-down.png']
+        },
+        {
+            name: 'shower',
+            states: ['shower.png']
+        },
+        {
+            name: 'play-button',
+            states: ['play-button.png']
+        },
+        {
+            name: 'play-button-2',
+            states: ['play-button-2.png']
+        },
+        {
+            name: 'boat',
+            states: ['boat-normal.png', 'boat-hit.png']
+        },
+        {
+            name: 'bird',
+            states: ['bird1.png', 'bird2.png', 'bird3.png', 'bird4.png', 'bird5.png']
+        },
+        {
+            name: 'flight',
+            states: ['flight.png']
+        },
+        {
+            name: 'sticks',
+            states: ['sticks1.png', 'sticks2.png']
+        },
+        {
+            name: 'rocks',
+            states: ['rocks.png', 'asteroid.png']
+        },
+        {
+            name: 'penguin', // TODO
+            states: ['penguin1.png', 'penguin2.png','penguin3.png','penguin4.png']
+        },
+        {
+            name: 'puppy', // TODO
+            states: ['puppy-white.png', 'puppy-brown.png','puppy-black.png']
+        },
+        {
+            name: 'game-over', // TODO
+            states: ['game-over.png']
+        }
     ];
     const gifList = data.map((ele) =>
         ({
@@ -73,20 +133,20 @@ const genGifStates = () => {
 const gifTypes = [
     {
         name: 'Surrounding Actors',
-        gifs: ['asteroid', 'star', 'fish', 'cats', 'pink-flower', 'brick'],
+        gifs: [ 'snow', 'fish', 'star', 'cats', 'sticks', 'rocks', 'pink-flower'],
     },
     {
         name: 'Main Actors',
-        gifs: ['rain'],
+        gifs: ['bird', 'penguin', 'puppy', 'rain', 'boat', 'shower'],
     },
 
     {
         name: 'Buttons',
-        gifs: ['instruction', ]
+        gifs: ['play-button', 'play-button-2', 'game-over']
     },
     {
-        name: 'Tools/Accessories (Optional)',
-        gifs: ['wings']
+        name: 'Tools/Accessories',
+        gifs: ['wings', 'dog-smile']
     }
 ];
 
