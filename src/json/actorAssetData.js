@@ -110,9 +110,17 @@ const genGifStates = () => {
             states: ['puppy-white.png', 'puppy-brown.png','puppy-black.png']
         },
         {
-            name: 'game-over', // TODO
+            name: 'game-over',
             states: ['game-over.png']
-        }
+        },
+        {
+            name: 'trees',
+            states: ['trees.png']
+        },
+        {
+            name: 'ground-trees',
+            states: ['ground-trees.png']
+        },
     ];
     const gifList = data.map((ele) =>
         ({
@@ -133,21 +141,22 @@ const genGifStates = () => {
 const gifTypes = [
     {
         name: 'Surrounding Actors',
-        gifs: [ 'snow', 'fish', 'star', 'cats', 'sticks', 'rocks', 'pink-flower'],
+        gifs: [ 'snow', 'fish', 'star',  'sticks', 'trees', 'rocks', 'cloud', 'cats','pink-flower'],
     },
     {
         name: 'Main Actors',
-        gifs: ['bird', 'penguin', 'puppy', 'rain', 'boat', 'shower'],
+        gifs: ['bird', 'penguin', 'flight', 'puppy', 'boat', 'shower'],
+    },
+    {
+        name: 'Tools/Accessories',
+        gifs: ['wings', 'dog-smile', 'rain', 'ground-trees']
     },
 
     {
         name: 'Buttons',
         gifs: ['play-button', 'play-button-2', 'game-over']
     },
-    {
-        name: 'Tools/Accessories',
-        gifs: ['wings', 'dog-smile']
-    }
+
 ];
 
 export { genGifStates, gifTypes };

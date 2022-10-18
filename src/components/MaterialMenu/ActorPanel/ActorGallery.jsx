@@ -19,6 +19,9 @@ const ActorGallery = React.memo((props) => {
         <div
             style={{
                 margin: "5px 0",
+                height: 900,
+                padding: 0,
+                overflow: "scroll"
             }}
         >
             <p style={{color: "grey"}}><i>Use at least one actor in each category.</i></p>

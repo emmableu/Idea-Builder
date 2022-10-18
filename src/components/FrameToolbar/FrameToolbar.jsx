@@ -66,29 +66,34 @@ const FrameToolbar = (props) => {
                variant="elevation"
                className={classes.frameToolbar}
            >
-               <Tooltip title="Add Text">
-                   <IconButton aria-label="add text"
-                               color="inherit"
-                               size="small"
-                               onClick={() => {setIsTextModalVisible(true)}}
-                   >
-                       <TextFields style={{ color: 'grey'}} />
-                   </IconButton>
-               </Tooltip>
-                <TextModal
-                    storyboardId={storyboardId}
-                    frameId={frameId}
-                    isTextModalVisible={isTextModalVisible}
-                    setIsTextModalVisible={setIsTextModalVisible}
-                />
 
-               {selectedStar !== null &&
-               <>
+
+
                <div>
+
+                       <>
+                       <Tooltip title="Add Text">
+                           <IconButton aria-label="add text"
+                                       color="inherit"
+                                       size="small"
+                                       onClick={() => {setIsTextModalVisible(true)}}
+                           >
+                               <TextFields style={{ color: 'grey'}} />
+                           </IconButton>
+                       </Tooltip>
+                           {'\u00A0'}{'\u00A0'}{'\u00A0'}
+                           <TextModal
+                       storyboardId={storyboardId}
+                       frameId={frameId}
+                       isTextModalVisible={isTextModalVisible}
+                       setIsTextModalVisible={setIsTextModalVisible}
+                       />
+                       </>
+
                    { selectedActor !== null &&  selectedStar.type !== 'text'
                    && <Avatar src={axios.defaults.baseURL + selectedStar.prototypeId}
                    />}
-                   {
+                   { selectedStar !== null &&
                        selectedStar.actorId !== "event-events-are-different-states-under-this-same-actorId"
                        &&  selectedStar.type !== 'text'
                        &&
@@ -114,7 +119,8 @@ const FrameToolbar = (props) => {
 
                 </div>
                <div>
-                   {selectedStar.type !== 'text' &&
+                   {selectedStar !== null &&
+                       selectedStar.type !== 'text' &&
                        <Tooltip title="Copy Actor">
                            <IconButton aria-label="copy star"
                                        color="inherit"
@@ -125,18 +131,18 @@ const FrameToolbar = (props) => {
                            </IconButton>
                        </Tooltip>
                    }
-
-                   <Tooltip title="Delete Actor">
-                       <IconButton aria-label="delete star"
-                                   color="inherit"
-                                   size="small"
-                                   onClick={handleDeleteStar}
-                       >
-                           <DeleteOutline style={{ color: 'grey' }} />
-                       </IconButton>
-                   </Tooltip>
+                   {selectedStar !== null &&
+                       <Tooltip title="Delete Actor">
+                           <IconButton aria-label="delete star"
+                                       color="inherit"
+                                       size="small"
+                                       onClick={handleDeleteStar}
+                           >
+                               <DeleteOutline style={{color: 'grey'}}/>
+                           </IconButton>
+                       </Tooltip>
+                   }
                </div>
-               </>}
            </Paper>
        </>
     )
