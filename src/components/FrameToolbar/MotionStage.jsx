@@ -68,6 +68,11 @@ export const MotionStage = (props) => {
     const dispatch = useDispatch();
 
     React.useEffect(() => {
+        setSelectedStarImg(JSON.parse(JSON.stringify(selectedStar)));
+    }, [selectedStar])
+
+
+    React.useEffect(() => {
         if (motionLayerRef.current !== null) {
             motionLayerRef.current.listening(false);
         }
@@ -145,7 +150,7 @@ export const MotionStage = (props) => {
             )
         }
         const lastChildPointIndex = 20*(numChild-1);
-        const {prototypeId, width, height, transform} = selectedStarImg
+        const {prototypeId, width, height, transform, rotation} = selectedStarImg
         const lastChildMotion = StarDataHandler.initializeMotionChildStar(
             {
                 prototypeId: prototypeId,
@@ -154,14 +159,13 @@ export const MotionStage = (props) => {
                 width : width,
                 height : height,
                 transform:transform,
+                rotation: rotation,
                 opacity: 0.1 + unitOpac*(numChild-1),
             }
         )
         newTempMotionStarList.push(lastChildMotion);
         setTempMotionStarList(newTempMotionStarList);
-        // console.log('newTempMotionStarList: ', newTempMotionStarList.map(
-        //     t => ([t.x, t.y, t.opacity])
-        // ))
+        console.log("tempMotionStarList: ", tempMotionStarList);
     }, [points.length%20===2]);
 
     const handleMouseMove = (e) => {
@@ -238,11 +242,11 @@ export const MotionStage = (props) => {
                         ref={motionLayerRef}
                     >
 
-                        {tempMotionStarList.map((starData, i) => {
+                        {tempMotionStarList.map((s, i) => {
                             return (
                                 <MotionStar
-                                    key={starData._id}
-                                    starData={starData}
+                                    key={s._id}
+                                    starData={s}
                                 />
                             );
                         })}

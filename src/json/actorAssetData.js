@@ -130,7 +130,6 @@ const genGifStates = () => {
                 name: item })),
         })
     );
-    console.log(gifList)
     const gifDict = {}
     for (const gif of gifList) {
         gifDict[gif.name] = gif;

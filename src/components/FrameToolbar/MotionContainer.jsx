@@ -46,17 +46,8 @@ export const MotionContainer = React.memo((props) => {
     const {storyboardId, frameId, backdropStar, starList, selectedStar,
         okPressed, setOkPressed, setOkEnabled, cancelPressed, setCancelPressed
     } = props;
-    // const isDrawing = React.useRef(false);
     const [isDrawing, setIsDrawing] = React.useState(false);
-    // const resetPressed = React.useRef(false);
     const [resetPressed, setResetPressed] = React.useState(false);
-    // const setIsDrawing = React.useCallback((drawing) => {
-    //     isDrawing.current = drawing;
-    //     console.log("drawing toggled")
-    // }, [])
-    // const setResetPressed = React.useCallback((pressed) => {
-    //     resetPressed.current = pressed;
-    // }, [])
 
     return (
         <Box
