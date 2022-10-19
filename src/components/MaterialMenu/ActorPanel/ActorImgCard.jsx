@@ -1,11 +1,18 @@
 import {Card, Collapse, Input} from "antd";
-import React from "react";
+import React, {useCallback} from "react";
 import {Grid} from "@material-ui/core";
 import axios from "../../../axios/ideaServerAxiosConfig";
 import ImgTile from "../../primitives/ImgCard/ImgTile";
-import ImgTileEdiText from "../../primitives/ImgCard/ImgTileEdiText";
 import globalConfig from "../../../globalConfig";
+import { debounce } from "lodash";
 import {genGifStates} from "../../../json/actorAssetData";
+import {
+    saveNote,
+    saveNoteInMemory,
+    updateActorDescription,
+    updateActorDescriptionInMemory
+} from "../../../redux/features/projectSlice";
+import {useDispatch} from "react-redux";
 const { Panel } = Collapse;
 const { TextArea } = Input;
 
@@ -23,7 +30,8 @@ const ActorImgCard = (props) => {
         ratio,
         actorId,
         textContent,
-        readOnly
+        readOnly,
+        description,
     } = props;
     /*
     title: the title of the card, can be text or react component
@@ -33,12 +41,25 @@ const ActorImgCard = (props) => {
     imgButtonGroup: the buttons on the overlay of an image
     handleSave: what happens when saving an image;
      */
+    const dispatch = useDispatch();
     const gifStates = genGifStates();
     const heightToWidthRatio = ratio===undefined?"75%":"100%";
     let parentWidth = 12;
     if (readOnly) {
         parentWidth = 4;
     }
+
+
+    const dispatchSaveDescription = (actorId, description) => dispatch(updateActorDescription({_id:actorId, description}));
+
+    const saveDescriptionDebounce = useCallback(debounce(dispatchSaveDescription, 700), []);
+
+    const onFieldTextChange = async (e) => {
+        const description = e.target.value;
+        dispatch(updateActorDescriptionInMemory(JSON.stringify({_id:actorId, description})));
+        saveDescriptionDebounce(actorId, description);
+    };
+
     return (
         <Grid item justifyContent="center" xs={parentWidth}>
         <Card
@@ -71,13 +92,15 @@ const ActorImgCard = (props) => {
                 <Collapse bordered={false} defaultActiveKey={readOnly?['2']:[]} ghost>
                     {readOnly === false &&
                         <Panel header={actorName + " can..."} key="1">
-                        <TextArea rows={4} placeholder="" />
+                            <TextArea
+                                rows={4}
+                                value={description}
+                                onChange={onFieldTextChange}
+                                placeholder=""/>
                     </Panel>
                     }
                     {gifStates.hasOwnProperty(actorName) &&
                         <Panel header={"Example gif"} key="2">
-                            {/*<img src={axios.defaults.baseURL +  globalConfig.imageServer.sample.state +  actorName + ".gif"}*/}
-                            {/*     style={{width: 200, height: 150, objectFit: "cover"}}/>*/}
                             <div style={{width: 200}}>
                             <ImgTile
                                 type={'backdrop'}
@@ -100,16 +123,6 @@ const ActorImgCard = (props) => {
                 </Collapse>
         </Card>
         </Grid>
-
-
-    // contentNode={readOnly?
-    //         imgData.name :
-    //         <ImgTileEdiText
-    //             actorId={actorId}
-    //             _id={imgData._id}
-    //             name={imgData.name}
-    //             handleSave={handleSave}
-    //         />}
     )
 };
 

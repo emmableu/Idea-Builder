@@ -45,18 +45,6 @@ const ActorPanelCardTitle = (props) => {
 export const ActorPanelImgCard = (props) => {
     const {actorData} = props;
 
-    const gifs = []
-    for (const state of actorData.stateList) {
-        const gif = state._id.split(".")[0] + ".gif";
-        urlExist(axios.defaults.baseURL + gif).then(
-            (exists) => {
-                if (exists) {
-                    gifs.push(gif)
-                }
-            }
-        )
-    }
-
     const dispatch = useDispatch();
 
     const handleSave = React.useCallback((e, actorId, _id, name) => {
@@ -115,6 +103,7 @@ export const ActorPanelImgCard = (props) => {
                 ratio="100%"
                 textContent={""}
                 readOnly={false}
+                description={actorData.description?actorData.description:""}
             />
         </div>
     )

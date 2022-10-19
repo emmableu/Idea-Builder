@@ -236,6 +236,15 @@ class ProjectAPI {
         return response;
     }
 
+    static async updateActorDescription(text:any) {
+        const response = await axios({
+            method: 'post',
+            url: `/actor_description/replace`,
+            data: text,
+        });
+        return response;
+    }
+
     static async replaceActorIdListInDatabase(text:any) {
         const response = await axios({
             method: 'post',

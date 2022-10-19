@@ -872,6 +872,17 @@ const updateActorName = createAsyncThunk(
     }
 );
 
+
+const updateActorDescription = createAsyncThunk(
+    'project/updateActorDescription',
+    async (payload, thunkAPI) => {
+        const {dispatch, getState} = thunkAPI;
+        // dispatch(updateActorDescriptionInMemory(JSON.stringify(payload)));
+        const response = await ProjectAPI.updateActorDescription(payload);
+        return response.status;
+    }
+);
+
 /* The next section are about states:
  */
 
@@ -1405,6 +1416,23 @@ export const projectSlice = createSlice({
             },
         },
 
+        updateActorDescriptionInMemory: {
+            reducer: (state, action) => {
+                state.value.actorList.find(
+                    a => a._id === action.payload._id
+                ).description = action.payload.description;
+            },
+            prepare: (text) => {
+                const obj = JSON.parse(text);
+                return {
+                    payload: {
+                        "_id": obj._id,
+                        "description": obj.description,
+                    }
+                }
+            },
+        },
+
         /* The next section are about states:
         */
 
@@ -1603,7 +1631,7 @@ export const {
     addSpeechBubbleInMemory, deleteSpeechBubbleInMemory, updateTextNameInMemory, //text ==> todo: delete these at some point
     addResourceInMemory, deleteResourceInMemory, updateResourceValueInMemory, //resource
     addFrameInMemory, updateFrameListInMemory, updateFrameOrderInMemory,//frame
-    addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, //actor
+    addActorInMemory, deleteActorInMemory, updateActorOrderInMemory, updateActorNameInMemory, updateActorDescriptionInMemory, //actor
     addStateInMemory, deleteStateInMemory, updateStateNameInMemory, //state
     addBackdropInMemory, deleteBackdropInMemory, updateBackdropNameInMemory, //backdrop
     saveNoteInMemory, //note
@@ -1619,7 +1647,7 @@ export {
     addStar, updateStarList, deleteStar, copyStar, addSpeechChildStar, addFrameText, //star
     addBackdropStar,deleteBackdropStar, //backdropStar
     addTemplate, addTemplateStar, //templateSar,
-    addActor, deleteActor, updateActorOrder, updateActorName, //actor
+    addActor, deleteActor, updateActorOrder, updateActorName, updateActorDescription,//actor
     addState, deleteState, updateStateName, //state
     addBackdrop, deleteBackdrop, updateBackdropName, //backdrop
     saveNote, //note

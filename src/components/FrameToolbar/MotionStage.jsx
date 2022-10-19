@@ -135,8 +135,6 @@ export const MotionStage = (props) => {
             return;
         }
         const numChild = Math.floor(points.length/20)+1;
-        // console.log("point length: ", points.length);
-        // console.log("numChild: ", numChild);
         const unitOpac = 0.9/numChild;
         const newTempMotionStarList = [];
         for (let i= 0; i < tempMotionStarList.length; i++) {
@@ -165,7 +163,6 @@ export const MotionStage = (props) => {
         )
         newTempMotionStarList.push(lastChildMotion);
         setTempMotionStarList(newTempMotionStarList);
-        console.log("tempMotionStarList: ", tempMotionStarList);
     }, [points.length%20===2]);
 
     const handleMouseMove = (e) => {

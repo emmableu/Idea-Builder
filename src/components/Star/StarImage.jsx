@@ -21,7 +21,6 @@ const StarImage = (props) => {
     const imageRef = React.useRef(null);
     const transformerRef = React.useRef(null);
     React.useEffect(() => {
-        globalLog("listening: ", listening);
         if (imageRef.current) {
             imageRef.current.listening(listening);
         }
