@@ -21,11 +21,13 @@ const TemplatePanel = props => {
     const {templateList} = props;
     return (
         <Grid container spacing={1} justifyContent="center">
-            {templateList.map(templateId => (
+            {templateList.map(templateData => (
                 <>
                     <Grid item xs={10}>
                         <TemplatePanelImgTile
-                            templateId={templateId} />
+                            templateData={templateData}
+                            key={templateData._id}
+                        />
                     </Grid>
                 </>
             ))}

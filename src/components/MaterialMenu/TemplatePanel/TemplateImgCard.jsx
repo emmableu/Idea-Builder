@@ -75,52 +75,21 @@ const useStyles = makeStyles({
 
 
 const TemplateImgCard = (props) =>  {
-    const { templateId, contentNode } = props;
+    const { templateData, contentNode } = props;
     const classes = useStyles(props);
     const dispatch  = useDispatch();
-    const frameData = useSelector(s =>
-    {
-        try
-            {return JSON.parse(JSON.stringify(ProjectDataHandler.findFrame(s.project.value, templateId.split("?")[0])))}
-        catch (e) {
-        return null
-    }
-    });
-    const [onHover, setOnHover] = React.useState();
-    // const imgUpdated = useSelector((state) => state.frameThumbnailState.value.serverActionCounter);
-    // const isSelected = useSelector(state => state.project.value.selectedId.frameId === templateId);
-    // const [imgSrc, setImgSrc] = React.useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAQAAAAe/WZNAAAADklEQVR42mNkgAJGDAYAAFEABCaLYqoAAAAASUVORK5CYII=");
-    // const [urlExists, setUrlExists] = React.useState(false);
-
-    //
-    //
-    // const updateSrc = () => {
-    //     // globalLog( "----------- updating SRC ------------------------------------------------------------------------")
-    //     // globalLog(axios.defaults.baseURL + templateId);
-    //     if (urlExists) {
-    //         setImgSrc(axios.defaults.baseURL + templateId+`?fakeRender=${imgUpdated.toString()}`)
-    //         return;
-    //     };
-    //     urlExist(axios.defaults.baseURL + templateId).then( exists =>
-    //         {   // globalLog("exists: ", exists);
-    //             setUrlExists(exists)}
-    //     )
+    // const frameData = useSelector(s =>
+    // {
+    //     try
+    //         {return JSON.parse(JSON.stringify(ProjectDataHandler.findFrame(s.project.value, templateId.split("?")[0])))}
+    //     catch (e) {
+    //     return null
     // }
-    //
-    // React.useEffect(()=> {
-    //     updateSrc()
-    // }, [isSelected, imgUpdated]);
-    //
-    //
-    // React.useEffect(()=> {
-    //     if (urlExists === true){
-    //         setImgSrc(axios.defaults.baseURL + templateId+`?fakeRender=${imgUpdated.toString()}`)
-    //     }
-    // }, [urlExists]);
-
+    // });
+    const [onHover, setOnHover] = React.useState();
 
     const handleAddTemplateStar = (e) => {
-        dispatch(addTemplateStar(templateId));
+        dispatch(addTemplateStar(templateData));
     }
 
 
@@ -141,8 +110,8 @@ const TemplateImgCard = (props) =>  {
                     {/*    src={axios.defaults.baseURL + templateId}*/}
                     {/*    alt="img"*/}
                     {/*/>*/}
-                    {frameData && <StaticFrame
-                        frameData={frameData}
+                    {templateData && <StaticFrame
+                        frameData={templateData}
                     />}
                     <div className={classes.divOverlap} style={{display: onHover? "block":"none" }}>
                         <Tooltip title="Use">

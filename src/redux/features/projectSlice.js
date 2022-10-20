@@ -14,7 +14,7 @@ import {setPermanentViewMode} from "./modeSlice";
 import {AuthorDataHandler} from "../../data/AuthorData";
 import {AuthorAPI} from "../../api/AuthorAPI";
 import starterProject from "../../json/starterProject.json"
-import {loadAuthorData, setFrozenMode, setLastLoaded, updateLastModified} from "./authorSlice";
+import {setLastLoaded} from "./authorSlice";
 import {sampleSize} from "lodash";
 
 
@@ -761,15 +761,15 @@ const deleteBackdropStar = createAsyncThunk(
 
 const addTemplate = createAsyncThunk(
     'project/addTemplate',
-    async (frameId, thunkAPI) => {
+    async (obj, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
-        const projectId = getState().project.value._id;
-        const templateList = JSON.parse(JSON.stringify(getState().project.value.templateList));
-        const templateId = frameId + "?" + UUID.v4();
-        templateList.unshift(templateId);
-        dispatch(addTemplateFrameInMemory(templateId));
-        const response = await ProjectAPI.replaceTemplateListInDatabase({projectId,templateList});
-        return response.status;
+        const {storyboardId, frameId} = obj;
+        const storyboard = ProjectDataHandler.getStoryboard(getState().project.value, storyboardId)
+        const frameData = StoryboardDataHandler.getFrame(storyboard, frameId)
+        const newFrameData = FrameDataHandler.deepCopy(frameData);
+        dispatch(addTemplateFrameInMemory(JSON.stringify(newFrameData)));
+        // const response = await ProjectAPI.replaceTemplateListInDatabase({projectId,templateList});
+        return 'OK';
     }
 )
 
@@ -777,18 +777,18 @@ const addTemplate = createAsyncThunk(
 /* The next section are about template stars on on the frame */
 const addTemplateStar = createAsyncThunk(
     'project/addBackdropStar',
-    async (templateId, thunkAPI) => {
+    async (templateData, thunkAPI) => {
         const {dispatch, getState} = thunkAPI;
         const state = getState();
-        const simpleTemplateId = templateId.split("?")[0]
+        // const simpleTemplateId = templateId.split("?")[0]
         const storyboardId = state.project.value.selectedId.storyboardId;
         const frameId = state.project.value.selectedId.frameId
-        globalLog("storyboardId: ", storyboardId)
-        globalLog("frameId: ", frameId)
+        // globalLog("storyboardId: ", storyboardId)
+        // globalLog("frameId: ", frameId)
         if (storyboardId === null || frameId === null) {return;}
         if (storyboardId === undefined || frameId === undefined) {return;}
         dispatch(addTemplateStarInMemory(JSON.stringify({
-            storyboardId, frameId, templateId:simpleTemplateId,
+            storyboardId, frameId, templateData,
         })));
         // await dispatch(updateLastModified());
         return "OK";
@@ -1336,18 +1336,17 @@ export const projectSlice = createSlice({
 
         addTemplateFrameInMemory: {
             reducer: (state, action) => {
-                state.value.templateList.unshift(action.payload);
-                console.log("state.project.value.templateList: ", state.value.templateList);
+                state.value.templateList.unshift(JSON.parse(action.payload));
+                console.log("state.project.value.templateList: ", JSON.stringify(state.value.templateList));
             }
         },
 
         addTemplateStarInMemory: {
             reducer: (state, action) => {
-                const {storyboardId, frameId, templateId} = action.payload;
+                const {storyboardId, frameId, templateData} = action.payload;
                 const storyboardData = ProjectDataHandler.getStoryboard(state.value, storyboardId);
                 const frame = StoryboardDataHandler.getFrame(storyboardData, frameId);
-                const templateFrame = ProjectDataHandler.findFrame(state.value, templateId);
-                FrameDataHandler.acquireFrame(frame, templateFrame);
+                FrameDataHandler.acquireFrame(frame, templateData);
             },
             prepare: (text) => {
                 const obj = JSON.parse(text);
@@ -1355,7 +1354,7 @@ export const projectSlice = createSlice({
                     payload: {
                         "storyboardId": obj.storyboardId,
                         "frameId": obj.frameId,
-                        "templateId": obj.templateId,
+                        "templateData": obj.templateData,
                     }
                 }
             },

@@ -4,14 +4,15 @@ import TemplateImgCard from "./TemplateImgCard";
 
 
 const TemplatePanelImgTile = (props) => {
-    const {templateId} = props;
+    const {templateData} = props;
 
     return (
         <>
             <TemplateImgCard
-                templateId={templateId}
+                templateData={templateData}
                 heightToWidthRatio={'75%'}
                 contentNode={null}
+                key={templateData._id}
             />
         </>
     )

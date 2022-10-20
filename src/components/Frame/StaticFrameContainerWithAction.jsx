@@ -38,7 +38,7 @@ const StaticFrameContainerWithAction = React.memo((props) => {
         dispatch(addFrame({prevIndex: idx}));
 
     const saveAsTemplate = (e) =>
-        dispatch(addTemplate(_id));
+        dispatch(addTemplate({storyboardId, frameId: _id}));
 
 
     React.useEffect(() => {

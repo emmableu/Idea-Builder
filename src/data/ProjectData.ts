@@ -35,7 +35,7 @@ export interface ProjectData {
             "items": Array<{ "_id": string, "name": string}>
         }
     };
-    templateList: Array<string>;
+    templateList: Array<FrameData>;
     selectedId: SelectedIdData;
     speechBubbleList: Array<{
         _id: string;
@@ -70,14 +70,14 @@ export class ProjectDataHandler {
         const projectActorList = actorList? actorList:[];
         const projectBackdropList = backdropList? backdropList:[];
 
-        let projectTemplateList;
-        if (templateList === undefined) {
-            projectTemplateList = []
-            // projectTemplateList = [projectStoryboardList[0].frameList[0]._id]
-        }
-        else {
-            projectTemplateList = templateList;
-        }
+        // const projectTemplateList = []; // template does not persist across session.
+        // if (templateList === undefined) {
+        //     projectTemplateList = []
+        //     // projectTemplateList = [projectStoryboardList[0].frameList[0]._id]
+        // }
+        // else {
+        //     projectTemplateList = templateList;
+        // }
         let projectStoryboardMenu;
         if (storyboardMenu === undefined) {
              projectStoryboardMenu =  {
@@ -148,7 +148,7 @@ export class ProjectDataHandler {
             actorList: projectActorList,
             backdropList: projectBackdropList,
             storyboardMenu: projectStoryboardMenu,
-            templateList: projectTemplateList,
+            templateList: [],
             selectedId: projectSelectedId,
             speechBubbleList: projectSpeechBubbleList,
             eventList: projectEventList,
