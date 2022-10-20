@@ -17,7 +17,7 @@ import React from "react"; // If using WebPack and style-loader.
         onChange={handleChange}
         inputProps={{
             className: 'react-tagsinput-input',
-            placeholder:  `Unity ID`,
+            placeholder:  `City Name + date (e.g., raleigh1022)`,
         }}
     />
 }

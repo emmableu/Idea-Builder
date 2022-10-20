@@ -78,7 +78,7 @@ const ShareProjectButton = () => {
                    onOk={handleOk}
                    onCancel={handleCancel}>
                 <p>Anyone with the URL link of this page can view your project.</p>
-                <p>To give your project team member edit access, enter their unity ID below: </p>
+                <p>To give your project team member edit access, enter their city name id below: </p>
                 <ShareTagsInput
                     tags={tags}
                     setTags={setTags}

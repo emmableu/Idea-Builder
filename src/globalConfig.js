@@ -187,11 +187,68 @@ const snapLog = (msg, data) => {
      }
 }
 
+const cityMap =
+    {
+     asheville: true,
+     athens: false,
+     atlanta: true,
+     austin: false,
+     baltimore: true,
+     bellevue: false,
+     boston: true,
+     buffalo: false,
+     cambridge: true,
+     charleston: false,
+     chicago: true,
+     cincinnati: false,
+     cleveland: true,
+     fremont: false,
+     greenwich: true,
+     honolulu: false,
+     houston: true,
+     irvine: false,
+     ithaca: true,
+     louisville: false,
+     miami: true,
+     napa: false,
+     nashville: true,
+     newark: false,
+     oakland: true,
+     olympia: false,
+     philadelphia: true,
+     princeton: false,
+     providence: true,
+     richmond: false,
+     sacramento: true,
+     seattle: false,
+     spokane: true,
+     tacoma: false,
+     york: true
+}
+
+const cityList = Object.keys(cityMap);
+
+const getUserCondition = (userId) => {
+     if (userId.endsWith('-0')) {
+          return false;
+     }
+     for (const city of cityList) {
+          if (userId.startsWith(city)) {
+               return cityMap[city]
+          }
+     }
+     return false;
+}
+
+
 Object.freeze(globalConfig);
 Object.freeze(calcFrameWidth);
 Object.freeze(globalLog);
 Object.freeze(snapLog);
+Object.freeze(cityMap);
+Object.freeze(cityList);
+Object.freeze(getUserCondition);
 
 export default globalConfig;
-export  {calcFrameWidth, globalLog, snapLog};
+export  {calcFrameWidth, globalLog, snapLog, cityMap, cityList, getUserCondition};
 

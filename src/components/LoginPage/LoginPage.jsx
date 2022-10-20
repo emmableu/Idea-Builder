@@ -27,7 +27,7 @@ import {useDispatch} from "react-redux";
 import {loadDashboardFromLoginUserID} from "../../redux/features/dashboardSlice";
 import Cookies from "js-cookie"
 import {createTheme, ThemeProvider} from "@material-ui/core";
-import globalConfig from "../../globalConfig";
+import globalConfig, {cityList} from "../../globalConfig";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -69,8 +69,32 @@ const LoginPage = () => {
         }
     }, [])
 
-    const login = (e) => {
+    const userIdCorrect = (userId) => {
         if (userId === null) {
+            return false
+        }
+        if (userId.startsWith("researcher") || userId.startsWith('pilot')) {
+            return true;
+        }
+        let startsCorrect = false;
+        for (const city of cityList) {
+            if (userId.startsWith(city)) {
+                startsCorrect = true;
+                break
+            }
+        }
+        let endsCorrect = false;
+        for (const date of ['1022', '1105', '1112', '1119']) {
+            if (userId.endsWith(date)) {
+                endsCorrect = true;
+                break
+            }
+        }
+        return startsCorrect && endsCorrect
+    }
+
+    const login = (e) => {
+        if (!userIdCorrect(userId)) {
             return;
         }
         let { from } = location.state || { from: { pathname: `/project` } };
@@ -98,11 +122,11 @@ const LoginPage = () => {
                 className={classes.paper}>
                 <Typography component="h1" variant="h6" style={{color: "#616161"}}>
                     <IdeaBuilderIcon className={classes.ideaBuilderIcon}/>
-                    {'\u00A0'} Idea Builder - CSC110 Project 1
+                    {'\u00A0'} Idea Builder - STARS Fall 2022
                 </Typography>
                 <br />
                 <Typography component="h1" variant="subtitle2" className={classes.instruction}>
-                        Sign in using your unity ID
+                        Sign in using your user id (selected city name + date (e.g., raleigh1022))
                 </Typography>
                     <Box className={classes.form} noValidate onKeyDown={handleKeyPress}>
                     <TextField

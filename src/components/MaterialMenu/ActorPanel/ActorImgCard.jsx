@@ -3,7 +3,7 @@ import React, {useCallback} from "react";
 import {Grid} from "@material-ui/core";
 import axios from "../../../axios/ideaServerAxiosConfig";
 import ImgTile from "../../primitives/ImgCard/ImgTile";
-import globalConfig from "../../../globalConfig";
+import globalConfig, {getUserCondition} from "../../../globalConfig";
 import { debounce } from "lodash";
 import {genGifStates} from "../../../json/actorAssetData";
 import {
@@ -13,10 +13,15 @@ import {
     updateActorDescriptionInMemory
 } from "../../../redux/features/projectSlice";
 import {useDispatch} from "react-redux";
+import Cookies from "js-cookie";
+
 const { Panel } = Collapse;
 const { TextArea } = Input;
 
+
+
 const ActorImgCard = (props) => {
+    const userId = Cookies.get("userId");
     const {
         actorName,
         title,
@@ -100,6 +105,7 @@ const ActorImgCard = (props) => {
                     </Panel>
                     }
                     {gifStates.hasOwnProperty(actorName) &&
+                        getUserCondition(userId) &&
                         <Panel header={"Example gif"} key="2">
                             <div style={{width: 200}}>
                             <ImgTile
