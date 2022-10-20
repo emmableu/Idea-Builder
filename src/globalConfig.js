@@ -229,9 +229,10 @@ const cityMap =
 const cityList = Object.keys(cityMap);
 
 const getUserCondition = (userId) => {
-     if (userId.endsWith('-0')) {
-          return false;
+     if (userId.startsWith('pilot') || userId.startsWith('researcher')) {
+          return !userId.endsWith('-0');
      }
+
      for (const city of cityList) {
           if (userId.startsWith(city)) {
                return cityMap[city]

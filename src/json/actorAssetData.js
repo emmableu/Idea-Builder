@@ -121,6 +121,22 @@ const genGifStates = () => {
             name: 'ground-trees',
             states: ['ground-trees.png']
         },
+        {
+            name: 'mouse-bubble',
+            states: ['bubble.svg']
+        },
+        {
+            name: 'scrolling-backdrop-hills',
+            states: ['backdrop-hills.png'],
+        },
+        {
+            name: 'tree-background',
+            states: ['tree.png']
+        },
+        {
+            name: 'bow',
+            states: ['bow1.png', 'bow2.png', 'bow3.png']
+        }
     ];
     const gifList = data.map((ele) =>
         ({
@@ -140,7 +156,9 @@ const genGifStates = () => {
 const gifTypes = [
     {
         name: 'Surrounding Actors',
-        gifs: [ 'snow', 'fish', 'star',  'sticks', 'trees', 'rocks', 'cloud', 'cats','pink-flower'],
+        gifs: [ 'snow', 'fish', 'star',
+                'sticks', 'trees', 'rocks',
+                'cloud', 'cats','pink-flower'],
     },
     {
         name: 'Main Actors',
@@ -148,12 +166,14 @@ const gifTypes = [
     },
     {
         name: 'Tools/Accessories',
-        gifs: ['wings', 'dog-smile', 'rain', 'ground-trees']
+        gifs: ['wings', 'dog-smile', 'rain',
+                'mouse-bubble', 'scrolling-backdrop-hills', 'tree-background',
+            'ground-trees']
     },
 
     {
         name: 'Buttons',
-        gifs: ['play-button', 'play-button-2', 'game-over']
+        gifs: ['play-button', 'bow', 'play-button-2', 'game-over']
     },
 
 ];

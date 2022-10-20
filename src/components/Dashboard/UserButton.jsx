@@ -76,6 +76,7 @@ const UserButton = (props) => {
                     aria-controls={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true"
                     onClick={handleToggle}
+                    style={{fontSize:7}}
                     startIcon={<UserOutlined />}>
                     {userId}
                 </Button>
