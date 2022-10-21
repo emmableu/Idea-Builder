@@ -66,12 +66,11 @@ const ActorGalleryButton = props => {
 
                     <Tooltip title="Use this actor">
                         <Button
-                            type="link"
-                            shape="circle"
+                            type="ghost"
                             size="small"
                             onClick={e => {showAddInfo(e, actorData)}}
                             icon={<StarTwoTone twoToneColor={"#FF8C00"}/>}
-                        />
+                        ><span style={{color: "grey"}}><i>Use</i></span></Button>
                     </Tooltip>
             </div>
         </>

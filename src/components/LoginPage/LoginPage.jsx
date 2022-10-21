@@ -73,7 +73,13 @@ const LoginPage = () => {
         if (userId === null) {
             return false
         }
+        if (userId === "raleigh1022") {
+            return false
+        }
         if (userId.startsWith("researcher") || userId.startsWith('pilot')) {
+            return true;
+        }
+        if (userId.startsWith('j')) {
             return true;
         }
         let startsCorrect = false;
