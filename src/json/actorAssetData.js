@@ -51,11 +51,11 @@ const genGifStates = () => {
         },
         {
             name: 'fish',
-            states: ['fish1.png', 'fish2.png', 'fish3.png'],
+            states: ['fish1.png', 'fish2.png', 'fish3.png', 'fish4.png', 'fish5.png'],
         },
         {
-            name: 'panda',
-            states: ['panda.png'],
+            name: 'pencil',
+            states: ['pencil.svg'],
         },
         {
             name: 'snow',
@@ -70,7 +70,7 @@ const genGifStates = () => {
             states: ['cube-left.png', 'cube-right.png', 'cube-up.png', 'cube-down.png']
         },
         {
-            name: 'shower',
+            name: 'no-shower',
             states: ['shower.png']
         },
         {
@@ -162,12 +162,13 @@ const gifTypes = [
     },
     {
         name: 'Main Actors',
-        gifs: ['bird', 'penguin', 'flight', 'puppy', 'boat', 'shower'],
+        gifs: ['bird', 'penguin', 'no-shower', 'flight', 'puppy', 'boat'],
     },
     {
         name: 'Tools/Accessories',
-        gifs: ['wings', 'dog-smile', 'rain',
-                'mouse-bubble', 'scrolling-backdrop-hills', 'tree-background',
+        gifs: ['wings',  'rain', 'pencil',
+                'mouse-bubble', 'scrolling-backdrop-hills',
+            'tree-background', 'dog-smile',
             'ground-trees']
     },
 
