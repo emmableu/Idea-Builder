@@ -105,7 +105,6 @@ const ActorImgCard = (props) => {
                     </Panel>
                     }
                     {gifStates.hasOwnProperty(actorName) &&
-                        getUserCondition(userId) &&
                         showGifMap[getUserShortId(userId)].includes(actorName) &&
                         <Panel header={"Example gif"} key="2">
                             <div style={{width: 200}}>
