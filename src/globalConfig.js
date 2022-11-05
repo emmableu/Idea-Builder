@@ -285,6 +285,16 @@ const getUserCondition = (userId) => {
      return false;
 }
 
+const getUserShortId = (userId) => {
+    for (const city of cityList) {
+        if (userId.startsWith(city)) {
+            return city
+        }
+    }
+    return "study1";
+}
+
+
 
 Object.freeze(globalConfig);
 Object.freeze(calcFrameWidth);
@@ -295,5 +305,5 @@ Object.freeze(cityList);
 Object.freeze(getUserCondition);
 
 export default globalConfig;
-export  {calcFrameWidth, globalLog, snapLog, cityMap, cityList, getUserCondition};
+export  {calcFrameWidth, globalLog, snapLog, cityMap, cityList, getUserCondition, getUserShortId};
 

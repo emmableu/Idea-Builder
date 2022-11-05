@@ -3,9 +3,9 @@ import React, {useCallback} from "react";
 import {Grid} from "@material-ui/core";
 import axios from "../../../axios/ideaServerAxiosConfig";
 import ImgTile from "../../primitives/ImgCard/ImgTile";
-import globalConfig, {getUserCondition} from "../../../globalConfig";
+import globalConfig, {getUserCondition, getUserShortId} from "../../../globalConfig";
 import { debounce } from "lodash";
-import {genGifStates} from "../../../json/actorAssetData";
+import {genGifStates, showGifMap} from "../../../json/actorAssetData";
 import {
     saveNote,
     saveNoteInMemory,
@@ -106,6 +106,7 @@ const ActorImgCard = (props) => {
                     }
                     {gifStates.hasOwnProperty(actorName) &&
                         getUserCondition(userId) &&
+                        showGifMap[getUserShortId(userId)].includes(actorName) &&
                         <Panel header={"Example gif"} key="2">
                             <div style={{width: 200}}>
                             <ImgTile

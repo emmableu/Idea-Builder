@@ -1,6 +1,6 @@
 import {Dropdown, Menu} from "antd";
 import {IconButton, makeStyles, Tooltip, withStyles} from "@material-ui/core";
-import {Home, SaveAlt, InsertDriveFile, Visibility, Edit, CloudUpload} from "@material-ui/icons";
+import {Home, SaveAlt, Code, InsertDriveFile, Visibility, Edit, CloudUpload} from "@material-ui/icons";
 import { Switch } from 'antd';
 import React from "react";
 import {CopyOutlined, DeleteOutlined, DownloadOutlined, ImportOutlined} from "@ant-design/icons";
@@ -19,7 +19,6 @@ import { Modal } from 'antd';
 import MergeUploadButton from "./MergeUploadButton";
 import Button from "@material-ui/core/Button";
 import {downloadCode, setSnapWindowLoaded} from "../../redux/features/codeSlice";
-
 
 
 const useStyles = makeStyles(theme => ({
@@ -43,9 +42,16 @@ const ProjectTitleBarActionGroup  = () => {
         history.push(globalConfig.routes.dashboard);
         dispatch(setSnapWindowLoaded(false));
     }
+
+    const handleClickDownloadCode = () => {
+
+        dispatch(downloadCode());
+        setTimeout(() => {success2()}, 1000);
+
+    }
+
     const handleClick = () => {
         dispatch(download());
-        dispatch(downloadCode());
         setTimeout(() => {success()}, 1000);
     }
 
@@ -67,7 +73,19 @@ const ProjectTitleBarActionGroup  = () => {
             title: 'Storyboard downloaded!',
             content: (
                 <div>
-                    <p>Tip: you may unzip the downloaded folder to reuse the assets in your Snap project.</p>
+                    <p>Download Success</p>
+                </div>
+            ),
+            onOk() {},
+        });
+    }
+
+    function success2() {
+        Modal.success({
+            title: 'Code downloaded!',
+            content: (
+                <div>
+                    <p>You can drag it into Snap as a starter code</p>
                 </div>
             ),
             onOk() {},
@@ -116,6 +134,24 @@ const ProjectTitleBarActionGroup  = () => {
                             view?null:"white"}}/>
                 </IconButton>
             </Tooltip>
+
+                {/*handleClickDownloadCode*/}
+            </Box>
+
+
+            <Box m={0.75}>
+                <Tooltip title="Download Code">
+                    <IconButton
+                        aria-label="files"
+                        size="medium"
+                        onClick={handleClickDownloadCode}
+                        disabled={view}
+                    >
+                        <Code style={{color:
+                                view?null:"white"}}/>
+                    </IconButton>
+                </Tooltip>
+
             </Box>
             <Box m={0.75}>
                 <MergeUploadButton
